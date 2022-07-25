@@ -1,0 +1,88 @@
+html {
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.option {
+  margin-bottom: 2em;
+}
+
+.yes,
+.no,
+.increase,
+.decrease  {
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.yes,
+.no{
+  opacity: 0.5;
+}
+
+.yes:hover, .no:hover{
+  opacity: 0.8;
+}
+
+.selected{
+  opacity: 1.0;
+  font-weight: bold;
+}
+
+.increase,.decrease{
+  opacity: 1.0;
+}
+
+.yes{
+  background-color: var(--optionsYes);
+}
+
+.yes:hover, .increase:hover {
+  background-color: var(--optionsYesHover);
+}
+
+.yes.selected, .increase{
+  background-color: var(--optionsYesSelected);
+}
+
+.no{
+  background-color: var(--optionsNo);
+}
+
+.no:hover, .decrease:hover {
+  background-color: var(--optionsNoHover);
+}
+
+.no.selected, .decrease{
+  background-color: var(--optionsNoSelected);
+}
+
+
+
+
+#apply-btn {
+  font-weight: bold;
+  word-wrap: break-word;
+  text-align: center;
+  cursor: pointer;
+  color: var(--mainFont);
+  background-color: var(--mainBackground);
+  border: 0.1em solid var(--mainFont);
+  border-radius: 5px;
+  padding: 0.25em;
+  width: fit-content;
+  margin: 0 auto;
+  font-size: x-large;
+}
+
+#apply-btn:hover{
+  border: none;
+  padding: 0.35em;
+  color: var(--mainBackground);
+  background-color: var(--mainFont);
+}

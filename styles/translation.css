@@ -1,0 +1,16 @@
+html {
+  font-size: 17px;
+}
+
+#app {
+  padding: 20px 20px 20px 12px;
+  text-align: center;
+}
+
+.fade {
+  color: var(--mainFontFaded);
+}
+
+.fade:hover {
+  color: var(--mainFont);
+}

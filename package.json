@@ -1,0 +1,26 @@
+{
+  "name": "japanese-reader",
+  "version": "1.3.1",
+  "description": "A multi-platform tool for reading Japanese text. Has a parser/dictionary, Anki support, DeepL support, and word status tracking.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://4chan.org",
+  "author": "Seth",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "clipboard-event": "^1.5.0",
+    "date-and-time": "^1.0.0",
+    "electron": "^12.0.2",
+    "eslint-config-prettier": "^8.2.0",
+    "furigana": "^0.19.3",
+    "jquery": "^3.6.0",
+    "set-interval-async": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}

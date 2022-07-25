@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nipReader 1.3.1 Install</title>
+    <style>
+      html {
+        background: #1e0a1c;
+        color: #f3f9fa;
+        text-align: center;
+        font-family: sans-serif;
+      }
+	  #examples img {
+		  width: 600px;
+		  border: 1px solid #f3f9fa;
+	  }
+	  ol { 
+		text-align: left;
+		list-style-type: decimal;
+	  }
+	  ol ol { 
+		list-style-type: lower-greek;
+		margin-left: 0;
+	  }
+      div {
+        background: #111;
+        width: 1200px;
+        padding: 20px;
+        margin: 20px auto 0px auto;
+        text-align: left;
+		border: 1px solid #f3f9fa;
+      }
+
+
+      a {
+        text-decoration: none;
+        position: relative;
+        z-index: 1;
+        color: white;
+      }
+      a:after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 80%;
+        left: -0.1em;
+        right: -0.1em;
+        bottom: 0;
+        transition: top 200ms cubic-bezier(0, 0.8, 0.13, 1);
+        background-color: rgb(34, 158, 218);
+      }
+      a:hover:after {
+        top: 0%;
+      }
+	  
+	  h1,h2,h3,h4,h5,h6{
+		text-align: center;
+	  }
+
+      code {
+        font-family: sans-serif;
+        color: #bb9ffd;
+      }
+	  
+	  div{
+	  text-align: center;
+	  width: 600px;
+	  
+	  }
+	  ul, ol{
+	  display: inline-block;
+	  text-align: left;
+	  }
+    </style>
+  </head>
+  <body>
+    <h1>japReader 1.3.1</h1>
+    <h4>An Electron app that helps you read Japanese text.</h4>
+    <h5>Version 1.2 created by <a href="https://github.com/seth-js">seth-js</a>.</h5>
+	<h5>Email: <a href="mailto:japreader@yandex.com">japreader@yandex.com</a>
+    </h5>
+	<br>
+	<h5>Version 1.3 forked by anon from /vn/</h5>
+	<div id="changelog">
+	<h3>Rough changelog:</h3>
+	<hr>
+	<ol>
+	<li><b>1.3.0</b> Added the ability to change the status of a word with mouse buttons:
+		<ul>
+		<li>Seen: Right Mouse Button</li>
+		<li>Known: Middle Mouse Button</li>
+		<li>Ignore: Ctrl + Left Mouse Button</li>
+		</ul>
+	</li>
+	<li>Changed the method of adding a word to Anki. Now it is added in the background, and a pop-up window doesn't show anymore.</li>
+	<li>Added shortcuts for playing audio and adding the word to Anki:
+		<ul>
+		<li>Play audio: A</li>
+		<li>Add to Anki: Q</li>
+		</ul>
+	</li>
+	<li><s>Changed the appearance to (hopefully) more intuitive colors</s></li>
+	<li><b>1.3.1 Hotfix</b> Restyled everything because in 1.3.0 the contrast was too random and some things were hard to read.</li>
+	</ol>
+	</div>
+	<div id="examples">
+    <img src="images/example1.png" />
+    <br />
+    <br />
+    <img src="images/example2.png" />
+	</div>
+
+    <div>
+      <h3>
+        Did you use japReader 1.1? If so, click
+        <a href="#returning-user">here</a>.
+      </h3>
+    </div>
+
+    <div>
+      <h3>Currently Supported</h3>
+      <hr />
+      <h4>VNs, LNs, TV Shows/Movies</h4>
+    </div>
+
+    <div>
+      <h3>Features</h3>
+      <hr />
+      <h4>
+        Parser and dictionary from
+        <a href="https://ichi.moe/cl/qr/?q=&r=kana">ichi.moe</a>
+      </h4>
+      <h4>Word status tracking</h4>
+      <h4>DeepL translations (no bullshit limits)</h4>
+      <h4>One-click Anki sentence/word card creation</h4>
+      <h4>Furigana support</h4>
+    </div>
+
+    <div>
+      <h3>How does this work?</h3>
+      <hr />
+      <h4>
+        It watches your clipboard for Japanese text. Once Japanese text is
+        detected, it gets parsing and dictionary data from
+        <a href="https://ichi.moe/cl/qr/?q=&r=kana">ichi.moe</a>.
+      </h4>
+      <h4>
+        The word status tracking is done by checking each parsed dictionary form
+        of a word against a small collection of word databases that accumulate
+        as you use the program.
+      </h4>
+      <h4>
+        The Anki feature uses the
+        <a href="https://github.com/FooSoft/anki-connect">AnkiConnect</a> API to
+        send over the necessary card data.
+      </h4>
+    </div>
+
+    <div>
+      <h3>How do I set this up?</h3>
+      <hr />
+      <h4>
+        You're reading this right now which means you've already extracted
+        <code>japReader-1.3.1.zip</code>.
+      </h4>
+      <h4>You should have all the files as shown in this image:</h4>
+      <img src="images/files.png" style="border: 1px solid white" />
+      <h4>First, you need to install Node.js:</h4>
+      <ul>
+        <li>
+          Windows and macOS users can install it from
+          <a href="https://nodejs.org/en/download/">here</a>.
+        </li>
+        <li>
+          Linux instructions can be found
+          <a href="https://nodejs.org/en/download/package-manager/">here</a>.
+        </li>
+      </ul>
+      <h4>
+        Once you have Node.js installed, you should navigate to the folder where
+        you extracted japReader.
+      </h4>
+      <h4>Windows users:<br />Open: <code>run.bat</code></h4>
+      <h4>
+        Linux and macOS users:<br />Open the terminal and navigate to the
+        japReader folder using <code>cd</code><br />Enter
+        <code>npm install; npm start</code>
+      </h4>
+      <h4>The program will now open.</h4>
+    </div>
+
+    <div>
+      <h3>Note for Linux users</h3>
+      <hr />
+      <h4>
+        Due to an unfixed bug with Electron, windows don't hide like I intended
+        them to.
+      </h4>
+      <h4>
+        The windows can be minimized manually, and the program will still
+        function normally.
+      </h4>
+    </div>
+
+    <div>
+      <h3>Keybindings</h3>
+      <hr />
+      <h4><button>O</button> - Options (open options menu)</h4>
+      <h4><button>S</button> - Toggle Stay On Top</h4>
+      <h4>
+        <button>H</button> - Toggle Transparent Translation Window (when
+        transparent translation window is focused)
+      </h4>
+	  <h4><button>A</button> - Play Audio</h4>
+	  <h4><button>Q</button> - Add to Anki</h4>
+	  <h4><button>RMB</button> - (in reader) Change word status to Seen</h4>
+	  <h4><button>MMB</button> - (in reader) Change word status to Known</h4>
+	  <h4><button>Ctrl+LMB</button> - (in reader) Change word status to Ignored</h4>
+    </div>
+
+    <div>
+      <h3>How do I read VNs with this?</h3>
+      <hr />
+      <ol>
+        <li>Download and install a Japanese VN</li>
+        <li>
+          Download, install, and open
+          <a href="https://github.com/Artikash/Textractor">Textractor</a>
+        </li>
+        <li>Open the VN</li>
+        <li>Hook the text</li>
+        <li>Open japReader</li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>How do I read LNs/Ebooks with this?</h3>
+      <hr />
+      <ol>
+        <li>Open your LN/Ebook</li>
+        <li>Open japReader</li>
+        <li>
+          If you can, highlight and copy a few sentences from the LN/Ebook
+        </li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>How do I watch Drama/Movies/Anime with this?</h3>
+      <hr />
+      <ol>
+        <li>Get a local copy of the show/movie that you want to watch</li>
+        <li>Get the Japanese subtitles for what you want to watch</li>
+        <li>Download <a href="https://mpv.io/">mpv</a></li>
+        <li>
+          Download and install
+          <a href="https://github.com/Ben-Kerman/mpv-sub-scripts">this</a>
+          plugin and
+          <a href="https://github.com/perogiue/mpv-scripts">this</a> plugin for
+          mpv
+        </li>
+        <li>Open the video with mpv</li>
+        <li>Switch to Japanese subtitles with the J key</li>
+        <li>
+          Press the * key (shift+8) to automatically copy subtitles to your
+          clipboard
+        </li>
+        <li>Press the N key to pause at the end of each subtitle line</li>
+        <li>Open japReader</li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>How do I get Anki card creation to work?</h3>
+      <hr />
+      <ol>
+        <li>Install <a href="https://apps.ankiweb.net/">Anki</a></li>
+        <li>
+          Install the
+          <a href="https://ankiweb.net/shared/info/2055492159"
+            >AnkiConnect addon</a
+          >
+        </li>
+        <li>Open <code>japReader1.3.1.apkg</code></li>
+        <li>Ensure that the deck is named <code>japReader</code></li>
+        <li>
+          Click <code>Add to Anki</code> in the Dictionary window, and card data
+          should be generated for the <code>japReader</code> Anki deck
+        </li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>The Goal feature</h3>
+      <hr />
+      <h4>
+        Your goal count goes up when you mark a <code>new</code> word as
+        <code>seen</code>.
+      </h4>
+    </div>
+
+    <div>
+      <h3>About Fonts</h3>
+      <hr />
+      <h4>I've changed the font styling of japReader a bit since 1.1.</h4>
+      <h4>
+        If you want the fonts to look like the screenshots at the top of this
+        page:
+      </h4>
+      <ol>
+        <li>
+          (Windows) Install
+          <a href="https://github.com/snowie2000/mactype">MacType</a>
+        </li>
+        <li>
+          Download and install
+          <a
+            href="https://www.mediafire.com/file/j6nnrwp9zcfmc8a/japReader+1.2+Fonts.zip/file"
+            >these fonts</a
+          >
+        </li>
+        <li>Open japReader</li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>QA and Notes</h3>
+      <hr />
+      <h4>Q: Why does the text "i+1" keep showing?</h4>
+      <h4>
+        A: When the the text "i+1" shows up, that means there is only one unknown
+        word in the sentence. This is perfect for sentence/vocab Anki cards.
+      </h4>
+      <h4>Q: Why does the translation text dim sometimes?</h4>
+      <h4>
+        A: This happens when there is only one unknown word in the sentence. You
+        should hopefully be able to not depend on the translation.
+      </h4>
+      <h4>Q: I don't like a feature, is there any way I can turn it off?</h4>
+      <h4>
+        Press <code>O</code> while one of the windows is in focus. The options
+        menu will open up. All settings can be modified from there.
+      </h4>
+      <h4>
+        I'll be checking the /vg/ archive for mentions of "japReader" every once
+        in a while. If you have any feature suggestions or problems, I should be
+        able to see it.
+      </h4>
+      <h4>
+        Thanks to everyone who gave me ideas, bug reports, and words of
+        encouragement since 1.1.
+      </h4>
+    </div>
+
+    <div id="returning-user">
+      <h3>Returning Users (not tested for 1.3.1, but nothing has changed in the structure of the files so the instructions are likely the same)</h3>
+      <hr />
+      <h4>
+        A lot has changed since 1.1 of japReader. Most of the code has been
+        rewritten. The Anki deck has been upgraded, and word tracking is now
+        done differently.
+      </h4>
+      <h3>How to transfer 1.1 word data to 1.2:</h3>
+      <ol>
+        <li>Open your japReader 1.1 folder</li>
+        <li>Copy all files that start with <code>data_</code></li>
+        <li>Navigate to your japReader 1.2 folder</li>
+        <li>Paste the files in <code>data/transfer/</code></li>
+        <li>Open japReader 1.2</li>
+      </ol>
+      <h3>How to change from 1.1 Anki deck to 1.2:</h3>
+      <h5>
+        Huge note: Anki 2.1.41+ somehow broke JavaScript variable assignment in
+        the cards. Until this is fixed, use
+        <a href="https://github.com/ankitects/anki/releases/tag/2.1.40"
+          >Anki 2.1.40</a
+        >.
+      </h5>
+      <h5>
+        This may be fixed by the time you read this, so if you are willing to
+        take the risk, you can still use the newest Anki version. If you see
+        bugs move back down to 2.1.40.
+      </h5>
+      <ol>
+        <li>Open Anki</li>
+        <li>
+          Rename the <code>japReader</code> deck to <code>japReader1.1</code>
+        </li>
+        <li>Open <code>Tools => Manage Note Types</code></li>
+        <li>Select <code>japReader</code></li>
+        <li>Click <code>Rename</code></li>
+        <li>Rename it to <code>japReader1.1</code></li>
+        <li>You should now have the deck and note type renamed.</li>
+        <li>
+          Now open <code>japReader 1.3.1.apkg</code> which is provided in this
+          folder.
+        </li>
+        <li>
+          You should now have two decks, <code>japReader</code> and
+          <code>japReader1.1</code>
+        </li>
+        <li>Click <code>Browse</code></li>
+        <li>Select <code>japReader1.1</code></li>
+        <li>Select all the cards in the browser window</li>
+        <li>Right click one of the cards while they are all selected</li>
+        <li>Click <code>Change Note Types</code></li>
+        <li>Set the following information:</li>
+        <img src="images/anki-conversion.png" width="345px" />
+        <li>Click <code>OK</code></li>
+      </ol>
+
+      <h5>
+        Note: A lot of new information has been added to the cards that 1.1
+        didn't handle. This means that 1.1 cards are missing information that
+        1.2 cards will now have.
+      </h5>
+    </div>
+  </body>
+</html>

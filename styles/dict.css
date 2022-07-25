@@ -1,0 +1,184 @@
+html {
+  font-size: 17px;
+}
+
+#app {
+  padding: 10px;
+}
+
+#info, #controls, #word-info, #status-buttons, #other-buttons {
+  word-wrap: break-word;
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+  height: auto;
+  line-height: 1em;
+  margin: 0;
+  padding: 0;
+}
+
+#info {
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+#controls {
+  border-top: 1px solid var(--mainFont);
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+#word-info {
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#status-buttons,
+#other-buttons {
+  margin: 5px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+#word-area {
+  font-weight: bold;
+  padding: 0.25em;
+  text-align: center;
+  font-size: 1.5em;
+  color: var(--mainBackground);
+}
+
+#word-area .status{
+  position: absolute;
+  font-size: 0.5em;
+  opacity: 0.75;
+}
+
+#word-area.new {
+  background-color: var(--statusNew);
+}
+
+#word-area.seen {
+  background-color: var(--statusSeen);
+}
+
+#word-area.known {
+  background-color: var(--statusKnown);
+}
+
+#word-area.ignored {
+  background-color: var(--statusIgnored);
+}
+
+#dict {
+  border-top: 1px solid var(--mainFont);
+  word-wrap: break-word;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+
+#dict dt, #dict dd{
+  margin:0;
+  padding:0;
+}
+
+#dict dd{
+  margin-inline-start: 1em;
+}
+
+#dict ol{
+  margin-block-start: 0em;
+  padding-inline-start: 1em;
+}
+
+#dict ol li:nth-child(6n+1){
+  background-color: var(--dictListColor4);
+}
+#dict ol li:nth-child(6n+2){
+  background-color: var(--dictListColor3);
+}
+#dict ol li:nth-child(6n+3){
+  background-color: var(--dictListColor2);
+}
+#dict ol li:nth-child(6n+4){
+  background-color: var(--dictListColor1);
+}
+#dict ol li:nth-child(6n+5){
+  background-color: var(--dictListColor2);
+}
+#dict ol li:nth-child(6n+6){
+  background-color: var(--dictListColor3);
+}
+
+
+.sense-info-note,
+.note-skipped {
+  display: none;
+}
+
+.btn {
+  font-weight: bold;
+  word-wrap: break-word;
+  text-align: center;
+  cursor: pointer;
+  color: var(--mainFont);
+  background-color: var(--mainBackground);
+  border: 0.1em solid var(--mainFont);
+  border-radius: 5px;
+  padding: 0.25em;
+  width: fit-content;
+}
+
+.btn small {
+  font-size: 0.7em;
+  border-radius: 10%;
+  background-color: var(--mainFont);
+  color: var(--mainBackground);
+  padding: 0 0.1em;
+  margin-right: 0.1em;
+}
+
+.btn:hover {
+  border: none;
+  padding: 0.35em;
+  color: var(--mainBackground);
+  background-color: var(--mainFont);
+}
+
+.btn:hover small{
+  background-color: var(--mainBackground);
+  color: var(--mainFont);
+}
+
+#seen-btn:not(.disabled-btn):hover {
+  background-color: var(--statusSeen);
+}
+
+#known-btn:not(.disabled-btn):hover {
+  background-color: var(--statusKnown);
+}
+
+#ignore-btn:not(.disabled-btn):hover {
+  background-color: var(--statusIgnored);
+}
+
+.disabled-btn {
+  color: var(--disabled);
+  cursor: not-allowed;
+  border: 0.2em groove var(--mainFont);
+  padding: 0.15em;
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+
+.disabled-btn:hover {
+  border: 0.2em groove var(--mainFont);
+  padding: 0.15em;
+  background-color: var(--disabled);
+  color: var(--mainFont);
+}

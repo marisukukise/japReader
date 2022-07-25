@@ -1,0 +1,43 @@
+:root {
+    --mainFont: #f3f9fa;
+    --mainFontFaded : #f3f9fa0d;
+    --mainBackground: #1e0a1c;
+
+    --scrollbarHead: #f5f2ca;
+    --scrollbarBackground: #545454;
+    --scrollbarShadow: #000000bf;
+    
+    --url: #bb9ffd;
+    --disabled: #8c8c8c;
+
+    --buttonFont: var(--mainBackground);
+    --buttonBackground: var(--mainFont);
+
+    --buttonSmallFont: #2c1111;
+    --buttonSmallBackground: #b83131;
+
+    --dictListColor1: #777;
+    --dictListColor2: #555;
+    --dictListColor3: #333;
+    --dictListColor4: #111;
+
+    --optionsYes: #a1d2b4;
+    --optionsYesHover: #42a569;
+    --optionsYesSelected: #72be90;
+    --optionsNo: #efa7aa;
+    --optionsNoHover: #dc4d53;
+    --optionsNoSelected: #e37a7f;
+
+    --statusNew: #229eda;
+    --statusSeen: #f19109;
+    --statusKnown: #3aa835;
+    --statusIgnored: #c3c3c3;
+
+    --plusOneBackground: #2f142d;
+    --plusOneColor: #ffffff;
+    --plusOneHighlight: #650d0d;
+
+    --translationBorder: #f5c8ba;
+    --translationTransparentBackground: #0000004d;
+
+}

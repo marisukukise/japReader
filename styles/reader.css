@@ -1,0 +1,141 @@
+html {
+  font-size: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+body{
+  height: 100%;
+  width: 100%;
+}
+
+#app {
+  padding: 20px 20px 20px 12px;
+}
+
+.word,
+.junk {
+  display: inline-block;
+  margin-bottom: 10px;
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+}
+
+.word:hover {
+  cursor: pointer;
+}
+
+.word:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0em;
+  right: 0em;
+  bottom: 0;
+  transition: top 200ms cubic-bezier(0, 0.8, 0.13, 1);
+}
+
+.word:hover:after{
+  top: 0%
+}
+
+
+.new:after {
+  top: calc(100% - 5px);
+  background-color: var(--statusNew);
+}
+.seen:after {
+  top: calc(100% - 5px);
+  background-color: var(--statusSeen);
+}
+.known:after {
+  top: calc(100% + 1px);
+  background-color: var(--statusKnown);
+}
+.ignored:after{
+  top: calc(100% + 1px);
+  background-color: var(--statusIgnored);
+}
+
+.new:hover,
+.seen:hover {
+  background-color: transparent;
+}
+
+.tv-mode {
+  text-align: center;
+}
+
+.known ruby rt,
+.ignored ruby rt {
+  visibility: hidden;
+}
+
+.plusOne {
+  color: var(--plusOneColor);
+  background-color: var(--mainBackground);
+  background-size: 10px 10px;
+  background-image: repeating-linear-gradient(45deg, var(--plusOneBackground) 0, var(--plusOneBackground) 1px, var(--mainBackground) 0, var(--mainBackground) 50%);
+}
+
+.plusOne .new{
+  border-bottom: 3px solid var(--statusNew);
+}
+
+.plusOne .seen{
+  border-bottom: 3px solid var(--statusSeen);
+}
+
+.plusOne .new:after, .plusOne .seen:after {
+  border: none;
+  background-color: var(--plusOneHighlight) !important;
+}
+
+.plusOne::before{
+  content:"i+1";
+  background-color: var(--plusOneHighlight);
+  position: absolute;
+  font-size: 0.75em;
+  padding: 0.1em;
+}
+
+.plusOne .new, .plusOne .seen{
+  animation: plusOne 1s ease 0s 1 normal none;
+}
+
+@keyframes plusOne {
+  0%{
+    transform: translateY(0);
+  }
+  10%{
+    transform: translateY(-4%);
+  }
+  20%{
+    transform: translateY(4%);
+  }
+  30%{
+    transform: translateY(-4%);
+  }
+  40%{
+    transform: translateY(4%);
+  }
+  50%{
+    transform: translateY(-4%);
+  }
+  60%{
+    transform: translateY(4%);
+  }
+  70%{
+    transform: translateY(-4%);
+  }
+  80%{
+    transform: translateY(3.2%);
+  }
+  90%{
+    transform: translateY(-3.2%);
+  }
+  100%{
+    transform: translateY(0);
+  }
+}
