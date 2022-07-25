@@ -1,7 +1,7 @@
 japReader 1.3.1
 ===============
 
-#### An Electron app that helps you read Japanese text.
+ An Electron app that helps you read Japanese text.
 
 ##### Version 1.2 created by [seth-js](https://github.com/seth-js).
 
@@ -37,32 +37,32 @@ japReader 1.3.1
 
 ------------------------------------------------------------------------
 
-#### VNs, LNs, TV Shows/Movies
+ VNs, LNs, TV Shows/Movies
 
 ### Features
 
 ------------------------------------------------------------------------
 
-#### Parser and dictionary from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana)
+ Parser and dictionary from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana)
 
-#### Word status tracking
+ Word status tracking
 
-#### DeepL translations (no bullshit limits)
+ DeepL translations (no bullshit limits)
 
-#### One-click Anki sentence/word card creation
+ One-click Anki sentence/word card creation
 
-#### Furigana support
+ Furigana support
 
 
 ### How does this work?
 
 ------------------------------------------------------------------------
 
-#### It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
+ It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
 
-#### The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
+ The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
 
-#### The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
+ The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
 
 
 
@@ -70,55 +70,55 @@ japReader 1.3.1
 
 ------------------------------------------------------------------------
 
-#### You\'re reading this right now which means you\'ve already extracted `japReader-1.3.1.zip`.
+ You\'re reading this right now which means you\'ve already extracted `japReader-1.3.1.zip`.
 
-#### You should have all the files as shown in this image:
+ You should have all the files as shown in this image:
 
 ![](images/files.png)
 
-#### First, you need to install Node.js:
+ First, you need to install Node.js:
 
 -   Windows and macOS users can install it from
     [here](https://nodejs.org/en/download/).
 -   Linux instructions can be found
     [here](https://nodejs.org/en/download/package-manager/).
 
-#### Once you have Node.js installed, you should navigate to the folder where you extracted japReader.
+ Once you have Node.js installed, you should navigate to the folder where you extracted japReader.
 
-#### Windows users: Open: `run.bat`
+ Windows users: Open: `run.bat`
 
-#### Linux and macOS users: Open the terminal and navigate to the japReader folder using `cd` Enter `npm install; npm start`
+ Linux and macOS users: Open the terminal and navigate to the japReader folder using `cd` Enter `npm install; npm start`
 
-#### The program will now open.
+ The program will now open.
 
 
 ### Note for Linux users
 
 ------------------------------------------------------------------------
 
-#### Due to an unfixed bug with Electron, windows don\'t hide like I intended them to.
+ Due to an unfixed bug with Electron, windows don\'t hide like I intended them to.
 
-#### The windows can be minimized manually, and the program will still function normally.
+ The windows can be minimized manually, and the program will still function normally.
 
 ### Keybindings
 
 ------------------------------------------------------------------------
 
-#### O - Options (open options menu)
+ O - Options (open options menu)
 
-#### S - Toggle Stay On Top
+ S - Toggle Stay On Top
 
-#### H - Toggle Transparent Translation Window (when transparent translation window is focused)
+ H - Toggle Transparent Translation Window (when transparent translation window is focused)
 
-#### A - Play Audio
+ A - Play Audio
 
-#### Q - Add to Anki
+ Q - Add to Anki
 
-#### RMB - (in reader) Change word status to Seen
+ RMB - (in reader) Change word status to Seen
 
-#### MMB - (in reader) Change word status to Known
+ MMB - (in reader) Change word status to Known
 
-#### Ctrl+LMB - (in reader) Change word status to Ignored
+ Ctrl+LMB - (in reader) Change word status to Ignored
 
 
 ### How do I read VNs with this?
@@ -176,16 +176,16 @@ japReader 1.3.1
 
 ------------------------------------------------------------------------
 
-#### Your goal count goes up when you mark a `new` word as `seen`.
+ Your goal count goes up when you mark a `new` word as `seen`.
 
 
 ### About Fonts
 
 ------------------------------------------------------------------------
 
-#### I\'ve changed the font styling of japReader a bit since 1.1.
+ I\'ve changed the font styling of japReader a bit since 1.1.
 
-#### If you want the fonts to look like the screenshots at the top of this page:
+ If you want the fonts to look like the screenshots at the top of this page:
 
 1.  (Windows) Install [MacType](https://github.com/snowie2000/mactype)
 2.  Download and install [these
@@ -197,21 +197,21 @@ japReader 1.3.1
 
 ------------------------------------------------------------------------
 
-#### Q: Why does the text \"i+1\" keep showing?
+ Q: Why does the text \"i+1\" keep showing?
 
-#### A: When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
+ A: When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
 
-#### Q: Why does the translation text dim sometimes?
+ Q: Why does the translation text dim sometimes?
 
-#### A: This happens when there is only one unknown word in the sentence. You should hopefully be able to not depend on the translation.
+ A: This happens when there is only one unknown word in the sentence. You should hopefully be able to not depend on the translation.
 
-#### Q: I don\'t like a feature, is there any way I can turn it off?
+ Q: I don\'t like a feature, is there any way I can turn it off?
 
-#### Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
+ Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
 
-#### I\'ll be checking the /vg/ archive for mentions of \"japReader\" every once in a while. If you have any feature suggestions or problems, I should be able to see it.
+ I\'ll be checking the /vg/ archive for mentions of \"japReader\" every once in a while. If you have any feature suggestions or problems, I should be able to see it.
 
-#### Thanks to everyone who gave me ideas, bug reports, and words of encouragement since 1.1.
+ Thanks to everyone who gave me ideas, bug reports, and words of encouragement since 1.1.
 
 
 ### Returning Users 
@@ -219,7 +219,7 @@ japReader 1.3.1
 
 ------------------------------------------------------------------------
 
-#### A lot has changed since 1.1 of japReader. Most of the code has been rewritten. The Anki deck has been upgraded, and word tracking is now done differently.
+ A lot has changed since 1.1 of japReader. Most of the code has been rewritten. The Anki deck has been upgraded, and word tracking is now done differently.
 
 ### How to transfer 1.1 word data to 1.2:
 
