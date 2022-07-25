@@ -5,13 +5,8 @@ japReader 1.3.1
 
 ##### Version 1.2 created by [seth-js](https://github.com/seth-js).
 
-##### Email: <japreader@yandex.com>
+##### Version 1.3 forked by me
 
-\
-
-##### Version 1.3 forked by anon from /vn/
-
-::: {#changelog}
 ### Rough changelog:
 
 ------------------------------------------------------------------------
@@ -29,31 +24,20 @@ japReader 1.3.1
 4.  ~~Changed the appearance to (hopefully) more intuitive colors~~
 5.  **1.3.1 Hotfix** Restyled everything because in 1.3.0 the contrast
     was too random and some things were hard to read.
-:::
 
-::: {#examples}
-![](images/example1.png)\
-\
+
+### Examples
+![](images/example1.png)
 ![](images/example2.png)
-:::
 
-<div>
 
-### Did you use japReader 1.1? If so, click [here](#returning-user).
-
-</div>
-
-<div>
+### Did you use japReader 1.1? If so, click [here](#returning-users).
 
 ### Currently Supported
 
 ------------------------------------------------------------------------
 
 #### VNs, LNs, TV Shows/Movies
-
-</div>
-
-<div>
 
 ### Features
 
@@ -69,9 +53,6 @@ japReader 1.3.1
 
 #### Furigana support
 
-</div>
-
-<div>
 
 ### How does this work?
 
@@ -83,9 +64,7 @@ japReader 1.3.1
 
 #### The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
 
-</div>
 
-<div>
 
 ### How do I set this up?
 
@@ -112,9 +91,6 @@ japReader 1.3.1
 
 #### The program will now open.
 
-</div>
-
-<div>
 
 ### Note for Linux users
 
@@ -123,10 +99,6 @@ japReader 1.3.1
 #### Due to an unfixed bug with Electron, windows don\'t hide like I intended them to.
 
 #### The windows can be minimized manually, and the program will still function normally.
-
-</div>
-
-<div>
 
 ### Keybindings
 
@@ -148,9 +120,6 @@ japReader 1.3.1
 
 #### Ctrl+LMB - (in reader) Change word status to Ignored
 
-</div>
-
-<div>
 
 ### How do I read VNs with this?
 
@@ -163,9 +132,6 @@ japReader 1.3.1
 4.  Hook the text
 5.  Open japReader
 
-</div>
-
-<div>
 
 ### How do I read LNs/Ebooks with this?
 
@@ -174,10 +140,6 @@ japReader 1.3.1
 1.  Open your LN/Ebook
 2.  Open japReader
 3.  If you can, highlight and copy a few sentences from the LN/Ebook
-
-</div>
-
-<div>
 
 ### How do I watch Drama/Movies/Anime with this?
 
@@ -196,9 +158,6 @@ japReader 1.3.1
 8.  Press the N key to pause at the end of each subtitle line
 9.  Open japReader
 
-</div>
-
-<div>
 
 ### How do I get Anki card creation to work?
 
@@ -212,9 +171,6 @@ japReader 1.3.1
 5.  Click `Add to Anki` in the Dictionary window, and card data should
     be generated for the `japReader` Anki deck
 
-</div>
-
-<div>
 
 ### The Goal feature
 
@@ -222,9 +178,6 @@ japReader 1.3.1
 
 #### Your goal count goes up when you mark a `new` word as `seen`.
 
-</div>
-
-<div>
 
 ### About Fonts
 
@@ -239,9 +192,6 @@ japReader 1.3.1
     fonts](https://www.mediafire.com/file/j6nnrwp9zcfmc8a/japReader+1.2+Fonts.zip/file)
 3.  Open japReader
 
-</div>
-
-<div>
 
 ### QA and Notes
 
@@ -263,10 +213,9 @@ japReader 1.3.1
 
 #### Thanks to everyone who gave me ideas, bug reports, and words of encouragement since 1.1.
 
-</div>
 
-::: {#returning-user}
-### Returning Users (not tested for 1.3.1, but nothing has changed in the structure of the files so the instructions are likely the same)
+### Returning Users 
+### (not tested for 1.3.1, but nothing has changed in the structure of the files so the instructions are likely the same)
 
 ------------------------------------------------------------------------
 
@@ -304,4 +253,3 @@ japReader 1.3.1
 16. Click `OK`
 
 ##### Note: A lot of new information has been added to the cards that 1.1 didn\'t handle. This means that 1.1 cards are missing information that 1.2 cards will now have.
-:::
