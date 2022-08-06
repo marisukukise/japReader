@@ -100,7 +100,7 @@ VNs, LNs, TV Shows/Movies
     be generated for the `japReader` Anki deck
 
 
-# QA and Notes
+# Q&A and Notes
 Q: Why does the text \"i+1\" keep showing?  
 A: When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
 
