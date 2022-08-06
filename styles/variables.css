@@ -1,40 +1,55 @@
 :root {
-    --dark-mainFont: #f3f9fa;
-    --dark-mainFontFaded : #f3f9fa0d;
-    --dark-mainBackground: #1e0a1c;
+    --mainFont: #041113;
+    --mainFontFaded : #0411130d;
+    --mainBackground: #e7dee6;
 
-    --dark-scrollbarHead: #f5f2ca;
-    --dark-scrollbarBackground: #545454;
-    --dark-scrollbarShadow: #000000bf;
+    --scrollbarHead: #272502;
+    --scrollbarBackground: #867f7f;
+    --scrollbarShadow: #000000bf;
     
-    --dark-url: #bb9ffd;
-    --dark-disabled: #8c8c8c;
+    --url: #7d47fc;
+    --disabled: #363131;
 
-    --dark-buttonFont: var(--dark-mainBackground);
-    --dark-buttonBackground: var(--dark-mainFont);
+    --dictListColor1: #77777780;
+    --dictListColor2: #99999980;
+    --dictListColor3: #bbbbbb80;
+    --dictListColor4: #dddddd80;
 
-    --dark-buttonSmallFont: #2c1111;
-    --dark-buttonSmallBackground: #b83131;
+    --optionsYes: #6cd193;
+    --optionsYesSelected: #26bd62;
+    --optionsNo: #f18588;
+    --optionsNoSelected: #e63b44;
 
-    --dark-dictListColor1: #77777780;
-    --dark-dictListColor2: #55555580;
-    --dark-dictListColor3: #33333380;
-    --dark-dictListColor4: #11111180;
+    --statusNew: #1e8cc4;
+    --statusSeen: #db8409;
+    --statusKnown: #32912d;
+    --statusIgnored: #8b8383;
 
-    --dark-optionsYes: #a1d2b4;
-    --dark-optionsYesSelected: #72be90;
-    --dark-optionsNo: #efa7aa;
-    --dark-optionsNoSelected: #e37a7f;
+    --plusOneBackground: #ccb9ca;
+    --plusOneColor: #000000;
+    --plusOneHighlight: #e83d3d;
 
-    --dark-statusNew: #229eda;
-    --dark-statusSeen: #f19109;
-    --dark-statusKnown: #3aa835;
-    --dark-statusIgnored: #c3c3c3;
+    --translationBorder: #f5c8ba;
+    --translationTransparentBackground: #ffffffb0;
+} 
 
-    --dark-plusOneBackground: #2f142d;
-    --dark-plusOneColor: #ffffff;
-    --dark-plusOneHighlight: #650d0d;
+html.dark-mode {
+    --mainFont: #f3f9fa;
+    --mainFontFaded : #f3f9fa0d;
+    --mainBackground: #1e0a1c;
 
-    --dark-translationBorder: #f5c8ba;
-    --dark-translationTransparentBackground: #0000004d;
+    --scrollbarHead: #f5f2ca;
+    --scrollbarBackground: #545454;
+    --scrollbarShadow: #000000bf;
+
+    --dictListColor1: #77777780;
+    --dictListColor2: #55555580;
+    --dictListColor3: #33333380;
+    --dictListColor4: #11111180;
+
+    --plusOneBackground: #2f142d;
+    --plusOneColor: #ffffff;
+    --plusOneHighlight: #650d0d;
+
+    --translationTransparentBackground: #0000004d;
 }

@@ -23,7 +23,7 @@ html {
 }
 
 #controls {
-  border-top: 1px solid var(--dark-mainFont);
+  border-top: 1px solid var(--mainFont);
   justify-content: space-between;
   flex-direction: column;
 }
@@ -48,13 +48,13 @@ html {
   padding: 0.5em;
   text-align: center;
   font-size: 1.5em;
-  color: var(--dark-mainFont);
+  color: var(--mainFont);
   text-shadow: 
-    -1px 0px var(--dark-mainBackground), 
-    0 1px var(--dark-mainBackground), 
-    1px 0 var(--dark-mainBackground), 
-    0 -1px var(--dark-mainBackground),
-    0 0 5px var(--dark-mainBackground);
+    -1px 0px var(--mainBackground), 
+    0 1px var(--mainBackground), 
+    1px 0 var(--mainBackground), 
+    0 -1px var(--mainBackground),
+    0 0 5px var(--mainBackground);
 }
 
 #word-area .status{
@@ -63,23 +63,23 @@ html {
 }
 
 #word-area.new {
-  background-color: var(--dark-statusNew);
+  background-color: var(--statusNew);
 }
 
 #word-area.seen {
-  background-color: var(--dark-statusSeen);
+  background-color: var(--statusSeen);
 }
 
 #word-area.known {
-  background-color: var(--dark-statusKnown);
+  background-color: var(--statusKnown);
 }
 
 #word-area.ignored {
-  background-color: var(--dark-statusIgnored);
+  background-color: var(--statusIgnored);
 }
 
 #dict {
-  border-top: 1px solid var(--dark-mainFont);
+  border-top: 1px solid var(--mainFont);
   word-wrap: break-word;
   overflow-y: auto;
   margin: 0;
@@ -101,22 +101,22 @@ html {
 }
 
 #dict ol li:nth-child(6n+1){
-  background-color: var(--dark-dictListColor4);
+  background-color: var(--dictListColor4);
 }
 #dict ol li:nth-child(6n+2){
-  background-color: var(--dark-dictListColor3);
+  background-color: var(--dictListColor3);
 }
 #dict ol li:nth-child(6n+3){
-  background-color: var(--dark-dictListColor2);
+  background-color: var(--dictListColor2);
 }
 #dict ol li:nth-child(6n+4){
-  background-color: var(--dark-dictListColor1);
+  background-color: var(--dictListColor1);
 }
 #dict ol li:nth-child(6n+5){
-  background-color: var(--dark-dictListColor2);
+  background-color: var(--dictListColor2);
 }
 #dict ol li:nth-child(6n+6){
-  background-color: var(--dark-dictListColor3);
+  background-color: var(--dictListColor3);
 }
 
 
@@ -130,9 +130,9 @@ html {
   word-wrap: break-word;
   text-align: center;
   cursor: pointer;
-  color: var(--dark-mainFont);
-  background-color: var(--dark-mainBackground);
-  border: 0.1em solid var(--dark-mainFont);
+  color: var(--mainFont);
+  background-color: var(--mainBackground);
+  border: 0.1em solid var(--mainFont);
   border-radius: 5px;
   padding: 0.25em;
   width: fit-content;
@@ -141,8 +141,8 @@ html {
 .btn small {
   font-size: 0.7em;
   border-radius: 10%;
-  background-color: var(--dark-mainFont);
-  color: var(--dark-mainBackground);
+  background-color: var(--mainFont);
+  color: var(--mainBackground);
   padding: 0 0.1em;
   margin-right: 0.1em;
 }
@@ -150,31 +150,31 @@ html {
 .btn:hover {
   border: none;
   padding: 0.35em;
-  color: var(--dark-mainBackground);
-  background-color: var(--dark-mainFont);
+  color: var(--mainBackground);
+  background-color: var(--mainFont);
 }
 
 .btn:hover small{
-  background-color: var(--dark-mainBackground);
-  color: var(--dark-mainFont);
+  background-color: var(--mainBackground);
+  color: var(--mainFont);
 }
 
 #seen-btn:not(.disabled-btn):hover {
-  background-color: var(--dark-statusSeen);
+  background-color: var(--statusSeen);
 }
 
 #known-btn:not(.disabled-btn):hover {
-  background-color: var(--dark-statusKnown);
+  background-color: var(--statusKnown);
 }
 
 #ignore-btn:not(.disabled-btn):hover {
-  background-color: var(--dark-statusIgnored);
+  background-color: var(--statusIgnored);
 }
 
 .disabled-btn {
-  color: var(--dark-disabled);
+  color: var(--disabled);
   cursor: not-allowed;
-  border: 0.2em groove var(--dark-mainFont);
+  border: 0.2em groove var(--mainFont);
   padding: 0.15em;
   opacity: 0.8;
   text-decoration: underline;
@@ -182,8 +182,8 @@ html {
 
 
 .disabled-btn:hover {
-  border: 0.2em groove var(--dark-mainFont);
+  border: 0.2em groove var(--mainFont);
   padding: 0.15em;
-  background-color: var(--dark-disabled);
-  color: var(--dark-mainFont);
+  background-color: var(--disabled);
+  color: var(--mainFont);
 }
