@@ -247,8 +247,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const seenWords = document.querySelectorAll('.seen');
     const newWords = document.querySelectorAll('.new');
-    console.log(seenWords);
-    console.log(newWords);
 
     let isPlusOne = true;
     if (newWords.length == 0 && seenWords.length > 0) {
