@@ -310,12 +310,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     $('#controls').html(``);
     $('#controls').append(`
-      <div id='word-info'>
-        <div id="word-area" class="${currentWordData.status}">
-          <div class="status">${currentWordData.status}</div>
-          ${currentWordData.dictForm}
-        </div>
-      </div>
       <div id='status-buttons'>
         <span id="seen-btn" class="btn"><small>RMB</small>Seen</span>
         <span id="known-btn" class="btn"><small>MMB</small>Known</span>
@@ -324,6 +318,12 @@ window.addEventListener('DOMContentLoaded', () => {
       <div id='other-buttons'>
         <span id="audio-btn" class="btn"><small>A</small>Play Audio</span>
         <span id="anki-btn" class="btn"><small>Q</small>Add to Anki</span>
+      </div>
+      <div id='word-info'>
+        <div id="word-area" class="${currentWordData.status}">
+          <div class="status">${currentWordData.status}</div>
+          ${currentWordData.dictForm}
+        </div>
       </div>
     `);
 
