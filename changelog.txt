@@ -1,0 +1,22 @@
+1.3.2
+1.  Added light mode.
+2.  Restyled a little bit.
+3.  Removed version names from files and intructions, 
+    because it's annoying to update everything every update.
+
+
+1.3.1
+1.  Restyled everything, because the contrast was too random 
+    and some things were hard to read.
+
+
+1.3.0
+1.  Added the ability to change the status of a word with mouse buttons:
+    -   Seen: Right Mouse Button
+    -   Known: Middle Mouse Button
+    -   Ignore: Ctrl + Left Mouse Button
+2.  Changed the method of adding a word to Anki. 
+    Now it is added in the background, and a pop-up window doesn't show anymore.
+3.  Added shortcuts for playing audio and adding the word to Anki:
+    -   Play audio: A
+    -   Add to Anki: Q
