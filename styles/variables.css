@@ -1,41 +1,40 @@
 :root {
-    --mainFont: #f3f9fa;
-    --mainFontFaded : #f3f9fa0d;
-    --mainBackground: #1e0a1c;
+    --dark-mainFont: #f3f9fa;
+    --dark-mainFontFaded : #f3f9fa0d;
+    --dark-mainBackground: #1e0a1c;
 
-    --scrollbarHead: #f5f2ca;
-    --scrollbarBackground: #545454;
-    --scrollbarShadow: #000000bf;
+    --dark-scrollbarHead: #f5f2ca;
+    --dark-scrollbarBackground: #545454;
+    --dark-scrollbarShadow: #000000bf;
     
-    --url: #bb9ffd;
-    --disabled: #8c8c8c;
+    --dark-url: #bb9ffd;
+    --dark-disabled: #8c8c8c;
 
-    --buttonFont: var(--mainBackground);
-    --buttonBackground: var(--mainFont);
+    --dark-buttonFont: var(--dark-mainBackground);
+    --dark-buttonBackground: var(--dark-mainFont);
 
-    --buttonSmallFont: #2c1111;
-    --buttonSmallBackground: #b83131;
+    --dark-buttonSmallFont: #2c1111;
+    --dark-buttonSmallBackground: #b83131;
 
-    --dictListColor1: #77777780;
-    --dictListColor2: #55555580;
-    --dictListColor3: #33333380;
-    --dictListColor4: #11111180;
+    --dark-dictListColor1: #77777780;
+    --dark-dictListColor2: #55555580;
+    --dark-dictListColor3: #33333380;
+    --dark-dictListColor4: #11111180;
 
-    --optionsYes: #a1d2b4;
-    --optionsYesSelected: #72be90;
-    --optionsNo: #efa7aa;
-    --optionsNoSelected: #e37a7f;
+    --dark-optionsYes: #a1d2b4;
+    --dark-optionsYesSelected: #72be90;
+    --dark-optionsNo: #efa7aa;
+    --dark-optionsNoSelected: #e37a7f;
 
-    --statusNew: #229eda;
-    --statusSeen: #f19109;
-    --statusKnown: #3aa835;
-    --statusIgnored: #c3c3c3;
+    --dark-statusNew: #229eda;
+    --dark-statusSeen: #f19109;
+    --dark-statusKnown: #3aa835;
+    --dark-statusIgnored: #c3c3c3;
 
-    --plusOneBackground: #2f142d;
-    --plusOneColor: #ffffff;
-    --plusOneHighlight: #650d0d;
+    --dark-plusOneBackground: #2f142d;
+    --dark-plusOneColor: #ffffff;
+    --dark-plusOneHighlight: #650d0d;
 
-    --translationBorder: #f5c8ba;
-    --translationTransparentBackground: #0000004d;
-
+    --dark-translationBorder: #f5c8ba;
+    --dark-translationTransparentBackground: #0000004d;
 }

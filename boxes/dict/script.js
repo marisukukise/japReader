@@ -13,13 +13,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('positionDict');
 
-  const { dictFontSize, showGoal } = JSON.parse(
+  const { dictFontSize, showGoal, darkMode } = JSON.parse(
     fs.readFileSync('./data/options.json', {
       encoding: 'utf8',
       flag: 'r',
     })
   );
-
+  if(darkMode){
+    document.documentElement.classList.add('dark-mode');
+  }
   document.querySelector('#app').style.fontSize = `${dictFontSize}px`;
 
   let stayTimer;

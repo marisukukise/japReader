@@ -18,7 +18,9 @@ window.addEventListener('DOMContentLoaded', () => {
       flag: 'r',
     })
   );
-
+  if(optionsData.darkMode){
+    document.documentElement.classList.add('dark-mode');
+  }
   let {
     dailyGoal,
     readerFontSize,

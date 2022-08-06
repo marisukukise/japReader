@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('positionReader');
 
-  const { tvMode, readerFontSize, addFurigana, fadeText } = JSON.parse(
+  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = JSON.parse(
     fs.readFileSync('./data/options.json', {
       encoding: 'utf8',
       flag: 'r',
@@ -23,7 +23,9 @@ window.addEventListener('DOMContentLoaded', () => {
   );
 
   if (tvMode) document.body.classList.add('tv-mode');
-
+  if(darkMode){
+    document.documentElement.classList.add('dark-mode');
+  }
   document.querySelector('#app').style.fontSize = `${readerFontSize}px`;
 
   let stayTimer;
