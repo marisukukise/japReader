@@ -15,13 +15,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('positionTranslation');
 
-  const { translationFontSize, translationTransparent } = JSON.parse(
+  const { translationFontSize, translationTransparent, darkMode } = JSON.parse(
     fs.readFileSync('./data/options.json', {
       encoding: 'utf8',
       flag: 'r',
     })
   );
-
+  if(darkMode){
+    document.documentElement.classList.add('dark-mode');
+  }
   document.querySelector('#app').style.fontSize = `${translationFontSize}px`;
 
   let stayTimer;

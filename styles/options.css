@@ -32,7 +32,7 @@ section#apply{
 .no,
 .increase,
 .decrease  {
-  border: 0.1em solid var(--mainFont);
+  border: 0.1em solid var(--dark-mainFont);
   padding: 0.25em;
   border-radius: 5px;
   margin-right: 10px;
@@ -52,7 +52,7 @@ section#apply{
 
 .selected{
   padding: 0.5em;
-  border: 0.1em solid var(--mainFont);
+  border: 0.1em solid var(--dark-mainFont);
 }
 
 .selected:hover{
@@ -70,20 +70,20 @@ section#apply{
 }
 
 .yes{
-  background-color: var(--optionsYes);
+  background-color: var(--dark-optionsYes);
 }
 
 
 .yes.selected, .increase{
-  background-color: var(--optionsYesSelected);
+  background-color: var(--dark-optionsYesSelected);
 }
 
 .no{
-  background-color: var(--optionsNo);
+  background-color: var(--dark-optionsNo);
 }
 
 .no.selected, .decrease{
-  background-color: var(--optionsNoSelected);
+  background-color: var(--dark-optionsNoSelected);
 }
 
 
@@ -94,9 +94,9 @@ section#apply{
   word-wrap: break-word;
   text-align: center;
   cursor: pointer;
-  color: var(--mainFont);
-  background-color: var(--mainBackground);
-  border: 0.1em solid var(--mainFont);
+  color: var(--dark-mainFont);
+  background-color: var(--dark-mainBackground);
+  border: 0.1em solid var(--dark-mainFont);
   border-radius: 5px;
   padding: 0.25em;
   width: fit-content;
@@ -107,6 +107,6 @@ section#apply{
 #apply-btn:hover{
   border: none;
   padding: 0.35em;
-  color: var(--mainBackground);
-  background-color: var(--mainFont);
+  color: var(--dark-mainBackground);
+  background-color: var(--dark-mainFont);
 }

@@ -43,19 +43,19 @@ body{
 
 .new:after {
   top: calc(100% - 5px);
-  background-color: var(--statusNew);
+  background-color: var(--dark-statusNew);
 }
 .seen:after {
   top: calc(100% - 5px);
-  background-color: var(--statusSeen);
+  background-color: var(--dark-statusSeen);
 }
 .known:after {
   top: calc(100% + 1px);
-  background-color: var(--statusKnown);
+  background-color: var(--dark-statusKnown);
 }
 .ignored:after{
   top: calc(100% + 1px);
-  background-color: var(--statusIgnored);
+  background-color: var(--dark-statusIgnored);
 }
 
 .new:hover,
@@ -73,28 +73,28 @@ body{
 }
 
 .plusOne {
-  color: var(--plusOneColor);
-  background-color: var(--mainBackground);
+  color: var(--dark-plusOneColor);
+  background-color: var(--dark-mainBackground);
   background-size: 10px 10px;
-  background-image: repeating-linear-gradient(45deg, var(--plusOneBackground) 0, var(--plusOneBackground) 1px, var(--mainBackground) 0, var(--mainBackground) 50%);
+  background-image: repeating-linear-gradient(45deg, var(--dark-plusOneBackground) 0, var(--dark-plusOneBackground) 1px, var(--dark-mainBackground) 0, var(--dark-mainBackground) 50%);
 }
 
 .plusOne .new{
-  border-bottom: 3px solid var(--statusNew);
+  border-bottom: 3px solid var(--dark-statusNew);
 }
 
 .plusOne .seen{
-  border-bottom: 3px solid var(--statusSeen);
+  border-bottom: 3px solid var(--dark-statusSeen);
 }
 
 .plusOne .new:after, .plusOne .seen:after {
   border: none;
-  background-color: var(--plusOneHighlight) !important;
+  background-color: var(--dark-plusOneHighlight) !important;
 }
 
 .plusOne::before{
   content:"i+1";
-  background-color: var(--plusOneHighlight);
+  background-color: var(--dark-plusOneHighlight);
   position: absolute;
   font-size: 0.75em;
   padding: 0.1em;
