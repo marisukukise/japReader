@@ -1,4 +1,5 @@
 {
+    "darkMode": true,
     "useDeepL": true,
     "deepLDual": true,
     "deepLOnly": false,
