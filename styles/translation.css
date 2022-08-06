@@ -8,9 +8,9 @@ html {
 }
 
 .fade {
-  color: var(--dark-mainFontFaded);
+  color: var(--mainFontFaded);
 }
 
 .fade:hover {
-  color: var(--dark-mainFont);
+  color: var(--mainFont);
 }
