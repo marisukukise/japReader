@@ -1,30 +1,13 @@
-japReader 1.3.1
+japReader
 ===============
 
  An Electron app that helps you read Japanese text.
 
 ##### Version 1.2 created by [seth-js](https://github.com/seth-js).
 
-##### Version 1.3 forked by me
-
-### Rough changelog:
+##### Versions 1.3+ forked by [marisukukise](https://github.com/marisukukise)
 
 ------------------------------------------------------------------------
-
-1.  **1.3.0** Added the ability to change the status of a word with
-    mouse buttons:
-    -   Seen: Right Mouse Button
-    -   Known: Middle Mouse Button
-    -   Ignore: Ctrl + Left Mouse Button
-2.  Changed the method of adding a word to Anki. Now it is added in the
-    background, and a pop-up window doesn\'t show anymore.
-3.  Added shortcuts for playing audio and adding the word to Anki:
-    -   Play audio: A
-    -   Add to Anki: Q
-4.  ~~Changed the appearance to (hopefully) more intuitive colors~~
-5.  **1.3.1 Hotfix** Restyled everything because in 1.3.0 the contrast
-    was too random and some things were hard to read.
-
 
 ### Examples
 ![](images/example1.png)
@@ -70,7 +53,7 @@ japReader 1.3.1
 
 ------------------------------------------------------------------------
 
- You\'re reading this right now which means you\'ve already extracted `japReader-1.3.1.zip`.
+ You\'re reading this right now which means you\'ve already extracted `japReader.zip`.
 
  You should have all the files as shown in this image:
 
@@ -166,7 +149,7 @@ japReader 1.3.1
 1.  Install [Anki](https://apps.ankiweb.net/)
 2.  Install the [AnkiConnect
     addon](https://ankiweb.net/shared/info/2055492159)
-3.  Open `japReader1.3.1.apkg`
+3.  Open `japReader.apkg`
 4.  Ensure that the deck is named `japReader`
 5.  Click `Add to Anki` in the Dictionary window, and card data should
     be generated for the `japReader` Anki deck
@@ -215,7 +198,7 @@ japReader 1.3.1
 
 
 ### Returning Users 
-### (not tested for 1.3.1, but nothing has changed in the structure of the files so the instructions are likely the same)
+### (not tested for 1.3+, but nothing has changed in the structure of the files so the instructions are likely the same)
 
 ------------------------------------------------------------------------
 
@@ -242,7 +225,7 @@ japReader 1.3.1
 5.  Click `Rename`
 6.  Rename it to `japReader1.1`
 7.  You should now have the deck and note type renamed.
-8.  Now open `japReader 1.3.1.apkg` which is provided in this folder.
+8.  Now open `japReader.apkg` which is provided in this folder.
 9.  You should now have two decks, `japReader` and `japReader1.1`
 10. Click `Browse`
 11. Select `japReader1.1`
