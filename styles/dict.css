@@ -45,16 +45,21 @@ html {
 
 #word-area {
   font-weight: bold;
-  padding: 0.25em;
+  padding: 0.5em;
   text-align: center;
   font-size: 1.5em;
-  color: var(--mainBackground);
+  color: var(--mainFont);
+  text-shadow: 
+    -1px 0px var(--mainBackground), 
+    0 1px var(--mainBackground), 
+    1px 0 var(--mainBackground), 
+    0 -1px var(--mainBackground),
+    0 0 5px var(--mainBackground);
 }
 
 #word-area .status{
   position: absolute;
   font-size: 0.5em;
-  opacity: 0.75;
 }
 
 #word-area.new {
