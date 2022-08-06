@@ -5,6 +5,10 @@ html {
 
 section{
   padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
 }
 
 section:nth-child(even){
@@ -15,8 +19,9 @@ section:nth-child(odd){
   margin-right: 10%;
 }
 
+
 section#apply{
-  margin:0;
+  margin: 0;
 }
 
 .option {
@@ -27,37 +32,47 @@ section#apply{
 .no,
 .increase,
 .decrease  {
-  padding: 5px;
+  border: 0.1em solid var(--mainFont);
+  padding: 0.25em;
   border-radius: 5px;
   margin-right: 10px;
   cursor: pointer;
-}
-
-.yes,
-.no{
+  width: 5em;
   opacity: 0.5;
 }
 
-.yes:hover, .no:hover{
-  opacity: 0.8;
+
+.yes:hover, 
+.no:hover, 
+.increase:hover, 
+.decrease:hover {
+  border: none;
+  padding: 0.35em;
 }
 
 .selected{
-  opacity: 1.0;
-  font-weight: bold;
+  padding: 0.5em;
+  border: 0.1em solid var(--mainFont);
 }
 
-.increase,.decrease{
+.selected:hover{
+  padding: 0.6em;
+  border: none;
+}
+
+.selected, 
+.yes:hover, 
+.no:hover, 
+.increase:hover, 
+.decrease:hover {
   opacity: 1.0;
+  font-weight: bold;
 }
 
 .yes{
   background-color: var(--optionsYes);
 }
 
-.yes:hover, .increase:hover {
-  background-color: var(--optionsYesHover);
-}
 
 .yes.selected, .increase{
   background-color: var(--optionsYesSelected);
@@ -65,10 +80,6 @@ section#apply{
 
 .no{
   background-color: var(--optionsNo);
-}
-
-.no:hover, .decrease:hover {
-  background-color: var(--optionsNoHover);
 }
 
 .no.selected, .decrease{

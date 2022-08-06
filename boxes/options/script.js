@@ -170,24 +170,25 @@ window.addEventListener('DOMContentLoaded', () => {
       optionsData.showGoal = true;
     else optionsData.showGoal = false;
 
-    optionsData.dailyGoal = dailyGoal;
-
-    optionsData.readerFontSize = readerFontSize;
-    optionsData.translationFontSize = translationFontSize;
-    optionsData.dictFontSize = dictFontSize;
+    if (document.querySelector('#darkMode-selection .yes.selected'))
+      optionsData.darkMode = true;
+    else optionsData.darkMode = false;
 
     if (document.querySelector('#tvMode-selection .yes.selected'))
       optionsData.tvMode = true;
     else optionsData.tvMode = false;
 
-    if (
-      document.querySelector('#translationTransparent-selection .yes.selected')
-    )
+    if (document.querySelector('#translationTransparent-selection .yes.selected'))
       optionsData.translationTransparent = true;
     else optionsData.translationTransparent = false;
 
     if (!optionsData.useDeepL && optionsData.deepLOnly)
       optionsData.useDeepL = true;
+
+    optionsData.dailyGoal = dailyGoal;
+    optionsData.readerFontSize = readerFontSize;
+    optionsData.translationFontSize = translationFontSize;
+    optionsData.dictFontSize = dictFontSize;
 
     fs.writeFileSync('./data/options.json', JSON.stringify(optionsData));
 
