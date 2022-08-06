@@ -1,9 +1,22 @@
 html {
   padding: 20px;
+  text-align: center;
 }
 
-h1 {
-  text-align: center;
+section{
+  padding: 0.5em;
+}
+
+section:nth-child(even){
+  margin-left: 10%;
+}
+
+section:nth-child(odd){
+  margin-right: 10%;
+}
+
+section#apply{
+  margin:0;
 }
 
 .option {

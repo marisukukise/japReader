@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // set to true to enable Chrome developer tools
-let DEBUG = false;
+let DEBUG = true;
 
 let readerOnTop = false;
 let translationOnTop = false;
