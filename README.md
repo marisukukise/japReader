@@ -42,19 +42,22 @@ VNs, LNs, TV Shows/Movies
 -   Linux instructions can be found
     [here](https://nodejs.org/en/download/package-manager/).
 4. Once you have Node.js installed, you should navigate to the folder where you extracted japReader.
--   Windows users: Open: `run.bat`
--   Linux and macOS users: Open the terminal and navigate to the japReader folder using `cd` Enter `npm install; npm start`
+-   Windows users:  
+    Open: `run.bat`
+-   Linux and macOS users:  
+    Open the terminal and navigate to the japReader folder using `cd`  
+    Enter `npm install; npm start`
 5. The program will now open.
 
 # Keybindings
-`O` - Options (open options menu)  
+`O` - Open Options Menu 
 `S` - Toggle Stay On Top  
-`H` - Toggle Transparent Translation Window (when transparent translation window is focused)  
+`H` - (in Translation Window) Toggle Transparent Translation Window
 `A` - Play Audio  
 `Q` - Add to Anki  
-`RMB` - (in reader) Change word status to Seen  
-`MMB` - (in reader) Change word status to Known  
-`Ctrl+LMB` - (in reader) Change word status to Ignored
+`RMB` - (in Reader) Change Word Status to Seen  
+`MMB` - (in Reader) Change Word Status to Known  
+`Ctrl+LMB` - (in Reader) Change Word Status to Ignored
 
 
 # How do I read VNs with this?
