@@ -1,12 +1,14 @@
 # japReader
-## An Electron app that helps you read Japanese text. 
-### Only tested for Windows 10.
-##### Version 1.2 created by [seth-js](https://github.com/seth-js)
-##### Versions 1.3+ (this repo) forked by [marisukukise](https://github.com/marisukukise)
+
+##### An Electron app that helps you read Japanese text. 
+##### (Only tested for Windows 10)
+
+###### Version 1.2 created by [seth-js](https://github.com/seth-js)
+###### Versions 1.3+ (this repo) forked by [marisukukise](https://github.com/marisukukise)
 
 
 # Examples
-![Example screenshot #1](images/example1.png)
+![Example screenshot #1](images/example1.png)  
 ![Example screenshot #2](images/example2.png)
 
 
@@ -15,41 +17,43 @@ VNs, LNs, TV Shows/Movies
 
 
 # Features
-Parser and dictionary from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana)
-Word status tracking
-DeepL translations (no bullshit limits)
-One-click Anki sentence/word card creation
-Furigana support
+* Parser and dictionary from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana)
+* Word status tracking
+* DeepL translations (no bullshit limits)
+* One-click Anki sentence/word card creation
+* Furigana support
 
 
 # How does this work?
-It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
-The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
-The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
+* It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
+* The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
+* The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
 
 
 # How do I set this up?
-Download and extract `japReader.zip`.
-You should have all the files as shown in this image:
+1. Download and extract `japReader.zip`.
+2. You should have all the files as shown in this image:
+
 ![Filelist](images/files.png)
-First, you need to install Node.js:
+
+3. Then, you need to install Node.js:
 -   Windows and macOS users can install it from
     [here](https://nodejs.org/en/download/).
 -   Linux instructions can be found
     [here](https://nodejs.org/en/download/package-manager/).
-Once you have Node.js installed, you should navigate to the folder where you extracted japReader.
-Windows users: Open: `run.bat`
-Linux and macOS users: Open the terminal and navigate to the japReader folder using `cd` Enter `npm install; npm start`
-The program will now open.
+4. Once you have Node.js installed, you should navigate to the folder where you extracted japReader.
+-   Windows users: Open: `run.bat`
+-   Linux and macOS users: Open the terminal and navigate to the japReader folder using `cd` Enter `npm install; npm start`
+5. The program will now open.
 
 # Keybindings
-`O` - Options (open options menu)
-`S` - Toggle Stay On Top
-`H` - Toggle Transparent Translation Window (when transparent translation window is focused)
-`A` - Play Audio
-`Q` - Add to Anki
-`RMB` - (in reader) Change word status to Seen
-`MMB` - (in reader) Change word status to Known
+`O` - Options (open options menu)  
+`S` - Toggle Stay On Top  
+`H` - Toggle Transparent Translation Window (when transparent translation window is focused)  
+`A` - Play Audio  
+`Q` - Add to Anki  
+`RMB` - (in reader) Change word status to Seen  
+`MMB` - (in reader) Change word status to Known  
 `Ctrl+LMB` - (in reader) Change word status to Ignored
 
 
@@ -94,11 +98,11 @@ The program will now open.
 
 
 # QA and Notes
-Q: Why does the text \"i+1\" keep showing?
+Q: Why does the text \"i+1\" keep showing?  
 A: When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
 
-Q: Why does the translation text dim sometimes?
+Q: Why does the translation text dim sometimes?  
 A: This happens when there is only one unknown word in the sentence. You should hopefully be able to not depend on the translation.
 
-Q: I don\'t like a feature, is there any way I can turn it off?
+Q: I don\'t like a feature, is there any way I can turn it off?  
 A: Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
