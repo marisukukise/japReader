@@ -31,7 +31,7 @@ VNs, LNs, TV Shows/Movies
 
 
 # How do I set this up?
-1. Download and extract `japReader.zip`.
+1. Download and extract [`japReader.zip`](https://github.com/marisukukise/japReader/releases/latest).
 2. You should have all the files as shown in this image:
 
 ![Filelist](images/files.png)
