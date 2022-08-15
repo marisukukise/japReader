@@ -1,3 +1,7 @@
+1.3.2b
+1.	Changed the Anki deck (japReader.apkg) to match the main app theme.
+
+
 1.3.2
 1.  Added light mode.
 2.  Restyled a little bit.
