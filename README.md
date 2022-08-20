@@ -30,24 +30,26 @@ VNs, LNs, TV Shows/Movies
 * The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
 
 
-# How do I set this up?
-1. Download and extract [`japReader.zip`](https://github.com/marisukukise/japReader/releases/latest).
-2. You should have all the files as shown in this image:
+# Installation
+## Windows
+1. Download and run the latest [setup.exe](https://github.com/marisukukise/japReader/releases/latest)
+The exe is not signed, so there might be some warnings. If you want to build the .exe yourself, go to [Build](#Build)
 
-![Filelist](images/files.png)
+# Build
+## Windows
+1. Download [node.js](https://nodejs.org/en/download/)
+2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
+3. Navigate into it `cd japReader`
+4. Run `npm run make`
+5. The exe will be output into the `out` folder
 
-3. Then, you need to install Node.js:
--   Windows and macOS users can install it from
-    [here](https://nodejs.org/en/download/).
--   Linux instructions can be found
-    [here](https://nodejs.org/en/download/package-manager/).
-4. Once you have Node.js installed, you should navigate to the folder where you extracted japReader.
--   Windows users:  
-    Open: `run.bat`
--   Linux and macOS users:  
-    Open the terminal and navigate to the japReader folder using `cd`  
-    Enter `npm install; npm start`
-5. The program will now open.
+# Linux & MacOS
+If you're a Linux or MacOS user, you should also be able run it without installing (you can build it, but you need to figure out how to do it on your own)
+1. Download [node.js](https://nodejs.org/en/download/package-manager/)
+2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
+3. Navigate into it `cd japReader`
+4. Run it using `npm i; npm start`
+
 
 # Keybindings
 `O` - Open Options Menu 
