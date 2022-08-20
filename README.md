@@ -40,7 +40,8 @@ The exe is not signed, so there might be some warnings. If you want to build the
 1. Download [node.js](https://nodejs.org/en/download/)
 2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
 3. Navigate into it `cd japReader`
-4. Run `npm run make`
+4. Download dependencies `npm i`
+4. Build .exe `npm run make`
 5. The exe will be output into the `out` folder
 
 # Linux & MacOS
