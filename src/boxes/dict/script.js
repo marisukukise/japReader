@@ -1,9 +1,14 @@
+require('module-alias/register')
+
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const date = require('date-and-time');
 
+const tools = require('@tools');
+
 let currentWordData = {};
 let currentEnglishText = '';
+
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
@@ -14,12 +19,12 @@ window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.send('positionDict');
 
   const { dictFontSize, showGoal, darkMode } = JSON.parse(
-    fs.readFileSync('./data/options.json', {
+    fs.readFileSync(tools.dirname_path('./data/options.json'), {
       encoding: 'utf8',
       flag: 'r',
     })
   );
-  if(darkMode){
+  if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
   document.querySelector('#app').style.fontSize = `${dictFontSize}px`;
@@ -61,9 +66,9 @@ window.addEventListener('DOMContentLoaded', () => {
           url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
           url = `${url}${currentWordData.dictForm}`;
           url = `${url}&kana=${currentWordData.dictFormReading}`;
-  
+
           const audio = new Audio(url);
-  
+
           audio.onloadedmetadata = () => {
             if (audio.duration !== 5.694694) audio.play();
             else {
@@ -81,18 +86,18 @@ window.addEventListener('DOMContentLoaded', () => {
             currentWordData.wordFuriganaHTML = currentWordData.word;
           if (!currentWordData.dictFuriganaHTML)
             currentWordData.dictFuriganaHTML = currentWordData.dictForm;
-  
+
           currentWordData.english = currentEnglishText;
-  
+
           addAnkiNote(currentWordData)
-          .then(() => {
-            document.querySelector('#anki-btn').textContent = "Added to Anki!";
-            document.querySelector('#anki-btn').classList.add('disabled-btn');
-          })
-          .catch(() => {
-            document.querySelector('#anki-btn').textContent = "Already in collection!";
-            document.querySelector('#anki-btn').classList.add('disabled-btn');
-          });
+            .then(() => {
+              document.querySelector('#anki-btn').textContent = "Added to Anki!";
+              document.querySelector('#anki-btn').classList.add('disabled-btn');
+            })
+            .catch(() => {
+              document.querySelector('#anki-btn').textContent = "Already in collection!";
+              document.querySelector('#anki-btn').classList.add('disabled-btn');
+            });
         }
       }
     },
@@ -153,9 +158,9 @@ window.addEventListener('DOMContentLoaded', () => {
           allowDuplicate: false,
           duplicateScope: "deck",
           duplicateScopeOptions: {
-              deckName: "japReader",
-              checkChildren: false,
-              checkAllModels: false
+            deckName: "japReader",
+            checkChildren: false,
+            checkAllModels: false
           }
         },
         tags: ["japReader"],
@@ -176,14 +181,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const setUpStreak = () => {
     const goalData = JSON.parse(
-      fs.readFileSync('./data/goal_data.json', {
+      fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
     );
 
     const { dailyGoal } = JSON.parse(
-      fs.readFileSync('./data/options.json', {
+      fs.readFileSync(tools.dirname_path('./data/options.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
@@ -203,7 +208,7 @@ window.addEventListener('DOMContentLoaded', () => {
       goalData.goalCount = 0;
     }
 
-    fs.writeFileSync('./data/goal_data.json', JSON.stringify(goalData));
+    fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
   };
 
   const changeStatus = (dictForm, prevStatus, newStatus) => {
@@ -211,14 +216,14 @@ window.addEventListener('DOMContentLoaded', () => {
       setUpStreak();
 
       const goalData = JSON.parse(
-        fs.readFileSync('./data/goal_data.json', {
+        fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
           encoding: 'utf8',
           flag: 'r',
         })
       );
 
       const { dailyGoal } = JSON.parse(
-        fs.readFileSync('./data/options.json', {
+        fs.readFileSync(tools.dirname_path('./data/options.json'), {
           encoding: 'utf8',
           flag: 'r',
         })
@@ -232,11 +237,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
       document.querySelector('#goal-count').textContent = goalData.goalCount;
 
-      fs.writeFileSync('./data/goal_data.json', JSON.stringify(goalData));
+      fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
     }
 
     const statusData = JSON.parse(
-      fs.readFileSync('./data/status_data.json', {
+      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
@@ -260,21 +265,21 @@ window.addEventListener('DOMContentLoaded', () => {
       statusData.ignored.push(dictForm);
     }
 
-    fs.writeFileSync('./data/status_data.json', JSON.stringify(statusData));
+    fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
 
     ipcRenderer.send('refreshReader');
   };
 
   const displayGoalData = () => {
     const { goalCount, streakCount } = JSON.parse(
-      fs.readFileSync('./data/goal_data.json', {
+      fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
     );
 
     const { dailyGoal } = JSON.parse(
-      fs.readFileSync('./data/options.json', {
+      fs.readFileSync(tools.dirname_path('./data/options.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
@@ -298,7 +303,7 @@ window.addEventListener('DOMContentLoaded', () => {
     currentWordData = wordData;
 
     const { known, seen } = JSON.parse(
-      fs.readFileSync('./data/status_data.json', {
+      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
@@ -397,14 +402,14 @@ window.addEventListener('DOMContentLoaded', () => {
         currentWordData.english = currentEnglishText;
 
         addAnkiNote(currentWordData)
-        .then(() => {
-          document.querySelector('#anki-btn').textContent = "Added to Anki!";
-          document.querySelector('#anki-btn').classList.add('disabled-btn');
-        })
-        .catch(() => {
-          document.querySelector('#anki-btn').textContent = "Already in collection!";
-          document.querySelector('#anki-btn').classList.add('disabled-btn');
-        });
+          .then(() => {
+            document.querySelector('#anki-btn').textContent = "Added to Anki!";
+            document.querySelector('#anki-btn').classList.add('disabled-btn');
+          })
+          .catch(() => {
+            document.querySelector('#anki-btn').textContent = "Already in collection!";
+            document.querySelector('#anki-btn').classList.add('disabled-btn');
+          });
       }
     });
 

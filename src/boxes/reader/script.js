@@ -1,10 +1,16 @@
+require('module-alias/register')
+
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const { fit } = require('furigana');
 const date = require('date-and-time');
 
+const tools = require('@tools');
+
 let currentWords = [];
 let currentText = '';
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
@@ -16,14 +22,14 @@ window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.send('positionReader');
 
   const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = JSON.parse(
-    fs.readFileSync('./data/options.json', {
+    fs.readFileSync(tools.dirname_path('./data/options.json'), {
       encoding: 'utf8',
       flag: 'r',
     }),
   );
 
   if (tvMode) document.body.classList.add('tv-mode');
-  if(darkMode){
+  if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
   document.querySelector('#app').style.fontSize = `${readerFontSize}px`;
@@ -98,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const changeStatus = (dictForm, prevStatus, newStatus) => {
     const statusData = JSON.parse(
-      fs.readFileSync('./data/status_data.json', {
+      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
@@ -122,7 +128,7 @@ window.addEventListener('DOMContentLoaded', () => {
       statusData.ignored.push(dictForm);
     }
 
-    fs.writeFileSync('./data/status_data.json', JSON.stringify(statusData));
+    fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
 
     ipcRenderer.send('refreshReader');
   };
@@ -131,7 +137,7 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#app').empty();
 
     const { known, seen, ignored } = JSON.parse(
-      fs.readFileSync('./data/status_data.json', {
+      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
         encoding: 'utf8',
         flag: 'r',
       }),
@@ -206,35 +212,35 @@ window.addEventListener('DOMContentLoaded', () => {
 
         $(wordElement).on('mousedown', (e) => {
           switch (e.which) {
-          case 1: // LeftClick
-            if (e.ctrlKey) {
-              changeStatus(currentWordData.dictForm, currentWordData.status, 'ignored');
-              currentWordData.status = 'ignored';
-              ipcRenderer.send('sendWordData', currentWordData);
-              ipcRenderer.send('openDict');
-            } 
-            else {
-              ipcRenderer.send('sendWordData', currentWordData);
-              ipcRenderer.send('openDict');
-            }
-            break;
-          case 2: // MiddleClick.
-            if (e.ctrlKey) {} 
-            else {
-              changeStatus(currentWordData.dictForm, currentWordData.status, 'known');
-              currentWordData.status = 'known';
-              ipcRenderer.send('sendWordData', currentWordData);
-              ipcRenderer.send('openDict');
-            }
-            break;
-          case 3: // RightClick.
-            if (e.ctrlKey) {} 
-            else {
-              changeStatus(currentWordData.dictForm, currentWordData.status, 'seen');
-              currentWordData.status = 'seen';
-              ipcRenderer.send('sendWordData', currentWordData);
-              ipcRenderer.send('openDict');
-            }
+            case 1: // LeftClick
+              if (e.ctrlKey) {
+                changeStatus(currentWordData.dictForm, currentWordData.status, 'ignored');
+                currentWordData.status = 'ignored';
+                ipcRenderer.send('sendWordData', currentWordData);
+                ipcRenderer.send('openDict');
+              }
+              else {
+                ipcRenderer.send('sendWordData', currentWordData);
+                ipcRenderer.send('openDict');
+              }
+              break;
+            case 2: // MiddleClick.
+              if (e.ctrlKey) { }
+              else {
+                changeStatus(currentWordData.dictForm, currentWordData.status, 'known');
+                currentWordData.status = 'known';
+                ipcRenderer.send('sendWordData', currentWordData);
+                ipcRenderer.send('openDict');
+              }
+              break;
+            case 3: // RightClick.
+              if (e.ctrlKey) { }
+              else {
+                changeStatus(currentWordData.dictForm, currentWordData.status, 'seen');
+                currentWordData.status = 'seen';
+                ipcRenderer.send('sendWordData', currentWordData);
+                ipcRenderer.send('openDict');
+              }
           }
           return true;
         });
@@ -254,17 +260,17 @@ window.addEventListener('DOMContentLoaded', () => {
     if (newWords.length == 0 && seenWords.length > 0) {
       const firstWord = seenWords[0].innerText;
       seenWords.forEach((word) => {
-        if(word.innerText != firstWord)
+        if (word.innerText != firstWord)
           isPlusOne = false;
       })
-    } else 
-    if (seenWords.length == 0 && newWords.length > 0) {
-      const firstWord = newWords[0].innerText;
-      newWords.forEach((word) => {
-        if(word.innerText != firstWord)
-          isPlusOne = false;
-      })
-    } else isPlusOne = false;
+    } else
+      if (seenWords.length == 0 && newWords.length > 0) {
+        const firstWord = newWords[0].innerText;
+        newWords.forEach((word) => {
+          if (word.innerText != firstWord)
+            isPlusOne = false;
+        })
+      } else isPlusOne = false;
 
     if (isPlusOne)
       document.querySelector('body').classList.add('plusOne');
@@ -289,19 +295,19 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   (() => {
-    const files = fs.readdirSync('./data/transfer/').length;
+    const files = fs.readdirSync(tools.dirname_path('./data/transfer/')).length;
 
     if (files > 0) {
-      if (fs.existsSync('./data/transfer/data_known')) {
+      if (fs.existsSync(tools.dirname_path('./data/transfer/data_known'))) {
         const statusData = JSON.parse(
-          fs.readFileSync('./data/status_data.json', {
+          fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
             encoding: 'utf8',
             flag: 'r',
           }),
         );
 
         const knownList = fs
-          .readFileSync('./data/transfer/data_known', {
+          .readFileSync(tools.dirname_path('./data/transfer/data_known'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -312,21 +318,21 @@ window.addEventListener('DOMContentLoaded', () => {
           if (!statusData.known.includes(word)) statusData.known.push(word);
         });
 
-        fs.writeFileSync('./data/status_data.json', JSON.stringify(statusData));
+        fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
 
-        fs.unlinkSync('./data/transfer/data_known');
+        fs.unlinkSync(tools.dirname_path('./data/transfer/data_known'));
       }
 
-      if (fs.existsSync('./data/transfer/data_seen')) {
+      if (fs.existsSync(tools.dirname_path('./data/transfer/data_seen'))) {
         const statusData = JSON.parse(
-          fs.readFileSync('./data/status_data.json', {
+          fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
             encoding: 'utf8',
             flag: 'r',
           }),
         );
 
         const seenList = fs
-          .readFileSync('./data/transfer/data_seen', {
+          .readFileSync(tools.dirname_path('./data/transfer/data_seen'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -337,21 +343,21 @@ window.addEventListener('DOMContentLoaded', () => {
           if (!statusData.seen.includes(word)) statusData.seen.push(word);
         });
 
-        fs.writeFileSync('./data/status_data.json', JSON.stringify(statusData));
+        fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
 
-        fs.unlinkSync('./data/transfer/data_seen');
+        fs.unlinkSync(tools.dirname_path('./data/transfer/data_seen'));
       }
 
-      if (fs.existsSync('./data/transfer/data_ignored')) {
+      if (fs.existsSync(tools.dirname_path('./data/transfer/data_ignored'))) {
         const statusData = JSON.parse(
-          fs.readFileSync('./data/status_data.json', {
+          fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
             encoding: 'utf8',
             flag: 'r',
           }),
         );
 
         const ignoredList = fs
-          .readFileSync('./data/transfer/data_ignored', {
+          .readFileSync(tools.dirname_path('./data/transfer/data_ignored'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -362,21 +368,21 @@ window.addEventListener('DOMContentLoaded', () => {
           if (!statusData.ignored.includes(word)) statusData.ignored.push(word);
         });
 
-        fs.writeFileSync('./data/status_data.json', JSON.stringify(statusData));
+        fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
 
-        fs.unlinkSync('./data/transfer/data_ignored');
+        fs.unlinkSync(tools.dirname_path('./data/transfer/data_ignored'));
       }
 
-      if (fs.existsSync('./data/transfer/data_goal')) {
+      if (fs.existsSync(tools.dirname_path('./data/transfer/data_goal'))) {
         const goalData = JSON.parse(
-          fs.readFileSync('./data/goal_data.json', {
+          fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
             encoding: 'utf8',
             flag: 'r',
           }),
         );
 
         const goalCount = fs
-          .readFileSync('./data/transfer/data_goal', {
+          .readFileSync(tools.dirname_path('./data/transfer/data_goal'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -384,21 +390,21 @@ window.addEventListener('DOMContentLoaded', () => {
           .filter((elem) => elem).length;
         goalData.goalCount = goalCount;
 
-        fs.writeFileSync('./data/goal_data.json', JSON.stringify(goalData));
+        fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
 
-        fs.unlinkSync('./data/transfer/data_goal');
+        fs.unlinkSync(tools.dirname_path('./data/transfer/data_goal'));
       }
 
-      if (fs.existsSync('./data/transfer/data_info')) {
+      if (fs.existsSync(tools.dirname_path('./data/transfer/data_info'))) {
         const goalData = JSON.parse(
-          fs.readFileSync('./data/goal_data.json', {
+          fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
             encoding: 'utf8',
             flag: 'r',
           }),
         );
 
         const [, streakCount] = fs
-          .readFileSync('./data/transfer/data_info', {
+          .readFileSync(tools.dirname_path('./data/transfer/data_info'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -412,9 +418,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
         goalData.date = dateToday;
 
-        fs.writeFileSync('./data/goal_data.json', JSON.stringify(goalData));
+        fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
 
-        fs.unlinkSync('./data/transfer/data_info');
+        fs.unlinkSync(tools.dirname_path('./data/transfer/data_info'));
       }
     }
   })();

@@ -25,7 +25,7 @@ const handleChange = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  if (os.platform() === 'darwin') {
+  if (os.platform() === 'darwin' || os.platform() === 'linux') {
     setIntervalAsync(() => {
       handleChange();
     }, 500);

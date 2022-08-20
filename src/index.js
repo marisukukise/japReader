@@ -1,16 +1,17 @@
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
-const path = require('path');
-const fs = require('fs');
+require('module-alias/register')
 
-// set to true to enable Chrome developer tools
-let DEBUG = false;
+const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
+const fs = require('fs');
+const tools = require('@tools');
+
+if (require('electron-squirrel-startup')) return app.quit();
 
 let readerOnTop = false;
 let translationOnTop = false;
 let dictOnTop = false;
 
 const { useDeepL, deepLOnly, translationTransparent } = JSON.parse(
-  fs.readFileSync('./data/options.json', {
+  fs.readFileSync(tools.dirname_path('./data/options.json'), {
     encoding: 'utf8',
     flag: 'r',
   })
@@ -22,11 +23,12 @@ const createBoxes = () => {
     height: 600,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: path.join(__dirname, './boxes/clipboard/script.js'),
+      preload: tools.dirname_path('./boxes/clipboard/script.js'),
+      nodeIntegration: true,
     },
   });
 
-  clipboardBox.loadFile('./boxes/clipboard/index.html');
+  clipboardBox.loadFile(tools.dirname_path('./boxes/clipboard/index.html'));
 
   clipboardBox.hide();
 
@@ -34,9 +36,6 @@ const createBoxes = () => {
     app.quit();
   });
 
-  if(DEBUG){
-    clipboardBox.webContents.openDevTools();
-  }
 
   const optionsBox = new BrowserWindow({
     width: 800,
@@ -44,11 +43,12 @@ const createBoxes = () => {
     frame: true,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: path.join(__dirname, './boxes/options/script.js'),
+      preload: tools.dirname_path('./boxes/options/script.js'),
+      nodeIntegration: true,
     },
   });
 
-  optionsBox.loadFile('./boxes/options/index.html');
+  optionsBox.loadFile(tools.dirname_path('./boxes/options/index.html'));
 
   optionsBox.hide();
 
@@ -64,9 +64,6 @@ const createBoxes = () => {
     optionsBox.hide();
   });
 
-  if(DEBUG){
-    optionsBox.webContents.openDevTools();
-  }
 
   ipcMain.on('restartProgram', () => {
     app.relaunch();
@@ -80,15 +77,16 @@ const createBoxes = () => {
       frame: true,
       autoHideMenuBar: true,
       webPreferences: {
-        preload: path.join(__dirname, './boxes/reader/script.js'),
+        preload: tools.dirname_path('./boxes/reader/script.js'),
+        nodeIntegration: true,
       },
     });
 
-    readerBox.loadFile('./boxes/reader/index.html');
+    readerBox.loadFile(tools.dirname_path('./boxes/reader/index.html'));
 
     readerBox.on('close', () => {
       const data = { bounds: readerBox.getBounds() };
-      fs.writeFileSync('./boxes/reader/box_size.json', JSON.stringify(data));
+      fs.writeFileSync(tools.dirname_path('./boxes/reader/box_size.json'), JSON.stringify(data));
       app.quit();
     });
 
@@ -117,9 +115,9 @@ const createBoxes = () => {
     });
 
     ipcMain.on('positionReader', () => {
-      if (fs.existsSync('./boxes/reader/box_size.json')) {
+      if (fs.existsSync(tools.dirname_path('./boxes/reader/box_size.json'))) {
         const data = JSON.parse(
-          fs.readFileSync('./boxes/reader/box_size.json', {
+          fs.readFileSync(tools.dirname_path('./boxes/reader/box_size.json'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -134,9 +132,6 @@ const createBoxes = () => {
       readerBox.setAlwaysOnTop(readerOnTop);
     });
 
-    if(DEBUG){
-      readerBox.webContents.openDevTools();
-    }
 
     const ichiBox = new BrowserWindow({
       width: 800,
@@ -145,7 +140,8 @@ const createBoxes = () => {
       webPreferences: {
         contextIsolation: true,
         enableRemoteModule: false,
-        preload: path.join(__dirname, './boxes/ichi/script.js'),
+        preload: tools.dirname_path('./boxes/ichi/script.js'),
+        nodeIntegration: true,
       },
     });
 
@@ -161,9 +157,6 @@ const createBoxes = () => {
       ichiBox.webContents.send('parseWithIchi', text);
     });
 
-    if(DEBUG){
-      ichiBox.webContents.openDevTools();
-    }
 
     const dictBox = new BrowserWindow({
       width: 400,
@@ -171,17 +164,18 @@ const createBoxes = () => {
       frame: true,
       autoHideMenuBar: true,
       webPreferences: {
-        preload: path.join(__dirname, './boxes/dict/script.js'),
+        preload: tools.dirname_path('./boxes/dict/script.js'),
+        nodeIntegration: true,
       },
     });
 
-    dictBox.loadFile('./boxes/dict/index.html');
+    dictBox.loadFile(tools.dirname_path('./boxes/dict/index.html'));
 
     dictBox.hide();
 
     dictBox.on('close', () => {
       const data = { bounds: dictBox.getBounds() };
-      fs.writeFileSync('./boxes/dict/box_size.json', JSON.stringify(data));
+      fs.writeFileSync(tools.dirname_path('./boxes/dict/box_size.json'), JSON.stringify(data));
       app.quit();
     });
 
@@ -208,9 +202,9 @@ const createBoxes = () => {
     });
 
     ipcMain.on('positionDict', () => {
-      if (fs.existsSync('./boxes/dict/box_size.json')) {
+      if (fs.existsSync(tools.dirname_path('./boxes/dict/box_size.json'))) {
         const data = JSON.parse(
-          fs.readFileSync('./boxes/dict/box_size.json', {
+          fs.readFileSync(tools.dirname_path('./boxes/dict/box_size.json'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -219,9 +213,6 @@ const createBoxes = () => {
         dictBox.setPosition(data.bounds.x, data.bounds.y);
       }
     });
-    if(DEBUG){
-      dictBox.webContents.openDevTools();
-    }
   }
 
   if (useDeepL) {
@@ -232,7 +223,8 @@ const createBoxes = () => {
       webPreferences: {
         contextIsolation: true,
         enableRemoteModule: false,
-        preload: path.join(__dirname, './boxes/deepl/script.js'),
+        preload: tools.dirname_path('./boxes/deepl/script.js'),
+        nodeIntegration: true,
       },
     });
 
@@ -248,9 +240,6 @@ const createBoxes = () => {
       deepLBox.webContents.send('translateWithDeepL', text);
     });
 
-    if(DEBUG){
-      deepLBox.webContents.openDevTools();
-    }
 
     const translationBox = new BrowserWindow({
       width: 800,
@@ -262,13 +251,14 @@ const createBoxes = () => {
       autoHideMenuBar: true,
       webPreferences: {
         contextIsolation: true,
-        preload: path.join(__dirname, './boxes/translation/script.js'),
+        preload: tools.dirname_path('./boxes/translation/script.js'),
+        nodeIntegration: true,
       },
     });
 
     if (translationTransparent)
-      translationBox.loadFile('./boxes/translation/index-transparent.html');
-    else translationBox.loadFile('./boxes/translation/index.html');
+      translationBox.loadFile(tools.dirname_path('./boxes/translation/index-transparent.html'));
+    else translationBox.loadFile(tools.dirname_path('./boxes/translation/index.html'));
 
     ipcMain.on('translationOnTop', () => {
       translationOnTop = !translationOnTop;
@@ -300,9 +290,9 @@ const createBoxes = () => {
     });
 
     ipcMain.on('positionTranslation', () => {
-      if (fs.existsSync('./boxes/translation/box_size.json')) {
+      if (fs.existsSync(tools.dirname_path('./boxes/translation/box_size.json'))) {
         const data = JSON.parse(
-          fs.readFileSync('./boxes/translation/box_size.json', {
+          fs.readFileSync(tools.dirname_path('./boxes/translation/box_size.json'), {
             encoding: 'utf8',
             flag: 'r',
           })
@@ -322,31 +312,25 @@ const createBoxes = () => {
 
     translationBox.on('close', () => {
       const data = { bounds: translationBox.getBounds() };
-      fs.writeFileSync(
-        './boxes/translation/box_size.json',
-        JSON.stringify(data)
-      );
+      fs.writeFileSync(tools.dirname_path('./boxes/translation/box_size.json'), JSON.stringify(data));
       app.quit();
     });
-
-    if(DEBUG){
-      translationBox.webContents.openDevTools();
-    }
   }
 };
 
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createBoxes();
 
   app.on('browser-window-focus', () => {
-    globalShortcut.register('CommandOrControl+R', () => {});
-    globalShortcut.register('CommandOrControl+Shift+I', () => {});
-    globalShortcut.register('F5', () => {});
+    globalShortcut.register('CommandOrControl+R', () => { });
+    globalShortcut.register('F5', () => { });
   });
 
   app.on('browser-window-blur', () => {
     globalShortcut.unregister('CommandOrControl+R');
-    globalShortcut.unregister('CommandOrControl+Shift+I');
     globalShortcut.unregister('F5');
   });
 
@@ -355,6 +339,11 @@ app.whenReady().then(() => {
   });
 });
 
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });

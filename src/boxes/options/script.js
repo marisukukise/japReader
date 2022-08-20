@@ -1,7 +1,12 @@
+require('module-alias/register')
+
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
+const tools = require('@tools');
 
 let optionsData = {};
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener(
@@ -13,12 +18,12 @@ window.addEventListener('DOMContentLoaded', () => {
   );
 
   optionsData = JSON.parse(
-    fs.readFileSync('./data/options.json', {
+    fs.readFileSync(tools.dirname_path('./data/options.json'), {
       encoding: 'utf8',
       flag: 'r',
     })
   );
-  if(optionsData.darkMode){
+  if (optionsData.darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
   let {
@@ -192,7 +197,7 @@ window.addEventListener('DOMContentLoaded', () => {
     optionsData.translationFontSize = translationFontSize;
     optionsData.dictFontSize = dictFontSize;
 
-    fs.writeFileSync('./data/options.json', JSON.stringify(optionsData));
+    fs.writeFileSync(tools.dirname_path('./data/options.json'), JSON.stringify(optionsData));
 
     ipcRenderer.send('restartProgram');
   });

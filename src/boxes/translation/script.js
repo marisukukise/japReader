@@ -1,8 +1,13 @@
+require('module-alias/register')
+
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
 
+const tools = require('@tools');
+
 let englishText = '';
 let japaneseText = '';
+
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
@@ -16,12 +21,12 @@ window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.send('positionTranslation');
 
   const { translationFontSize, translationTransparent, darkMode } = JSON.parse(
-    fs.readFileSync('./data/options.json', {
+    fs.readFileSync(tools.dirname_path('./data/options.json'), {
       encoding: 'utf8',
       flag: 'r',
     })
   );
-  if(darkMode){
+  if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
   document.querySelector('#app').style.fontSize = `${translationFontSize}px`;
@@ -68,9 +73,9 @@ window.addEventListener('DOMContentLoaded', () => {
     true
   );
 
-  if (fs.existsSync('./data/options.json')) {
+  if (fs.existsSync(tools.dirname_path('./data/options.json'))) {
     const options = JSON.parse(
-      fs.readFileSync('./data/options.json', {
+      fs.readFileSync(tools.dirname_path('./data/options.json'), {
         encoding: 'utf8',
         flag: 'r',
       })
