@@ -12,7 +12,7 @@
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
-  "author": "marisukukise <109931938+marisukukise@users.noreply.github.com>",
+  "author": "marisukukise",
   "license": "GPL-3.0",
   "config": {
     "forge": {

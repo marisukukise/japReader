@@ -1,2 +1,3 @@
 node_modules
-boxes/*/box_size.json
+out
+src/boxes/*/box_size.json
