@@ -204,7 +204,7 @@ window.addEventListener('DOMContentLoaded', () => {
       else if (status === 'seen')
         document.querySelector('#seen-btn').classList.add('disabled-btn');
       else if (status === 'ignored')
-        document.querySelector('#ignore-btn').classList.add('disabled-btn');
+        document.querySelector('#ignored-btn').classList.add('disabled-btn');
     }
   };
 
@@ -240,7 +240,9 @@ window.addEventListener('DOMContentLoaded', () => {
     fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
   };
 
-  const changeStatus = (dictForm, prevStatus, newStatus) => {
+  const changeStatus = (wordData, newStatus) => {
+    dictForm = wordData.dictForm
+    prevStatus = wordData.status
     if (prevStatus === 'new' && newStatus === 'seen') {
       setUpStreak();
 
@@ -294,8 +296,9 @@ window.addEventListener('DOMContentLoaded', () => {
       statusData.ignored.push(dictForm);
     }
 
+    wordData.status = newStatus;
     fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
-
+    handleWordData(wordData);
     ipcRenderer.send('refreshReader');
   };
 
@@ -349,7 +352,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <div id='status-buttons'>
         <span id="seen-btn" class="btn"><small>RMB</small>Seen</span>
         <span id="known-btn" class="btn"><small>MMB</small>Known</span>
-        <span id="ignore-btn" class="btn"><small>Ctrl+LMB</small>Ignore</span>
+        <span id="ignored-btn" class="btn"><small>Ctrl+LMB</small>Ignore</span>
       </div>
       <div id='other-buttons'>
         <span id="audio-btn" class="btn"><small>A</small>Play Audio</span>
@@ -368,34 +371,21 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#seen-btn').addEventListener('click', (e) => {
       btn = e.target;
       if (!btn.classList.contains('disabled-btn')) {
-        changeStatus(currentWordData.dictForm, currentWordData.status, 'seen');
-
-        currentWordData.status = 'seen';
-        handleWordData(currentWordData);
+        changeStatus(currentWordData, 'seen');
       }
     });
 
     document.querySelector('#known-btn').addEventListener('click', (e) => {
       btn = e.target;
       if (!btn.classList.contains('disabled-btn')) {
-        changeStatus(currentWordData.dictForm, currentWordData.status, 'known');
-
-        currentWordData.status = 'known';
-        handleWordData(currentWordData);
+        changeStatus(currentWordData, 'known');
       }
     });
 
-    document.querySelector('#ignore-btn').addEventListener('click', (e) => {
+    document.querySelector('#ignored-btn').addEventListener('click', (e) => {
       btn = e.target;
       if (!btn.classList.contains('disabled-btn')) {
-        changeStatus(
-          currentWordData.dictForm,
-          currentWordData.status,
-          'ignored'
-        );
-
-        currentWordData.status = 'ignored';
-        handleWordData(currentWordData);
+        changeStatus(currentWordData, 'ignored');
       }
     });
 

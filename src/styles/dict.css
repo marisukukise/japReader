@@ -6,7 +6,11 @@ html {
   padding: 10px;
 }
 
-#info, #controls, #word-info, #status-buttons, #other-buttons {
+#info,
+#controls,
+#word-info,
+#status-buttons,
+#other-buttons {
   word-wrap: break-word;
   display: flex;
   gap: 0;
@@ -49,15 +53,15 @@ html {
   text-align: center;
   font-size: 1.5em;
   color: var(--mainFont);
-  text-shadow: 
-    -1px 0px var(--mainBackground), 
-    0 1px var(--mainBackground), 
-    1px 0 var(--mainBackground), 
+  text-shadow:
+    -1px 0px var(--mainBackground),
+    0 1px var(--mainBackground),
+    1px 0 var(--mainBackground),
     0 -1px var(--mainBackground),
     0 0 5px var(--mainBackground);
 }
 
-#word-area .status{
+#word-area .status {
   position: absolute;
   font-size: 0.5em;
 }
@@ -86,36 +90,42 @@ html {
   padding: 0;
 }
 
-#dict dt, #dict dd{
-  margin:0;
-  padding:0;
+#dict dt,
+#dict dd {
+  margin: 0;
+  padding: 0;
 }
 
-#dict dd{
+#dict dd {
   margin-inline-start: 1em;
 }
 
-#dict ol{
+#dict ol {
   margin-block-start: 0em;
   padding-inline-start: 1em;
 }
 
-#dict ol li:nth-child(6n+1){
+#dict ol li:nth-child(6n+1) {
   background-color: var(--dictListColor4);
 }
-#dict ol li:nth-child(6n+2){
+
+#dict ol li:nth-child(6n+2) {
   background-color: var(--dictListColor3);
 }
-#dict ol li:nth-child(6n+3){
+
+#dict ol li:nth-child(6n+3) {
   background-color: var(--dictListColor2);
 }
-#dict ol li:nth-child(6n+4){
+
+#dict ol li:nth-child(6n+4) {
   background-color: var(--dictListColor1);
 }
-#dict ol li:nth-child(6n+5){
+
+#dict ol li:nth-child(6n+5) {
   background-color: var(--dictListColor2);
 }
-#dict ol li:nth-child(6n+6){
+
+#dict ol li:nth-child(6n+6) {
   background-color: var(--dictListColor3);
 }
 
@@ -154,7 +164,7 @@ html {
   background-color: var(--mainFont);
 }
 
-.btn:hover small{
+.btn:hover small {
   background-color: var(--mainBackground);
   color: var(--mainFont);
 }
@@ -167,7 +177,7 @@ html {
   background-color: var(--statusKnown);
 }
 
-#ignore-btn:not(.disabled-btn):hover {
+#ignored-btn:not(.disabled-btn):hover {
   background-color: var(--statusIgnored);
 }
 
