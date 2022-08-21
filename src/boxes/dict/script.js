@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
   const $ = require('jquery');
 
-  let onTop = false;
+  var onTop = false;
 
   ipcRenderer.send('positionDict');
 
@@ -28,72 +28,26 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   document.querySelector('#app').style.fontSize = `${dictFontSize}px`;
 
-  let stayTimer;
-  window.addEventListener(
-    'keyup',
-    (event) => {
-      if (event.key === 'o') ipcRenderer.send('openOptions');
-      else if (event.key === 's') {
-        onTop = !onTop;
-        if (onTop) {
-          $('#on-top-msg').remove();
-          clearTimeout(stayTimer);
-          document.documentElement.scrollTop = 0;
-          $('body').prepend(
-            '<div id="on-top-msg"><section>On Top: True</section></div>'
-          );
-          stayTimer = setTimeout(() => {
-            $('#on-top-msg').remove();
-          }, 1000);
-        } else {
-          $('#on-top-msg').remove();
-          clearTimeout(stayTimer);
-          document.documentElement.scrollTop = 0;
-          $('body').prepend(
-            '<div id="on-top-msg"><section>On Top: False</section></div>'
-          );
-          stayTimer = setTimeout(() => {
-            $('#on-top-msg').remove();
-          }, 1000);
-        }
+  $(window).on('keyup', (e) => {
+    switch (e.key) {
+      case 'o':
+        ipcRenderer.send('openOptions');
+        break;
+      case 's':
+        onTop = tools.toggle_onTop(onTop, $('body'));
         ipcRenderer.send('dictOnTop');
-      }
-      else if (event.key === 'a') {
-        btn = document.querySelector('#audio');
-        if (!btn.classList.contains('disabled')) {
-          let url = `https://assets.languagepod101.com`;
-          url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
-          url = `${url}${currentWordData.dictForm}`;
-          url = `${url}&kana=${currentWordData.dictFormReading}`;
-
-          const audio = new Audio(url);
-
-          audio.onloadedmetadata = () => {
-            if (audio.duration !== 5.694694) audio.play();
-            else {
-              document.querySelector('#audio').textContent =
-                'No audio available';
-              document.querySelector('#audio').classList.add('disabled');
-            }
-          };
-        }
-      }
-      else if (event.key === 'q') {
-        btn = document.querySelector('#anki');
-        if (!btn.classList.contains('disabled')) {
-          if (!currentWordData.wordFuriganaHTML)
-            currentWordData.wordFuriganaHTML = currentWordData.word;
-          if (!currentWordData.dictFuriganaHTML)
-            currentWordData.dictFuriganaHTML = currentWordData.dictForm;
-
-          currentWordData.english = currentEnglishText;
-
-          AnkiConnect_addNote(currentWordData);
-        }
-      }
-    },
-    true
-  );
+        break;
+      case 'a':
+        var btn = document.querySelector('#audio');
+        playAudio(currentWordData, btn);
+        break;
+      case 'q':
+        var btn = document.querySelector('#anki');
+        addNote(currentWordData, btn);
+        break;
+    }
+    return true;
+  });
 
   window.addEventListener(
     'keyup',
@@ -129,7 +83,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function AnkiConnect_addNote(wordData) {
+  async function __anki__addNote(wordData, jquery) {
     await invoke('addNote', 6, {
       note: {
         deckName: 'japReader',
@@ -156,15 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
         },
         tags: ["japReader"],
       }
-    })
-      .then(() => {
-        document.querySelector('#anki').textContent = "Added to Anki!";
-        document.querySelector('#anki').classList.add('disabled');
-      })
-      .catch(() => {
-        document.querySelector('#anki').textContent = "Already in collection!";
-        document.querySelector('#anki').classList.add('disabled');
-      });
+    });
   }
 
   async function AnkiConnect_canAddNotes(wordData) {
@@ -195,6 +141,51 @@ window.addEventListener('DOMContentLoaded', () => {
         tags: ["japReader"],
       }
     });
+  }
+
+  const addNote = (wordData, btn) => {
+    if (!btn.classList.contains('disabled')) {
+      if (!wordData.wordFuriganaHTML)
+        wordData.wordFuriganaHTML = wordData.word;
+      if (!wordData.dictFuriganaHTML)
+        wordData.dictFuriganaHTML = wordData.dictForm;
+
+      wordData.english = currentEnglishText;
+
+      __anki__addNote(wordData)
+        .then(() => {
+          btn.textContent = "Added to Anki!";
+          btn.classList.add('disabled');
+        })
+        .catch(() => {
+          btn.textContent = "Already in collection!";
+          btn.classList.add('disabled');
+        });
+    }
+  }
+
+  const playAudio = (wordData, btn) => {
+    if (!btn.classList.contains('disabled')) {
+      __playAudio(wordData);
+    }
+  }
+
+  const __playAudio = (wordData) => {
+    let url = `https://assets.languagepod101.com`;
+    url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
+    url = `${url}${wordData.dictForm}`;
+    url = `${url}&kana=${wordData.dictFormReading}`;
+
+    const audio = new Audio(url);
+
+    audio.onloadedmetadata = () => {
+      if (audio.duration !== 5.694694) audio.play();
+      else {
+        document.querySelector('#audio').textContent =
+          'No audio available';
+        document.querySelector('#audio').classList.add('disabled');
+      }
+    };
   }
 
   const disableButtons = (status) => {
@@ -375,7 +366,7 @@ window.addEventListener('DOMContentLoaded', () => {
     status_buttons.forEach(element => {
       let status = element.id;
       element.addEventListener('click', (e) => {
-        let btn = e.target;
+        var btn = e.target;
         if (!btn.classList.contains('disabled')) {
           changeStatus(currentWordData, status);
         }
@@ -383,38 +374,13 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelector('#audio').addEventListener('click', (e) => {
-      btn = e.target;
-      if (!btn.classList.contains('disabled')) {
-        let url = `https://assets.languagepod101.com`;
-        url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
-        url = `${url}${currentWordData.dictForm}`;
-        url = `${url}&kana=${currentWordData.dictFormReading}`;
-
-        const audio = new Audio(url);
-
-        audio.onloadedmetadata = () => {
-          if (audio.duration !== 5.694694) audio.play();
-          else {
-            document.querySelector('#audio').textContent =
-              'No audio available';
-            document.querySelector('#audio').classList.add('disabled');
-          }
-        };
-      }
+      var btn = e.target;
+      playAudio(currentWordData, e.target);
     });
 
     document.querySelector('#anki').addEventListener('click', (e) => {
-      btn = e.target;
-      if (!btn.classList.contains('disabled')) {
-        if (!currentWordData.wordFuriganaHTML)
-          currentWordData.wordFuriganaHTML = currentWordData.word;
-        if (!currentWordData.dictFuriganaHTML)
-          currentWordData.dictFuriganaHTML = currentWordData.dictForm;
-
-        currentWordData.english = currentEnglishText;
-
-        AnkiConnect_addNote(currentWordData);
-      }
+      var btn = e.target;
+      addNote(currentWordData, btn);
     });
 
     $('#dict').html(currentWordData.definitions);

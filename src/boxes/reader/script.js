@@ -34,32 +34,12 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   document.querySelector('#app').style.fontSize = `${readerFontSize}px`;
 
-  let stayTimer;
   window.addEventListener(
     'keyup',
     (event) => {
       if (event.key === 'o') ipcRenderer.send('openOptions');
       else if (event.key === 's') {
-        onTop = !onTop;
-        if (onTop) {
-          $('#on-top-msg').remove();
-          clearTimeout(stayTimer);
-          $('body').prepend(
-            '<div id="on-top-msg"><section>On Top: True</section></div>',
-          );
-          stayTimer = setTimeout(() => {
-            $('#on-top-msg').remove();
-          }, 1000);
-        } else {
-          $('#on-top-msg').remove();
-          clearTimeout(stayTimer);
-          $('body').prepend(
-            '<div id="on-top-msg"><section>On Top: False</section></div>',
-          );
-          stayTimer = setTimeout(() => {
-            $('#on-top-msg').remove();
-          }, 1000);
-        }
+        onTop = tools.toggle_onTop(onTop, $('body'));
         ipcRenderer.send('readerOnTop');
       }
     },
