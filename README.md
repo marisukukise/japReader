@@ -54,13 +54,24 @@ If you're a Linux or MacOS user, you should also be able run it without installi
 
 # Keybindings
 `O` - Open Options Menu 
+
 `S` - Toggle Stay On Top  
+
 `H` - (in Translation Window) Toggle Transparent Translation Window
-`A` - Play Audio  
-`Q` - Add to Anki  
-`RMB` - (in Reader) Change Word Status to Seen  
-`MMB` - (in Reader) Change Word Status to Known  
-`Ctrl+LMB` - (in Reader) Change Word Status to Ignored
+
+`A` - (in Dictionary) Play Audio  
+
+`Q` - (in Dictionary) Add to Anki  
+
+# Mouse buttons
+In Reader you can quickly change the status of a word with mouse buttons:
+
+`LMB` - set to Seen
+
+`RMB` - set to Known
+
+`Ctrl+LMB` - set to Ignored
+
 
 
 # How do I read VNs with this?
