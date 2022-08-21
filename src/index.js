@@ -326,11 +326,13 @@ app.whenReady().then(() => {
 
   app.on('browser-window-focus', () => {
     globalShortcut.register('CommandOrControl+R', () => { });
+    globalShortcut.register('Control+W', () => { });
     globalShortcut.register('F5', () => { });
   });
 
   app.on('browser-window-blur', () => {
     globalShortcut.unregister('CommandOrControl+R');
+    globalShortcut.unregister('Control+W');
     globalShortcut.unregister('F5');
   });
 

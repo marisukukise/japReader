@@ -1,3 +1,14 @@
+1.4.1
+1.	Simplified mouse buttons:
+	*	LMB - "seen"
+	*	RMB - "known"
+	*	Ctrl+LMB - "ignored"
+2.	Added feedback messages for audio and Anki
+3.	Added a border around windows
+4.	Added English translation being displayed 
+	in Anki deck (japReader.apkg). Only works if you
+	had mined the words with translation window open.
+
 1.4.0
 1.  Updated the version of Electron from 12 to 20
 2.  Fixed clipboard not being read on Linux

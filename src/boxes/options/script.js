@@ -9,13 +9,17 @@ let optionsData = {};
 
 
 window.addEventListener('DOMContentLoaded', () => {
-  window.addEventListener(
-    'keyup',
-    (event) => {
-      if (event.key === 'Escape') ipcRenderer.send('hideOptions');
-    },
-    true
-  );
+  // eslint-disable-next-line global-require
+  const $ = require('jquery');
+  $(window).on('keyup', (e) => {
+    switch (e.key) {
+      case 'Escape':
+        console.log("escpressed")
+        ipcRenderer.send('hideOptions');
+        break;
+    }
+    return true;
+  });
 
   optionsData = JSON.parse(
     fs.readFileSync(tools.dirname_path('./data/options.json'), {

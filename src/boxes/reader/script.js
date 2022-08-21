@@ -34,17 +34,19 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   document.querySelector('#app').style.fontSize = `${readerFontSize}px`;
 
-  window.addEventListener(
-    'keyup',
-    (event) => {
-      if (event.key === 'o') ipcRenderer.send('openOptions');
-      else if (event.key === 's') {
+
+  $(window).on('keyup', (e) => {
+    switch (e.key) {
+      case 'o':
+        ipcRenderer.send('openOptions');
+        break;
+      case 's':
         onTop = tools.toggle_onTop(onTop, $('body'));
         ipcRenderer.send('readerOnTop');
-      }
-    },
-    true,
-  );
+        break;
+    }
+    return true;
+  });
 
   $('#app').html('Connecting to <span class="url">https://ichi.moe/</span>.');
   $('#app').append('<br>');

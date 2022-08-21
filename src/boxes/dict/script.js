@@ -45,17 +45,12 @@ window.addEventListener('DOMContentLoaded', () => {
         var btn = document.querySelector('#anki');
         addNote(currentWordData, btn);
         break;
+      case 'Escape':
+        ipcRenderer.send('hideDict');
+        break;
     }
     return true;
   });
-
-  window.addEventListener(
-    'keyup',
-    (event) => {
-      if (event.key === 'Escape') ipcRenderer.send('hideDict');
-    },
-    true
-  );
 
   function invoke(action, version, params = {}) {
     return new Promise((resolve, reject) => {

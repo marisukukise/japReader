@@ -31,27 +31,31 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   document.querySelector('#app').style.fontSize = `${translationFontSize}px`;
 
-  window.addEventListener(
-    'keyup',
-    (event) => {
-      if (event.key === 'o') ipcRenderer.send('openOptions');
-      else if (event.key === 's') {
+  $(window).on('keyup', (e) => {
+    switch (e.key) {
+      case 'o':
+        ipcRenderer.send('openOptions');
+        break;
+      case 's':
         onTop = tools.toggle_onTop(onTop, $('body'));
         ipcRenderer.send('translationOnTop');
-      } else if (event.key === 'h' && translationTransparent) {
-        if (showBorders) {
-          showBorders = false;
-          document.body.style.border = '1px dashed transparent';
-          document.querySelector('#move-bar').style.visibility = 'hidden';
-        } else {
-          showBorders = true;
-          document.body.style.border = '1px dashed red';
-          document.querySelector('#move-bar').style.visibility = 'visible';
+        break;
+      case 'h':
+        if (translationTransparent) {
+          if (showBorders) {
+            showBorders = false;
+            document.body.style.border = '1px dashed transparent';
+            document.querySelector('#move-bar').style.visibility = 'hidden';
+          } else {
+            showBorders = true;
+            document.body.style.border = '1px dashed red';
+            document.querySelector('#move-bar').style.visibility = 'visible';
+          }
         }
-      }
-    },
-    true
-  );
+        break;
+    }
+    return true;
+  });
 
   if (fs.existsSync(tools.dirname_path('./data/options.json'))) {
     const options = JSON.parse(
