@@ -3,7 +3,6 @@ require('module-alias/register')
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const date = require('date-and-time');
-
 const tools = require('@tools');
 
 let currentWordData = {};
@@ -89,15 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
           currentWordData.english = currentEnglishText;
 
-          addAnkiNote(currentWordData)
-            .then(() => {
-              document.querySelector('#anki-btn').textContent = "Added to Anki!";
-              document.querySelector('#anki-btn').classList.add('disabled-btn');
-            })
-            .catch(() => {
-              document.querySelector('#anki-btn').textContent = "Already in collection!";
-              document.querySelector('#anki-btn').classList.add('disabled-btn');
-            });
+          AnkiConnect_addNote(currentWordData);
         }
       }
     },
@@ -138,8 +129,46 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function addAnkiNote(wordData) {
+  async function AnkiConnect_addNote(wordData) {
     await invoke('addNote', 6, {
+      note: {
+        deckName: 'japReader',
+        modelName: 'japReader',
+        fields: {
+          DictForm: wordData.dictForm,
+          DictFormReading: wordData.dictFormReading,
+          DictFormFurigana: wordData.dictFuriganaHTML,
+          Word: wordData.word,
+          WordReading: wordData.rubyReading,
+          WordFurigana: wordData.wordFuriganaHTML,
+          Definitions: wordData.definitions,
+          Japanese: wordData.fullText,
+          English: wordData.english,
+        },
+        options: {
+          allowDuplicate: false,
+          duplicateScope: "deck",
+          duplicateScopeOptions: {
+            deckName: "japReader",
+            checkChildren: false,
+            checkAllModels: false
+          }
+        },
+        tags: ["japReader"],
+      }
+    })
+      .then(() => {
+        document.querySelector('#anki-btn').textContent = "Added to Anki!";
+        document.querySelector('#anki-btn').classList.add('disabled-btn');
+      })
+      .catch(() => {
+        document.querySelector('#anki-btn').textContent = "Already in collection!";
+        document.querySelector('#anki-btn').classList.add('disabled-btn');
+      });
+  }
+
+  async function AnkiConnect_canAddNotes(wordData) {
+    await invoke('canAddNotes', 6, {
       note: {
         deckName: 'japReader',
         modelName: 'japReader',
@@ -401,15 +430,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         currentWordData.english = currentEnglishText;
 
-        addAnkiNote(currentWordData)
-          .then(() => {
-            document.querySelector('#anki-btn').textContent = "Added to Anki!";
-            document.querySelector('#anki-btn').classList.add('disabled-btn');
-          })
-          .catch(() => {
-            document.querySelector('#anki-btn').textContent = "Already in collection!";
-            document.querySelector('#anki-btn').classList.add('disabled-btn');
-          });
+        AnkiConnect_addNote(currentWordData);
       }
     });
 

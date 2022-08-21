@@ -133,6 +133,13 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.send('refreshReader');
   };
 
+  const changeStatusOnClick = (wordData, newStatus) => {
+    changeStatus(wordData.dictForm, wordData.status, newStatus);
+    wordData.status = newStatus;
+    ipcRenderer.send('sendWordData', wordData);
+    ipcRenderer.send('openDict');
+  }
+
   const handleWords = (words) => {
     $('#app').empty();
 
@@ -213,34 +220,16 @@ window.addEventListener('DOMContentLoaded', () => {
         $(wordElement).on('mousedown', (e) => {
           switch (e.which) {
             case 1: // LeftClick
-              if (e.ctrlKey) {
-                changeStatus(currentWordData.dictForm, currentWordData.status, 'ignored');
-                currentWordData.status = 'ignored';
-                ipcRenderer.send('sendWordData', currentWordData);
-                ipcRenderer.send('openDict');
+              if (e.ctrlKey) { // + Ctrl 
+                changeStatusOnClick(currentWordData, 'ignored');
               }
               else {
-                ipcRenderer.send('sendWordData', currentWordData);
-                ipcRenderer.send('openDict');
+                changeStatusOnClick(currentWordData, 'seen');
               }
               break;
-            case 2: // MiddleClick.
-              if (e.ctrlKey) { }
-              else {
-                changeStatus(currentWordData.dictForm, currentWordData.status, 'known');
-                currentWordData.status = 'known';
-                ipcRenderer.send('sendWordData', currentWordData);
-                ipcRenderer.send('openDict');
-              }
+            case 3: // RightClick
+              changeStatusOnClick(currentWordData, 'known');
               break;
-            case 3: // RightClick.
-              if (e.ctrlKey) { }
-              else {
-                changeStatus(currentWordData.dictForm, currentWordData.status, 'seen');
-                currentWordData.status = 'seen';
-                ipcRenderer.send('sendWordData', currentWordData);
-                ipcRenderer.send('openDict');
-              }
           }
           return true;
         });
