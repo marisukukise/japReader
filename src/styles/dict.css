@@ -182,18 +182,16 @@ html {
 }
 
 .disabled {
-  color: var(--disabled);
   cursor: not-allowed;
   border: 0.2em groove var(--mainFont);
   padding: 0.15em;
-  opacity: 0.8;
+  opacity: 0.5;
   text-decoration: underline;
+  background-color: transparent;
 }
 
 
 .disabled:hover {
   border: 0.2em groove var(--mainFont);
   padding: 0.15em;
-  background-color: var(--disabled);
-  color: var(--mainFont);
 }

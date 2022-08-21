@@ -1,14 +1,13 @@
 :root {
     --mainFont: #041113;
-    --mainFontFaded : #0411130d;
+    --mainFontFaded: #0411130d;
     --mainBackground: #e7dee6;
 
     --scrollbarHead: #272502;
     --scrollbarBackground: #867f7f;
     --scrollbarShadow: #000000bf;
-    
+
     --url: #7d47fc;
-    --disabled: #363131;
 
     --dictListColor1: #77777780;
     --dictListColor2: #99999980;
@@ -31,11 +30,11 @@
 
     --translationBorder: #f5c8ba;
     --translationTransparentBackground: #ffffffb0;
-} 
+}
 
 html.dark-mode {
     --mainFont: #f3f9fa;
-    --mainFontFaded : #f3f9fa0d;
+    --mainFontFaded: #f3f9fa0d;
     --mainBackground: #1e0a1c;
 
     --scrollbarHead: #f5f2ca;

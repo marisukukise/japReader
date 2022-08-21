@@ -28,24 +28,22 @@ section#apply {
   margin-bottom: 2em;
 }
 
-.yes,
-.no,
-.increase,
-.decrease {
+.btn {
   border: 0.1em solid var(--mainFont);
   padding: 0.25em;
   border-radius: 5px;
   margin-right: 10px;
   cursor: pointer;
   width: 5em;
+}
+
+.btn:not(.selected) {
   opacity: 0.5;
 }
 
 
-.yes:hover,
-.no:hover,
-.increase:hover,
-.decrease:hover {
+.btn:hover {
+  opacity: 0.8;
   border: none;
   padding: 0.35em;
 }
@@ -60,11 +58,7 @@ section#apply {
   border: none;
 }
 
-.selected,
-.yes:hover,
-.no:hover,
-.increase:hover,
-.decrease:hover {
+.selected.btn:hover {
   opacity: 1.0;
   font-weight: bold;
 }
@@ -89,9 +83,8 @@ section#apply {
 }
 
 
-
-
-#apply {
+.btn.apply {
+  opacity: 1;
   font-weight: bold;
   word-wrap: break-word;
   text-align: center;
@@ -106,7 +99,7 @@ section#apply {
   font-size: x-large;
 }
 
-#apply:hover {
+.btn.apply:hover {
   border: none;
   padding: 0.35em;
   color: var(--mainBackground);
