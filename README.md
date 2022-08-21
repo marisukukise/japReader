@@ -41,7 +41,10 @@ VNs, LNs, TV Shows/Movies
 # Windows
 ## Installation
 1. Download and run the latest [setup.exe](https://github.com/marisukukise/japReader/releases/latest)
-The exe is not signed, so there might be some warnings. If you want to build the .exe yourself, go to [Build](#Build)
+
+The exe is not signed, so there might be some warnings. 
+
+If you want to build the .exe yourself, go to [Build](#Build)
 
 ## Build
 1. Download [node.js](https://nodejs.org/en/download/)
