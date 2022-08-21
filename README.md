@@ -1,16 +1,23 @@
 # japReader
+### An Electron app that helps you read Japanese text. 
 
-##### An Electron app that helps you read Japanese text. 
-##### (Only tested for Windows 10)
+------------------
+
+##### Developed for Windows, so I don't provide much support for other platforms,
+##### HOWEVER it is built with multiplatform tools, so if you're using Linux or MacOS, you shouldn't have troubles running this
+
+------------------
 
 ###### Version 1.2 created by [seth-js](https://github.com/seth-js)
 ###### Versions 1.3+ (this repo) forked by [marisukukise](https://github.com/marisukukise)
 
+------------------
 
 # Examples
 ![Example screenshot #1](images/example1.png)  
 ![Example screenshot #2](images/example2.png)
 
+------------------
 
 # Currently Supported
 VNs, LNs, TV Shows/Movies
@@ -29,20 +36,22 @@ VNs, LNs, TV Shows/Movies
 * The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
 * The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
 
+------------------
 
-# Installation
-## Windows
+# Windows
+## Installation
 1. Download and run the latest [setup.exe](https://github.com/marisukukise/japReader/releases/latest)
 The exe is not signed, so there might be some warnings. If you want to build the .exe yourself, go to [Build](#Build)
 
-# Build
-## Windows
+## Build
 1. Download [node.js](https://nodejs.org/en/download/)
 2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
 3. Navigate into it `cd japReader`
 4. Install dependencies `npm i`
-4. Build .exe `npm run make`
-5. The .exe will be output in `out/make/squirrel.windows/x64` folder
+5. Build .exe `npm run make`
+6. The .exe will be output in `out/make/squirrel.windows/x64` folder
+
+If you want to run this without installing, in point 5. of [Build](#Build) you can instead run the program using `npm start`
 
 # Linux & MacOS
 If you're a Linux or MacOS user, you should also be able run it without installing (you can build it, but you need to figure out how to do it on your own)
@@ -51,6 +60,7 @@ If you're a Linux or MacOS user, you should also be able run it without installi
 3. Navigate into it `cd japReader`
 4. Run it using `npm i; npm start`
 
+------------------
 
 # Keybindings
 `O` - Open Options Menu 
@@ -72,9 +82,10 @@ In Reader you can quickly change the status of a word with mouse buttons:
 
 `Ctrl+LMB` - set to Ignored
 
+------------------
 
-
-# How do I read VNs with this?
+# Setup
+## How do I read VNs with this?
 1.  Download and install a Japanese VN
 2.  Download, install, and open
     [Textractor](https://github.com/Artikash/Textractor)
@@ -83,13 +94,13 @@ In Reader you can quickly change the status of a word with mouse buttons:
 5.  Open japReader
 
 
-# How do I read LNs/Ebooks with this?
+## How do I read LNs/Ebooks with this?
 1.  Open your LN/Ebook
 2.  Open japReader
 3.  If you can, highlight and copy a few sentences from the LN/Ebook
 
 
-# How do I watch Drama/Movies/Anime with this?
+## How do I watch Drama/Movies/Anime with this?
 1.  Get a local copy of the show/movie that you want to watch
 2.  Get the Japanese subtitles for what you want to watch
 3.  Download [mpv](https://mpv.io/)
@@ -104,7 +115,7 @@ In Reader you can quickly change the status of a word with mouse buttons:
 9.  Open japReader
 
 
-# How do I get Anki card creation to work?
+## How do I get Anki card creation to work?
 1.  Install [Anki](https://apps.ankiweb.net/)
 2.  Install the [AnkiConnect
     addon](https://ankiweb.net/shared/info/2055492159)
@@ -113,6 +124,7 @@ In Reader you can quickly change the status of a word with mouse buttons:
 5.  Click `Add to Anki` in the Dictionary window, and card data should
     be generated for the `japReader` Anki deck
 
+------------------
 
 # Q&A and Notes
 Q: Why does the text \"i+1\" keep showing?  
