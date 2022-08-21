@@ -387,9 +387,9 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#controls').html(``);
     $('#controls').append(`
       <div id='status-buttons'>
-        <span id="seen" class="btn"><small>RMB</small>Seen</span>
-        <span id="known" class="btn"><small>MMB</small>Known</span>
-        <span id="ignored" class="btn"><small>Ctrl+LMB</small>Ignore</span>
+        <span id="seen" class="btn">Seen</span>
+        <span id="known" class="btn">Known</span>
+        <span id="ignored" class="btn">Ignore</span>
       </div>
       <div id='other-buttons'>
         <span id="audio" class="btn"><small>A</small>Play Audio</span>

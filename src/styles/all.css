@@ -5,11 +5,28 @@ html {
   user-select: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
-body{
+html:before {
+  content: "";
+  position: fixed;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  border: 1px solid var(--mainFont);
+  top: 0;
+  left: 0;
+  z-index: -999;
+}
+
+body {
   margin: 0;
   padding: 0;
+}
+
+#app {
+  padding: 20px;
 }
 
 ::-webkit-scrollbar {

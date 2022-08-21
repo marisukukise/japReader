@@ -2,10 +2,6 @@ html {
   font-size: 17px;
 }
 
-#app {
-  padding: 10px;
-}
-
 #info,
 #controls,
 #word-info,
@@ -40,11 +36,19 @@ html {
 
 #status-buttons,
 #other-buttons {
-  margin: 5px;
-  flex-direction: row;
+  margin: 10px;
   flex-wrap: wrap;
   gap: 5px;
   justify-content: center;
+  align-items: center;
+}
+
+#status-buttons {
+  flex-direction: row;
+}
+
+#other-buttons {
+  flex-direction: column;
 }
 
 #word-area {
