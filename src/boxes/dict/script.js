@@ -141,11 +141,11 @@ window.addEventListener('DOMContentLoaded', () => {
       wordData.english = currentEnglishText;
       __anki__addNote(wordData)
         .then(() => {
-          btn.textContent = "Added to Anki!";
+          btn.textContent = "Added to Anki";
           btn.classList.add('disabled');
         })
         .catch(() => {
-          btn.textContent = "Already in collection!";
+          btn.textContent = "Already in collection";
           btn.classList.add('disabled');
         });
     }
@@ -224,7 +224,7 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(res => {
         console.log("res", res);
         var canClick = res[0];
-        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Cannot add note");
+        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Already in collection");
       })
       .catch(err => {
         qry_anki.innerHTML = "Something went wrong";
