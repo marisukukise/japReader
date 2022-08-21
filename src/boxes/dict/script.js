@@ -157,6 +157,31 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function __getDuration(url) {
+    return new Promise((resolve) => {
+      const audio = document.createElement("audio");
+      audio.muted = true;
+      const source = document.createElement("source");
+      source.src = url; //--> blob URL
+      audio.preload = "metadata";
+      audio.appendChild(source);
+      audio.onloadedmetadata = function () {
+        resolve(audio.duration)
+      };
+    });
+  }
+
+  const __canPlayAudio = async (wordData) => {
+    let url = `https://assets.languagepod101.com`;
+    url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
+    url = `${url}${wordData.dictForm}`;
+    url = `${url}&kana=${wordData.dictFormReading}`;
+
+    const duration = await __getDuration(url);
+    if (duration === 5.694694) return false;
+    else return true;
+  }
+
   const __playAudio = (wordData) => {
     let url = `https://assets.languagepod101.com`;
     url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
@@ -175,23 +200,48 @@ window.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  const disableButtons = (wordData) => {
-    var status = wordData.status;
-    if (status !== 'new') {
-      if (status === 'known')
-        document.querySelector('#known').classList.add('disabled');
-      else if (status === 'seen')
-        document.querySelector('#seen').classList.add('disabled');
-      else if (status === 'ignored')
-        document.querySelector('#ignored').classList.add('disabled');
+  const checkIfDisableButton = (button_query, condition, success_message, fail_message) => {
+    if (condition) {
+      button_query.classList.remove('disabled');
+      button_query.innerHTML = success_message;
     }
-    document.querySelector('#anki').classList.add('disabled');
-    __anki__canAddNotes(wordData).then(result => {
-      var canAdd = result[0];
-      if (canAdd) {
-        document.querySelector('#anki').classList.remove('disabled');
-      }
-    });
+    else {
+      button_query.innerHTML = fail_message;
+    }
+  }
+
+  const disableButtons = (wordData) => {
+    var status_selector = '#' + wordData.status;
+    var qry_status = document.querySelector(status_selector);
+    qry_status.classList.add('disabled');
+
+
+    var qry_anki = document.querySelector('#anki');
+    var anki_innerhtml = qry_anki.innerHTML;
+    qry_anki.innerHTML = "Checking...";
+    qry_anki.classList.add('disabled');
+    __anki__canAddNotes(wordData)
+      .then(res => {
+        console.log("res", res);
+        var canClick = res[0];
+        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Cannot add note");
+      })
+      .catch(err => {
+        qry_anki.innerHTML = "Something went wrong";
+      });
+
+    var qry_audio = document.querySelector('#audio');
+    var audio_innerhtml = qry_audio.innerHTML;
+    qry_audio.innerHTML = "Checking...";
+    qry_audio.classList.add('disabled');
+    __canPlayAudio(wordData)
+      .then(res => {
+        var canClick = res;
+        checkIfDisableButton(qry_audio, canClick, audio_innerhtml, "Audio not available");
+      })
+      .catch(err => {
+        qry_audio.innerHTML = "Something went wrong";
+      });
   };
 
   const setUpStreak = () => {
