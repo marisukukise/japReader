@@ -60,18 +60,18 @@ window.addEventListener('DOMContentLoaded', () => {
   function invoke(action, version, params = {}) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.addEventListener('error', () => reject('failed to issue request'));
+      xhr.addEventListener('error', () => reject('AnkiConnect: Failed to issue request'));
       xhr.addEventListener('load', () => {
         try {
           const response = JSON.parse(xhr.responseText);
           if (Object.getOwnPropertyNames(response).length != 2) {
-            throw 'response has an unexpected number of fields';
+            throw 'AnkiConnect: Response has an unexpected number of fields';
           }
           if (!response.hasOwnProperty('error')) {
-            throw 'response is missing required error field';
+            throw 'AnkiConnect: Response is missing required error field';
           }
           if (!response.hasOwnProperty('result')) {
-            throw 'response is missing required result field';
+            throw 'AnkiConnect: Response is missing required result field';
           }
           if (response.error) {
             throw response.error;
@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   async function __anki__addNote(wordData) {
-    const result = await invoke('addNote', 6, {
+    const res = await invoke('addNote', 6, {
       note: {
         deckName: 'japReader',
         modelName: 'japReader',
@@ -115,7 +115,7 @@ window.addEventListener('DOMContentLoaded', () => {
         tags: ["japReader"],
       }
     });
-    return result;
+    return res;
   }
 
   async function __anki__canAddNotes(wordData) {
@@ -175,7 +175,8 @@ window.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  const disableButtons = (status) => {
+  const disableButtons = (wordData) => {
+    var status = wordData.status;
     if (status !== 'new') {
       if (status === 'known')
         document.querySelector('#known').classList.add('disabled');
@@ -184,6 +185,13 @@ window.addEventListener('DOMContentLoaded', () => {
       else if (status === 'ignored')
         document.querySelector('#ignored').classList.add('disabled');
     }
+    document.querySelector('#anki').classList.add('disabled');
+    __anki__canAddNotes(wordData).then(result => {
+      var canAdd = result[0];
+      if (canAdd) {
+        document.querySelector('#anki').classList.remove('disabled');
+      }
+    });
   };
 
   const setUpStreak = () => {
@@ -310,7 +318,6 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const handleWordData = (wordData) => {
-    console.log("handleworddata ran")
     currentWordData = wordData;
 
     const { known, seen } = JSON.parse(
@@ -346,7 +353,7 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     `);
 
-    disableButtons(currentWordData.status);
+    disableButtons(currentWordData);
 
     status_buttons = document.querySelectorAll('#status-buttons .btn');
 
