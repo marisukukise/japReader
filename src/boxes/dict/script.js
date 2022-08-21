@@ -60,9 +60,19 @@ window.addEventListener('DOMContentLoaded', () => {
   function invoke(action, version, params = {}) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
+      xhr.addEventListener('error', () => reject('failed to issue request'));
       xhr.addEventListener('load', () => {
         try {
           const response = JSON.parse(xhr.responseText);
+          if (Object.getOwnPropertyNames(response).length != 2) {
+            throw 'response has an unexpected number of fields';
+          }
+          if (!response.hasOwnProperty('error')) {
+            throw 'response is missing required error field';
+          }
+          if (!response.hasOwnProperty('result')) {
+            throw 'response is missing required result field';
+          }
           if (response.error) {
             throw response.error;
           }
@@ -73,18 +83,12 @@ window.addEventListener('DOMContentLoaded', () => {
       });
 
       xhr.open('POST', 'http://localhost:8765');
-      xhr.send(
-        JSON.stringify({
-          action,
-          version,
-          params,
-        })
-      );
+      xhr.send(JSON.stringify({ action, version, params }));
     });
   }
 
-  async function __anki__addNote(wordData, jquery) {
-    await invoke('addNote', 6, {
+  async function __anki__addNote(wordData) {
+    const result = await invoke('addNote', 6, {
       note: {
         deckName: 'japReader',
         modelName: 'japReader',
@@ -111,36 +115,20 @@ window.addEventListener('DOMContentLoaded', () => {
         tags: ["japReader"],
       }
     });
+    return result;
   }
 
-  async function AnkiConnect_canAddNotes(wordData) {
-    await invoke('canAddNotes', 6, {
-      note: {
+  async function __anki__canAddNotes(wordData) {
+    const res = await invoke('canAddNotes', 6, {
+      notes: [{
         deckName: 'japReader',
         modelName: 'japReader',
         fields: {
           DictForm: wordData.dictForm,
-          DictFormReading: wordData.dictFormReading,
-          DictFormFurigana: wordData.dictFuriganaHTML,
-          Word: wordData.word,
-          WordReading: wordData.rubyReading,
-          WordFurigana: wordData.wordFuriganaHTML,
-          Definitions: wordData.definitions,
-          Japanese: wordData.fullText,
-          English: wordData.english,
-        },
-        options: {
-          allowDuplicate: false,
-          duplicateScope: "deck",
-          duplicateScopeOptions: {
-            deckName: "japReader",
-            checkChildren: false,
-            checkAllModels: false
-          }
-        },
-        tags: ["japReader"],
-      }
+        }
+      }]
     });
+    return res;
   }
 
   const addNote = (wordData, btn) => {
@@ -151,7 +139,6 @@ window.addEventListener('DOMContentLoaded', () => {
         wordData.dictFuriganaHTML = wordData.dictForm;
 
       wordData.english = currentEnglishText;
-
       __anki__addNote(wordData)
         .then(() => {
           btn.textContent = "Added to Anki!";
