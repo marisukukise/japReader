@@ -181,6 +181,7 @@ window.addEventListener('DOMContentLoaded', () => {
       optionsData.darkMode = true;
     else optionsData.darkMode = false;
 
+
     if (document.querySelector('#tvMode-selection .yes.selected'))
       optionsData.tvMode = true;
     else optionsData.tvMode = false;
