@@ -152,7 +152,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-  document.querySelector('#apply-btn').addEventListener('click', () => {
+  document.querySelector('#apply').addEventListener('click', () => {
     if (document.querySelector('#useDeepL-selection .yes.selected'))
       optionsData.useDeepL = true;
     else optionsData.useDeepL = false;

@@ -169,19 +169,19 @@ html {
   color: var(--mainFont);
 }
 
-#seen-btn:not(.disabled-btn):hover {
+#seen:not(.disabled):hover {
   background-color: var(--statusSeen);
 }
 
-#known-btn:not(.disabled-btn):hover {
+#known:not(.disabled):hover {
   background-color: var(--statusKnown);
 }
 
-#ignored-btn:not(.disabled-btn):hover {
+#ignored:not(.disabled):hover {
   background-color: var(--statusIgnored);
 }
 
-.disabled-btn {
+.disabled {
   color: var(--disabled);
   cursor: not-allowed;
   border: 0.2em groove var(--mainFont);
@@ -191,7 +191,7 @@ html {
 }
 
 
-.disabled-btn:hover {
+.disabled:hover {
   border: 0.2em groove var(--mainFont);
   padding: 0.15em;
   background-color: var(--disabled);

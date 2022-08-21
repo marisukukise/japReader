@@ -59,8 +59,8 @@ window.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.send('dictOnTop');
       }
       else if (event.key === 'a') {
-        btn = document.querySelector('#audio-btn');
-        if (!btn.classList.contains('disabled-btn')) {
+        btn = document.querySelector('#audio');
+        if (!btn.classList.contains('disabled')) {
           let url = `https://assets.languagepod101.com`;
           url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
           url = `${url}${currentWordData.dictForm}`;
@@ -71,16 +71,16 @@ window.addEventListener('DOMContentLoaded', () => {
           audio.onloadedmetadata = () => {
             if (audio.duration !== 5.694694) audio.play();
             else {
-              document.querySelector('#audio-btn').textContent =
+              document.querySelector('#audio').textContent =
                 'No audio available';
-              document.querySelector('#audio-btn').classList.add('disabled-btn');
+              document.querySelector('#audio').classList.add('disabled');
             }
           };
         }
       }
       else if (event.key === 'q') {
-        btn = document.querySelector('#anki-btn');
-        if (!btn.classList.contains('disabled-btn')) {
+        btn = document.querySelector('#anki');
+        if (!btn.classList.contains('disabled')) {
           if (!currentWordData.wordFuriganaHTML)
             currentWordData.wordFuriganaHTML = currentWordData.word;
           if (!currentWordData.dictFuriganaHTML)
@@ -158,12 +158,12 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     })
       .then(() => {
-        document.querySelector('#anki-btn').textContent = "Added to Anki!";
-        document.querySelector('#anki-btn').classList.add('disabled-btn');
+        document.querySelector('#anki').textContent = "Added to Anki!";
+        document.querySelector('#anki').classList.add('disabled');
       })
       .catch(() => {
-        document.querySelector('#anki-btn').textContent = "Already in collection!";
-        document.querySelector('#anki-btn').classList.add('disabled-btn');
+        document.querySelector('#anki').textContent = "Already in collection!";
+        document.querySelector('#anki').classList.add('disabled');
       });
   }
 
@@ -200,11 +200,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const disableButtons = (status) => {
     if (status !== 'new') {
       if (status === 'known')
-        document.querySelector('#known-btn').classList.add('disabled-btn');
+        document.querySelector('#known').classList.add('disabled');
       else if (status === 'seen')
-        document.querySelector('#seen-btn').classList.add('disabled-btn');
+        document.querySelector('#seen').classList.add('disabled');
       else if (status === 'ignored')
-        document.querySelector('#ignored-btn').classList.add('disabled-btn');
+        document.querySelector('#ignored').classList.add('disabled');
     }
   };
 
@@ -332,6 +332,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const handleWordData = (wordData) => {
+    console.log("handleworddata ran")
     currentWordData = wordData;
 
     const { known, seen } = JSON.parse(
@@ -341,7 +342,8 @@ window.addEventListener('DOMContentLoaded', () => {
       })
     );
 
-    $('#info').html(`<div id="known-area">Known: ${known.length}</div>`);
+    $('#info').html(``)
+    $('#info').append(`<div id="known-area">Known: ${known.length}</div>`);
     $('#info').append(`<div id="seen-area">Seen: ${seen.length}</div>`);
 
     setUpStreak();
@@ -350,13 +352,13 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#controls').html(``);
     $('#controls').append(`
       <div id='status-buttons'>
-        <span id="seen-btn" class="btn"><small>RMB</small>Seen</span>
-        <span id="known-btn" class="btn"><small>MMB</small>Known</span>
-        <span id="ignored-btn" class="btn"><small>Ctrl+LMB</small>Ignore</span>
+        <span id="seen" class="btn"><small>RMB</small>Seen</span>
+        <span id="known" class="btn"><small>MMB</small>Known</span>
+        <span id="ignored" class="btn"><small>Ctrl+LMB</small>Ignore</span>
       </div>
       <div id='other-buttons'>
-        <span id="audio-btn" class="btn"><small>A</small>Play Audio</span>
-        <span id="anki-btn" class="btn"><small>Q</small>Add to Anki</span>
+        <span id="audio" class="btn"><small>A</small>Play Audio</span>
+        <span id="anki" class="btn"><small>Q</small>Add to Anki</span>
       </div>
       <div id='word-info'>
         <div id="word-area" class="${currentWordData.status}">
@@ -368,30 +370,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
     disableButtons(currentWordData.status);
 
-    document.querySelector('#seen-btn').addEventListener('click', (e) => {
-      btn = e.target;
-      if (!btn.classList.contains('disabled-btn')) {
-        changeStatus(currentWordData, 'seen');
-      }
+    status_buttons = document.querySelectorAll('#status-buttons .btn');
+
+    status_buttons.forEach(element => {
+      let status = element.id;
+      element.addEventListener('click', (e) => {
+        let btn = e.target;
+        if (!btn.classList.contains('disabled')) {
+          changeStatus(currentWordData, status);
+        }
+      })
     });
 
-    document.querySelector('#known-btn').addEventListener('click', (e) => {
+    document.querySelector('#audio').addEventListener('click', (e) => {
       btn = e.target;
-      if (!btn.classList.contains('disabled-btn')) {
-        changeStatus(currentWordData, 'known');
-      }
-    });
-
-    document.querySelector('#ignored-btn').addEventListener('click', (e) => {
-      btn = e.target;
-      if (!btn.classList.contains('disabled-btn')) {
-        changeStatus(currentWordData, 'ignored');
-      }
-    });
-
-    document.querySelector('#audio-btn').addEventListener('click', (e) => {
-      btn = e.target;
-      if (!btn.classList.contains('disabled-btn')) {
+      if (!btn.classList.contains('disabled')) {
         let url = `https://assets.languagepod101.com`;
         url = `${url}/dictionary/japanese/audiomp3.php?kanji=`;
         url = `${url}${currentWordData.dictForm}`;
@@ -402,17 +395,17 @@ window.addEventListener('DOMContentLoaded', () => {
         audio.onloadedmetadata = () => {
           if (audio.duration !== 5.694694) audio.play();
           else {
-            document.querySelector('#audio-btn').textContent =
+            document.querySelector('#audio').textContent =
               'No audio available';
-            document.querySelector('#audio-btn').classList.add('disabled-btn');
+            document.querySelector('#audio').classList.add('disabled');
           }
         };
       }
     });
 
-    document.querySelector('#anki-btn').addEventListener('click', (e) => {
+    document.querySelector('#anki').addEventListener('click', (e) => {
       btn = e.target;
-      if (!btn.classList.contains('disabled-btn')) {
+      if (!btn.classList.contains('disabled')) {
         if (!currentWordData.wordFuriganaHTML)
           currentWordData.wordFuriganaHTML = currentWordData.word;
         if (!currentWordData.dictFuriganaHTML)

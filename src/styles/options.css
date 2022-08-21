@@ -3,7 +3,7 @@ html {
   text-align: center;
 }
 
-section{
+section {
   padding: 0.5em;
   display: flex;
   flex-direction: column;
@@ -11,16 +11,16 @@ section{
   align-items: center;
 }
 
-section:nth-child(even){
+section:nth-child(even) {
   margin-left: 10%;
 }
 
-section:nth-child(odd){
+section:nth-child(odd) {
   margin-right: 10%;
 }
 
 
-section#apply{
+section#apply {
   margin: 0;
 }
 
@@ -31,7 +31,7 @@ section#apply{
 .yes,
 .no,
 .increase,
-.decrease  {
+.decrease {
   border: 0.1em solid var(--mainFont);
   padding: 0.25em;
   border-radius: 5px;
@@ -42,54 +42,56 @@ section#apply{
 }
 
 
-.yes:hover, 
-.no:hover, 
-.increase:hover, 
+.yes:hover,
+.no:hover,
+.increase:hover,
 .decrease:hover {
   border: none;
   padding: 0.35em;
 }
 
-.selected{
+.selected {
   padding: 0.5em;
   border: 0.1em solid var(--mainFont);
 }
 
-.selected:hover{
+.selected:hover {
   padding: 0.6em;
   border: none;
 }
 
-.selected, 
-.yes:hover, 
-.no:hover, 
-.increase:hover, 
+.selected,
+.yes:hover,
+.no:hover,
+.increase:hover,
 .decrease:hover {
   opacity: 1.0;
   font-weight: bold;
 }
 
-.yes{
+.yes {
   background-color: var(--optionsYes);
 }
 
 
-.yes.selected, .increase{
+.yes.selected,
+.increase {
   background-color: var(--optionsYesSelected);
 }
 
-.no{
+.no {
   background-color: var(--optionsNo);
 }
 
-.no.selected, .decrease{
+.no.selected,
+.decrease {
   background-color: var(--optionsNoSelected);
 }
 
 
 
 
-#apply-btn {
+#apply {
   font-weight: bold;
   word-wrap: break-word;
   text-align: center;
@@ -104,7 +106,7 @@ section#apply{
   font-size: x-large;
 }
 
-#apply-btn:hover{
+#apply:hover {
   border: none;
   padding: 0.35em;
   color: var(--mainBackground);
