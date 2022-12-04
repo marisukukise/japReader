@@ -1,0 +1,16 @@
+name: build-project
+run-name: ${{ github.actor }} is building the project
+on:
+  push:
+    branches:
+      - test-pipelines
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.5.0
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run make
