@@ -76,7 +76,6 @@ In Reader you can quickly change the status of a word with mouse buttons:
 
 ------------------
 
-# Setup
 ## How do I read VNs with this?
 1.  Download and install a Japanese VN
 2.  Download, install, and open
