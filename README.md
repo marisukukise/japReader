@@ -3,11 +3,6 @@
 
 ------------------
 
-##### Developed for Windows, so I don't provide much support for other platforms,
-##### HOWEVER it is built with multiplatform tools, so if you're using Linux or MacOS, you shouldn't have troubles running this
-
-------------------
-
 ###### Version 1.2 created by [seth-js](https://github.com/seth-js)
 ###### Versions 1.3+ (this repo) forked by [marisukukise](https://github.com/marisukukise)
 
@@ -38,30 +33,24 @@ VNs, LNs, TV Shows/Movies
 
 ------------------
 
-# Windows
-## Installation
-1. Download and run the latest [setup.exe](https://github.com/marisukukise/japReader/releases/latest)
+# Installation
+1. Download and run the [latest release](https://github.com/marisukukise/japReader/releases/latest)
 
-The exe is not signed, so there might be some warnings. 
+The .exe is not signed, so there might be some warnings. 
 
 If you want to build the .exe yourself, go to [Build](#Build)
 
-## Build
+
+# Build
 1. Download [node.js](https://nodejs.org/en/download/)
 2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
 3. Navigate into it `cd japReader`
 4. Install dependencies `npm i`
-5. Build .exe `npm run make`
-6. The .exe will be output in `out/make/squirrel.windows/x64` folder
+5. Build files `npm run make`
+6. The files will be output in `out/make/<your_platform>/x64` folder
 
 If you want to run this without installing, in point 5. of [Build](#Build) you can instead run the program using `npm start`
 
-# Linux & MacOS
-If you're a Linux or MacOS user, you should also be able run it without installing (you can build it, but you need to figure out how to do it on your own)
-1. Download [node.js](https://nodejs.org/en/download/package-manager/)
-2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
-3. Navigate into it `cd japReader`
-4. Run it using `npm i; npm start`
 
 ------------------
 
