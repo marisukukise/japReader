@@ -27,11 +27,11 @@ const destroyBoxes = () => {
   ALWAYS:
     clipboardBox - uses ./boxes/clipboard/*
     optionsBox - uses ./boxes/options/*
-  IF (!UseDeepL)
+  IF (!deepLOnly)
     readerBox - uses ./boxes/reader/*
     ichiBox - uses ./boxes/ichi/*
     dictBox - uses ./boxes/dict/*
-  IF (UseDeepL)
+  IF (useDeepL)
     deepLBox - uses ./boxes/deepl/*
     translationBox - uses ./boxes/translation/*
 */
