@@ -2,6 +2,7 @@ require('module-alias/register')
 
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const fs = require('fs');
+const storage = require('electron-json-storage');
 const tools = require('@tools');
 
 if (require('electron-squirrel-startup')) return app.quit();
@@ -36,6 +37,7 @@ const createBoxes = () => {
     app.quit();
   });
 
+  console.log(storage.getDefaultDataPath());
 
   const optionsBox = new BrowserWindow({
     width: 800,
