@@ -13,7 +13,7 @@ on:
 
 jobs:
   build:
-    name: Build the repository on Ubuntu and Windows
+    name: Build the repository
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -26,10 +26,15 @@ jobs:
         with:
           cache: 'npm'
           node-version: 18
+      - name: Update npm
+        run: sudo npm install -g npm
       - name: Install npm packages
-        run: npm ci
+        run: sudo npm ci
+      - name: Install dpkg and fakeroot
+        run: sudo apt-get update -y
+        run: sudo apt-get install -y dpkg fakeroot
       - name: Make
-        run: npm run make --if-present
+        run: sudo npm run make --if-present
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
