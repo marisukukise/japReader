@@ -29,10 +29,10 @@ jobs:
         run: sudo npm install -g electron --unsafe-perm=true --allow-root
       - name: Install npm packages
         run: sudo npm ci
-      - name: Install dpkg, fakeroot and rpmbuild
+      - name: Install dpkg, fakeroot and rpm
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y dpkg fakeroot rpmbuild
+          sudo apt-get install -y dpkg fakeroot rpm
       - name: Make
         run: sudo npm run make --if-present
       - name: Upload a Build Artifact
