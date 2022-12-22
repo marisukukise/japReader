@@ -64,5 +64,5 @@ jobs:
             make/rpm/x64/*.rpm
             make/zip/linux/x64/*.zip
             make/squirrel.windows/x64/*.exe
-            japReader.apkg
+            Anki_japReader.apkg
           tag_name: ${{ inputs.tag }}
