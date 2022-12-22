@@ -37,8 +37,6 @@ const createBoxes = () => {
     app.quit();
   });
 
-  console.log(storage.getDefaultDataPath());
-
   const optionsBox = new BrowserWindow({
     width: 800,
     height: 600,
@@ -116,7 +114,7 @@ const createBoxes = () => {
       readerBox.webContents.send('refreshReader');
     });
 
-    ipcMain.on('positionReader', () => {
+    ipcMain.on('readyReader', () => {
       if (fs.existsSync(tools.dirname_path('./boxes/reader/box_size.json'))) {
         const data = JSON.parse(
           fs.readFileSync(tools.dirname_path('./boxes/reader/box_size.json'), {
@@ -203,7 +201,7 @@ const createBoxes = () => {
       dictBox.webContents.send('receiveTranslation', englishText);
     });
 
-    ipcMain.on('positionDict', () => {
+    ipcMain.on('readyDict', () => {
       if (fs.existsSync(tools.dirname_path('./boxes/dict/box_size.json'))) {
         const data = JSON.parse(
           fs.readFileSync(tools.dirname_path('./boxes/dict/box_size.json'), {
@@ -291,7 +289,7 @@ const createBoxes = () => {
       translationBox.webContents.send('translateNotification');
     });
 
-    ipcMain.on('positionTranslation', () => {
+    ipcMain.on('readyTranslation', () => {
       if (fs.existsSync(tools.dirname_path('./boxes/translation/box_size.json'))) {
         const data = JSON.parse(
           fs.readFileSync(tools.dirname_path('./boxes/translation/box_size.json'), {
