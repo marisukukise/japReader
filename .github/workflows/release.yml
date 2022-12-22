@@ -31,6 +31,7 @@ jobs:
       - name: Install npm packages
         run: sudo npm ci
       - name: Install dpkg and fakeroot
+        if: ${{ matrix.os }} == 'ubuntu-latest'
         run: |
           sudo apt-get update -y
           sudo apt-get install -y dpkg fakeroot
