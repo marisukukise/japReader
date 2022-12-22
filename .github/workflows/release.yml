@@ -12,12 +12,9 @@ on:
         required: true
 
 jobs:
-  build:
-    name: Build the repository
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+  build-ubuntu:
+    name: Build the repository on Ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
@@ -28,19 +25,43 @@ jobs:
           node-version: 18
       - name: Update npm
         run: sudo npm install -g npm
+      - name: Install electron
+        run: sudo npm install -g electron --unsafe-perm=true --allow-root
       - name: Install npm packages
         run: sudo npm ci
-      - name: Install dpkg and fakeroot
-        if: ${{ matrix.os }} == 'ubuntu-latest'
+      - name: Install dpkg, fakeroot and rpmbuild
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y dpkg fakeroot
+          sudo apt-get install -y dpkg fakeroot rpmbuild
       - name: Make
         run: sudo npm run make --if-present
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: japReader-artifacts ${{ matrix.os }}
+          name: japReader-artifacts ubuntu-latest
+          path: out/make/
+          retention-days: 1
+  build-windows:
+    name: Build the repository on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.2.0
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3.5.1
+        with:
+          cache: 'npm'
+          node-version: 18
+      - name: Update npm
+        run: npm install -g npm
+      - name: Install npm packages
+        run: npm ci
+      - name: Make
+        run: npm run make --if-present
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: japReader-artifacts windows-latest
           path: out/make/
           retention-days: 1
   release:
