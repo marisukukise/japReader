@@ -83,10 +83,12 @@ jobs:
         with:
           name: japReader-artifacts windows-latest
           path: make/
-      - run: tree .
+      - name: Get Release body from CHANGELOG.md
+        run: sed -e '/^$/,$d' CHANGELOG.md > CHANGELOG-{{ inputs.tag }}.md
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          body_path: CHANGELOG-{{ inputs.tag }}.md
           files: |
             make/deb/x64/*.deb
             make/rpm/x64/*.rpm
