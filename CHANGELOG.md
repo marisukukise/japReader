@@ -1,6 +1,7 @@
 # 1.4.3-alpha (still in development, don't use this version)
-- Changed the location of configuration files to be stored on a local path.*
-- Added the ability to change the config path in options.*
+- Changed the location of configuration files to be stored on a local path*
+- Added the ability to change the config path in options*
+- Changed the method in which windows close*
 
 # 1.4.2
 - Added release builds for Linux

@@ -18,6 +18,23 @@ const { useDeepL, deepLOnly, translationTransparent } = JSON.parse(
   })
 );
 
+const destroyBoxes = () => {
+
+}
+
+/*
+  Creates the following boxes:
+  ALWAYS:
+    clipboardBox - uses ./boxes/clipboard/*
+    optionsBox - uses ./boxes/options/*
+  IF (!UseDeepL)
+    readerBox - uses ./boxes/reader/*
+    ichiBox - uses ./boxes/ichi/*
+    dictBox - uses ./boxes/dict/*
+  IF (UseDeepL)
+    deepLBox - uses ./boxes/deepl/*
+    translationBox - uses ./boxes/translation/*
+*/
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
     width: 800,
@@ -34,7 +51,7 @@ const createBoxes = () => {
   clipboardBox.hide();
 
   clipboardBox.on('close', () => {
-    app.quit();
+    //app.quit();
   });
 
   const optionsBox = new BrowserWindow({
@@ -53,7 +70,7 @@ const createBoxes = () => {
   optionsBox.hide();
 
   optionsBox.on('close', () => {
-    app.quit();
+    //app.quit();
   });
 
   ipcMain.on('openOptions', () => {
@@ -84,10 +101,11 @@ const createBoxes = () => {
 
     readerBox.loadFile(tools.dirname_path('./boxes/reader/index.html'));
 
+
     readerBox.on('close', () => {
       const data = { bounds: readerBox.getBounds() };
       fs.writeFileSync(tools.dirname_path('./boxes/reader/box_size.json'), JSON.stringify(data));
-      app.quit();
+      //app.quit();
     });
 
     ipcMain.on('tooManyCharacters', () => {
@@ -150,7 +168,7 @@ const createBoxes = () => {
     ichiBox.hide();
 
     ichiBox.on('close', () => {
-      app.quit();
+      //app.quit();
     });
 
     ipcMain.on('clipboardChanged', (event, text) => {
@@ -176,7 +194,7 @@ const createBoxes = () => {
     dictBox.on('close', () => {
       const data = { bounds: dictBox.getBounds() };
       fs.writeFileSync(tools.dirname_path('./boxes/dict/box_size.json'), JSON.stringify(data));
-      app.quit();
+      //app.quit();
     });
 
     ipcMain.on('openDict', () => {
@@ -233,7 +251,7 @@ const createBoxes = () => {
     deepLBox.hide();
 
     deepLBox.on('close', () => {
-      app.quit();
+      //app.quit();
     });
 
     ipcMain.on('clipboardChanged', (event, text) => {
@@ -313,7 +331,7 @@ const createBoxes = () => {
     translationBox.on('close', () => {
       const data = { bounds: translationBox.getBounds() };
       fs.writeFileSync(tools.dirname_path('./boxes/translation/box_size.json'), JSON.stringify(data));
-      app.quit();
+      //app.quit();
     });
   }
 };
@@ -346,6 +364,6 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    //app.quit();
   }
 });
