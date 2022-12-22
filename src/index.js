@@ -18,10 +18,6 @@ const { useDeepL, deepLOnly, translationTransparent } = JSON.parse(
   })
 );
 
-const destroyBoxes = () => {
-
-}
-
 /*
   Creates the following boxes:
   ALWAYS:
@@ -50,7 +46,9 @@ const createBoxes = () => {
 
   clipboardBox.hide();
 
-  clipboardBox.on('close', () => {
+  clipboardBox.on('close', (e) => {
+    e.preventDefault();
+    clipboardBox.hide();
   });
 
   const optionsBox = new BrowserWindow({
@@ -68,7 +66,9 @@ const createBoxes = () => {
 
   optionsBox.hide();
 
-  optionsBox.on('close', () => {
+  optionsBox.on('close', (e) => {
+    e.preventDefault();
+    optionsBox.hide();
   });
 
   ipcMain.on('openOptions', () => {
@@ -82,7 +82,7 @@ const createBoxes = () => {
 
   ipcMain.on('restartProgram', () => {
     app.relaunch();
-    app.quit();
+    app.exit();
   });
 
   if (!deepLOnly) {
@@ -177,7 +177,9 @@ const createBoxes = () => {
 
     ichiBox.hide();
 
-    ichiBox.on('close', () => {
+    ichiBox.on('close', (e) => {
+      e.preventDefault();
+      ichiBox.hide();
     });
 
     ipcMain.on('clipboardChanged', (event, text) => {
@@ -200,8 +202,9 @@ const createBoxes = () => {
 
     dictBox.hide();
 
-    dictBox.on('close', () => {
-      const data = { bounds: dictBox.getBounds() };
+    dictBox.on('close', (e) => {
+      e.preventDefault();
+      dictBox.hide();
       fs.writeFileSync(tools.dirname_path('./boxes/dict/box_size.json'), JSON.stringify(data));
     });
 
@@ -258,7 +261,9 @@ const createBoxes = () => {
 
     deepLBox.hide();
 
-    deepLBox.on('close', () => {
+    deepLBox.on('close', (e) => {
+      e.preventDefault();
+      deepLBox.hide();
     });
 
     ipcMain.on('clipboardChanged', (event, text) => {
@@ -335,9 +340,9 @@ const createBoxes = () => {
       translationBox.webContents.send('deepLConnectionError');
     });
 
-    translationBox.on('close', () => {
-      const data = { bounds: translationBox.getBounds() };
-      fs.writeFileSync(tools.dirname_path('./boxes/translation/box_size.json'), JSON.stringify(data));
+    translationBox.on('close', (e) => {
+      e.preventDefault();
+      translationBox.hide();
     });
   }
 };
