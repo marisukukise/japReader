@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   var onTop = false;
 
-  ipcRenderer.send('positionDict');
+  ipcRenderer.send('readyDict');
 
   const { dictFontSize, showGoal, darkMode } = JSON.parse(
     fs.readFileSync(tools.dirname_path('./data/options.json'), {

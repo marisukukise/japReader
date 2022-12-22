@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let ichiConnected = false;
   let onTop = false;
 
-  ipcRenderer.send('positionReader');
+  ipcRenderer.send('readyReader');
 
   const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = JSON.parse(
     fs.readFileSync(tools.dirname_path('./data/options.json'), {

@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let onTop = false;
   let showBorders = true;
 
-  ipcRenderer.send('positionTranslation');
+  ipcRenderer.send('readyTranslation');
 
   const { translationFontSize, translationTransparent, darkMode } = JSON.parse(
     fs.readFileSync(tools.dirname_path('./data/options.json'), {
