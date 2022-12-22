@@ -1,6 +1,6 @@
 require('module-alias/register')
 
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
 const fs = require('fs');
 const storage = require('electron-json-storage');
 const tools = require('@tools');
@@ -102,10 +102,22 @@ const createBoxes = () => {
     readerBox.loadFile(tools.dirname_path('./boxes/reader/index.html'));
 
 
-    readerBox.on('close', () => {
-      const data = { bounds: readerBox.getBounds() };
-      fs.writeFileSync(tools.dirname_path('./boxes/reader/box_size.json'), JSON.stringify(data));
-      //app.quit();
+    readerBox.on('close', (e) => {
+      const choice = dialog.showMessageBoxSync(readerBox,
+        {
+          type: 'question',
+          buttons: ['Yes', 'No'],
+          title: 'Confirm',
+          message: 'Are you sure you want to quit?'
+        });
+      if (choice == 1) {
+        e.preventDefault();
+      }
+      else {
+        const data = { bounds: readerBox.getBounds() };
+        fs.writeFileSync(tools.dirname_path('./boxes/reader/box_size.json'), JSON.stringify(data));
+        app.exit();
+      }
     });
 
     ipcMain.on('tooManyCharacters', () => {
