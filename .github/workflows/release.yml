@@ -31,8 +31,9 @@ jobs:
       - name: Install npm packages
         run: sudo npm ci
       - name: Install dpkg and fakeroot
-        run: sudo apt-get update -y
-        run: sudo apt-get install -y dpkg fakeroot
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y dpkg fakeroot
       - name: Make
         run: sudo npm run make --if-present
       - name: Upload a Build Artifact
