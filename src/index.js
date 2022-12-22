@@ -1,9 +1,10 @@
 require('module-alias/register')
 
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
-const fs = require('fs');
-const storage = require('electron-json-storage');
 const tools = require('@tools');
+const fs = require('fs');
+const Store = require('electron-store')
+const store = new Store();
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -11,12 +12,9 @@ let readerOnTop = false;
 let translationOnTop = false;
 let dictOnTop = false;
 
-const { useDeepL, deepLOnly, translationTransparent } = JSON.parse(
-  fs.readFileSync(tools.dirname_path('./data/options.json'), {
-    encoding: 'utf8',
-    flag: 'r',
-  })
-);
+
+
+const { useDeepL, deepLOnly, translationTransparent } = store.get('options');
 
 /*
   Creates the following boxes:
@@ -112,8 +110,8 @@ const createBoxes = () => {
         e.preventDefault();
       }
       else {
-        const data = { bounds: readerBox.getBounds() };
-        fs.writeFileSync(tools.dirname_path('./boxes/reader/box_size.json'), JSON.stringify(data));
+        const data = { bounds: readerBox.getNormalBounds() };
+        store.set('window-settings.reader', data)
         app.exit();
       }
     });
@@ -143,13 +141,8 @@ const createBoxes = () => {
     });
 
     ipcMain.on('readyReader', () => {
-      if (fs.existsSync(tools.dirname_path('./boxes/reader/box_size.json'))) {
-        const data = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./boxes/reader/box_size.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          })
-        );
+      if (store.has('window-settings.reader')) {
+        const data = store.get('window-settings.reader');
         readerBox.setSize(data.bounds.width, data.bounds.height);
         readerBox.setPosition(data.bounds.x, data.bounds.y);
       }

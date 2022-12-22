@@ -18,8 +18,8 @@
   "dependencies": {
     "clipboard-event": "^1.6.0",
     "date-and-time": "^2.4.1",
-    "electron-json-storage": "^4.6.0",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.1.0",
     "fs": "^0.0.1-security",
     "furigana": "^0.19.3",
     "jquery": "^3.6.0",
