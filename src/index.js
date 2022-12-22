@@ -51,7 +51,6 @@ const createBoxes = () => {
   clipboardBox.hide();
 
   clipboardBox.on('close', () => {
-    //app.quit();
   });
 
   const optionsBox = new BrowserWindow({
@@ -70,7 +69,6 @@ const createBoxes = () => {
   optionsBox.hide();
 
   optionsBox.on('close', () => {
-    //app.quit();
   });
 
   ipcMain.on('openOptions', () => {
@@ -92,7 +90,7 @@ const createBoxes = () => {
       width: 800,
       height: 200,
       frame: true,
-      autoHideMenuBar: true,
+      autoHideMenuBar: false,
       webPreferences: {
         preload: tools.dirname_path('./boxes/reader/script.js'),
         nodeIntegration: true,
@@ -180,7 +178,6 @@ const createBoxes = () => {
     ichiBox.hide();
 
     ichiBox.on('close', () => {
-      //app.quit();
     });
 
     ipcMain.on('clipboardChanged', (event, text) => {
@@ -206,7 +203,6 @@ const createBoxes = () => {
     dictBox.on('close', () => {
       const data = { bounds: dictBox.getBounds() };
       fs.writeFileSync(tools.dirname_path('./boxes/dict/box_size.json'), JSON.stringify(data));
-      //app.quit();
     });
 
     ipcMain.on('openDict', () => {
@@ -263,7 +259,6 @@ const createBoxes = () => {
     deepLBox.hide();
 
     deepLBox.on('close', () => {
-      //app.quit();
     });
 
     ipcMain.on('clipboardChanged', (event, text) => {
@@ -343,7 +338,6 @@ const createBoxes = () => {
     translationBox.on('close', () => {
       const data = { bounds: translationBox.getBounds() };
       fs.writeFileSync(tools.dirname_path('./boxes/translation/box_size.json'), JSON.stringify(data));
-      //app.quit();
     });
   }
 };
@@ -376,6 +370,6 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    //app.quit();
+    app.quit();
   }
 });
