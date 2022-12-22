@@ -1,8 +1,11 @@
 require('module-alias/register')
 
 const { ipcRenderer } = require('electron');
-const fs = require('fs');
 const tools = require('@tools');
+
+const Store = require('electron-store')
+const store = new Store();
+
 
 let optionsData = {};
 
@@ -21,12 +24,8 @@ window.addEventListener('DOMContentLoaded', () => {
     return true;
   });
 
-  optionsData = JSON.parse(
-    fs.readFileSync(tools.dirname_path('./data/options.json'), {
-      encoding: 'utf8',
-      flag: 'r',
-    })
-  );
+  optionsData = store.has('options') ? store.get('options') : {}
+
   if (optionsData.darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
@@ -201,7 +200,7 @@ window.addEventListener('DOMContentLoaded', () => {
     optionsData.translationFontSize = translationFontSize;
     optionsData.dictFontSize = dictFontSize;
 
-    fs.writeFileSync(tools.dirname_path('./data/options.json'), JSON.stringify(optionsData));
+    store.set('options', optionsData);
 
     ipcRenderer.send('restartProgram');
   });
