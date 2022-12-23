@@ -15,77 +15,88 @@
 <body>
   <main id="app">
     <h1>Options Menu</h1>
-    <h2>Change the options as you see fit, then click Apply down below.</h2>
+    <h2>Press Apply down below to save options.</h2>
     <h3>The program will be restarted. All your progress will be saved.</h3>
-    <h3>Press【Escape】to close this window.</h3>
 
-    <hr>
+    <div id="options">
+      <fieldset id="general">
+        <legend>General</legend>
+        <section id="darkMode-selection" class="option">
+          <input type="checkbox" id="darkMode" name="darkMode">
+          <label for="darkMode">Dark mode</label>
+        </section>
+      </fieldset>
 
-    <section id="darkMode-selection" class="option">
-      <input type="checkbox" id="darkMode" name="darkMode">
-      <label for="darkMode">Dark mode</label>
-    </section>
+      <fieldset id="translation">
+        <legend>Translation window</legend>
+        <section id="useDeepL-selection" class="option">
+          <input type="checkbox" id="useDeepL" name="useDeepL">
+          <label for="useDeepL">Use DeepL translation</label>
+        </section>
 
-    <section id="useDeepL-selection" class="option">
-      <input type="checkbox" id="useDeepL" name="useDeepL">
-      <label for="useDeepL">Use DeepL translation</label>
-    </section>
+        <section id="deepLDual-selection" class="option">
+          <input type="checkbox" id="deepLDual" name="deepLDual">
+          <label for="deepLDual">Japanese text in addition to English text in DeepL translation</label>
+        </section>
 
-    <section id="deepLOnly-selection" class="option">
-      <input type="checkbox" id="deepLOnly" name="deepLOnly">
-      <label for="deepLOnly">DeepL tranlation only (~?disables Japanese reader)</label>
-    </section>
+        <section id="fadeText-selection" class="option">
+          <input type="checkbox" id="fadeText" name="fadeText">
+          <label for="fadeText">Fade out the translation text if the sentence is i+1 or i+0</label>
+        </section>
 
-    <section id="deepLDual-selection" class="option">
-      <input type="checkbox" id="deepLDual" name="deepLDual">
-      <label for="deepLDual">Japanese text in addition to English text in DeepL translation</label>
-    </section>
+        <section id="translationTransparent-selection" class="option">
+          <input type="checkbox" id="translationTransparent" name="translationTransparent">
+          <label for="translationTransparent">Transparent translation window</label>
+        </section>
 
-    <section id="fadeText-selection" class="option">
-      <input type="checkbox" id="fadeText" name="fadeText">
-      <label for="fadeText">Fade out the translation text if the sentence is i+1 or i+0</label>
-    </section>
+        <section id="translationFontSize-selection" class="option">
+          <input type="number" id="translationFontSize" name="translationFontSize">
+          <label for="translationFontSize">Set translation font size</label>
+        </section>
+      </fieldset>
 
-    <section id="addFurigana-selection" class="option">
-      <input type="checkbox" id="addFurigana" name="addFurigana">
-      <label for="addFurigana">Furigana</label>
-    </section>
+      <fieldset id="reader">
+        <section id="useReader-selection" class="option">
+          <input type="checkbox" id="useReader" name="useReader">
+          <label for="useReader">Use Japanese reader</label>
+        </section>
 
-    <section id="tvMode-selection" class="option">
-      <input type="checkbox" id="tvMode" name="tvMode">
-      <label for="tvMode">Center text</label>
-    </section>
+        <legend>Reader window</legend>
+        <section id="addFurigana-selection" class="option">
+          <input type="checkbox" id="addFurigana" name="addFurigana">
+          <label for="addFurigana">Furigana</label>
+        </section>
 
-    <section id="translationTransparent-selection" class="option">
-      <input type="checkbox" id="translationTransparent" name="translationTransparent">
-      <label for="translationTransparent">Transparent translation window</label>
-    </section>
+        <section id="tvMode-selection" class="option">
+          <input type="checkbox" id="tvMode" name="tvMode">
+          <label for="tvMode">Center text</label>
+        </section>
+
+        <section id="showGoal-selection" class="option">
+          <input type="checkbox" id="showGoal" name="showGoal">
+          <label for="showGoal">Show daily goal (seen words)</label>
+        </section>
+
+        <section id="dailyGoal-selection" class="option">
+          <input type="number" id="dailyGoal" name="dailyGoal">
+          <label for="dailyGoal">Set daily goal</label>
+        </section>
 
 
-    <section id="showGoal-selection" class="option">
-      <input type="checkbox" id="showGoal" name="showGoal">
-      <label for="showGoal">Show daily goal (seen words)</label>
-    </section>
+        <section id="readerFontSize-selection" class="option">
+          <input type="number" id="readerFontSize" name="readerFontSize">
+          <label for="readerFontSize">Set reader font size</label>
+        </section>
+      </fieldset>
 
-    <section id="dailyGoal-selection" class="option">
-      <input type="number" id="dailyGoal" name="dailyGoal">
-      <label for="dailyGoal">Set daily goal</label>
-    </section>
-
-    <section id="readerFontSize-selection" class="option">
-      <input type="number" id="readerFontSize" name="readerFontSize">
-      <label for="readerFontSize">Set reader font size</label>
-    </section>
-
-    <section id="translationFontSize-selection" class="option">
-      <input type="number" id="translationFontSize" name="translationFontSize">
-      <label for="translationFontSize">Set translation font size</label>
-    </section>
-
-    <section id="dictFontSize-selection" class="option">
-      <input type="number" id="dictFontSize" name="dictFontSize">
-      <label for="dictFontSize">Set dictionary font size</label>
-    </section>
+      <fieldset id="dictionary">
+        <legend>Dictionary window</legend>
+        <section id="dictFontSize-selection" class="option">
+          <input type="number" id="dictFontSize" name="dictFontSize">
+          <label for="dictFontSize">Set dictionary font size</label>
+        </section>
+      </fieldset>
+    </div>
 
     <section id="apply" class="option">
       <div class="apply btn">Apply</div>

@@ -28,7 +28,7 @@ function createWindow(windowName, windowConfig) {
   return mainWindow;
 }
 
-const { useDeepL, deepLOnly, translationTransparent } = USER_SETTINGS.get('options');
+const { useDeepL, useReader, translationTransparent } = USER_SETTINGS.get('options');
 console.log(USER_SETTINGS.get('options'));
 
 /*
@@ -36,7 +36,7 @@ console.log(USER_SETTINGS.get('options'));
   ALWAYS:
     clipboardBox - uses ./boxes/clipboard/*
     optionsBox - uses ./boxes/options/*
-  IF (!deepLOnly)
+  IF (useReader)
     readerBox - uses ./boxes/reader/*
     ichiBox - uses ./boxes/ichi/*
     dictBox - uses ./boxes/dict/*
@@ -98,7 +98,7 @@ const createBoxes = () => {
     app.exit();
   });
 
-  if (!deepLOnly) {
+  if (useReader) {
     const readerBox = createWindow("reader", {
       width: 800,
       height: 200,
@@ -324,10 +324,33 @@ const createBoxes = () => {
       translationBox.webContents.send('deepLConnectionError');
     });
 
-    translationBox.on('close', (e) => {
-      e.preventDefault();
-      translationBox.hide();
-    });
+    if (!useReader) {
+      translationBox.on('close', (e) => {
+        const choice = dialog.showMessageBoxSync(translationBox,
+          {
+            type: 'question',
+            buttons: ['Yes', 'No'],
+            title: 'Confirm',
+            message: 'Are you sure you want to quit?'
+          });
+        if (choice == 1) {
+          e.preventDefault();
+        }
+        else {
+          BrowserWindow.getAllWindows().filter(win => win.id != translationBox.id)
+            .forEach(win => {
+              win.close()
+            })
+          app.exit();
+        }
+      });
+    }
+    else {
+      translationBox.on('close', (e) => {
+        e.preventDefault();
+        translationBox.hide();
+      });
+    }
   }
 };
 
