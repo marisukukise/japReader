@@ -58,7 +58,8 @@ If none of the above works, you can try [Building](#Build) the program yourself.
 > on other distributions. If this is the case, you should go to the install directory of japreader
 > (you can check the location using `whereis japreader`), and then run the command
 > `sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux`
-> in the app's directory. This should be automatically set, but maybe for some reason it isn't.
+> in the app's directory. It is a C program reading clipboard, and it needs execution permissions. 
+> This should be automatically set, but maybe for some reason it isn't.
 > Then you will be able to run a program that monitors change in your clipboard.
 > If you did this and it still doesn't work, please open an issue.
 
@@ -112,7 +113,7 @@ In the Reader window you can quickly change the status of a word with mouse butt
 
 
 ## How do I read LNs/Ebooks with this?
-1.  Open your LN/Ebook
+1.  Open your LN/Ebook (I can recommend https://reader.ttsu.app/)
 2.  Open japReader
 3.  If you can, highlight and copy a few sentences from the LN/Ebook
 
