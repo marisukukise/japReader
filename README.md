@@ -4,21 +4,21 @@
 ------------------
 
 ###### Version 1.2 created by [seth-js](https://github.com/seth-js)
-###### Versions 1.3+ (this repo) forked by [marisukukise](https://github.com/marisukukise)
+###### Versions 1.3+ (this repo) forked and maintained by [marisukukise](https://github.com/marisukukise)
 
 ------------------
 
-# Examples
+## Examples
 ![Example screenshot #1](images/example1.png)  
 ![Example screenshot #2](images/example2.png)
 
 ------------------
 
-# Currently Supported
+## Currently Supported
 VNs, LNs, TV Shows/Movies
 
 
-# Features
+## Features
 * Parser and dictionary from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana)
 * Word status tracking
 * DeepL translations (no bullshit limits)
@@ -26,7 +26,7 @@ VNs, LNs, TV Shows/Movies
 * Furigana support
 
 
-# How does this work?
+## How does this work?
 * It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
 * The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
 * The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
@@ -34,45 +34,67 @@ VNs, LNs, TV Shows/Movies
 ------------------
 
 # Installation
-1. Download and run the [latest release](https://github.com/marisukukise/japReader/releases/latest)
+## Windows
+1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
+2. Download a file like `japreader-x.y.z.Setup.exe`
+3. Run it. The .exe is not signed, so there might be some warnings. 
 
-The .exe is not signed, so there might be some warnings. 
+Alternatively, if you don't want to install, you can download the .zip package:
+1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
+2. Download a file like `japreader-win32-x64-x.y.z.zip`
+3. Extract it and run with `japreader.exe`
 
-If you want to build the .exe yourself, go to [Build](#Build)
 
+## Linux
+1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
+2. Download a file matching your distribution
+3. Install the file using your package manager and sudo version
+If there is no package available for your distribution, you may try 
+downloading the `japreader-linux-x64-x.y.z.zip` file and running `./japreader`,
+however it's less reliable (it didn't work for me on Fedora Linux, but .rpm package does)
+If none of the above works, you can try [Building](#Build) the program yourself.
+> **_NOTE:_** It may happen that your clipboard reading will not work on Linux
+> I did fix it and it works for me fresh out of install right now, but maybe it will be different
+> on other distributions. If this is the case, you should go to the install directory of japreader
+> (you can check the location using `whereis japreader`), and then run the command
+> `sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux`
+> in the app's directory. This should be automatically set, but maybe for some reason it isn't.
+> Then you will be able to run a program that monitors change in your clipboard.
+> If you did this and it still doesn't work, please open an issue.
 
 # Build
 1. Download [node.js](https://nodejs.org/en/download/)
 2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
 3. Navigate into it `cd japReader`
 4. Install dependencies `npm i`
-5. Build files `npm run make`
-6. The files will be output in `out/make/<your_platform>/x64` folder
+5. If you're on Linux, run `sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux`, 
+   if you're on Windows ignore this point
+6. Build files `npm run make`
+7. The files will be output in `out/make/<your_platform>/x64` folder
 
-If you want to run this without installing, in point 5. of [Build](#Build) you can instead run the program using `npm start`
+If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
 
+# Local data
 
+Local data with configurations is stored in:
+
+* `%APPDATA%` on Windows
+* `$XDG_CONFIG_HOME` or `~/.config` on Linux
+* `~/Library/Application Support` on macOS
 ------------------
 
-# Keybindings
-`O` - Open Options Menu 
+## Keybindings
+- `O` Open Options Menu 
+- `S` Toggle Stay On Top  
+- `H` (in Translation Window) Toggle Transparent Translation Window
+- `A` (in Dictionary) Play Audio  
+- `Q` (in Dictionary) Add to Anki  
 
-`S` - Toggle Stay On Top  
-
-`H` - (in Translation Window) Toggle Transparent Translation Window
-
-`A` - (in Dictionary) Play Audio  
-
-`Q` - (in Dictionary) Add to Anki  
-
-# Mouse buttons
-In Reader you can quickly change the status of a word with mouse buttons:
-
-`LMB` - set to Seen
-
-`RMB` - set to Known
-
-`Ctrl+LMB` - set to Ignored
+## Mouse buttons
+In the Reader window you can quickly change the status of a word with mouse buttons:
+- `LMB` set to Seen
+- `RMB` set to Known
+- `Ctrl+LMB` set to Ignored
 
 ------------------
 
@@ -110,14 +132,15 @@ In Reader you can quickly change the status of a word with mouse buttons:
 1.  Install [Anki](https://apps.ankiweb.net/)
 2.  Install the [AnkiConnect
     addon](https://ankiweb.net/shared/info/2055492159)
-3.  Open `japReader.apkg`
+3.  Download [`Anki_japReader.apkg`](https://github.com/marisukukise/japReader/releases/latest) 
+    and open it
 4.  Ensure that the deck is named `japReader`
 5.  Click `Add to Anki` in the Dictionary window, and card data should
     be generated for the `japReader` Anki deck
 
 ------------------
 
-# FAQ
+## FAQ
 Q: Why does the text \"i+1\" keep showing?  
 A: When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
 
