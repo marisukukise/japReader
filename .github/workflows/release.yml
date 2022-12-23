@@ -41,7 +41,7 @@ jobs:
         run: export NODE_ENV=production
       - name: Make
         run: sudo npm run make --if-present
-      - run: tree .
+      - run: sudo tree . -I 'node_modules|japreader-linux-x64'
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
