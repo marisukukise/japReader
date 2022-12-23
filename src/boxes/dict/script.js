@@ -4,6 +4,11 @@ const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const date = require('date-and-time');
 const tools = require('@tools');
+const Store = require('electron-store')
+const USER_SETTINGS = new Store({
+  name: "user_settings",
+  defaults: tools.getDefaultUserSettings()
+})
 
 let currentWordData = {};
 let currentEnglishText = '';
