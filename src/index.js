@@ -9,23 +9,7 @@ const WINDOW_SETTINGS = new Store({
 });
 const USER_SETTINGS = new Store({
   name: "user_settings",
-  defaults: {
-    "options": {
-      "darkMode": false,
-      "useDeepL": true,
-      "deepLDual": true,
-      "deepLOnly": false,
-      "fadeText": true,
-      "addFurigana": true,
-      "showGoal": true,
-      "dailyGoal": 30,
-      "tvMode": false,
-      "translationTransparent": true,
-      "readerFontSize": 25,
-      "translationFontSize": 13,
-      "dictFontSize": 17
-    }
-  }
+  defaults: tools.getDefaultUserSettings()
 })
 
 if (require('electron-squirrel-startup')) return app.quit();
@@ -50,6 +34,7 @@ function createWindow(windowName, windowConfig) {
 }
 
 const { useDeepL, deepLOnly, translationTransparent } = USER_SETTINGS.get('options');
+console.log(USER_SETTINGS.get('options'));
 
 /*
   Creates the following boxes:
@@ -84,7 +69,7 @@ const createBoxes = () => {
     clipboardBox.hide();
   });
 
-  const optionsBox = new BrowserWindow({
+  const optionsBox = createWindow("options", {
     width: 800,
     height: 600,
     frame: true,
@@ -145,6 +130,10 @@ const createBoxes = () => {
         e.preventDefault();
       }
       else {
+        BrowserWindow.getAllWindows().filter(win => win.id != readerBox.id)
+          .forEach(win => {
+            win.close()
+          })
         app.exit();
       }
     });
@@ -208,7 +197,7 @@ const createBoxes = () => {
     });
 
 
-    const dictBox = new BrowserWindow({
+    const dictBox = createWindow("dict", {
       width: 400,
       height: 600,
       frame: true,
@@ -226,7 +215,6 @@ const createBoxes = () => {
     dictBox.on('close', (e) => {
       e.preventDefault();
       dictBox.hide();
-      fs.writeFileSync(tools.dirname_path('./boxes/dict/box_size.json'), JSON.stringify(data));
     });
 
     ipcMain.on('openDict', () => {
@@ -252,16 +240,6 @@ const createBoxes = () => {
     });
 
     ipcMain.on('readyDict', () => {
-      if (fs.existsSync(tools.dirname_path('./boxes/dict/box_size.json'))) {
-        const data = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./boxes/dict/box_size.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          })
-        );
-        dictBox.setSize(data.bounds.width, data.bounds.height);
-        dictBox.setPosition(data.bounds.x, data.bounds.y);
-      }
     });
   }
 
@@ -292,7 +270,7 @@ const createBoxes = () => {
     });
 
 
-    const translationBox = new BrowserWindow({
+    const translationBox = createWindow("translation", {
       width: 800,
       height: 200,
       frame: false,
@@ -341,16 +319,6 @@ const createBoxes = () => {
     });
 
     ipcMain.on('readyTranslation', () => {
-      if (fs.existsSync(tools.dirname_path('./boxes/translation/box_size.json'))) {
-        const data = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./boxes/translation/box_size.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          })
-        );
-        translationBox.setSize(data.bounds.width, data.bounds.height);
-        translationBox.setPosition(data.bounds.x, data.bounds.y);
-      }
     });
 
     ipcMain.on('deepLConnected', () => {

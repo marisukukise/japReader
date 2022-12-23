@@ -1,4 +1,21 @@
 const path = require('path');
+const defaultUserSettings = {
+    "options": {
+        "darkMode": false,
+        "useDeepL": true,
+        "deepLDual": true,
+        "deepLOnly": false,
+        "fadeText": true,
+        "addFurigana": true,
+        "showGoal": true,
+        "dailyGoal": 30,
+        "tvMode": false,
+        "translationTransparent": true,
+        "readerFontSize": 25,
+        "translationFontSize": 13,
+        "dictFontSize": 17
+    }
+}
 
 let ___stayTimer;
 module.exports = {
@@ -29,5 +46,6 @@ module.exports = {
             }, 1000);
         }
         return onTop;
-    }
+    },
+    getDefaultUserSettings: function () { return defaultUserSettings; }
 }
