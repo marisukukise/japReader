@@ -6,14 +6,17 @@ const log = require('electron-log')
 const getCurrentLine = require('get-current-line')
 
 const logFormat = '{level} | {y}-{m}-{d} {h}:{i}:{s}.{ms} | {text}';
+log.transports.console.format = logFormat;
+log.transports.file.format = logFormat;
 if (process.env.NODE_ENV === 'production') {
-  log.transports.file.level = false;
-  log.transports.console.level = false;
-} else {
+  log.transports.file.level = 'error';
+  log.transports.console.level = 'error';
+} else if (process.env.NODE_ENV === 'production') {
   log.transports.console.level = 'debug';
-  log.transports.console.format = logFormat;
   log.transports.file.level = 'debug';
-  log.transports.file.format = logFormat;
+} else {
+  log.transports.console.level = 'warn';
+  log.transports.file.level = 'warn';
 }
 
 const Store = require('electron-store')
