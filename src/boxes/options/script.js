@@ -4,6 +4,29 @@ const tools = require('@tools');
 const Store = require('electron-store')
 const USER_SETTINGS = new Store(tools.getUserStoreOptions());
 
+const handleCheckbox = (checkbox, enable_query, disable_query) => {
+  const enable_inputs = document.querySelectorAll(enable_query)
+  const disable_inputs = document.querySelectorAll(disable_query)
+  enable_inputs.forEach(input => {
+    input.disabled = !checkbox.checked;
+  })
+  disable_inputs.forEach(input => {
+    input.disabled = checkbox.checked;
+  })
+}
+
+const setOnReadyAndOnClickListener = (checkbox, enable_query, disable_query) => {
+  handleCheckbox(checkbox, enable_query, disable_query)
+  checkbox.addEventListener('click', () => { handleCheckbox(checkbox, enable_query, disable_query) });
+}
+
+const handleOptionConflicts = () => {
+  setOnReadyAndOnClickListener(document.querySelector('#useDeepL'),
+    '#translation input:not(#useDeepL), #reader input#useReader', null)
+  setOnReadyAndOnClickListener(document.querySelector('#useReader'),
+    '#reader input:not(#useReader), #translation input#useDeepL, #dictionary input', null)
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
   const $ = require('jquery');
@@ -35,22 +58,22 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  let newOptionsData = {}
+  handleOptionConflicts();
 
   document.querySelector('.apply.btn').addEventListener('click', () => {
     Object.entries(optionsData).forEach(([key, value]) => {
       switch (typeof value) {
         case 'boolean':
-          newOptionsData[key] = document.querySelector(`#${key}`).checked;
+          optionsData[key] = document.querySelector(`#${key}`).checked;
           break;
         case 'number':
-          newOptionsData[key] = document.querySelector(`#${key}`).value;
+          optionsData[key] = parseInt(document.querySelector(`#${key}`).value);
           break;
         default:
       }
     });
 
-    USER_SETTINGS.set('options', newOptionsData);
+    USER_SETTINGS.set('options', optionsData);
 
     ipcRenderer.send('restartProgram');
   });

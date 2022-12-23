@@ -1,30 +1,42 @@
 const path = require('path');
 const moment = require('moment');
-const defaultUserSettings = {
-    "options": {
-        "darkMode": false,
-        "useDeepL": true,
-        "deepLDual": true,
-        "deepLOnly": false,
-        "fadeText": true,
-        "addFurigana": true,
-        "showGoal": true,
-        "dailyGoal": 30,
-        "tvMode": false,
-        "translationTransparent": true,
-        "readerFontSize": 25,
-        "translationFontSize": 13,
-        "dictFontSize": 17
+const schemaUserSettings = {
+    options: {
+        type: "object",
+        properties: {
+            darkMode: { default: false, type: "boolean" },
+            useDeepL: { default: true, type: "boolean" },
+            deepLDual: { default: true, type: "boolean" },
+            useReader: { default: true, type: "boolean" },
+            fadeText: { default: true, type: "boolean" },
+            addFurigana: { default: true, type: "boolean" },
+            showGoal: { default: true, type: "boolean" },
+            dailyGoal: { default: 30, type: "number" },
+            tvMode: { default: false, type: "boolean" },
+            translationTransparent: { default: true, type: "boolean" },
+            readerFontSize: { default: 25, type: "number" },
+            translationFontSize: { default: 13, type: "number" },
+            dictFontSize: { default: 17, type: "number" },
+        },
+        default: {}
     },
-    "goal_data": {
-        "date": moment().format("YYYY-MM-DD"),
-        "streakCount": 0,
-        "goalCount": 0
+    goal_data: {
+        type: "object",
+        properties: {
+            date: { default: moment().format("YYYY-MM-DD"), type: "string" },
+            streakCount: { default: 0, type: "number" },
+            goalCount: { default: 0, type: "number" },
+        },
+        default: {}
     },
-    "status_data": {
-        "seen": [],
-        "known": [],
-        "ignored": []
+    status_data: {
+        type: "object",
+        properties: {
+            seen: { default: [], type: "array" },
+            known: { default: [], type: "array" },
+            ignored: { default: [], type: "array" },
+        },
+        default: {}
     }
 }
 
@@ -34,8 +46,8 @@ const windowStoreOptions = {
 }
 
 const userStoreOptions = {
+    schema: schemaUserSettings,
     name: "user_settings",
-    defaults: defaultUserSettings,
     clearInvalidConfig: true,
 }
 

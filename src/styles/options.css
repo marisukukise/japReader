@@ -2,29 +2,31 @@ html {
   text-align: center;
 }
 
+#options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto;
+  gap: 1em;
+  padding: 3em;
+}
+
+fieldset {
+  text-align: left;
+  padding: 0.75em;
+}
+
 section {
   padding: 0.5em;
   display: flex;
-  flex-direction: column;
   gap: 1em;
   align-items: center;
-}
-
-section:nth-child(even) {
-  margin-left: 10%;
-}
-
-section:nth-child(odd) {
-  margin-right: 10%;
 }
 
 
 section#apply {
   margin: 0;
-}
-
-.option {
-  margin-bottom: 2em;
 }
 
 .btn {
