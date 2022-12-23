@@ -33,9 +33,10 @@ const handleOptionConflicts = () => {
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
   const $ = require('jquery');
-  $(window).on('keyup', (e) => {
+  $(window).on('keydown', (e) => {
     switch (e.key) {
       case 'Escape':
+        ipcRenderer.send('hideOptions')
         break;
     }
     return true;

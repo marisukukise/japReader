@@ -1,5 +1,6 @@
 # 1.5.1
 - Added a continuous clipboard listening for Linux (and maybe Mac, I can't test myself)
+- Fixed a bug which caused dictionary window to disappear when clipboard contents changed
 - Updated from Electron 20 to Electron 22
 
 # 1.5.0

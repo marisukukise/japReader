@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   document.querySelector('#app').style.fontSize = `${translationFontSize}px`;
 
-  $(window).on('keyup', (e) => {
+  $(window).on('keydown', (e) => {
     switch (e.key) {
       case 'o':
         ipcRenderer.send('openOptions');

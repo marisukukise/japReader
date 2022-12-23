@@ -3,7 +3,6 @@ require('module-alias/register')
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
 const tools = require('@tools');
 const log = require('electron-log')
-const getCurrentLine = require('get-current-line')
 
 const logFormat = '{level} | {y}-{m}-{d} {h}:{i}:{s}.{ms} | {text}';
 log.transports.console.format = logFormat;
@@ -11,7 +10,7 @@ log.transports.file.format = logFormat;
 if (process.env.NODE_ENV === 'production') {
   log.transports.file.level = 'error';
   log.transports.console.level = 'error';
-} else if (process.env.NODE_ENV === 'production') {
+} else if (process.env.NODE_ENV === 'development') {
   log.transports.console.level = 'debug';
   log.transports.file.level = 'debug';
 } else {

@@ -11,11 +11,8 @@ const Store = require('electron-store')
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
 
-
 let currentWords = [];
 let currentText = '';
-
-
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
@@ -35,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#app').style.fontSize = `${readerFontSize}px`;
 
 
-  $(window).on('keyup', (e) => {
+  $(window).on('keydown', (e) => {
     switch (e.key) {
       case 'o':
         ipcRenderer.send('openOptions');
