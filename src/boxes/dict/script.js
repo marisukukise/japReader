@@ -217,7 +217,6 @@ window.addEventListener('DOMContentLoaded', () => {
     qry_anki.classList.add('disabled');
     __anki__canAddNotes(wordData)
       .then(res => {
-        console.log("res", res);
         var canClick = res[0];
         checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Already in collection");
       })
