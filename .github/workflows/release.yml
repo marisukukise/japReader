@@ -33,10 +33,10 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y dpkg fakeroot rpm
-      - name: Provide u+x execution rights to clipboard handler script
+      - name: Provide 777 execution rights to clipboard handler script
         run: |
-          sudo chmod u+x node_modules/clipboard-event/platform/clipboard-event-handler-linux
-          sudo chmod u+x node_modules/clipboard-event/platform/clipboard-event-handler-mac
+          sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux
+          sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac
       - name: Make
         run: sudo npm run make --if-present
       - run: tree .
@@ -100,6 +100,7 @@ jobs:
             make/deb/x64/*.deb
             make/rpm/x64/*.rpm
             make/zip/linux/x64/*.zip
+            make/zip/win32/x64/*.zip
             make/squirrel.windows/x64/*.exe
             Anki_japReader.apkg
           tag_name: ${{ inputs.tag }}
