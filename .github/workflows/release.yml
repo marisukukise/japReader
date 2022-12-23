@@ -37,6 +37,8 @@ jobs:
         run: |
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac
+      - name: Set NODE_ENV to 'production'
+        run: export NODE_ENV=production
       - name: Make
         run: sudo npm run make --if-present
       - run: tree .
@@ -61,6 +63,8 @@ jobs:
         run: npm install -g npm
       - name: Install npm packages
         run: npm ci
+      - name: Set NODE_ENV to 'production'
+        run: SET NODE_ENV=production
       - name: Make
         run: npm run make --if-present
       - run: tree .

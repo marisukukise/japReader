@@ -36,7 +36,6 @@ window.addEventListener('DOMContentLoaded', () => {
   $(window).on('keyup', (e) => {
     switch (e.key) {
       case 'Escape':
-        ipcRenderer.send('hideOptions');
         break;
     }
     return true;

@@ -46,7 +46,6 @@ window.addEventListener('DOMContentLoaded', () => {
         addNote(currentWordData, btn);
         break;
       case 'Escape':
-        ipcRenderer.send('hideDict');
         break;
     }
     return true;
