@@ -211,6 +211,7 @@ const createBoxes = () => {
       },
     });
 
+
     dictBox.loadFile(tools.dirname_path('./boxes/dict/index.html'));
 
     dictBox.hide();

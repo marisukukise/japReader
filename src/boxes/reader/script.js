@@ -65,7 +65,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.on('parseNotification', () => {
     $('#app').html('Detecting words...');
-    ipcRenderer.send('hideDict');
   });
 
   ipcRenderer.on('ichiConnectionError', () => {
