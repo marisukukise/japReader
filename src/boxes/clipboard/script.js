@@ -25,14 +25,16 @@ const handleChange = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
+  // FALLBACK IF THE MODULE DOESN'T WORK
+  /*
   if (os.platform() === 'darwin') {
     setIntervalAsync(() => {
       handleChange();
     }, 500);
   } else {
-    clipboardListener.startListening();
-    clipboardListener.on('change', () => {
-      handleChange();
-    });
-  }
+  */
+  clipboardListener.startListening();
+  clipboardListener.on('change', () => {
+    handleChange();
+  });
 });

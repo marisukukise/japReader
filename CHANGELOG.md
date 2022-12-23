@@ -1,3 +1,6 @@
+# 1.5.1
+- Added a continuous clipboard listening for Linux (and maybe Mac, I can't test myself)
+
 # 1.5.0
 - Now the configuration is being stored in a local path, => shouldn't require root anymore
 - Now the program exits only on exiting the reader (other windows don't close the program)
