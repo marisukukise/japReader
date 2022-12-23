@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   document.querySelector('#app').style.fontSize = `${dictFontSize}px`;
 
-  $(window).on('keyup', (e) => {
+  $(window).on('keydown', (e) => {
     switch (e.key) {
       case 'o':
         ipcRenderer.send('openOptions');
@@ -46,6 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
         addNote(currentWordData, btn);
         break;
       case 'Escape':
+        ipcRenderer.send('hideDict');
         break;
     }
     return true;
