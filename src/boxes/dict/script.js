@@ -17,12 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyDict');
 
-  const { dictFontSize, showGoal, darkMode } = JSON.parse(
-    fs.readFileSync(tools.dirname_path('./data/options.json'), {
-      encoding: 'utf8',
-      flag: 'r',
-    })
-  );
+  const { dictFontSize, showGoal, darkMode } = USER_SETTINGS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
@@ -240,19 +235,9 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const setUpStreak = () => {
-    const goalData = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
+    const goalData = USER_SETTINGS.get('options')
 
-    const { dailyGoal } = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/options.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
+    const { dailyGoal } = USER_SETTINGS.get('options')
 
     const now = new Date();
     const dateToday = date.format(now, 'YYYY-MM-DD');
@@ -268,7 +253,7 @@ window.addEventListener('DOMContentLoaded', () => {
       goalData.goalCount = 0;
     }
 
-    fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
+    USER_SETTINGS.set('goal_data', goalData);
   };
 
   const changeStatus = (wordData, newStatus) => {

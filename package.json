@@ -24,6 +24,7 @@
     "furigana": "^0.19.3",
     "jquery": "^3.6.0",
     "module-alias": "^2.2.2",
+    "moment": "^2.29.4",
     "os": "^0.1.2",
     "path": "^0.12.7",
     "set-interval-async": "^3.0.2"
