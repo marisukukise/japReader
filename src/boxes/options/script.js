@@ -4,10 +4,9 @@ const { ipcRenderer } = require('electron');
 const tools = require('@tools');
 
 const Store = require('electron-store')
-const USER_SETTINGS = new Store({
-  name: "user_settings",
-  defaults: tools.getDefaultUserSettings()
-})
+
+const USER_SETTINGS = new Store(tools.getUserStoreOptions());
+
 
 
 let optionsData = {};
@@ -20,7 +19,6 @@ window.addEventListener('DOMContentLoaded', () => {
   $(window).on('keyup', (e) => {
     switch (e.key) {
       case 'Escape':
-        console.log("escpressed")
         ipcRenderer.send('hideOptions');
         break;
     }
