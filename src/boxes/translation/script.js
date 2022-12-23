@@ -5,6 +5,12 @@ const fs = require('fs');
 
 const tools = require('@tools');
 
+const Store = require('electron-store')
+const USER_SETTINGS = new Store({
+  name: "user_settings",
+  defaults: tools.getDefaultUserSettings()
+})
+
 let englishText = '';
 let japaneseText = '';
 
@@ -20,12 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyTranslation');
 
-  const { translationFontSize, translationTransparent, darkMode } = JSON.parse(
-    fs.readFileSync(tools.dirname_path('./data/options.json'), {
-      encoding: 'utf8',
-      flag: 'r',
-    })
-  );
+  const { translationFontSize, translationTransparent, darkMode } = USER_SETTINGS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
@@ -57,15 +58,8 @@ window.addEventListener('DOMContentLoaded', () => {
     return true;
   });
 
-  if (fs.existsSync(tools.dirname_path('./data/options.json'))) {
-    const options = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/options.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
-    deepLDual = options.deepLDual;
-  }
+  const options = USER_SETTINGS.get('options')
+  deepLDual = options.deepLDual;
 
   $('#app').html(
     'Connecting to <span class="url">https://www.deepl.com/</span>.'
