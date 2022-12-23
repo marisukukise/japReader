@@ -49,24 +49,28 @@ const schemaStatusData = {
 const windowStoreOptions = {
     name: "window_settings",
     clearInvalidConfig: true,
+    cwd: 'config',
 }
 
 const optionsStoreOptions = {
     schema: schemaOptions,
     name: "options",
     clearInvalidConfig: true,
+    cwd: 'config',
 }
 
 const goalDataStoreOptions = {
     schema: schemaGoalData,
     name: "goal_data",
     clearInvalidConfig: true,
+    cwd: 'config',
 }
 
 const statusDataStoreOptions = {
     schema: schemaStatusData,
     name: "status_data",
     clearInvalidConfig: true,
+    cwd: 'config'
 }
 
 let ___stayTimer;

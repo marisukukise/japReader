@@ -28,6 +28,9 @@
     --plusOneColor: #000000;
     --plusOneHighlight: #e83d3d;
 
+    --dangerZoneBackground: #ff000044;
+    --dangerZoneButton: #ff0000;
+
     --translationBorder: #f5c8ba;
     --translationTransparentBackground: #ffffffb0;
 }
