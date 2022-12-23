@@ -3,6 +3,9 @@ const { ipcRenderer } = require('electron');
 const tools = require('@tools');
 const Store = require('electron-store')
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
+const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
+const GOAL_DATA = new Store(tools.getGoalDataStoreOptions());
+const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
 
 const handleCheckbox = (checkbox, enable_query, disable_query) => {
   const enable_inputs = document.querySelectorAll(enable_query)
@@ -61,20 +64,84 @@ window.addEventListener('DOMContentLoaded', () => {
   handleOptionConflicts();
 
   document.querySelector('.apply.btn').addEventListener('click', () => {
-    Object.entries(optionsData).forEach(([key, value]) => {
-      switch (typeof value) {
-        case 'boolean':
-          optionsData[key] = document.querySelector(`#${key}`).checked;
-          break;
-        case 'number':
-          optionsData[key] = parseInt(document.querySelector(`#${key}`).value);
-          break;
-        default:
-      }
-    });
+    ipcRenderer.invoke('showDialog',
+      "Are you sure you want to apply settings?")
+      .then(result => {
+        if (result.response === 0) {
+          Object.entries(optionsData).forEach(([key, value]) => {
+            switch (typeof value) {
+              case 'boolean':
+                optionsData[key] = document.querySelector(`#${key}`).checked;
+                break;
+              case 'number':
+                optionsData[key] = parseInt(document.querySelector(`#${key}`).value);
+                break;
+              default:
+            }
+          });
 
-    OPTIONS.set('options', optionsData);
-
-    ipcRenderer.send('restartProgram');
+          OPTIONS.set('options', optionsData);
+          ipcRenderer.send('restartProgram');
+        }
+      });
   });
+
+  document.querySelector('.reset-window-settings.btn').addEventListener('click', () => {
+    ipcRenderer.invoke('showDialog',
+      "Are you sure you want to reset remembered window configuration to default?")
+      .then(result => {
+        if (result.response === 0) {
+          WINDOW_SETTINGS.clear();
+          ipcRenderer.send('restartProgram');
+        }
+      });
+  });
+
+  document.querySelector('.reset-goal-data.btn').addEventListener('click', () => {
+    ipcRenderer.invoke('showDialog',
+      "Are you sure you want to reset goal data (this will clear every day progress tracking)?")
+      .then(result => {
+        if (result.response === 0) {
+          GOAL_DATA.clear();
+          ipcRenderer.send('restartProgram');
+        }
+      });
+  });
+
+  document.querySelector('.reset-status-data.btn').addEventListener('click', () => {
+    ipcRenderer.invoke('showDialog',
+      "Are you sure you want to reset status data (this will clear the database of seen, known and ignored words)")
+      .then(result => {
+        if (result.response === 0) {
+          STATUS_DATA.clear();
+          ipcRenderer.send('restartProgram');
+        }
+      });
+  });
+
+  document.querySelector('.reset-options.btn').addEventListener('click', () => {
+    ipcRenderer.invoke('showDialog',
+      "Are you sure you want to reset options (all options in this menu) to default?")
+      .then(result => {
+        if (result.response === 0) {
+          OPTIONS.clear();
+          ipcRenderer.send('restartProgram');
+        }
+      });
+  });
+
+  document.querySelector('.reset-everything.btn').addEventListener('click', () => {
+    ipcRenderer.invoke('showDialog',
+      "Are you sure you want to reset ALL settings to default?")
+      .then(result => {
+        if (result.response === 0) {
+          WINDOW_SETTINGS.clear();
+          OPTIONS.clear();
+          STATUS_DATA.clear();
+          GOAL_DATA.clear();
+          ipcRenderer.send('restartProgram');
+        }
+      });
+  });
+
 });

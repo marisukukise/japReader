@@ -1,10 +1,10 @@
-# 1.5.0-alpha (still in development, don't use this version)
+# 1.5.0
 - Now the configuration is being stored in a local path, => shouldn't require root anymore
 - Now the program exits only on exiting the reader (other windows don't close the program)
 - Added exit confirmation dialog
 - Now the window position is being remembered in the configuration files
 - Simplified options menu
-- Added reset buttons for options and other settings to the options menu*
+- Added reset buttons for options and other settings to the options menu
 
 # 1.4.2
 - Added release builds for Linux

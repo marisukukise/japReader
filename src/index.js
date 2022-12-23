@@ -29,7 +29,6 @@ function createWindow(windowName, windowConfig) {
 }
 
 const { useDeepL, useReader, translationTransparent } = OPTIONS.get('options');
-console.log(OPTIONS.get('options'));
 
 /*
   Creates the following boxes:
@@ -92,6 +91,15 @@ const createBoxes = () => {
     optionsBox.hide();
   });
 
+  ipcMain.handle('showDialog', async (e, message) => {
+    const result = dialog.showMessageBox(optionsBox, {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      title: 'Confirm',
+      message: message
+    });
+    return result;
+  })
 
   ipcMain.on('restartProgram', () => {
     app.relaunch();
