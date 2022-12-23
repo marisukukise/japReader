@@ -4,13 +4,8 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electro
 const tools = require('@tools');
 const fs = require('fs');
 const Store = require('electron-store')
-const WINDOW_SETTINGS = new Store({
-  name: "window_settings"
-});
-const USER_SETTINGS = new Store({
-  name: "user_settings",
-  defaults: tools.getDefaultUserSettings()
-})
+const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
+const USER_SETTINGS = new Store(tools.getUserStoreOptions());
 
 if (require('electron-squirrel-startup')) return app.quit();
 
