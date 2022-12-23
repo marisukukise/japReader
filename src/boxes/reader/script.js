@@ -26,12 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyReader');
 
-  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = JSON.parse(
-    fs.readFileSync(tools.dirname_path('./data/options.json'), {
-      encoding: 'utf8',
-      flag: 'r',
-    }),
-  );
+  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = USER_SETTINGS.get('options')
 
   if (tvMode) document.body.classList.add('tv-mode');
   if (darkMode) {
@@ -90,12 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const changeStatus = (dictForm, prevStatus, newStatus) => {
-    const statusData = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
+    const statusData = USER_SETTINGS.get('status_data')
 
     if (prevStatus === 'known') {
       statusData.known = statusData.known.filter((elem) => elem !== dictForm);
@@ -115,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
       statusData.ignored.push(dictForm);
     }
 
-    fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
+    USER_SETTINGS.set('status_data', statusData);
 
     ipcRenderer.send('refreshReader');
   };
@@ -130,12 +120,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const handleWords = (words) => {
     $('#app').empty();
 
-    const { known, seen, ignored } = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      }),
-    );
+    const { known, seen, ignored } = USER_SETTINGS.get('status_data')
 
     words.forEach((wordData) => {
       const currentWordData = wordData;
@@ -275,12 +260,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (files > 0) {
       if (fs.existsSync(tools.dirname_path('./data/transfer/data_known'))) {
-        const statusData = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          }),
-        );
+        const statusData = USER_SETTINGS.get('status_data')
 
         const knownList = fs
           .readFileSync(tools.dirname_path('./data/transfer/data_known'), {
@@ -294,18 +274,13 @@ window.addEventListener('DOMContentLoaded', () => {
           if (!statusData.known.includes(word)) statusData.known.push(word);
         });
 
-        fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
+        USER_SETTINGS.set('status_data', statusData);
 
         fs.unlinkSync(tools.dirname_path('./data/transfer/data_known'));
       }
 
       if (fs.existsSync(tools.dirname_path('./data/transfer/data_seen'))) {
-        const statusData = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          }),
-        );
+        const statusData = USER_SETTINGS.get('status_data')
 
         const seenList = fs
           .readFileSync(tools.dirname_path('./data/transfer/data_seen'), {
@@ -319,18 +294,13 @@ window.addEventListener('DOMContentLoaded', () => {
           if (!statusData.seen.includes(word)) statusData.seen.push(word);
         });
 
-        fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
+        USER_SETTINGS.set('status_data', statusData);
 
         fs.unlinkSync(tools.dirname_path('./data/transfer/data_seen'));
       }
 
       if (fs.existsSync(tools.dirname_path('./data/transfer/data_ignored'))) {
-        const statusData = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          }),
-        );
+        const statusData = USER_SETTINGS.get('status_data')
 
         const ignoredList = fs
           .readFileSync(tools.dirname_path('./data/transfer/data_ignored'), {
@@ -344,18 +314,13 @@ window.addEventListener('DOMContentLoaded', () => {
           if (!statusData.ignored.includes(word)) statusData.ignored.push(word);
         });
 
-        fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
+        USER_SETTINGS.set('status_data', statusData);
 
         fs.unlinkSync(tools.dirname_path('./data/transfer/data_ignored'));
       }
 
       if (fs.existsSync(tools.dirname_path('./data/transfer/data_goal'))) {
-        const goalData = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          }),
-        );
+        const goalData = USER_SETTINGS.get('goal_data')
 
         const goalCount = fs
           .readFileSync(tools.dirname_path('./data/transfer/data_goal'), {
@@ -366,18 +331,12 @@ window.addEventListener('DOMContentLoaded', () => {
           .filter((elem) => elem).length;
         goalData.goalCount = goalCount;
 
-        fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
-
+        USER_SETTINGS.set('goal_data', goalData);
         fs.unlinkSync(tools.dirname_path('./data/transfer/data_goal'));
       }
 
       if (fs.existsSync(tools.dirname_path('./data/transfer/data_info'))) {
-        const goalData = JSON.parse(
-          fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
-            encoding: 'utf8',
-            flag: 'r',
-          }),
-        );
+        const goalData = USER_SETTINGS.get('goal_data')
 
         const [, streakCount] = fs
           .readFileSync(tools.dirname_path('./data/transfer/data_info'), {
@@ -394,8 +353,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         goalData.date = dateToday;
 
-        fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
-
+        USER_SETTINGS.set('goal_data', goalData);
         fs.unlinkSync(tools.dirname_path('./data/transfer/data_info'));
       }
     }

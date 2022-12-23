@@ -235,7 +235,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const setUpStreak = () => {
-    const goalData = USER_SETTINGS.get('options')
+    const goalData = USER_SETTINGS.get('goal_data')
 
     const { dailyGoal } = USER_SETTINGS.get('options')
 
