@@ -81,6 +81,10 @@ Local data with configurations is stored in:
 * `%APPDATA%` on Windows
 * `$XDG_CONFIG_HOME` or `~/.config` on Linux
 * `~/Library/Application Support` on macOS
+
+Although it's not recommended to change anything there, 
+you can do everything that was intended through GUI in the options menu
+
 ------------------
 
 ## Keybindings
