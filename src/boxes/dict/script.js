@@ -262,19 +262,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (prevStatus === 'new' && newStatus === 'seen') {
       setUpStreak();
 
-      const goalData = JSON.parse(
-        fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
-          encoding: 'utf8',
-          flag: 'r',
-        })
-      );
+      const goalData = USER_SETTINGS.get('goal_data')
 
-      const { dailyGoal } = JSON.parse(
-        fs.readFileSync(tools.dirname_path('./data/options.json'), {
-          encoding: 'utf8',
-          flag: 'r',
-        })
-      );
+      const { dailyGoal } = USER_SETTINGS.get('options')
 
       goalData.goalCount += 1;
 
@@ -284,15 +274,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
       document.querySelector('#goal-count').textContent = goalData.goalCount;
 
-      fs.writeFileSync(tools.dirname_path('./data/goal_data.json'), JSON.stringify(goalData));
+      USER_SETTINGS.set('goal_data', goalData);
     }
 
-    const statusData = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
+    const statusData = USER_SETTINGS.get('status_data')
 
     if (prevStatus === 'known') {
       statusData.known = statusData.known.filter((elem) => elem !== dictForm);
@@ -313,25 +298,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     wordData.status = newStatus;
-    fs.writeFileSync(tools.dirname_path('./data/status_data.json'), JSON.stringify(statusData));
+    USER_SETTINGS.set('status_data', statusData);
     handleWordData(wordData);
     ipcRenderer.send('refreshReader');
   };
 
   const displayGoalData = () => {
-    const { goalCount, streakCount } = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/goal_data.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
+    const { goalCount, streakCount } = USER_SETTINGS.get('goal_data')
 
-    const { dailyGoal } = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/options.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
+    const { dailyGoal } = USER_SETTINGS.get('options')
 
     $('#info').append(
       `<div id="goal-area">Goal: <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
@@ -350,12 +325,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const handleWordData = (wordData) => {
     currentWordData = wordData;
 
-    const { known, seen } = JSON.parse(
-      fs.readFileSync(tools.dirname_path('./data/status_data.json'), {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-    );
+    const { known, seen } = USER_SETTINGS.get('status_data')
 
     $('#info').html(``)
     $('#info').append(`<div id="known-area">Known: ${known.length}</div>`);
