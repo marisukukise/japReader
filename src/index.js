@@ -3,14 +3,17 @@ require('module-alias/register')
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
 const tools = require('@tools');
 const log = require('electron-log')
+const getCurrentLine = require('get-current-line')
 
-const logFormat = '{level} | {y}-{m}-{d} {h}:{i}:{s}:{ms} | {text}';
-log.transports.file.level = false;
+const logFormat = '{level} | {y}-{m}-{d} {h}:{i}:{s}.{ms} | {text}';
 if (process.env.NODE_ENV === 'production') {
+  log.transports.file.level = false;
   log.transports.console.level = false;
 } else {
   log.transports.console.level = 'debug';
   log.transports.console.format = logFormat;
+  log.transports.file.level = 'debug';
+  log.transports.file.format = logFormat;
 }
 
 const Store = require('electron-store')
@@ -35,7 +38,6 @@ function createWindow(windowName, windowConfig) {
     }, mainWindow.getNormalBounds())
     WINDOW_SETTINGS.set(windowName, windowConfig);
   });
-  log.debug("Created window", windowName)
   return mainWindow;
 }
 
