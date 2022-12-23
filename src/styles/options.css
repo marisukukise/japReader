@@ -2,12 +2,15 @@ html {
   text-align: center;
 }
 
+#app {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 #options {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 800px;
-  margin: 0 auto;
   gap: 1em;
   padding: 3em;
 }
@@ -17,6 +20,21 @@ fieldset {
   padding: 0.75em;
 }
 
+#danger-zone {
+  border-color: var(--dangerZoneButton);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: var(--dangerZoneBackground);
+  margin-top: 10em;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+#danger-zone .btn {
+  background-color: var(--dangerZoneButton);
+}
+
 section {
   padding: 0.5em;
   display: flex;
@@ -24,85 +42,27 @@ section {
   align-items: center;
 }
 
-
 section#apply {
   margin: 0;
 }
 
+.apply.btn {
+  margin: 0 auto;
+  font-size: larger;
+}
+
 .btn {
-  border: 0.1em solid var(--mainFont);
+  border: 1px solid var(--mainFont);
+  background-color: transparent;
   padding: 0.25em;
-  border-radius: 5px;
-  margin-right: 10px;
-  cursor: pointer;
-  width: 5em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
-
-.btn:not(.selected) {
-  opacity: 0.5;
-}
-
 
 .btn:hover {
-  opacity: 0.8;
-  border: none;
-  padding: 0.35em;
-}
-
-.selected {
-  padding: 0.5em;
-  border: 0.1em solid var(--mainFont);
-}
-
-.selected:hover {
-  padding: 0.6em;
-  border: none;
-}
-
-.selected.btn:hover {
-  opacity: 1.0;
-  font-weight: bold;
-}
-
-.yes {
-  background-color: var(--optionsYes);
-}
-
-
-.yes.selected,
-.increase {
-  background-color: var(--optionsYesSelected);
-}
-
-.no {
-  background-color: var(--optionsNo);
-}
-
-.no.selected,
-.decrease {
-  background-color: var(--optionsNoSelected);
-}
-
-
-.btn.apply {
-  opacity: 1;
-  font-weight: bold;
-  word-wrap: break-word;
-  text-align: center;
   cursor: pointer;
-  color: var(--mainFont);
-  background-color: var(--mainBackground);
-  border: 0.1em solid var(--mainFont);
-  border-radius: 5px;
-  padding: 0.25em;
-  width: fit-content;
-  margin: 0 auto;
-  font-size: x-large;
-}
-
-.btn.apply:hover {
-  border: none;
-  padding: 0.35em;
   color: var(--mainBackground);
   background-color: var(--mainFont);
 }
