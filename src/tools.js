@@ -28,6 +28,17 @@ const defaultUserSettings = {
     }
 }
 
+const windowStoreOptions = {
+    name: "window_settings",
+    clearInvalidConfig: true,
+}
+
+const userStoreOptions = {
+    name: "user_settings",
+    defaults: defaultUserSettings,
+    clearInvalidConfig: true,
+}
+
 let ___stayTimer;
 module.exports = {
     dirname_path: function (directory) {
@@ -58,5 +69,6 @@ module.exports = {
         }
         return onTop;
     },
-    getDefaultUserSettings: function () { return defaultUserSettings; }
+    getUserStoreOptions: function () { return userStoreOptions; },
+    getWindowStoreOptions: function () { return windowStoreOptions; }
 }
