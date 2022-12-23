@@ -1,5 +1,6 @@
 # 1.5.1
 - Added a continuous clipboard listening for Linux (and maybe Mac, I can't test myself)
+- Updated from Electron 20 to Electron 22
 
 # 1.5.0
 - Now the configuration is being stored in a local path, => shouldn't require root anymore

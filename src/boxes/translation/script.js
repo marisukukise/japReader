@@ -1,7 +1,6 @@
 require('module-alias/register')
 
 const { ipcRenderer } = require('electron');
-const fs = require('fs');
 
 const tools = require('@tools');
 

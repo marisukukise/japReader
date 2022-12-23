@@ -2,7 +2,17 @@ require('module-alias/register')
 
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
 const tools = require('@tools');
-const fs = require('fs');
+const log = require('electron-log')
+
+const logFormat = '{level} | {y}-{m}-{d} {h}:{i}:{s}:{ms} | {text}';
+log.transports.file.level = false;
+if (process.env.NODE_ENV === 'production') {
+  log.transports.console.level = false;
+} else {
+  log.transports.console.level = 'debug';
+  log.transports.console.format = logFormat;
+}
+
 const Store = require('electron-store')
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
@@ -25,6 +35,7 @@ function createWindow(windowName, windowConfig) {
     }, mainWindow.getNormalBounds())
     WINDOW_SETTINGS.set(windowName, windowConfig);
   });
+  log.debug("Created window", windowName)
   return mainWindow;
 }
 
