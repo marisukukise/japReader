@@ -4,7 +4,10 @@ const { ipcRenderer } = require('electron');
 const tools = require('@tools');
 
 const Store = require('electron-store')
-const store = new Store();
+const USER_SETTINGS = new Store({
+  name: "user_settings",
+  defaults: tools.getDefaultUserSettings()
+})
 
 
 let optionsData = {};
@@ -24,7 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return true;
   });
 
-  optionsData = store.has('options') ? store.get('options') : {}
+  optionsData = USER_SETTINGS.get('options')
 
   if (optionsData.darkMode) {
     document.documentElement.classList.add('dark-mode');
@@ -200,7 +203,7 @@ window.addEventListener('DOMContentLoaded', () => {
     optionsData.translationFontSize = translationFontSize;
     optionsData.dictFontSize = dictFontSize;
 
-    store.set('options', optionsData);
+    USER_SETTINGS.set('options', optionsData);
 
     ipcRenderer.send('restartProgram');
   });
