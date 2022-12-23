@@ -1,7 +1,8 @@
 # 1.4.3-alpha (still in development, don't use this version)
-- Changed the location of configuration files to be stored on a local path*
-- Added the ability to change the config path in options*
-- Changed the method in which windows close*
+- Now the configuration is being stored in a local path, => shouldn't require root anymore
+- Now the program exits only when closing reader (other windows don't close the program)
+- Added exit confirmation dialog
+- Now the window position is being remembered in the configuration files 
 
 # 1.4.2
 - Added release builds for Linux
