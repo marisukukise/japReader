@@ -84,7 +84,7 @@ jobs:
           name: japReader-artifacts windows-latest
           path: make/
       - name: Get Release body from CHANGELOG.md
-        run: sed -e '/^$/,$d' CHANGELOG.md > CHANGELOG-{{ inputs.tag }}.md
+        run: sed -e '/^$/,$d' CHANGELOG.md > CHANGELOG-${{ inputs.tag }}.md
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
