@@ -5,7 +5,7 @@ const tools = require('@tools');
 const fs = require('fs');
 const Store = require('electron-store')
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
-const USER_SETTINGS = new Store(tools.getUserStoreOptions());
+const OPTIONS = new Store(tools.getOptionsStoreOptions());
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -28,8 +28,8 @@ function createWindow(windowName, windowConfig) {
   return mainWindow;
 }
 
-const { useDeepL, useReader, translationTransparent } = USER_SETTINGS.get('options');
-console.log(USER_SETTINGS.get('options'));
+const { useDeepL, useReader, translationTransparent } = OPTIONS.get('options');
+console.log(OPTIONS.get('options'));
 
 /*
   Creates the following boxes:
@@ -103,7 +103,7 @@ const createBoxes = () => {
       width: 800,
       height: 200,
       frame: true,
-      autoHideMenuBar: false,
+      autoHideMenuBar: true,
       webPreferences: {
         preload: tools.dirname_path('./boxes/reader/script.js'),
         nodeIntegration: true,

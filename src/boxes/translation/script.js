@@ -7,7 +7,7 @@ const tools = require('@tools');
 
 const Store = require('electron-store')
 
-const USER_SETTINGS = new Store(tools.getUserStoreOptions());
+const OPTIONS = new Store(tools.getOptionsStoreOptions());
 
 
 let englishText = '';
@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyTranslation');
 
-  const { translationFontSize, translationTransparent, darkMode } = USER_SETTINGS.get('options')
+  const { translationFontSize, translationTransparent, darkMode } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
@@ -57,7 +57,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return true;
   });
 
-  const options = USER_SETTINGS.get('options')
+  const options = OPTIONS.get('options')
   deepLDual = options.deepLDual;
 
   $('#app').html(

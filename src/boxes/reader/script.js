@@ -8,7 +8,8 @@ const date = require('date-and-time');
 const tools = require('@tools');
 const Store = require('electron-store')
 
-const USER_SETTINGS = new Store(tools.getUserStoreOptions());
+const OPTIONS = new Store(tools.getOptionsStoreOptions());
+const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
 
 
 let currentWords = [];
@@ -25,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyReader');
 
-  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = USER_SETTINGS.get('options')
+  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = OPTIONS.get('options')
 
   if (tvMode) document.body.classList.add('tv-mode');
   if (darkMode) {
@@ -84,7 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const changeStatus = (dictForm, prevStatus, newStatus) => {
-    const statusData = USER_SETTINGS.get('status_data')
+    const statusData = STATUS_DATA.get('status_data')
 
     if (prevStatus === 'known') {
       statusData.known = statusData.known.filter((elem) => elem !== dictForm);
@@ -104,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
       statusData.ignored.push(dictForm);
     }
 
-    USER_SETTINGS.set('status_data', statusData);
+    STATUS_DATA.set('status_data', statusData);
 
     ipcRenderer.send('refreshReader');
   };
@@ -119,7 +120,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const handleWords = (words) => {
     $('#app').empty();
 
-    const { known, seen, ignored } = USER_SETTINGS.get('status_data')
+    const { known, seen, ignored } = STATUS_DATA.get('status_data')
 
     words.forEach((wordData) => {
       const currentWordData = wordData;
