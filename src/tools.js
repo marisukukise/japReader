@@ -1,4 +1,5 @@
 const path = require('path');
+const moment = require('moment');
 const defaultUserSettings = {
     "options": {
         "darkMode": false,
@@ -14,6 +15,16 @@ const defaultUserSettings = {
         "readerFontSize": 25,
         "translationFontSize": 13,
         "dictFontSize": 17
+    },
+    "goal_data": {
+        "date": moment().format("YYYY-MM-DD"),
+        "streakCount": 0,
+        "goalCount": 0
+    },
+    "status_data": {
+        "seen": [],
+        "known": [],
+        "ignored": []
     }
 }
 
