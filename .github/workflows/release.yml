@@ -33,8 +33,13 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y dpkg fakeroot rpm
+      - name: Provide u+x execution rights to clipboard handler script
+        run: |
+          sudo chmod u+x node_modules/clipboard-event/platform/clipboard-event-handler-linux
+          sudo chmod u+x node_modules/clipboard-event/platform/clipboard-event-handler-mac
       - name: Make
         run: sudo npm run make --if-present
+      - run: tree .
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
@@ -58,6 +63,7 @@ jobs:
         run: npm ci
       - name: Make
         run: npm run make --if-present
+      - run: tree .
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
@@ -85,6 +91,7 @@ jobs:
           path: make/
       - name: Get Release body from CHANGELOG.md
         run: sed -e '/^$/,$d' CHANGELOG.md > CHANGELOG-${{ inputs.tag }}.md
+      - run: tree .
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
