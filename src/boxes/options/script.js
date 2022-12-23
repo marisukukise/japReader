@@ -2,7 +2,7 @@ require('module-alias/register')
 const { ipcRenderer } = require('electron');
 const tools = require('@tools');
 const Store = require('electron-store')
-const USER_SETTINGS = new Store(tools.getUserStoreOptions());
+const OPTIONS = new Store(tools.getOptionsStoreOptions());
 
 const handleCheckbox = (checkbox, enable_query, disable_query) => {
   const enable_inputs = document.querySelectorAll(enable_query)
@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return true;
   });
 
-  let optionsData = USER_SETTINGS.get('options')
+  let optionsData = OPTIONS.get('options')
 
 
   if (optionsData.darkMode) {
@@ -73,7 +73,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    USER_SETTINGS.set('options', optionsData);
+    OPTIONS.set('options', optionsData);
 
     ipcRenderer.send('restartProgram');
   });

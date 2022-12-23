@@ -1,6 +1,6 @@
 const path = require('path');
 const moment = require('moment');
-const schemaUserSettings = {
+const schemaOptions = {
     options: {
         type: "object",
         properties: {
@@ -13,13 +13,16 @@ const schemaUserSettings = {
             useReader: { default: true, type: "boolean" },
             addFurigana: { default: true, type: "boolean" },
             tvMode: { default: false, type: "boolean" },
-            showGoal: { default: true, type: "boolean" },
+            showGoal: { default: false, type: "boolean" },
             dailyGoal: { default: 30, type: "number", minimum: 1 },
             readerFontSize: { default: 25, type: "number", minimum: 1 },
             dictFontSize: { default: 17, type: "number", minimum: 1 },
         },
         default: {}
-    },
+    }
+}
+
+const schemaGoalData = {
     goal_data: {
         type: "object",
         properties: {
@@ -28,7 +31,10 @@ const schemaUserSettings = {
             goalCount: { default: 0, type: "number" },
         },
         default: {}
-    },
+    }
+}
+
+const schemaStatusData = {
     status_data: {
         type: "object",
         properties: {
@@ -45,9 +51,21 @@ const windowStoreOptions = {
     clearInvalidConfig: true,
 }
 
-const userStoreOptions = {
-    schema: schemaUserSettings,
-    name: "user_settings",
+const optionsStoreOptions = {
+    schema: schemaOptions,
+    name: "options",
+    clearInvalidConfig: true,
+}
+
+const goalDataStoreOptions = {
+    schema: schemaGoalData,
+    name: "goal_data",
+    clearInvalidConfig: true,
+}
+
+const statusDataStoreOptions = {
+    schema: schemaStatusData,
+    name: "status_data",
     clearInvalidConfig: true,
 }
 
@@ -81,6 +99,8 @@ module.exports = {
         }
         return onTop;
     },
-    getUserStoreOptions: function () { return userStoreOptions; },
+    getOptionsStoreOptions: function () { return optionsStoreOptions; },
+    getGoalDataStoreOptions: function () { return goalDataStoreOptions; },
+    getStatusDataStoreOptions: function () { return statusDataStoreOptions; },
     getWindowStoreOptions: function () { return windowStoreOptions; }
 }

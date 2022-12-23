@@ -6,8 +6,9 @@ const date = require('date-and-time');
 const tools = require('@tools');
 const Store = require('electron-store')
 
-const USER_SETTINGS = new Store(tools.getUserStoreOptions());
-
+const OPTIONS = new Store(tools.getOptionsStoreOptions());
+const GOAL_DATA = new Store(tools.getGoalDataStoreOptions());
+const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
 
 let currentWordData = {};
 let currentEnglishText = '';
@@ -21,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyDict');
 
-  const { dictFontSize, showGoal, darkMode } = USER_SETTINGS.get('options')
+  const { dictFontSize, showGoal, darkMode } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
@@ -212,7 +213,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     var qry_anki = document.querySelector('#anki');
     var anki_innerhtml = qry_anki.innerHTML;
-    qry_anki.innerHTML = "Checking...";
+    qry_anki.innerHTML = "Linking AnkiConnect...";
     qry_anki.classList.add('disabled');
     __anki__canAddNotes(wordData)
       .then(res => {
@@ -221,12 +222,12 @@ window.addEventListener('DOMContentLoaded', () => {
         checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Already in collection");
       })
       .catch(err => {
-        qry_anki.innerHTML = "Something went wrong";
+        qry_anki.innerHTML = "AnkiConnect not found";
       });
 
     var qry_audio = document.querySelector('#audio');
     var audio_innerhtml = qry_audio.innerHTML;
-    qry_audio.innerHTML = "Checking...";
+    qry_audio.innerHTML = "Searching audio...";
     qry_audio.classList.add('disabled');
     __canPlayAudio(wordData)
       .then(res => {
@@ -234,14 +235,14 @@ window.addEventListener('DOMContentLoaded', () => {
         checkIfDisableButton(qry_audio, canClick, audio_innerhtml, "Audio not available");
       })
       .catch(err => {
-        qry_audio.innerHTML = "Something went wrong";
+        qry_audio.innerHTML = "Audio not found";
       });
   };
 
   const setUpStreak = () => {
-    const goalData = USER_SETTINGS.get('goal_data')
+    const goalData = GOAL_DATA.get('goal_data')
 
-    const { dailyGoal } = USER_SETTINGS.get('options')
+    const { dailyGoal } = OPTIONS.get('options')
 
     const now = new Date();
     const dateToday = date.format(now, 'YYYY-MM-DD');
@@ -257,7 +258,7 @@ window.addEventListener('DOMContentLoaded', () => {
       goalData.goalCount = 0;
     }
 
-    USER_SETTINGS.set('goal_data', goalData);
+    GOAL_DATA.set('goal_data', goalData);
   };
 
   const changeStatus = (wordData, newStatus) => {
@@ -266,9 +267,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (prevStatus === 'new' && newStatus === 'seen') {
       setUpStreak();
 
-      const goalData = USER_SETTINGS.get('goal_data')
+      const goalData = GOAL_DATA.get('goal_data')
 
-      const { dailyGoal } = USER_SETTINGS.get('options')
+      const { dailyGoal } = OPTIONS.get('options')
 
       goalData.goalCount += 1;
 
@@ -278,10 +279,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
       document.querySelector('#goal-count').textContent = goalData.goalCount;
 
-      USER_SETTINGS.set('goal_data', goalData);
+      GOAL_DATA.set('goal_data', goalData);
     }
 
-    const statusData = USER_SETTINGS.get('status_data')
+    const statusData = STATUS_DATA.get('status_data')
 
     if (prevStatus === 'known') {
       statusData.known = statusData.known.filter((elem) => elem !== dictForm);
@@ -302,22 +303,22 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     wordData.status = newStatus;
-    USER_SETTINGS.set('status_data', statusData);
+    STATUS_DATA.set('status_data', statusData);
     handleWordData(wordData);
     ipcRenderer.send('refreshReader');
   };
 
   const displayGoalData = () => {
-    const { goalCount, streakCount } = USER_SETTINGS.get('goal_data')
+    const { goalCount, streakCount } = GOAL_DATA.get('goal_data')
 
-    const { dailyGoal } = USER_SETTINGS.get('options')
+    const { dailyGoal } = OPTIONS.get('options')
 
     $('#info').append(
-      `<div id="goal-area">Goal: <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
+      `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
     );
 
     $('#info').append(
-      `<div id="streak-area">Streak days: <span id='streak-count'>${streakCount}</span></div>`
+      `<div id="streak-area">Streak days (doesn't work for now): <span id='streak-count'>${streakCount}</span></div>`
     );
 
     if (!showGoal) {
@@ -329,7 +330,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const handleWordData = (wordData) => {
     currentWordData = wordData;
 
-    const { known, seen } = USER_SETTINGS.get('status_data')
+    const { known, seen } = STATUS_DATA.get('status_data')
 
     $('#info').html(``)
     $('#info').append(`<div id="known-area">Known: ${known.length}</div>`);
