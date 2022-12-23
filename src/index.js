@@ -4,7 +4,29 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electro
 const tools = require('@tools');
 const fs = require('fs');
 const Store = require('electron-store')
-const store = new Store();
+const WINDOW_SETTINGS = new Store({
+  name: "window_settings"
+});
+const USER_SETTINGS = new Store({
+  name: "user_settings",
+  defaults: {
+    "options": {
+      "darkMode": false,
+      "useDeepL": true,
+      "deepLDual": true,
+      "deepLOnly": false,
+      "fadeText": true,
+      "addFurigana": true,
+      "showGoal": true,
+      "dailyGoal": 30,
+      "tvMode": false,
+      "translationTransparent": true,
+      "readerFontSize": 25,
+      "translationFontSize": 13,
+      "dictFontSize": 17
+    }
+  }
+})
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -12,9 +34,22 @@ let readerOnTop = false;
 let translationOnTop = false;
 let dictOnTop = false;
 
+function createWindow(windowName, windowConfig) {
+  Object.assign(windowConfig, WINDOW_SETTINGS.get(windowName))
+  const mainWindow = new BrowserWindow(windowConfig)
+  if (windowConfig.isMaximized) {
+    mainWindow.maximize()
+  }
+  mainWindow.on("close", () => {
+    Object.assign(windowConfig, {
+      isMaximized: mainWindow.isMaximized()
+    }, mainWindow.getNormalBounds())
+    WINDOW_SETTINGS.set(windowName, windowConfig);
+  });
+  return mainWindow;
+}
 
-
-const { useDeepL, deepLOnly, translationTransparent } = store.get('options');
+const { useDeepL, deepLOnly, translationTransparent } = USER_SETTINGS.get('options');
 
 /*
   Creates the following boxes:
@@ -84,7 +119,7 @@ const createBoxes = () => {
   });
 
   if (!deepLOnly) {
-    const readerBox = new BrowserWindow({
+    const readerBox = createWindow("reader", {
       width: 800,
       height: 200,
       frame: true,
@@ -110,8 +145,6 @@ const createBoxes = () => {
         e.preventDefault();
       }
       else {
-        const data = { bounds: readerBox.getNormalBounds() };
-        store.set('window-settings.reader', data)
         app.exit();
       }
     });
@@ -141,11 +174,6 @@ const createBoxes = () => {
     });
 
     ipcMain.on('readyReader', () => {
-      if (store.has('window-settings.reader')) {
-        const data = store.get('window-settings.reader');
-        readerBox.setSize(data.bounds.width, data.bounds.height);
-        readerBox.setPosition(data.bounds.x, data.bounds.y);
-      }
     });
 
     ipcMain.on('readerOnTop', () => {
