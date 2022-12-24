@@ -60,6 +60,7 @@ const { useDeepL, useReader, translationTransparent } = OPTIONS.get('options');
 */
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
+    icon: 'images/logo/icon.png',
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -79,6 +80,7 @@ const createBoxes = () => {
   });
 
   const optionsBox = createWindow("options", {
+    icon: 'images/logo/icon.png',
     width: 800,
     height: 600,
     frame: true,
@@ -123,6 +125,7 @@ const createBoxes = () => {
 
   if (useReader) {
     const readerBox = createWindow("reader", {
+      icon: 'images/logo/icon.png',
       width: 800,
       height: 200,
       frame: true,
@@ -190,6 +193,7 @@ const createBoxes = () => {
 
 
     const ichiBox = new BrowserWindow({
+      icon: 'images/logo/icon.png',
       width: 800,
       height: 600,
       autoHideMenuBar: true,
@@ -216,6 +220,7 @@ const createBoxes = () => {
 
 
     const dictBox = createWindow("dict", {
+      icon: 'images/logo/icon.png',
       width: 400,
       height: 600,
       frame: true,
@@ -264,6 +269,7 @@ const createBoxes = () => {
 
   if (useDeepL) {
     const deepLBox = new BrowserWindow({
+      icon: 'images/logo/icon.png',
       width: 800,
       height: 600,
       autoHideMenuBar: true,
@@ -290,6 +296,7 @@ const createBoxes = () => {
 
 
     const translationBox = createWindow("translation", {
+      icon: 'images/logo/icon.png',
       width: 800,
       height: 200,
       frame: false,
