@@ -61,6 +61,7 @@ const { useDeepL, useReader, translationTransparent } = OPTIONS.get('options');
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
     icon: 'images/logo/icon.png',
+    show: false,
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -72,8 +73,6 @@ const createBoxes = () => {
 
   clipboardBox.loadFile(tools.dirname_path('./boxes/clipboard/index.html'));
 
-  clipboardBox.hide();
-
   clipboardBox.on('close', (e) => {
     e.preventDefault();
     clipboardBox.hide();
@@ -81,6 +80,7 @@ const createBoxes = () => {
 
   const optionsBox = createWindow("options", {
     icon: 'images/logo/icon.png',
+    show: false,
     width: 800,
     height: 600,
     frame: true,
@@ -92,8 +92,6 @@ const createBoxes = () => {
   });
 
   optionsBox.loadFile(tools.dirname_path('./boxes/options/index.html'));
-
-  optionsBox.hide();
 
   optionsBox.on('close', (e) => {
     e.preventDefault();
@@ -194,12 +192,13 @@ const createBoxes = () => {
 
     const ichiBox = new BrowserWindow({
       icon: 'images/logo/icon.png',
+      show: false,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
       webPreferences: {
         contextIsolation: true,
-        enableRemoteModule: false,
+        enableRemoteModule: ftranslationTransparent,
         preload: tools.dirname_path('./boxes/ichi/script.js'),
         nodeIntegration: true,
       },
@@ -207,7 +206,6 @@ const createBoxes = () => {
 
     ichiBox.loadURL('https://ichi.moe/cl/qr/?q=&r=kana');
 
-    ichiBox.hide();
 
     ichiBox.on('close', (e) => {
       e.preventDefault();
@@ -221,6 +219,7 @@ const createBoxes = () => {
 
     const dictBox = createWindow("dict", {
       icon: 'images/logo/icon.png',
+      show: false,
       width: 400,
       height: 600,
       frame: true,
@@ -234,13 +233,11 @@ const createBoxes = () => {
 
     dictBox.loadFile(tools.dirname_path('./boxes/dict/index.html'));
 
-    dictBox.hide();
 
     dictBox.on('close', (e) => {
       e.preventDefault();
       dictBox.hide();
     });
-
     ipcMain.on('openDict', () => {
       dictBox.show();
     });
@@ -270,6 +267,7 @@ const createBoxes = () => {
   if (useDeepL) {
     const deepLBox = new BrowserWindow({
       icon: 'images/logo/icon.png',
+      show: false,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
@@ -282,8 +280,6 @@ const createBoxes = () => {
     });
 
     deepLBox.loadURL('https://www.deepl.com/translator#ja/en/');
-
-    deepLBox.hide();
 
     deepLBox.on('close', (e) => {
       e.preventDefault();
@@ -299,7 +295,7 @@ const createBoxes = () => {
       icon: 'images/logo/icon.png',
       width: 800,
       height: 200,
-      frame: false,
+      frame: !translationTransparent,
       minimizable: false,
       maximizable: false,
       transparent: translationTransparent,
