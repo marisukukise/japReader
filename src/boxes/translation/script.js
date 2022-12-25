@@ -43,11 +43,11 @@ window.addEventListener('DOMContentLoaded', () => {
         if (translationTransparent) {
           if (showBorders) {
             showBorders = false;
-            document.body.style.border = '1px dashed transparent';
+            document.body.style.borderStyle = 'hidden';
             document.querySelector('#move-bar').style.visibility = 'hidden';
           } else {
             showBorders = true;
-            document.body.style.border = '1px dashed red';
+            document.body.style.borderStyle = 'dashed';
             document.querySelector('#move-bar').style.visibility = 'visible';
           }
         }
