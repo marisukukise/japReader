@@ -198,7 +198,7 @@ const createBoxes = () => {
       autoHideMenuBar: true,
       webPreferences: {
         contextIsolation: true,
-        enableRemoteModule: ftranslationTransparent,
+        enableRemoteModule: false,
         preload: tools.dirname_path('./boxes/ichi/script.js'),
         nodeIntegration: true,
       },
