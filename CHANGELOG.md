@@ -1,3 +1,8 @@
+# 1.5.2
+- Added a favicon
+- Added a window frame (bar for moving) for translaton window when it's not transparent
+- Updated electron forge to 6.0.4
+
 # 1.5.1
 - Added a continuous clipboard listening for Linux (and maybe Mac, I can't test myself)
 - Fixed a bug which caused dictionary window to disappear when clipboard contents changed
