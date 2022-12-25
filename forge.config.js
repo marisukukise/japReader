@@ -7,8 +7,9 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        iconUrl: './images/logo/icon.ico',
         setupIcon: './images/logo/icon.ico',
+        authors: 'marisukukise',
+        description: 'An Electron app that helps you read Japanese textAn 0e'
         options: {}
       },
     },
