@@ -9,7 +9,7 @@ module.exports = {
       config: {
         setupIcon: './images/logo/icon.ico',
         authors: 'marisukukise',
-        description: 'An Electron app that helps you read Japanese textAn 0e'
+        description: 'An Electron app that helps you read Japanese text',
         options: {}
       },
     },
