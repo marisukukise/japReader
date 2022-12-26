@@ -1,4 +1,4 @@
-# japReader
+# <img src="images/logo/logo.svg" height="96"/> japReader
 ### An Electron app that helps you read Japanese text. 
 
 ------------------
@@ -33,7 +33,7 @@ VNs, LNs, TV Shows/Movies
 
 ------------------
 
-# Installation
+# <img src="images/logo/logo.svg" height="96"/> Installation
 ## Windows
 1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
 2. Download a file like `japreader-x.y.z.Setup.exe`
@@ -63,7 +63,7 @@ If none of the above works, you can try [Building](#Build) the program yourself.
 > Then you will be able to run a program that monitors change in your clipboard.
 > If you did this and it still doesn't work, please open an issue.
 
-# Build
+# <img src="images/logo/logo.svg" height="96"/>  Build
 1. Download [node.js](https://nodejs.org/en/download/)
 2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
 3. Navigate into it `cd japReader`
@@ -75,7 +75,7 @@ If none of the above works, you can try [Building](#Build) the program yourself.
 
 If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
 
-# Local data
+## Local data
 
 Local data with configurations is stored in:
 
