@@ -145,7 +145,7 @@ In the Reader window you can quickly change the status of a word with mouse butt
 
 ------------------
 
-## FAQ
+# <img src="images/logo/logo.svg" height="96"/>  FAQ
 Q: Why does the text \"i+1\" keep showing?  
 A: When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
 
