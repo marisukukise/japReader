@@ -9,8 +9,8 @@
 ------------------
 
 ## Examples
-![Example screenshot #1](images/examples/example1.png)  
-![Example screenshot #2](images/examples/example2.png)
+![Example screenshot #1](images/examples/example1.png?)
+![Example screenshot #2](images/examples/example2.png?)
 
 ------------------
 
