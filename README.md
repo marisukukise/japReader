@@ -1,5 +1,5 @@
 # <img src="images/logo/logo.svg" height="96"/> japReader
-### Reader to facilitate reading Japanese text 
+### App that makes reading Japanese easy
 
 ------------------
 
