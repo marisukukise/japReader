@@ -1,10 +1,5 @@
 # <img src="images/logo/logo.svg" height="96"/> japReader
-### An Electron app that helps you read Japanese text. 
-
-------------------
-
-###### Version 1.2 created by [seth-js](https://github.com/seth-js)
-###### Versions 1.3+ (this repo) forked and maintained by [marisukukise](https://github.com/marisukukise)
+### Reader to facilitate reading Japanese text 
 
 ------------------
 
@@ -157,3 +152,8 @@ A: This happens when there is only one unknown word in the sentence. You should 
 
 Q: I don\'t like a feature, is there any way I can turn it off?  
 A: Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
+
+------------------
+
+###### Version 1.2 created by [seth-js](https://github.com/seth-js)
+###### Versions 1.3+ (this repo) forked and maintained by [marisukukise](https://github.com/marisukukise)
