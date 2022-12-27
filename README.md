@@ -49,11 +49,14 @@ Alternatively, if you don't want to install, you can download the .zip package:
 1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
 2. Download a file matching your distribution
 3. Install the file using your package manager and sudo version
+
 If there is no package available for your distribution, you may try 
 downloading the `japreader-linux-x64-x.y.z.zip` file and running `./japreader`,
 however it's less reliable (it didn't work for me on Fedora Linux, but .rpm package does)
 If none of the above works, you can try [Building](#Build) the program yourself.
+
 > **_NOTE:_** It may happen that your clipboard reading will not work on Linux
+
 > I did fix it and it works for me fresh out of install right now, but maybe it will be different
 > on other distributions. If this is the case, you should go to the install directory of japreader
 > (you can check the location using `whereis japreader`), and then run the command
