@@ -1,36 +1,40 @@
 # <img src="images/logo/logo.svg" height="96"/> japReader
-### App that makes reading Japanese easy
+## App that makes reading Japanese easy
 
 - [ japReader](#-japreader)
-    - [App that makes reading Japanese easy](#app-that-makes-reading-japanese-easy)
+  - [App that makes reading Japanese easy](#app-that-makes-reading-japanese-easy)
+- [Preview](#preview)
   - [Examples](#examples)
   - [Currently Supported](#currently-supported)
   - [Features](#features)
-  - [How does this work?](#how-does-this-work)
 - [ Installation](#-installation)
   - [Windows](#windows)
   - [Linux](#linux)
 - [  Build](#--build)
+- [Technical information](#technical-information)
   - [Configuration files](#configuration-files)
-  - [How to import data from old japReader](#how-to-import-data-from-old-japreader)
+  - [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
+- [Controls](#controls)
   - [Keybindings](#keybindings)
   - [Mouse buttons](#mouse-buttons)
+- [FAQ](#faq)
+  - [How does this work?](#how-does-this-work)
   - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
   - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
   - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
   - [How do I get Anki card creation to work?](#how-do-i-get-anki-card-creation-to-work)
-- [  FAQ](#--faq)
-          - [Version 1.2 created by seth-js](#version-12-created-by-seth-js)
-          - [Versions 1.3+ (this repo) forked and maintained by marisukukise](#versions-13-this-repo-forked-and-maintained-by-marisukukise)
+  - [Why does the text "i+1" keep showing?](#why-does-the-text-i1-keep-showing)
+  - [Why does the translation text dim sometimes?](#why-does-the-translation-text-dim-sometimes)
+  - [I don't like a feature, is there any way I can turn it off?](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off)
+- [Credits](#credits)
+  - [This repo was forked from japReader 1.2 created by seth-js](#this-repo-was-forked-from-japreader-12-created-by-seth-js)
 
 
-------------------
-
+# Preview
 ## Examples
 ![Example screenshot #2](images/examples/example2.png)
 ![Example screenshot #1](images/examples/example1.png)
 
-------------------
 
 ## Currently Supported
 VNs, LNs, TV Shows/Movies
@@ -43,13 +47,6 @@ VNs, LNs, TV Shows/Movies
 * One-click Anki sentence/word card creation
 * Furigana support
 
-
-## How does this work?
-* It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
-* The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
-* The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
-
-------------------
 
 # <img src="images/logo/logo.svg" height="96"/> Installation
 ## Windows
@@ -84,6 +81,7 @@ If none of the above works, you can try [Building](#Build) the program yourself.
 > Then you will be able to run a program that monitors change in your clipboard.
 > If you did this and it still doesn't work, please open an issue.
 
+
 # <img src="images/logo/logo.svg" height="96"/>  Build
 1. Download [node.js](https://nodejs.org/en/download/)
 2. Clone the repository: `git clone https://github.com/marisukukise/japReader.git`
@@ -96,6 +94,7 @@ If none of the above works, you can try [Building](#Build) the program yourself.
 
 If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
 
+# Technical information
 ## Configuration files
 
 Configuration files are stored in:
@@ -108,15 +107,14 @@ Configuration files are stored in:
 Although it's not recommended to change anything there, 
 you can do everything that was intended through GUI in the options menu
 
-## How to import data from old japReader
+## How to migrate data from old japReader
 
 1. Backup your old data in case something goes wrong
 2. Open side by side: the [configuration files](#configuration-files) folder and the old configuration folder `data` in pre-1.5 japReader in the install location.
 3. Open the corresponding files one by one (e.g. `status_data.json`) and paste the data to fit the new template
 4. You'll get it eventually I believe in you
 
-------------------
-
+# Controls
 ## Keybindings
 - `O` Open Options Menu 
 - `S` Toggle Stay On Top  
@@ -130,7 +128,13 @@ In the Reader window you can quickly change the status of a word with mouse butt
 - `RMB` set to Known
 - `Ctrl+LMB` set to Ignored
 
-------------------
+
+# FAQ
+## How does this work?
+* It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
+* The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
+* The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
+
 
 ## How do I read VNs with this?
 1.  Download and install a Japanese VN
@@ -172,19 +176,18 @@ In the Reader window you can quickly change the status of a word with mouse butt
 5.  Click `Add to Anki` in the Dictionary window, and card data should
     be generated for the `japReader` Anki deck
 
-------------------
 
-# <img src="images/logo/logo.svg" height="96"/>  FAQ
-Q: Why does the text \"i+1\" keep showing?  
-A: When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
+## Why does the text \"i+1\" keep showing?  
+When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
 
-Q: Why does the translation text dim sometimes?  
-A: This happens when there is only one unknown word in the sentence. You should hopefully be able to not depend on the translation.
 
-Q: I don\'t like a feature, is there any way I can turn it off?  
-A: Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
+## Why does the translation text dim sometimes?  
+This happens when there is only one unknown word in the sentence. You should hopefully be able to not depend on the translation.
 
-------------------
 
-###### Version 1.2 created by [seth-js](https://github.com/seth-js)
-###### Versions 1.3+ (this repo) forked and maintained by [marisukukise](https://github.com/marisukukise)
+## I don\'t like a feature, is there any way I can turn it off?  
+Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
+
+
+# Credits
+## This repo was forked from japReader 1.2 created by [seth-js](https://github.com/seth-js)
