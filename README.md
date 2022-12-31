@@ -27,7 +27,6 @@
   - [Why does the translation text dim sometimes?](#why-does-the-translation-text-dim-sometimes)
   - [I don't like a feature, is there any way I can turn it off?](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off)
 - [ Credits](#-credits)
-  - [This repo was forked from japReader 1.2 created by seth-js](#this-repo-was-forked-from-japreader-12-created-by-seth-js)
 
 
 # Preview
@@ -190,4 +189,4 @@ Press `O` while one of the windows is in focus. The options menu will open up. A
 
 
 # <img src="images/logo/logo.svg" height="96"/> Credits
-## This repo was forked from japReader 1.2 created by [seth-js](https://github.com/seth-js)
+This repo was forked from japReader 1.2 created by [seth-js](https://github.com/seth-js)
