@@ -73,16 +73,24 @@ If none of the above works, you can try [Building](#Build) the program yourself.
 
 If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
 
-## Local data
+## Configuration files
 
-Local data with configurations is stored in:
+Configuration files are stored in:
 
-* `%APPDATA%` on Windows
-* `$XDG_CONFIG_HOME` or `~/.config` on Linux
-* `~/Library/Application Support` on macOS
+| OS      	| Configuration files path                                            	|
+|---------	|---------------------------------------------------------------------	|
+| Windows 	| `%APPDATA%/japreader/config`                                        	|
+|   Linux 	| `$XDG_CONFIG_HOME/japreader/config` or `~/.config/japreader/config` 	|
 
 Although it's not recommended to change anything there, 
 you can do everything that was intended through GUI in the options menu
+
+## How to import data from old japReader
+
+1. Backup your old data in case something goes wrong
+2. Open side by side: the [configuration files](#configuration-files) folder and the old configuration folder `data` in pre-1.5 japReader in the install location.
+3. Open the corresponding files one by one (e.g. `status_data.json`) and paste the data to fit the new template
+4. You'll get it eventually I believe in you
 
 ------------------
 
