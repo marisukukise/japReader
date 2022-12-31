@@ -1,8 +1,6 @@
 # <img src="images/logo/logo.svg" height="96"/> japReader
 ## App that makes reading Japanese easy
 
-- [ japReader](#-japreader)
-  - [App that makes reading Japanese easy](#app-that-makes-reading-japanese-easy)
 - [ Preview](#-preview)
   - [Examples](#examples)
   - [Currently Supported](#currently-supported)
