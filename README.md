@@ -1,6 +1,29 @@
 # <img src="images/logo/logo.svg" height="96"/> japReader
 ### App that makes reading Japanese easy
 
+- [ japReader](#-japreader)
+    - [App that makes reading Japanese easy](#app-that-makes-reading-japanese-easy)
+  - [Examples](#examples)
+  - [Currently Supported](#currently-supported)
+  - [Features](#features)
+  - [How does this work?](#how-does-this-work)
+- [ Installation](#-installation)
+  - [Windows](#windows)
+  - [Linux](#linux)
+- [  Build](#--build)
+  - [Configuration files](#configuration-files)
+  - [How to import data from old japReader](#how-to-import-data-from-old-japreader)
+  - [Keybindings](#keybindings)
+  - [Mouse buttons](#mouse-buttons)
+  - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
+  - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
+  - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
+  - [How do I get Anki card creation to work?](#how-do-i-get-anki-card-creation-to-work)
+- [  FAQ](#--faq)
+          - [Version 1.2 created by seth-js](#version-12-created-by-seth-js)
+          - [Versions 1.3+ (this repo) forked and maintained by marisukukise](#versions-13-this-repo-forked-and-maintained-by-marisukukise)
+
+
 ------------------
 
 ## Examples
