@@ -3,7 +3,7 @@
 
 - [ japReader](#-japreader)
   - [App that makes reading Japanese easy](#app-that-makes-reading-japanese-easy)
-- [Preview](#preview)
+- [ Preview](#-preview)
   - [Examples](#examples)
   - [Currently Supported](#currently-supported)
   - [Features](#features)
@@ -29,7 +29,7 @@
 - [ Credits](#-credits)
 
 
-# Preview
+# <img src="images/logo/logo.svg" height="96"/> Preview
 ## Examples
 ![Example screenshot #2](images/examples/example2.png)
 ![Example screenshot #1](images/examples/example1.png)
