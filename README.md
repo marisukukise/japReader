@@ -11,13 +11,13 @@
   - [Windows](#windows)
   - [Linux](#linux)
 - [  Build](#--build)
-- [Technical information](#technical-information)
+- [ Technical information](#-technical-information)
   - [Configuration files](#configuration-files)
   - [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
-- [Controls](#controls)
+- [ Controls](#-controls)
   - [Keybindings](#keybindings)
   - [Mouse buttons](#mouse-buttons)
-- [FAQ](#faq)
+- [ FAQ](#-faq)
   - [How does this work?](#how-does-this-work)
   - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
   - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
@@ -26,7 +26,7 @@
   - [Why does the text "i+1" keep showing?](#why-does-the-text-i1-keep-showing)
   - [Why does the translation text dim sometimes?](#why-does-the-translation-text-dim-sometimes)
   - [I don't like a feature, is there any way I can turn it off?](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off)
-- [Credits](#credits)
+- [ Credits](#-credits)
   - [This repo was forked from japReader 1.2 created by seth-js](#this-repo-was-forked-from-japreader-12-created-by-seth-js)
 
 
@@ -94,7 +94,7 @@ If none of the above works, you can try [Building](#Build) the program yourself.
 
 If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
 
-# Technical information
+# <img src="images/logo/logo.svg" height="96"/> Technical information
 ## Configuration files
 
 Configuration files are stored in:
@@ -114,7 +114,7 @@ you can do everything that was intended through GUI in the options menu
 3. Open the corresponding files one by one (e.g. `status_data.json`) and paste the data to fit the new template
 4. You'll get it eventually I believe in you
 
-# Controls
+# <img src="images/logo/logo.svg" height="96"/> Controls
 ## Keybindings
 - `O` Open Options Menu 
 - `S` Toggle Stay On Top  
@@ -129,7 +129,7 @@ In the Reader window you can quickly change the status of a word with mouse butt
 - `Ctrl+LMB` set to Ignored
 
 
-# FAQ
+# <img src="images/logo/logo.svg" height="96"/> FAQ
 ## How does this work?
 * It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
 * The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
@@ -189,5 +189,5 @@ This happens when there is only one unknown word in the sentence. You should hop
 Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
 
 
-# Credits
+# <img src="images/logo/logo.svg" height="96"/> Credits
 ## This repo was forked from japReader 1.2 created by [seth-js](https://github.com/seth-js)
