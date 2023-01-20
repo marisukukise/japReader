@@ -38,12 +38,16 @@ window.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.send('dictOnTop');
         break;
       case 'a':
-        var btn = document.querySelector('#audio');
+        var btn = document.querySelector('#audio.btn');
         playAudio(currentWordData, btn);
         break;
       case 'q':
-        var btn = document.querySelector('#anki');
-        addNote(currentWordData, btn);
+        var btn = document.querySelector('#anki.btn');
+        if (btn.classList.contains('preview')){
+          console.log("Preview") //TODO
+        } else {
+          addNote(currentWordData, btn);
+        }
         break;
       case 'Escape':
         ipcRenderer.send('hideDict');
@@ -136,11 +140,12 @@ window.addEventListener('DOMContentLoaded', () => {
       wordData.english = currentEnglishText;
       __anki__addNote(wordData)
         .then(() => {
-          btn.textContent = "Added to Anki";
-          btn.classList.add('disabled');
+          console.log(btn);
+          btn.textContent = "Preview the card";
+          btn.classList.add('preview');
         })
         .catch(() => {
-          btn.textContent = "Already in collection";
+          btn.textContent = "Could not add the card";
           btn.classList.add('disabled');
         });
     }
@@ -188,9 +193,9 @@ window.addEventListener('DOMContentLoaded', () => {
     audio.onloadedmetadata = () => {
       if (audio.duration !== 5.694694) audio.play();
       else {
-        document.querySelector('#audio').textContent =
+        document.querySelector('#audio.btn').textContent =
           'No audio available';
-        document.querySelector('#audio').classList.add('disabled');
+        document.querySelector('#audio.btn').classList.add('disabled');
       }
     };
   }
@@ -211,20 +216,24 @@ window.addEventListener('DOMContentLoaded', () => {
     qry_status.classList.add('disabled');
 
 
-    var qry_anki = document.querySelector('#anki');
+    var qry_anki = document.querySelector('#anki.btn');
     var anki_innerhtml = qry_anki.innerHTML;
     qry_anki.innerHTML = "Linking AnkiConnect...";
     qry_anki.classList.add('disabled');
     __anki__canAddNotes(wordData)
       .then(res => {
         var canClick = res[0];
-        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Already in collection");
+        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
+        if (!canClick){
+          qry_anki.classList.remove('disabled');
+          qry_anki.classList.add('preview');
+        }
       })
       .catch(err => {
         qry_anki.innerHTML = "AnkiConnect not found";
       });
 
-    var qry_audio = document.querySelector('#audio');
+    var qry_audio = document.querySelector('#audio.btn');
     var audio_innerhtml = qry_audio.innerHTML;
     qry_audio.innerHTML = "Searching audio...";
     qry_audio.classList.add('disabled');
@@ -346,8 +355,8 @@ window.addEventListener('DOMContentLoaded', () => {
         <span id="ignored" class="btn">Ignore</span>
       </div>
       <div id='other-buttons'>
-        <span id="audio" class="btn"><small>A</small>Play Audio</span>
-        <span id="anki" class="btn"><small>Q</small>Add to Anki</span>
+        <span id="audio" class="btn">Play Audio</span>
+        <span id="anki" class="btn">Add to Anki</span>
       </div>
       <div id='word-info'>
         <div id="word-area" class="${currentWordData.status}">
@@ -371,14 +380,18 @@ window.addEventListener('DOMContentLoaded', () => {
       })
     });
 
-    document.querySelector('#audio').addEventListener('click', (e) => {
-      var btn = e.target;
-      playAudio(currentWordData, e.target);
+    document.querySelector('#audio.btn').addEventListener('click', (e) => {
+      var btn = document.querySelector('#audio.btn');
+      playAudio(currentWordData, btn);
     });
 
-    document.querySelector('#anki').addEventListener('click', (e) => {
-      var btn = e.target;
-      addNote(currentWordData, btn);
+    document.querySelector('#anki.btn').addEventListener('click', (e) => {
+      var btn = document.querySelector('#anki.btn');
+      if (btn.classList.contains('preview')){
+        console.log("Preview") // TODO
+      } else {
+        addNote(currentWordData, btn);
+      }
     });
 
     $('#dict').html(currentWordData.definitions);
