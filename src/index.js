@@ -29,7 +29,11 @@ let translationOnTop = false;
 let dictOnTop = false;
 
 function createWindow(windowName, windowConfig) {
+  let frame = windowConfig.frame;
+  let transparent = windowConfig.transparent;
   Object.assign(windowConfig, WINDOW_SETTINGS.get(windowName))
+  windowConfig.frame = frame;
+  windowConfig.transparent = transparent;
   const mainWindow = new BrowserWindow(windowConfig)
   if (windowConfig.isMaximized) {
     mainWindow.maximize()
