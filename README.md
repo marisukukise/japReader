@@ -1,6 +1,8 @@
 # <img src="images/logo/logo.svg" height="96"/> japReader
 ## App that makes reading Japanese easy
 
+- [ japReader](#-japreader)
+  - [App that makes reading Japanese easy](#app-that-makes-reading-japanese-easy)
 - [ Preview](#-preview)
   - [Examples](#examples)
   - [Currently Supported](#currently-supported)
@@ -21,6 +23,7 @@
   - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
   - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
   - [How do I get Anki card creation to work?](#how-do-i-get-anki-card-creation-to-work)
+  - [I can't press a button / something doesn't work](#i-cant-press-a-button--something-doesnt-work)
   - [Why does the text "i+1" keep showing?](#why-does-the-text-i1-keep-showing)
   - [Why does the translation text dim sometimes?](#why-does-the-translation-text-dim-sometimes)
   - [I don't like a feature, is there any way I can turn it off?](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off)
@@ -65,7 +68,7 @@ Alternatively, if you don't want to install, you can download the .zip package:
 If there is no package available for your distribution, you may try 
 downloading the `japreader-linux-x64-x.y.z.zip` file and running `./japreader`,
 however it's less reliable (it didn't work for me on Fedora Linux, but .rpm package does)
-If none of the above works, you can try [Building](#Build) the program yourself.
+If none of the above works, you can try [Building](#--build) the program yourself.
 
 > **_NOTE:_** It may happen that your clipboard reading will not work on Linux
 
@@ -173,6 +176,11 @@ In the Reader window you can quickly change the status of a word with mouse butt
 5.  Click `Add to Anki` in the Dictionary window, and card data should
     be generated for the `japReader` Anki deck
 
+## I can't press a button / something doesn't work
+If something doesn't work, and the buttons to reset the options can't be clicked (this sometimes happens on program update, when old settings remain), then before opening the issue you should try to:
+1. Go to your [configuration files](#configuration-files)
+2. Delete the files `options.json` and `window_settings.json`
+This will keep your word data, but will just reset the options to default 
 
 ## Why does the text \"i+1\" keep showing?  
 When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
