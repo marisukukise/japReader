@@ -11,6 +11,7 @@ const schemaOptions = {
             translationTransparent: { default: true, type: "boolean" },
             translationFontSize: { default: 13, type: "number", minimum: 1 },
             useReader: { default: true, type: "boolean" },
+            leftClickDisregardStatus: { default: false, type: "boolean" },
             addFurigana: { default: true, type: "boolean" },
             tvMode: { default: false, type: "boolean" },
             showGoal: { default: false, type: "boolean" },

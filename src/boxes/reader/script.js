@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyReader');
 
-  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode } = OPTIONS.get('options')
+  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode, leftClickDisregardStatus } = OPTIONS.get('options')
 
   if (tvMode) document.body.classList.add('tv-mode');
   if (darkMode) {
@@ -192,7 +192,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 changeStatusOnClick(currentWordData, 'ignored');
               }
               else {
-                changeStatusOnClick(currentWordData, 'seen');
+                if(leftClickDisregardStatus){
+                  changeStatusOnClick(currentWordData, 'seen');
+                } else {
+                  if(currentWordData.status == 'new'){
+                    changeStatusOnClick(currentWordData, 'seen');
+                  } else {
+                    ipcRenderer.send('sendWordData', wordData);
+                    ipcRenderer.send('openDict');
+                  }
+                }
               }
               break;
             case 3: // RightClick
