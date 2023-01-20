@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
       case 'q':
         var btn = document.querySelector('#anki.btn');
         if (btn.classList.contains('preview')){
-          console.log("Preview") //TODO
+          previewNote(currentWordData, btn)
         } else {
           addNote(currentWordData, btn);
         }
@@ -117,6 +117,19 @@ window.addEventListener('DOMContentLoaded', () => {
     return res;
   }
 
+  async function __anki__findNotes(query) {
+    const res = await invoke('findNotes', 6, {
+      query: query
+    })
+    return res;
+  }
+
+  async function __anki__guiEditNote(id) {
+    invoke('guiEditNote', 6, {
+      note: id
+    })
+  }
+
   async function __anki__canAddNotes(wordData) {
     const res = await invoke('canAddNotes', 6, {
       notes: [{
@@ -130,6 +143,27 @@ window.addEventListener('DOMContentLoaded', () => {
     return res;
   }
 
+  const previewNote = (wordData, btn) => {
+    if (!btn.classList.contains('disabled')) {
+      let query = "deck:japReader DictForm:"+wordData.dictForm;
+      btn.classList.add('disabled');
+      __anki__findNotes(query)
+        .then(res => {
+          btn.classList.remove('disabled');
+          if(res.length == 1){
+            __anki__guiEditNote(res[0])
+              .catch((err) => {
+                console.log(err);
+              })
+          }
+        })
+        .catch(err => {
+          btn.classList.remove('disabled');
+          console.log(err)
+        })
+    }
+  }
+
   const addNote = (wordData, btn) => {
     if (!btn.classList.contains('disabled')) {
       if (!wordData.wordFuriganaHTML)
@@ -138,9 +172,10 @@ window.addEventListener('DOMContentLoaded', () => {
         wordData.dictFuriganaHTML = wordData.dictForm;
 
       wordData.english = currentEnglishText;
+      btn.classList.add('disabled');
       __anki__addNote(wordData)
         .then(() => {
-          console.log(btn);
+          btn.classList.remove('disabled');
           btn.textContent = "Preview the card";
           btn.classList.add('preview');
         })
@@ -388,7 +423,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#anki.btn').addEventListener('click', (e) => {
       var btn = document.querySelector('#anki.btn');
       if (btn.classList.contains('preview')){
-        console.log("Preview") // TODO
+        previewNote(currentWordData, btn)
       } else {
         addNote(currentWordData, btn);
       }
