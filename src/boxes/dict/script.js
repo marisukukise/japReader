@@ -152,14 +152,15 @@ window.addEventListener('DOMContentLoaded', () => {
           btn.classList.remove('disabled');
           if(res.length == 1){
             __anki__guiEditNote(res[0])
-              .catch((err) => {
-                console.log(err);
-              })
+          } else { 
+            btn.classList.add('disabled');
+            btn.textContent = "Could not preview the card";
+            btn.classList.remove('preview');
           }
         })
         .catch(err => {
-          btn.classList.remove('disabled');
-          console.log(err)
+          btn.textContent = "Could not preview the card";
+          btn.classList.remove('preview');
         })
     }
   }
