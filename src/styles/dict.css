@@ -22,6 +22,26 @@ html {
   flex-direction: row;
 }
 
+#audio::before, #anki::before{
+  font-size: 0.75em;
+  margin-right: 0.5ex;
+  color: var(--mainBackground);
+  background-color: var(--mainFont);
+}
+
+#audio:hover::before, #anki:hover::before{
+  color: var(--mainFont);
+  background-color: var(--mainBackground);
+}
+
+#audio::before{
+  content: "A";
+}
+
+#anki::before{
+  content: "Q";
+}
+
 #controls {
   border-top: 1px solid var(--mainFont);
   justify-content: space-between;
