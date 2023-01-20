@@ -45,19 +45,6 @@ function createWindow(windowName, windowConfig) {
 
 const { useDeepL, useReader, translationTransparent } = OPTIONS.get('options');
 
-/*
-  Creates the following boxes:
-  ALWAYS:
-    clipboardBox - uses ./boxes/clipboard/*
-    optionsBox - uses ./boxes/options/*
-  IF (useReader)
-    readerBox - uses ./boxes/reader/*
-    ichiBox - uses ./boxes/ichi/*
-    dictBox - uses ./boxes/dict/*
-  IF (useDeepL)
-    deepLBox - uses ./boxes/deepl/*
-    translationBox - uses ./boxes/translation/*
-*/
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
     icon: 'images/logo/icon.png',
