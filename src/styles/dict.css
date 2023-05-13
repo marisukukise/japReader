@@ -6,7 +6,8 @@ html {
 #controls,
 #word-info,
 #status-buttons,
-#other-buttons {
+#other-buttons,
+#search-engines fieldset {
   word-wrap: break-word;
   display: flex;
   gap: 0;
@@ -15,6 +16,14 @@ html {
   line-height: 1em;
   margin: 0;
   padding: 0;
+}
+
+#search-engines {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1em;
+  text-align: center;
 }
 
 #info {
@@ -157,6 +166,174 @@ html {
 .sense-info-note,
 .note-skipped {
   display: none;
+}
+
+#info {
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+#audio::before, #anki::before{
+  font-size: 0.75em;
+  margin-right: 0.5ex;
+  color: var(--mainBackground);
+  background-color: var(--mainFont);
+}
+
+#audio:hover::before, #anki:hover::before{
+  color: var(--mainFont);
+  background-color: var(--mainBackground);
+}
+
+#audio::before{
+  content: "A";
+}
+
+#anki::before{
+  content: "Q";
+}
+
+#controls {
+  border-top: 1px solid var(--mainFont);
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+#word-info {
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#status-buttons,
+#other-buttons {
+  margin: 10px;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+#status-buttons {
+  flex-direction: row;
+}
+
+#other-buttons {
+  flex-direction: column;
+}
+
+#word-area {
+  font-weight: bold;
+  padding: 0.5em;
+  text-align: center;
+  font-size: 1.5em;
+  color: var(--mainFont);
+  text-shadow:
+    -1px 0px var(--mainBackground),
+    0 1px var(--mainBackground),
+    1px 0 var(--mainBackground),
+    0 -1px var(--mainBackground),
+    0 0 5px var(--mainBackground);
+}
+
+#word-area .status {
+  position: absolute;
+  font-size: 0.5em;
+}
+
+#word-area.new {
+  background-color: var(--statusNew);
+}
+
+#word-area.seen {
+  background-color: var(--statusSeen);
+}
+
+#word-area.known {
+  background-color: var(--statusKnown);
+}
+
+#word-area.ignored {
+  background-color: var(--statusIgnored);
+}
+
+#dict {
+  border-top: 1px solid var(--mainFont);
+  word-wrap: break-word;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+
+#dict dt,
+#dict dd {
+  margin: 0;
+  padding: 0;
+}
+
+#dict dd {
+  margin-inline-start: 1em;
+}
+
+#dict ol {
+  margin-block-start: 0em;
+  padding-inline-start: 1em;
+}
+
+#dict ol li:nth-child(6n+1) {
+  background-color: var(--dictListColor4);
+}
+
+#dict ol li:nth-child(6n+2) {
+  background-color: var(--dictListColor3);
+}
+
+#dict ol li:nth-child(6n+3) {
+  background-color: var(--dictListColor2);
+}
+
+#dict ol li:nth-child(6n+4) {
+  background-color: var(--dictListColor1);
+}
+
+#dict ol li:nth-child(6n+5) {
+  background-color: var(--dictListColor2);
+}
+
+#dict ol li:nth-child(6n+6) {
+  background-color: var(--dictListColor3);
+}
+
+
+.sense-info-note,
+.note-skipped {
+  display: none;
+}
+
+fieldset img.symbol {
+  max-width: 2em;
+}
+
+#search-engines fieldset {
+  border-style: dashed;;
+}
+
+.search {
+  max-height: 1em;
+  height: 1em;
+  width: auto;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.search > img {
+  display: inline-block;
+  height: 100%;
+  box-sizing: border-box;
+  object-fit: scale-down;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
 }
 
 .btn {

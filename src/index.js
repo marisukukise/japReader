@@ -1,6 +1,6 @@
 require('module-alias/register')
 
-const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const tools = require('@tools');
 const log = require('electron-log')
 
@@ -48,6 +48,11 @@ function createWindow(windowName, windowConfig) {
 }
 
 const { useDeepL, useReader, translationTransparent } = OPTIONS.get('options');
+
+
+ipcMain.on('openUrl', (event, url) => {
+    shell.openExternal(url);
+});
 
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
@@ -111,6 +116,7 @@ const createBoxes = () => {
     app.relaunch();
     app.exit();
   });
+
 
   if (useReader) {
     const readerBox = createWindow("reader", {
@@ -250,6 +256,7 @@ const createBoxes = () => {
     ipcMain.on('sendTranslation', (event, englishText) => {
       dictBox.webContents.send('receiveTranslation', englishText);
     });
+    
 
     ipcMain.on('readyDict', () => {
     });

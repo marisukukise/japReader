@@ -56,6 +56,38 @@ window.addEventListener('DOMContentLoaded', () => {
     return true;
   });
 
+  handleGoogle = (query) => {
+    openUrl(`https://www.google.co.jp/search?q=${query}&tbm=isch`);
+  }
+
+  handleDuckduckgo = (query) => {
+    openUrl(`https://duckduckgo.com/?q=${query}&kp=-1&kl=jp-jp&iax=images&ia=images`);
+  }
+  
+  handleJisho = (query) => {
+    openUrl(`https://jisho.org/search/${query}`);
+  }
+
+  handleWeblioEn = (query) => {
+    openUrl(`https://ejje.weblio.jp/english-thesaurus/content/${query}`);
+  }
+
+  handleWeblioJp = (query) => {
+    openUrl(`https://www.weblio.jp/content/${query}`);
+  }
+
+  handleWiktionaryEn = (query) => {
+    openUrl(`https://en.wiktionary.org/wiki/${query}#Japanese`);
+  }
+
+  handleWiktionaryJp = (query) => {
+    openUrl(`https://ja.wiktionary.org/wiki/${query}#日本語`);
+  }
+
+  handleWikipedia = (query) => {
+    openUrl(`https://ja.wikipedia.org/wiki/${query}`);
+  }
+
   function invoke(action, version, params = {}) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -165,6 +197,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const openUrl = (url) => {
+    ipcRenderer.send("openUrl", url);
+  }
+
   const addNote = (wordData, btn) => {
     if (!btn.classList.contains('disabled')) {
       if (!wordData.wordFuriganaHTML)
@@ -256,109 +292,109 @@ window.addEventListener('DOMContentLoaded', () => {
     var anki_innerhtml = qry_anki.innerHTML;
     qry_anki.innerHTML = "Linking AnkiConnect...";
     qry_anki.classList.add('disabled');
-    __anki__canAddNotes(wordData)
-      .then(res => {
-        var canClick = res[0];
-        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
-        if (!canClick){
-          qry_anki.classList.remove('disabled');
-          qry_anki.classList.add('preview');
-        }
-      })
-      .catch(err => {
-        qry_anki.innerHTML = "AnkiConnect not found";
-      });
+  __anki__canAddNotes(wordData)
+    .then(res => {
+      var canClick = res[0];
+      checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
+      if (!canClick){
+        qry_anki.classList.remove('disabled');
+        qry_anki.classList.add('preview');
+      }
+    })
+    .catch(err => {
+      qry_anki.innerHTML = "AnkiConnect not found";
+    });
 
-    var qry_audio = document.querySelector('#audio.btn');
-    var audio_innerhtml = qry_audio.innerHTML;
-    qry_audio.innerHTML = "Searching audio...";
-    qry_audio.classList.add('disabled');
-    __canPlayAudio(wordData)
-      .then(res => {
-        var canClick = res;
-        checkIfDisableButton(qry_audio, canClick, audio_innerhtml, "Audio not available");
-      })
-      .catch(err => {
-        qry_audio.innerHTML = "Audio not found";
-      });
-  };
+  var qry_audio = document.querySelector('#audio.btn');
+  var audio_innerhtml = qry_audio.innerHTML;
+  qry_audio.innerHTML = "Searching audio...";
+  qry_audio.classList.add('disabled');
+  __canPlayAudio(wordData)
+    .then(res => {
+      var canClick = res;
+      checkIfDisableButton(qry_audio, canClick, audio_innerhtml, "Audio not available");
+    })
+    .catch(err => {
+      qry_audio.innerHTML = "Audio not found";
+    });
+};
 
-  const setUpStreak = () => {
+const setUpStreak = () => {
+  const goalData = GOAL_DATA.get('goal_data')
+
+  const { dailyGoal } = OPTIONS.get('options')
+
+  const now = new Date();
+  const dateToday = date.format(now, 'YYYY-MM-DD');
+  const dateYesterday = date.format(date.addDays(now, -1), 'YYYY-MM-DD');
+
+  if (goalData.date !== dateToday) {
+    if (goalData.date !== dateYesterday) {
+      goalData.streakCount = 0;
+    } else if (goalData.date === dateYesterday) {
+      if (goalData.goalCount < dailyGoal) goalData.streakCount = 0;
+    }
+    goalData.date = dateToday;
+    goalData.goalCount = 0;
+  }
+
+  GOAL_DATA.set('goal_data', goalData);
+};
+
+const changeStatus = (wordData, newStatus) => {
+  dictForm = wordData.dictForm
+  prevStatus = wordData.status
+  if (prevStatus === 'new' && newStatus === 'seen') {
+    setUpStreak();
+
     const goalData = GOAL_DATA.get('goal_data')
 
     const { dailyGoal } = OPTIONS.get('options')
 
-    const now = new Date();
-    const dateToday = date.format(now, 'YYYY-MM-DD');
-    const dateYesterday = date.format(date.addDays(now, -1), 'YYYY-MM-DD');
+    goalData.goalCount += 1;
 
-    if (goalData.date !== dateToday) {
-      if (goalData.date !== dateYesterday) {
-        goalData.streakCount = 0;
-      } else if (goalData.date === dateYesterday) {
-        if (goalData.goalCount < dailyGoal) goalData.streakCount = 0;
-      }
-      goalData.date = dateToday;
-      goalData.goalCount = 0;
+    if (goalData.goalCount === dailyGoal) {
+      goalData.streakCount += 1;
     }
+
+    document.querySelector('#goal-count').textContent = goalData.goalCount;
 
     GOAL_DATA.set('goal_data', goalData);
-  };
+  }
 
-  const changeStatus = (wordData, newStatus) => {
-    dictForm = wordData.dictForm
-    prevStatus = wordData.status
-    if (prevStatus === 'new' && newStatus === 'seen') {
-      setUpStreak();
+  const statusData = STATUS_DATA.get('status_data')
 
-      const goalData = GOAL_DATA.get('goal_data')
+  if (prevStatus === 'known') {
+    statusData.known = statusData.known.filter((elem) => elem !== dictForm);
+  } else if (prevStatus === 'seen') {
+    statusData.seen = statusData.seen.filter((elem) => elem !== dictForm);
+  } else if (prevStatus === 'ignored') {
+    statusData.ignored = statusData.ignored.filter(
+      (elem) => elem !== dictForm
+    );
+  }
 
-      const { dailyGoal } = OPTIONS.get('options')
+  if (newStatus === 'known') {
+    statusData.known.push(dictForm);
+  } else if (newStatus === 'seen') {
+    statusData.seen.push(dictForm);
+  } else if (newStatus === 'ignored') {
+    statusData.ignored.push(dictForm);
+  }
 
-      goalData.goalCount += 1;
+  wordData.status = newStatus;
+  STATUS_DATA.set('status_data', statusData);
+  handleWordData(wordData);
+  ipcRenderer.send('refreshReader');
+};
 
-      if (goalData.goalCount === dailyGoal) {
-        goalData.streakCount += 1;
-      }
+const displayGoalData = () => {
+  const { goalCount, streakCount } = GOAL_DATA.get('goal_data')
 
-      document.querySelector('#goal-count').textContent = goalData.goalCount;
+  const { dailyGoal } = OPTIONS.get('options')
 
-      GOAL_DATA.set('goal_data', goalData);
-    }
-
-    const statusData = STATUS_DATA.get('status_data')
-
-    if (prevStatus === 'known') {
-      statusData.known = statusData.known.filter((elem) => elem !== dictForm);
-    } else if (prevStatus === 'seen') {
-      statusData.seen = statusData.seen.filter((elem) => elem !== dictForm);
-    } else if (prevStatus === 'ignored') {
-      statusData.ignored = statusData.ignored.filter(
-        (elem) => elem !== dictForm
-      );
-    }
-
-    if (newStatus === 'known') {
-      statusData.known.push(dictForm);
-    } else if (newStatus === 'seen') {
-      statusData.seen.push(dictForm);
-    } else if (newStatus === 'ignored') {
-      statusData.ignored.push(dictForm);
-    }
-
-    wordData.status = newStatus;
-    STATUS_DATA.set('status_data', statusData);
-    handleWordData(wordData);
-    ipcRenderer.send('refreshReader');
-  };
-
-  const displayGoalData = () => {
-    const { goalCount, streakCount } = GOAL_DATA.get('goal_data')
-
-    const { dailyGoal } = OPTIONS.get('options')
-
-    $('#info').append(
-      `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
+  $('#info').append(
+    `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
     );
 
     $('#info').append(
@@ -385,14 +421,55 @@ window.addEventListener('DOMContentLoaded', () => {
 
     $('#controls').html(``);
     $('#controls').append(`
-      <div id='status-buttons'>
-        <span id="seen" class="btn">Seen</span>
-        <span id="known" class="btn">Known</span>
-        <span id="ignored" class="btn">Ignore</span>
-      </div>
       <div id='other-buttons'>
+        <div id='search-engines'>
+          <fieldset>
+            <legend>
+              <img class="symbol" src="./img/symbols/image.png"/>
+            </legend>
+            <span id="google" class="search">
+              <img class="icon" title="Google Images" src="./img/favicons/google.ico"/>
+            </span>
+            <span id="duckduckgo" class="search">
+              <img class="icon" title="DuckDuckGo Images" src="./img/favicons/duckduckgo.ico"/>
+            </span>
+          </fieldset>
+          <fieldset>
+            <legend>
+              <img class="symbol" src="./img/symbols/britain.png"/>
+            </legend>
+            <span id="jisho" class="search">
+              <img class="icon" title="Jisho.org (Japanese-English dictionary)" src="./img/favicons/jisho.ico"/>
+            </span>
+            <span id="weblio-en" class="search">
+              <img class="icon" title="Weblio (Japanese-English thesaurus)" src="./img/favicons/weblio-en.png"/>
+            </span>
+            <span id="wiktionary-en" class="search">
+              <img class="icon" title="Wiktionary (English)" src="./img/favicons/wiktionary-en.ico"/>
+            </span>
+          </fieldset>
+          <fieldset>
+            <legend>
+              <img class="symbol" src="./img/symbols/japan.png"/>
+            </legend>
+            <span id="weblio-jp" class="search">
+              <img class="icon" title="Weblio (Japanese dictionary)" src="./img/favicons/weblio-jp.png"/>
+            </span>
+            <span id="wiktionary-jp" class="search">
+              <img class="icon" title="Wiktionary (Japanese)" src="./img/favicons/wiktionary-jp.ico"/>
+            </span>
+            <span id="wikipedia" class="search">
+              <img class="icon" title="Wikipedia (Japanese)" src="./img/favicons/wikipedia.ico"/>
+            </span>
+          </fieldset>
+        </div>
         <span id="audio" class="btn">Play Audio</span>
         <span id="anki" class="btn">Add to Anki</span>
+        <div id='status-buttons'>
+          <span id="seen" class="btn">Seen</span>
+          <span id="known" class="btn">Known</span>
+          <span id="ignored" class="btn">Ignore</span>
+        </div>
       </div>
       <div id='word-info'>
         <div id="word-area" class="${currentWordData.status}">
@@ -416,11 +493,46 @@ window.addEventListener('DOMContentLoaded', () => {
       })
     });
 
+    document.querySelector('#google.search').addEventListener('click', (e) => {
+      handleGoogle(currentWordData.dictForm);
+    });
+
+    document.querySelector('#duckduckgo.search').addEventListener('click', (e) => {
+      handleDuckduckgo(currentWordData.dictForm)
+    });
+    
+    document.querySelector('#jisho.search').addEventListener('click', (e) => {
+      handleJisho(currentWordData.dictForm);
+    });
+
+    document.querySelector('#weblio-en.search').addEventListener('click', (e) => {
+      handleWeblioEn(currentWordData.dictForm);
+    });
+
+    document.querySelector('#weblio-jp.search').addEventListener('click', (e) => {
+      handleWeblioJp(currentWordData.dictForm);
+    });
+
+    document.querySelector('#wiktionary-en.search').addEventListener('click', (e) => {
+      handleWiktionaryEn(currentWordData.dictForm);
+    });
+
+    document.querySelector('#wiktionary-jp.search').addEventListener('click', (e) => {
+      handleWiktionaryJp(currentWordData.dictForm);
+    });
+
+    document.querySelector('#wikipedia.search').addEventListener('click', (e) => {
+      handleWikipedia(currentWordData.dictForm);
+    });
+
+
+    
+
     document.querySelector('#audio.btn').addEventListener('click', (e) => {
       var btn = document.querySelector('#audio.btn');
       playAudio(currentWordData, btn);
     });
-
+    
     document.querySelector('#anki.btn').addEventListener('click', (e) => {
       var btn = document.querySelector('#anki.btn');
       if (btn.classList.contains('preview')){
