@@ -1,3 +1,6 @@
+# 1.6.0
+- Added buttons that link to several search engines and dictionaries (Google images, Jisho, Wikipedia etc.)
+
 # 1.5.3
 - Added a preview option for Anki cards (if they're in collection)
 - Changed the logic of left click button, so that it doesn't change the status of known and ignored words
