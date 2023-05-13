@@ -1,3 +1,6 @@
+# 1.6.1
+- Colorized a black and white icon that was hard to see on a dark background
+
 # 1.6.0
 - Added buttons that link to several search engines and dictionaries (Google images, Jisho, Wikipedia etc.)
 
