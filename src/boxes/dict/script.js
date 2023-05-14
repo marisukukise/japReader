@@ -465,11 +465,11 @@ const displayGoalData = () => {
         </div>
         <span id="audio" class="btn">Play Audio</span>
         <span id="anki" class="btn">Add to Anki</span>
-        <div id='status-buttons'>
-          <span id="seen" class="btn">Seen</span>
-          <span id="known" class="btn">Known</span>
-          <span id="ignored" class="btn">Ignore</span>
-        </div>
+      </div>
+      <div id='status-buttons'>
+        <span id="seen" class="btn">Seen</span>
+        <span id="known" class="btn">Known</span>
+        <span id="ignored" class="btn">Ignored</span>
       </div>
       <div id='word-info'>
         <div id="word-area" class="${currentWordData.status}">
