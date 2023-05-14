@@ -33,6 +33,7 @@ html {
 
 #audio::before, #anki::before{
   font-size: 0.75em;
+  height: 100%;
   margin-right: 0.5ex;
   color: var(--mainBackground);
   background-color: var(--mainFont);
@@ -45,10 +46,12 @@ html {
 
 #audio::before{
   content: "A";
+  padding: 0 0.5ex;
 }
 
 #anki::before{
   content: "Q";
+  padding: 0 0.5ex;
 }
 
 #controls {
@@ -65,9 +68,7 @@ html {
 
 #status-buttons,
 #other-buttons {
-  margin: 10px;
   flex-wrap: wrap;
-  gap: 5px;
   justify-content: center;
   align-items: center;
 }
@@ -97,6 +98,7 @@ html {
 #word-area .status {
   position: absolute;
   font-size: 0.5em;
+  display: none;
 }
 
 #word-area.new {
@@ -187,10 +189,12 @@ html {
 
 #audio::before{
   content: "A";
+  font-family: monospace, monospace;
 }
 
 #anki::before{
   content: "Q";
+  font-family: monospace, monospace;
 }
 
 #controls {
@@ -207,11 +211,15 @@ html {
 
 #status-buttons,
 #other-buttons {
-  margin: 10px;
+  margin: 0.5ex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 1ex;
   justify-content: center;
   align-items: center;
+}
+
+#controls {
+  gap: 1ex;
 }
 
 #status-buttons {
@@ -311,19 +319,26 @@ html {
 }
 
 fieldset img.symbol {
+  filter: drop-shadow(0px 0px 4px var(--mainFont));
   max-width: 2em;
+  margin-bottom: 0.5ex;
 }
 
 #search-engines fieldset {
-  border-style: dashed;;
+  border: 0px;
 }
 
 .search {
+  filter: invert(0.1) saturate(0.4);
   max-height: 1em;
   height: 1em;
   width: auto;
-  border: 1px solid black;
+  border-bottom: 1px solid var(--mainFont);
   cursor: pointer;
+}
+
+.search:hover{
+  filter: saturate(1);
 }
 
 .search > img {
@@ -336,16 +351,19 @@ fieldset img.symbol {
 }
 
 .btn {
+  border: 1px solid var(--mainFont);
+  background-color: transparent;
+  padding: 0.25em;
   font-weight: bold;
-  word-wrap: break-word;
+  display: flex;
+  align-items: center;
   text-align: center;
   cursor: pointer;
-  color: var(--mainFont);
-  background-color: var(--mainBackground);
-  border: 0.1em solid var(--mainFont);
-  border-radius: 5px;
-  padding: 0.25em;
-  width: fit-content;
+}
+
+.btn:hover {
+  color: var(--mainBackground);
+  background-color: var(--mainFont);
 }
 
 .btn small {
@@ -357,41 +375,28 @@ fieldset img.symbol {
   margin-right: 0.1em;
 }
 
-.btn:hover {
-  border: none;
-  padding: 0.35em;
-  color: var(--mainBackground);
-  background-color: var(--mainFont);
-}
-
 .btn:hover small {
   background-color: var(--mainBackground);
   color: var(--mainFont);
 }
 
-#seen:not(.disabled):hover {
+.disabled {
+  cursor: not-allowed;
+  filter: contrast(0.5) blur(0.1px);
+}
+
+.disabled:hover {
+  filter: invert(0.2) blur(0px);
+}
+
+#seen.disabled, #seen:not(.disabled):hover {
   background-color: var(--statusSeen);
 }
 
-#known:not(.disabled):hover {
+#known.disabled, #known:not(.disabled):hover {
   background-color: var(--statusKnown);
 }
 
-#ignored:not(.disabled):hover {
+#ignored.disabled, #ignored:not(.disabled):hover {
   background-color: var(--statusIgnored);
-}
-
-.disabled {
-  cursor: not-allowed;
-  border: 0.2em groove var(--mainFont);
-  padding: 0.15em;
-  opacity: 0.5;
-  text-decoration: underline;
-  background-color: transparent;
-}
-
-
-.disabled:hover {
-  border: 0.2em groove var(--mainFont);
-  padding: 0.15em;
 }

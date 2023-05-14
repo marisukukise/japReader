@@ -59,10 +59,10 @@ section#apply {
   display: flex;
   align-items: center;
   text-align: center;
+  cursor: pointer;
 }
 
 .btn:hover {
-  cursor: pointer;
   color: var(--mainBackground);
   background-color: var(--mainFont);
 }
