@@ -1,7 +1,7 @@
 html {
   background: var(--mainBackground);
   color: var(--mainFont);
-  font-family: 'SF UI Display', 'DFGaGei-W6', sans-serif;
+  font-family:  "メイリオ", Meiryo, Tahoma, Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   user-select: none;
   padding: 0;
   margin: 0;
