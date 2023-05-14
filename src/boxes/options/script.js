@@ -2,6 +2,7 @@ require('module-alias/register')
 const { ipcRenderer } = require('electron');
 const tools = require('@tools');
 const Store = require('electron-store')
+const fs = require('fs');
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
 const GOAL_DATA = new Store(tools.getGoalDataStoreOptions());
@@ -56,6 +57,17 @@ window.addEventListener('DOMContentLoaded', () => {
         break;
       case 'number':
         document.querySelector(`#${key}`).value = value;
+        break;
+      case 'string':
+        switch (key) {
+          case 'fontFamily':
+            let default_font = [tools.dirname_path("fonts/MPLUSRounded1c-Regular.ttf")];
+            let other_fonts = ["htpps://1.com", "https://2.com", "https://3.com"];
+            // then implement all fonts from a folder
+            let font_choices = default_font.concat(other_fonts);
+            break;
+          default:
+        }
         break;
       default:
     }
