@@ -50,21 +50,40 @@ window.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.add('dark-mode');
   }
 
+
   Object.entries(optionsData).forEach(([key, value]) => {
+    let element = document.querySelector(`#${key}`);
     switch (typeof value) {
       case 'boolean':
-        document.querySelector(`#${key}`).checked = value;
+        element.checked = value;
         break;
       case 'number':
-        document.querySelector(`#${key}`).value = value;
+        element.value = value;
         break;
       case 'string':
         switch (key) {
           case 'fontFamily':
-            let default_font = [tools.dirname_path("fonts/MPLUSRounded1c-Regular.ttf")];
-            let other_fonts = ["htpps://1.com", "https://2.com", "https://3.com"];
-            // then implement all fonts from a folder
+            console.log(value);
+            let default_font = [
+              {
+              text: 'Default (M PLUS Rounded 1c)',
+              value: tools.dirname_path("fonts/MPLUSRounded1c-Regular.ttf"),
+              selected: this.value == value,
+              }
+            ];
+            let other_fonts = [
+              {
+                text: 'Dummy font (not working)',
+                value: "teststring",
+                selected: this.value == value,
+              } 
+            ];
+            // TODO: implement all fonts from user data folder
             let font_choices = default_font.concat(other_fonts);
+            font_choices.forEach(choice => 
+              element.options.add(
+                new Option(choice.text, choice.value, choice.selected))
+              );
             break;
           default:
         }
@@ -81,13 +100,21 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(result => {
         if (result.response === 0) {
           Object.entries(optionsData).forEach(([key, value]) => {
+            let element = document.querySelector(`#${key}`);
             switch (typeof value) {
               case 'boolean':
-                optionsData[key] = document.querySelector(`#${key}`).checked;
+                optionsData[key] = element.checked;
                 break;
               case 'number':
-                optionsData[key] = parseInt(document.querySelector(`#${key}`).value);
+                optionsData[key] = parseInt(element.value);
                 break;
+              case 'string':
+                switch (key) {
+                  case 'fontFamily':
+                    optionsData[key] = element.value;
+                    break;
+                  default:
+                }
               default:
             }
           });
