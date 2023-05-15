@@ -78,6 +78,7 @@ html {
 }
 
 #other-buttons {
+  margin-top: 1ex;
   flex-direction: column;
 }
 
@@ -211,7 +212,6 @@ html {
 
 #status-buttons,
 #other-buttons {
-  margin: 0.5ex;
   flex-wrap: wrap;
   gap: 1ex;
   justify-content: center;

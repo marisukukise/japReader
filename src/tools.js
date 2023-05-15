@@ -4,7 +4,7 @@ const schemaOptions = {
     options: {
         type: "object",
         properties: {
-            fontFamily: { default: "./fonts/MPLUSRounded1c-Regular.ttf", type: "string" },
+            fontFamily: { default: "NotoSansJP", type: "string" },
             darkMode: { default: false, type: "boolean" },
             useDeepL: { default: true, type: "boolean" },
             deepLDual: { default: true, type: "boolean" },

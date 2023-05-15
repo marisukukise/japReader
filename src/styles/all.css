@@ -1,12 +1,11 @@
 @font-face {
-  font-family: ZenOldMincho;
-  src: url(../fonts/ZenOldMincho-Regular.ttf);
-}
-
-
-@font-face {
   font-family: BIZUDPMincho;
   src: url(../fonts/BIZUDPMincho-Regular.ttf);
+}
+
+@font-face {
+  font-family: BIZUDPGothic;
+  src: url(../fonts/BIZUDPGothic-Regular.ttf);
 }
 
 @font-face {
@@ -21,7 +20,7 @@
 
 @font-face {
   font-family: KleeOne;
-  src: url(../fonts/KleeOne-Regular.ttf);
+  src: url(../fonts/KleeOne-SemiBold.ttf);
 }
 
 @font-face {
@@ -83,7 +82,7 @@
 html {
   background: var(--mainBackground);
   color: var(--mainFont);
-  font-family: "メイリオ", Meiryo, Tahoma, Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  font-family: "NotoSansJP", "メイリオ", Meiryo, Tahoma, Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   user-select: none;
   padding: 0;
   margin: 0;

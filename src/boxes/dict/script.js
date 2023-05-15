@@ -22,11 +22,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyDict');
 
-  const { dictFontSize, showGoal, darkMode } = OPTIONS.get('options')
+  const { dictFontSize, fontFamily, showGoal, darkMode } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
   document.querySelector('#app').style.fontSize = `${dictFontSize}pt`;
+  document.querySelector('#app').style.fontFamily = `${fontFamily}`;
 
   $(window).on('keydown', (e) => {
     switch (e.key) {

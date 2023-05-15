@@ -31,7 +31,10 @@ const handleOptionConflicts = () => {
     '#reader input:not(#useReader), #translation input#useDeepL, #dictionary input', null)
 }
 
+const { fontFamily } = OPTIONS.get('options')
+
 window.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('#app').style.fontFamily = `${fontFamily}`;
   // eslint-disable-next-line global-require
   const $ = require('jquery');
   $(window).on('keydown', (e) => {
@@ -63,7 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
       case 'string':
         switch (element.tagName) {
           case 'SELECT':
-            console.log(value);
+            element.value = value;
             break;
           default:
         }

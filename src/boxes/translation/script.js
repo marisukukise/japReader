@@ -24,11 +24,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyTranslation');
 
-  const { translationFontSize, translationTransparent, darkMode } = OPTIONS.get('options')
+  const { translationFontSize, fontFamily, translationTransparent, darkMode } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
   document.querySelector('#app').style.fontSize = `${translationFontSize}pt`;
+  document.querySelector('#app').style.fontFamily = `${fontFamily}`;
 
   $(window).on('keydown', (e) => {
     switch (e.key) {

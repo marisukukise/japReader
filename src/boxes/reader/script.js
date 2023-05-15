@@ -23,13 +23,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyReader');
 
-  const { tvMode, readerFontSize, addFurigana, fadeText, darkMode, leftClickDisregardStatus } = OPTIONS.get('options')
+  const { tvMode, readerFontSize, fontFamily, addFurigana, fadeText, darkMode, leftClickDisregardStatus } = OPTIONS.get('options')
 
   if (tvMode) document.body.classList.add('tv-mode');
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
   document.querySelector('#app').style.fontSize = `${readerFontSize}pt`;
+  document.querySelector('#app').style.fontFamily = `${fontFamily}`;
 
 
   $(window).on('keydown', (e) => {

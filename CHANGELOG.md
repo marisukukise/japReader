@@ -1,3 +1,7 @@
+# 1.7.0
+- Added 16 fonts that can be changed through the menu
+- Cleaned up the GUI
+
 # 1.6.1
 - Colorized a black and white icon that was hard to see on a dark background
 
