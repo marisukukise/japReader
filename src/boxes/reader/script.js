@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
-  document.querySelector('#app').style.fontSize = `${readerFontSize}px`;
+  document.querySelector('#app').style.fontSize = `${readerFontSize}pt`;
 
 
   $(window).on('keydown', (e) => {

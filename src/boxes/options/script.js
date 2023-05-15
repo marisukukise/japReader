@@ -61,29 +61,9 @@ window.addEventListener('DOMContentLoaded', () => {
         element.value = value;
         break;
       case 'string':
-        switch (key) {
-          case 'fontFamily':
+        switch (element.tagName) {
+          case 'SELECT':
             console.log(value);
-            let default_font = [
-              {
-              text: 'Default (M PLUS Rounded 1c)',
-              value: tools.dirname_path("fonts/MPLUSRounded1c-Regular.ttf"),
-              selected: this.value == value,
-              }
-            ];
-            let other_fonts = [
-              {
-                text: 'Dummy font (not working)',
-                value: "teststring",
-                selected: this.value == value,
-              } 
-            ];
-            // TODO: implement all fonts from user data folder
-            let font_choices = default_font.concat(other_fonts);
-            font_choices.forEach(choice => 
-              element.options.add(
-                new Option(choice.text, choice.value, choice.selected))
-              );
             break;
           default:
         }

@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
-  document.querySelector('#app').style.fontSize = `${translationFontSize}px`;
+  document.querySelector('#app').style.fontSize = `${translationFontSize}pt`;
 
   $(window).on('keydown', (e) => {
     switch (e.key) {

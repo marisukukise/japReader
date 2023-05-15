@@ -1,7 +1,89 @@
+@font-face {
+  font-family: ZenOldMincho;
+  src: url(../fonts/ZenOldMincho-Regular.ttf);
+}
+
+
+@font-face {
+  font-family: BIZUDPMincho;
+  src: url(../fonts/BIZUDPMincho-Regular.ttf);
+}
+
+@font-face {
+  font-family: DotGothic16;
+  src: url(../fonts/DotGothic16-Regular.ttf);
+}
+
+@font-face {
+  font-family: HinaMincho;
+  src: url(../fonts/HinaMincho-Regular.ttf);
+}
+
+@font-face {
+  font-family: KleeOne;
+  src: url(../fonts/KleeOne-Regular.ttf);
+}
+
+@font-face {
+  font-family: MPLUS1p;
+  src: url(../fonts/MPLUS1p-Regular.ttf);
+}
+
+@font-face {
+  font-family: MPLUSRounded1c;
+  src: url(../fonts/MPLUSRounded1c-Regular.ttf);
+}
+
+@font-face {
+  font-family: NotoSansJP;
+  src: url(../fonts/NotoSansJP-Regular.ttf);
+}
+
+@font-face {
+  font-family: NotoSerifJP;
+  src: url(../fonts/NotoSerifJP-Regular.otf);
+}
+
+@font-face {
+  font-family: SawarabiGothic;
+  src: url(../fonts/SawarabiGothic-Regular.ttf);
+}
+
+@font-face {
+  font-family: SawarabiMincho;
+  src: url(../fonts/SawarabiMincho-Regular.ttf);
+}
+
+@font-face {
+  font-family: ZenAntique;
+  src: url(../fonts/ZenAntique-Regular.ttf);
+}
+
+@font-face {
+  font-family: ZenKakuGothicNew;
+  src: url(../fonts/ZenKakuGothicNew-Regular.ttf);
+}
+
+@font-face {
+  font-family: ZenKurenaido;
+  src: url(../fonts/ZenKurenaido-Regular.ttf);
+}
+
+@font-face {
+  font-family: ZenMaruGothic;
+  src: url(../fonts/ZenMaruGothic-Regular.ttf);
+}
+
+@font-face {
+  font-family: ZenOldMincho;
+  src: url(../fonts/ZenOldMincho-Regular.ttf);
+}
+
+
 html {
   background: var(--mainBackground);
   color: var(--mainFont);
-  font-family:  "メイリオ", Meiryo, Tahoma, Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  font-family: "メイリオ", Meiryo, Tahoma, Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   user-select: none;
   padding: 0;
   margin: 0;
