@@ -1,11 +1,13 @@
 .word,
 .junk {
   display: inline-block;
-  margin-bottom: 10px;
+  line-height: 1.1em;
+  margin-bottom: 0.4em;
   text-decoration: none;
   position: relative;
   z-index: 1;
 }
+
 
 .word:hover {
   cursor: pointer;
@@ -93,8 +95,8 @@
   content: "i+1";
   background-color: var(--plusOneHighlight);
   position: absolute;
-  font-size: 0.75em;
-  padding: 0.1em;
+  font-size: 14px;
+  padding: 0em;
 }
 
 .plusOne .new,
