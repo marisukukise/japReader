@@ -6,7 +6,7 @@ html {
   margin: 0 auto;
 }
 
-#options {
+#all-options {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -32,7 +32,7 @@ fieldset {
 
 #danger-zone{
   margin-top: 1.5em;
-  max-width: 500px;
+  max-width: 37em;
   background-color: var(--dangerZoneBackground);
   margin-left: auto;
   margin-right: auto;
@@ -40,7 +40,7 @@ fieldset {
 
 details#danger-zone {
   border: 1px solid var(--mainFont);
-  border-radius: 4px;
+  border-radius: 0px;
   padding: 0.5em 0.5em 0;
 }
 #danger-zone summary {

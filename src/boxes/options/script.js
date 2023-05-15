@@ -31,9 +31,10 @@ const handleOptionConflicts = () => {
     '#reader input:not(#useReader), #translation input#useDeepL, #dictionary input', null)
 }
 
-const { fontFamily } = OPTIONS.get('options')
+const { optionsFontSize, fontFamily } = OPTIONS.get('options')
 
 window.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('#app').style.fontSize = `${optionsFontSize}pt`;
   document.querySelector('#app').style.fontFamily = `${fontFamily}`;
   // eslint-disable-next-line global-require
   const $ = require('jquery');

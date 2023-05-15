@@ -19,6 +19,7 @@ const schemaOptions = {
             dailyGoal: { default: 30, type: "number", minimum: 1 },
             readerFontSize: { default: 18, type: "number", minimum: 1 },
             dictFontSize: { default: 12, type: "number", minimum: 1 },
+            optionsFontSize: { default: 12, type: "number", minimum: 1 },
         },
         default: {}
     }
