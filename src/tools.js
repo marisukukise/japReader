@@ -10,15 +10,15 @@ const schemaOptions = {
             deepLDual: { default: true, type: "boolean" },
             fadeText: { default: true, type: "boolean" },
             translationTransparent: { default: true, type: "boolean" },
-            translationFontSize: { default: 13, type: "number", minimum: 1 },
+            translationFontSize: { default: 12, type: "number", minimum: 1 },
             useReader: { default: true, type: "boolean" },
             leftClickDisregardStatus: { default: false, type: "boolean" },
             addFurigana: { default: true, type: "boolean" },
             tvMode: { default: false, type: "boolean" },
             showGoal: { default: false, type: "boolean" },
             dailyGoal: { default: 30, type: "number", minimum: 1 },
-            readerFontSize: { default: 25, type: "number", minimum: 1 },
-            dictFontSize: { default: 17, type: "number", minimum: 1 },
+            readerFontSize: { default: 18, type: "number", minimum: 1 },
+            dictFontSize: { default: 12, type: "number", minimum: 1 },
         },
         default: {}
     }
