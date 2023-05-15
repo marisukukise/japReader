@@ -3,7 +3,6 @@ html {
 }
 
 #app {
-  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -20,15 +19,41 @@ fieldset {
   padding: 0.75em;
 }
 
-#danger-zone {
+.red-buttons {
   border-color: var(--dangerZoneButton);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  background-color: var(--dangerZoneBackground);
-  margin-top: 10em;
   flex-wrap: wrap;
   gap: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#danger-zone{
+  margin-top: 1.5em;
+  max-width: 500px;
+  background-color: var(--dangerZoneBackground);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+details#danger-zone {
+  border: 1px solid var(--mainFont);
+  border-radius: 4px;
+  padding: 0.5em 0.5em 0;
+}
+#danger-zone summary {
+  font-weight: bold;
+  margin: -0.5em -0.5em 0;
+  padding: 0.5em;
+}
+details[open]#danger-zone {
+  padding: 0.5em;
+}
+#danger-zone details[open] summary {
+  border-bottom: 1px solid var(--mainFont);
+  margin-bottom: 0.5em;
 }
 
 #danger-zone .btn {
