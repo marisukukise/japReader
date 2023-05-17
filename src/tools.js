@@ -7,6 +7,8 @@ const schemaOptions = {
             fontFamily: { default: "NotoSansJP", type: "string" },
             darkMode: { default: false, type: "boolean" },
             useDeepL: { default: true, type: "boolean" },
+            useDeepLApi: { default: false, type: "boolean" },
+            deepLApiKey: { default: "", type: "string" },
             deepLDual: { default: true, type: "boolean" },
             fadeText: { default: true, type: "boolean" },
             translationTransparent: { default: true, type: "boolean" },
