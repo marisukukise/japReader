@@ -1,3 +1,6 @@
+# 1.7.0-hotfix1
+- Fixed broken DeepL translation
+
 # 1.7.0
 - Added 16 fonts that can be changed through the menu
 - Cleaned up the GUI
