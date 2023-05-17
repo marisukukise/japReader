@@ -67,6 +67,21 @@ title="Selecting this will load the translation window on startup.">
           <label for="useDeepL">Use DeepL translation</label>
         </section>
 
+        <section id="useDeepLApi-selection" class="option"
+title="Selecting this will use DeepL API instead of parsing it through the HTML window. It's recommended to keep this off, 
+the default option broke, then this one should keep working.">
+          <input type="text" id="useDeepLApi" name="useDeepLApi">
+          <label for="useDeepLApi">Use DeepL API key (Optional)</label>
+        </section>
+
+        <section id="deepLApiKey-selection" class="option"
+title="Selecting this will use DeepL API instead of parsing it through the HTML window. It's recommended to keep this off, 
+the default option broke, then this one should keep working.">
+          <input type="checkbox" id="deepLApiKey" name="deepLApiKey" 
+          minlength="10" placeholder="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ff">
+          <label for="deepLApiKey">Enter API Key</label>
+        </section>
+
         <section id="deepLDual-selection" class="option"
 title="Selecting this will add Japanese text below English text in the translation window.">
           <input type="checkbox" id="deepLDual" name="deepLDual">
