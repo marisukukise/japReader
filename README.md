@@ -182,7 +182,7 @@ If something doesn't work, and the buttons to reset the options can't be clicked
 2. Delete the files `options.json` and `window_settings.json`
 This will keep your word data, but will just reset the options to default
 
-If this still doesn't work, then something might be wrong with cache from old versions, in which case you should delete the entire configuration folder (one step up the config file). But remember to backup your config folder before, because it contains your seen/known/etc data.
+If this still doesn't work, then something might be wrong with cache from old versions, in which case you should delete the entire japReader folder (one step up the [configuration folder](#configuration-files)). But remember to backup your config folder before, because it contains your seen/known/etc data.
 
 ## Why does the text \"i+1\" keep showing?  
 When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
