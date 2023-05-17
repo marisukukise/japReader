@@ -26,9 +26,11 @@ const setOnReadyAndOnClickListener = (checkbox, enable_query, disable_query) => 
 
 const handleOptionConflicts = () => {
   setOnReadyAndOnClickListener(document.querySelector('#useDeepL'),
-    '#translation input:not(#useDeepL), #reader input#useReader', null)
+    '#translation input:not(#useDeepL, #useDeepLApiKey), #reader input#useReader', null)
   setOnReadyAndOnClickListener(document.querySelector('#useReader'),
     '#reader input:not(#useReader), #translation input#useDeepL, #dictionary input', null)
+  setOnReadyAndOnClickListener(document.querySelector('#useDeepLApi'),
+    '#translation input#deepLApiKey', null)
 }
 
 const { optionsFontSize, fontFamily } = OPTIONS.get('options')
@@ -69,6 +71,9 @@ window.addEventListener('DOMContentLoaded', () => {
           case 'SELECT':
             element.value = value;
             break;
+          case 'INPUT':
+            element.value = value;
+            break;
           default:
         }
         break;
@@ -95,6 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
               case 'string':
                 switch (key) {
                   case 'fontFamily':
+                  case 'deepLApiKey':
                     optionsData[key] = element.value;
                     break;
                   default:
