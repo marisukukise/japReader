@@ -7,13 +7,14 @@ window.addEventListener('DOMContentLoaded', () => {
     document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
   });
 
-  const targetNode = document.querySelector('#target-dummydiv');
-  const sourceNode = document.querySelector('#source-dummydiv');
+  const targetNode = document.querySelector('div[aria-labelledby="translation-results-heading"]');
+  console.log(targetNode);
+  const sourceNode = document.querySelector('div[aria-labelledby="translation-source-heading"]');
   const config = { childList: true };
   const callback = () => {
     if (targetNode.textContent) {
-      const deeplText = targetNode.textContent;
-      const japaneseText = sourceNode.textContent;
+      const deeplText = [...targetNode.children].map(x => x.textContent).join(" ");
+      const japaneseText = [...sourceNode.children].map(x => x.textContent).join(" ");
       ipcRenderer.send('showTranslation', deeplText, japaneseText);
     }
   };
