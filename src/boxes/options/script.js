@@ -121,10 +121,10 @@ window.addEventListener('DOMContentLoaded', () => {
     translator
       .getUsage()
       .then(e => {
-          responseSelector.textContent = `✅Current limit: ${e.character.count}/${e.character.limit}`;
+          responseSelector.textContent = `✅Monthly usage: ${e.character.count}/${e.character.limit}`;
       }).catch(e => {
           responseSelector.textContent = `❌Something went wrong`;
-          console.log(e);
+          console.error(e);
       })
   })
   document.querySelector('.reset-window-settings.btn').addEventListener('click', () => {

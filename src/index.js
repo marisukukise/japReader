@@ -280,6 +280,9 @@ const createBoxes = () => {
     if (!useDeepLApi){
       deepLBox.loadURL('https://www.deepl.com/translator#ja/en/');
     }
+    else {
+      deepLBox.loadFile(tools.dirname_path('./boxes/deepl/index.html'));
+    }
 
     deepLBox.on('close', (e) => {
       e.preventDefault();
