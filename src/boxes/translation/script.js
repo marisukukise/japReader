@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyTranslation');
 
-  const { translationFontSize, fontFamily, translationTransparent, darkMode } = OPTIONS.get('options')
+  const { translationFontSize, useDeepLApi, fontFamily, translationTransparent, darkMode } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }
@@ -61,7 +61,7 @@ window.addEventListener('DOMContentLoaded', () => {
   deepLDual = options.deepLDual;
 
   $('#app').html(
-    'Connecting to <span class="url">https://www.deepl.com/</span>.'
+    `Connecting to ${useDeepLApi ? "DeepL API" : '<span class="url">https://www.deepl.com/</span>'}.`
   );
   $('#app').append('<br>');
   $('#app').append('Please wait patiently...');
@@ -70,16 +70,20 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!deepLConnected) {
       deepLConnected = true;
       $('#app').html(
-        'Successfully connected to <span class="url">https://www.deepl.com/</span>.'
+        `Successfully connected to ${useDeepLApi ? "DeepL API" : '<span class="url">https://www.deepl.com/</span>'}.`
       );
       $('#app').append('<br>');
       $('#app').append('Copy Japanese text to get DeepL translations.');
+      if (useDeepLApi) {
+        $('#app').append('<br><br>');
+        $('#app').append("You're using DeepL API which has a monthly 500 000 word usage limit. <br> To have unlimited translation consider disabling DeepL API in the options menu.");
+      }
     }
   });
 
   ipcRenderer.on('deepLConnectionError', () => {
     $('#app').html(
-      'Unable to connect to <span class="url">https://www.deepl.com/</span>.'
+      `Unable to connect to ${useDeepLApi ? "DeepL API" : '<span class="url">https://www.deepl.com/</span>'}.`
     );
     $('#app').append('<br>');
     $('#app').append(
@@ -106,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
     $('#app').html('Too many characters copied to clipboard...');
     $('#app').append('<br>');
     $('#app').append(
-      'No request has been made to <span class="url">https://www.deepl.com/</span>.'
+      `No request has been made to ${useDeepLApi ? "DeepL API" : '<span class="url">https://www.deepl.com/</span>'}.`
     );
     $('#app').append('<br>');
     $('#app').append(
