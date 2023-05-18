@@ -47,7 +47,7 @@ function createWindow(windowName, windowConfig) {
   return mainWindow;
 }
 
-const { useDeepL, useReader, translationTransparent } = OPTIONS.get('options');
+const { useDeepL, useDeepLApi, useReader, translationTransparent } = OPTIONS.get('options');
 
 
 ipcMain.on('openUrl', (event, url) => {
@@ -277,7 +277,9 @@ const createBoxes = () => {
       },
     });
 
-    deepLBox.loadURL('https://www.deepl.com/translator#ja/en/');
+    if (!useDeepLApi){
+      deepLBox.loadURL('https://www.deepl.com/translator#ja/en/');
+    }
 
     deepLBox.on('close', (e) => {
       e.preventDefault();
