@@ -26,6 +26,8 @@ const setOnReadyAndOnClickListener = (checkbox, enable_query, disable_query) => 
 }
 
 const handleOptionConflicts = () => {
+  setOnReadyAndOnClickListener(document.querySelector('#ankiIntegration'),
+    '#anki input:not(#ankiIntegration)', null)
   setOnReadyAndOnClickListener(document.querySelector('#useDeepL'),
     '#translation input:not(#useDeepL, #deepLApiKey), #reader input#useReader', null)
   setOnReadyAndOnClickListener(document.querySelector('#useReader'),
@@ -108,11 +110,11 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  document.querySelector('.deepLApiKey-test.btn').addEventListener('click', () => {
+  document.querySelector('#deepLApiKey-test > .btn').addEventListener('click', () => {
     const responseSelector = document.querySelector('.deepLApiKey-test-response');
     const authKey = document.querySelector('#deepLApiKey').value;
     if (authKey == "") {
-      responseSelector.textContent = `❌Something went wrong`;
+      responseSelector.value = `❌Something went wrong`;
       console.error("auth_key cannot be empty");
       return;
     }
@@ -121,9 +123,9 @@ window.addEventListener('DOMContentLoaded', () => {
     translator
       .getUsage()
       .then(e => {
-          responseSelector.textContent = `✅Monthly usage: ${e.character.count}/${e.character.limit}`;
+          responseSelector.value = `✅Monthly usage: ${e.character.count}/${e.character.limit}`;
       }).catch(e => {
-          responseSelector.textContent = `❌Something went wrong`;
+          responseSelector.value = `❌Something went wrong`;
           console.error(e);
       })
   })
