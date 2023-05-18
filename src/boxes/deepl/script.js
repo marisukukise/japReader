@@ -4,16 +4,25 @@ const { ipcRenderer } = require('electron');
 const tools = require('@tools');
 const Store = require('electron-store')
 
+const deepl = require('deepl-node')
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const { useDeepLApi, deepLApiKey } = OPTIONS.get('options')
+const translator = new deepl.Translator(deepLApiKey);
 
 window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.on('translateWithDeepL', (event, text) => {
-    const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
     ipcRenderer.send('translateNotification');
-
+    const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
     if(useDeepLApi){
-
+      translator
+        .translateText(currentText, 'ja', 'en-US')
+        .then(result => {
+          console.log(currentText, result)
+          ipcRenderer.send('showTranslation', result.text, currentText);
+        }).catch(error => {
+          ipcRenderer.send('deepLConnectionError');
+          console.error(error);
+        })
     }
     else{
       document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
@@ -21,7 +30,14 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
     if(useDeepLApi){
-
+      const connectionCheck = setTimeout(() => {
+        translator
+          .getUsage()
+          .then(e => {
+            ipcRenderer.send('deepLConnected');
+            clearInterval(connectionCheck);
+          })
+      }, 500);
     }
     else{
       const targetNode = document.querySelector('div[aria-labelledby="translation-results-heading"]');
