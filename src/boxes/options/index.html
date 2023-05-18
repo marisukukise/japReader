@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.deepl.com; script-src 'self'" />
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
   <link rel="stylesheet" href="../../styles/all.css" />
   <link rel="stylesheet" href="../../styles/variables.css" />
@@ -79,7 +79,7 @@ title="Selecting this will use DeepL API instead of parsing it through the HTML 
 the default option broke, then this one should keep working.">
           <input type="text" id="deepLApiKey" name="deepLApiKey" 
           minlength="10" placeholder="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ff">
-          <label for="deepLApiKey">Enter API Key</label>
+          <label for="deepLApiKey">Enter API Key</label> <div class="deepLApiKey-test btn">Test the API key</div> <div class="deepLApiKey-test-response">Sample text</div>
         </section>
 
         <section id="deepLDual-selection" class="option"
