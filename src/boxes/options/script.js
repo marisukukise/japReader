@@ -2,6 +2,7 @@ require('module-alias/register')
 const { ipcRenderer } = require('electron');
 const tools = require('@tools');
 const Store = require('electron-store')
+const deepl = require('deepl-node')
 const fs = require('fs');
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
@@ -26,11 +27,9 @@ const setOnReadyAndOnClickListener = (checkbox, enable_query, disable_query) => 
 
 const handleOptionConflicts = () => {
   setOnReadyAndOnClickListener(document.querySelector('#useDeepL'),
-    '#translation input:not(#useDeepL, #useDeepLApiKey), #reader input#useReader', null)
+    '#translation input:not(#useDeepL, #deepLApiKey), #reader input#useReader', null)
   setOnReadyAndOnClickListener(document.querySelector('#useReader'),
     '#reader input:not(#useReader), #translation input#useDeepL, #dictionary input', null)
-  setOnReadyAndOnClickListener(document.querySelector('#useDeepLApi'),
-    '#translation input#deepLApiKey', null)
 }
 
 const { optionsFontSize, fontFamily } = OPTIONS.get('options')
@@ -115,6 +114,19 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   });
 
+  document.querySelector('.deepLApiKey-test.btn').addEventListener('click', () => {
+    const authKey = document.querySelector('#deepLApiKey').value;
+    const translator = new deepl.Translator(authKey);
+    const responseSelector = document.querySelector('.deepLApiKey-test-response');
+    translator
+      .getUsage()
+      .then(e => {
+          responseSelector.textContent = `✅Current limit: ${e.character.count}/${e.character.limit}`;
+      }).catch(e => {
+          responseSelector.textContent = `❌Something went wrong`;
+          console.log(e);
+      })
+  })
   document.querySelector('.reset-window-settings.btn').addEventListener('click', () => {
     ipcRenderer.invoke('showDialog',
       "Are you sure you want to reset remembered window configuration to default?")
