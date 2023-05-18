@@ -1,4 +1,11 @@
+require('module-alias/register')
 const { ipcRenderer } = require('electron');
+
+const tools = require('@tools');
+const Store = require('electron-store')
+
+const OPTIONS = new Store(tools.getOptionsStoreOptions());
+const { useDeepLApi, deepLApiKey } = OPTIONS.get('options')
 
 window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.on('translateWithDeepL', (event, text) => {
@@ -8,7 +15,6 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const targetNode = document.querySelector('div[aria-labelledby="translation-results-heading"]');
-  console.log(targetNode);
   const sourceNode = document.querySelector('div[aria-labelledby="translation-source-heading"]');
   const config = { childList: true };
   const callback = () => {
