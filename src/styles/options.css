@@ -19,6 +19,13 @@ fieldset {
   padding: 0.75em;
 }
 
+textarea.deepLApiKey-test-response{
+  resize: none;
+  color: black;
+  background-color: transparent;
+  border: 1px solid black;
+}
+
 .red-buttons {
   border-color: var(--dangerZoneButton);
   display: flex;
