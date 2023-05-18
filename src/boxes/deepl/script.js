@@ -7,11 +7,14 @@ const Store = require('electron-store')
 const deepl = require('deepl-node')
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const { useDeepLApi, deepLApiKey } = OPTIONS.get('options')
-try {
-  const translator = new deepl.Translator(deepLApiKey);
-} catch (error) {
-  ipcRenderer.send('deepLConnectionError');
-  console.error(error);
+
+if (useDeepLApi){
+  try {
+    const translator = new deepl.Translator(deepLApiKey);
+  } catch (error) {
+    ipcRenderer.send('deepLConnectionError');
+    console.error(error);
+  }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
