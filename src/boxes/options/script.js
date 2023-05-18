@@ -115,9 +115,15 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelector('.deepLApiKey-test.btn').addEventListener('click', () => {
-    const authKey = document.querySelector('#deepLApiKey').value;
-    const translator = new deepl.Translator(authKey);
     const responseSelector = document.querySelector('.deepLApiKey-test-response');
+    const authKey = document.querySelector('#deepLApiKey').value;
+    if (authKey == "") {
+      responseSelector.textContent = `❌Something went wrong`;
+      console.error("auth_key cannot be empty");
+      return;
+    }
+    console.log("test")
+    const translator = new deepl.Translator(authKey);
     translator
       .getUsage()
       .then(e => {

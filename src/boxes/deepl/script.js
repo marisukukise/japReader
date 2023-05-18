@@ -7,13 +7,19 @@ const Store = require('electron-store')
 const deepl = require('deepl-node')
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const { useDeepLApi, deepLApiKey } = OPTIONS.get('options')
-const translator = new deepl.Translator(deepLApiKey);
+try {
+  const translator = new deepl.Translator(deepLApiKey);
+} catch (error) {
+  ipcRenderer.send('deepLConnectionError');
+  console.error(error);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.on('translateWithDeepL', (event, text) => {
     ipcRenderer.send('translateNotification');
     const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
     if(useDeepLApi){
+      const translator = new deepl.Translator(deepLApiKey);
       translator
         .translateText(currentText, 'ja', 'en-US')
         .then(result => {
@@ -30,6 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
     if(useDeepLApi){
+      const translator = new deepl.Translator(deepLApiKey, {maxRetries: 1, minTimeout: 2000});
       const connectionCheck = setTimeout(() => {
         translator
           .getUsage()
@@ -38,6 +45,18 @@ window.addEventListener('DOMContentLoaded', () => {
             clearInterval(connectionCheck);
           })
       }, 500);
+
+      setTimeout(() => {
+        if (deepLApiKey == "") {
+          ipcRenderer.send('deepLConnectionError');
+        } else {
+          translator
+            .getUsage()
+            .catch(e => {
+              ipcRenderer.send('deepLConnectionError');
+            })
+        }
+      }, 8000);
     }
     else{
       const targetNode = document.querySelector('div[aria-labelledby="translation-results-heading"]');
@@ -65,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (document.body.children.length === 0) {
           ipcRenderer.send('deepLConnectionError');
         }
-      }, 10000);
+      }, 8000);
 }
 });
 
