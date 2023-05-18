@@ -22,6 +22,13 @@ const schemaOptions = {
             readerFontSize: { default: 18, type: "number", minimum: 1 },
             dictFontSize: { default: 12, type: "number", minimum: 1 },
             optionsFontSize: { default: 12, type: "number", minimum: 1 },
+            ankiIntegration: { default: true, type: "boolean"},
+            ankiDeckName: { default: "japReader", type: "string"},
+            ankiModelName: { default: "japReader", type: "string"},
+            ankiDictForm: { default: "DictForm", type: "string"},
+            ankiDefinitions: { default: "Definitions", type: "string"},
+            ankiJapanese: { default: "Japanese", type: "string"},
+            ankiEnglish: { default: "English", type: "string"},
         },
         default: {}
     }

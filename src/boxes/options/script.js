@@ -97,13 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 optionsData[key] = parseInt(element.value);
                 break;
               case 'string':
-                switch (key) {
-                  case 'fontFamily':
-                  case 'deepLApiKey':
-                    optionsData[key] = element.value;
-                    break;
-                  default:
-                }
+                optionsData[key] = element.value;
               default:
             }
           });
