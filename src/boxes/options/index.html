@@ -76,9 +76,13 @@ however it can only translate 500 000 words per month. It's recommended to keep 
 
         <section id="deepLApiKey-selection" class="option"
 title="Enter your API key from your https://www.deepl.com/account/summary page.">
-          <input type="text" id="deepLApiKey" name="deepLApiKey" 
+          <input type="text" spellcheck="false" id="deepLApiKey" name="deepLApiKey" 
           minlength="10" placeholder="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ff">
-          <label for="deepLApiKey">Enter API Key</label> <div class="deepLApiKey-test btn">Test the API key</div> <textarea disabled class="deepLApiKey-test-response"></textarea>
+          <label for="deepLApiKey">Enter API Key</label> <br>
+        </section>
+        <section id="deepLApiKey-test" class="test">
+          <div class="btn">Test the API key</div>
+          <input readonly="readonly" type="text" class="deepLApiKey-test-response">
         </section>
 
         <section id="deepLDual-selection" class="option"
@@ -172,33 +176,77 @@ title="Selecting this will show daily goal
 
       <fieldset id="anki">
         <legend>Anki support</legend>
-        <section id="ankiIntegration-selection" class="option">
+        <section id="ankiIntegration-selection" class="option"
+title="Adds integration for your own Anki deck. 
+The fields have to be unique. 
+The field can also be empty in which case it won't be inserted.">
           <input type="checkbox" id="ankiIntegration" name="ankiIntegration">
-          <label for="ankiIntegration">Anki integration</label>
+          <label for="ankiIntegration">Anki integration (requires AnkiConnect)</label>
         </section>
         <section id="ankiDeckName-selection" class="option">
-          <input type="text" id="ankiDeckName" name="ankiDeckName">
+          <input type="text" spellcheck="false" id="ankiDeckName" name="ankiDeckName">
           <label for="ankiDeckName">Deck name</label>
         </section>
         <section id="ankiModelName-selection" class="option">
-          <input type="text" id="ankiModelName" name="ankiModelName">
+          <input type="text" spellcheck="false" id="ankiModelName" name="ankiModelName">
           <label for="ankiModelName">Model name</label>
         </section>
+        <section>
+          <div>Field names (must be unique or empty to ignore):</div>
+        </section>
         <section id="ankiDictForm-selection" class="option field">
-          <input type="text" id="ankiDictForm" name="ankiDictForm">
-          <label for="ankiDictForm">Dictionary form</label>
+          <input type="text" spellcheck="false" id="ankiDictForm" name="ankiDictForm">
+          <label for="ankiDictForm">
+            <div class="heading">Dictionary form</div>
+          </label>
+        </section>
+        <section id="ankiDictFormReading-selection" class="option field">
+          <input type="text" spellcheck="false" id="ankiDictFormReading" name="ankiDictFormReading">
+          <label for="ankiDictFormReading">
+            <div class="heading">Dictionary form (hiragana)</div>
+          </label>
+        </section>
+        <section id="ankiDictFormFurigana-selection" class="option field">
+          <input type="text" spellcheck="false" id="ankiDictFormFurigana" name="ankiDictFormFurigana">
+          <label for="ankiDictFormFurigana">
+            <div class="heading">Dictionary form (furigana)</div>
+          </label>
+        </section>
+        <section id="ankiWord-selection" class="option field">
+          <input type="text" spellcheck="false" id="ankiWord" name="ankiWord">
+          <label for="ankiWord">
+            <div class="heading">Sentence form</div>
+          </label>
+        </section>
+        <section id="ankiWordReading-selection" class="option field">
+          <input type="text" spellcheck="false" id="ankiWordReading" name="ankiWordReading">
+          <label for="ankiWordReading">
+            <div class="heading">Sentence form (hiragana)</div>
+          </label>
+        </section>
+        <section id="ankiWordFurigana-selection" class="option field">
+          <input type="text" spellcheck="false" id="ankiWordFurigana" name="ankiWordFurigana">
+          <label for="ankiWordFurigana">
+            <div class="heading">Sentence form (furigana)</div>
+          </label>
         </section>
         <section id="ankiDefinitions-selection" class="option field">
-          <input type="text" id="ankiDefinitions" name="ankiDefinitions">
-          <label for="ankiDefinitions">Definition list</label>
+          <input type="text" spellcheck="false" id="ankiDefinitions" name="ankiDefinitions">
+          <label for="ankiDefinitions">
+            <div class="heading">Definition list</div>
+          </label>
         </section>
         <section id="ankiJapanese-selection" class="option field">
-          <input type="text" id="ankiJapanese" name="ankiJapanese">
-          <label for="ankiJapanese">Japanese sentence</label>
+          <input type="text" spellcheck="false" id="ankiJapanese" name="ankiJapanese">
+          <label for="ankiJapanese">
+            <div class="heading">Full Japanese sentence</div>
+          </label>
         </section>
         <section id="ankiEnglish-selection" class="option field">
-          <input type="text" id="ankiEnglish" name="ankiEnglish">
-          <label for="ankiEnglish">English translated sentence</label>
+          <input type="text" spellcheck="false" id="ankiEnglish" name="ankiEnglish">
+          <label for="ankiEnglish">
+            <div class="heading">Full English sentence</div>
+          </label>
         </section>
       </fieldset>
     </div>

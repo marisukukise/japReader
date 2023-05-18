@@ -123,27 +123,40 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const __anki__populateFieldsIfNonEmpty = (fieldsObj, key, value) => {
+    if(key) {
+      fieldsObj[key] = value;
+    }
+  }
+
   async function __anki__addNote(wordData) {
+    const fields = {};
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiDictForm}`, wordData.dictForm);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiDefinitions}`, wordData.definitions);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiJapanese}`, wordData.fullText);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiEnglish}`, wordData.english);
+    console.log(fields);
     const res = await invoke('addNote', 6, {
       note: {
-        deckName: 'japReader',
-        modelName: 'japReader',
-        fields: {
-          DictForm: wordData.dictForm,
-          DictFormReading: wordData.dictFormReading,
-          DictFormFurigana: wordData.dictFuriganaHTML,
-          Word: wordData.word,
-          WordReading: wordData.rubyReading,
-          WordFurigana: wordData.wordFuriganaHTML,
-          Definitions: wordData.definitions,
-          Japanese: wordData.fullText,
-          English: wordData.english,
-        },
+        deckName: `${ankiDeckName}`,
+        modelName: `${ankiModelName}`,
+        fields: fields,
+        // {
+          // ankiDictForm: wordData.dictForm,
+          // DictFormReading: wordData.dictFormReading,
+          // DictFormFurigana: wordData.dictFuriganaHTML,
+          // Word: wordData.word,
+          // WordReading: wordData.rubyReading,
+          // WordFurigana: wordData.wordFuriganaHTML,
+          // Definitions: wordData.definitions,
+          // Japanese: wordData.fullText,
+          // English: wordData.english,
+        // },
         options: {
           allowDuplicate: false,
           duplicateScope: "deck",
           duplicateScopeOptions: {
-            deckName: "japReader",
+            deckName: `${ankiDeckName}`,
             checkChildren: false,
             checkAllModels: false
           }
@@ -168,13 +181,16 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   async function __anki__canAddNotes(wordData) {
+    const fields = {};
+    fields[`${ankiDictForm}`] = wordData.dictForm;
     const res = await invoke('canAddNotes', 6, {
       notes: [{
-        deckName: 'japReader',
-        modelName: 'japReader',
-        fields: {
-          DictForm: wordData.dictForm,
-        }
+        deckName: `${ankiDeckName}`,
+        modelName: `${ankiModelName}`,
+        fields: fields 
+        // {
+        // DictForm: wordData.dictForm,
+        // }
       }]
     });
     return res;
@@ -182,7 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const previewNote = (wordData, btn) => {
     if (!btn.classList.contains('disabled')) {
-      let query = "deck:japReader DictForm:"+wordData.dictForm;
+      let query = `deck:${ankiDeckName} ${ankiDictForm}:${wordData.dictForm}`;
       btn.classList.add('disabled');
       __anki__findNotes(query)
         .then(res => {
@@ -223,6 +239,7 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .catch(() => {
           btn.textContent = "Could not add the card";
+          btn.title = "Check if: (1) the Anki fields are set correctly in the options menu; (2) AnkiConnect is running;"
           btn.classList.add('disabled');
         });
     }
