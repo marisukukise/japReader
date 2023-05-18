@@ -87,11 +87,11 @@ window.addEventListener('DOMContentLoaded', () => {
     );
     $('#app').append('<br>');
     $('#app').append(
-      'Check your internet connection, and make sure the site is up.'
+      `Check your internet connection, and make sure ${useDeepLApi ? "your API key is correct" : "the site is up"}.`
     );
     $('#app').append('<br><br>');
     $('#app').append(
-      'Once you are able to connect to the site, restart this program.'
+      `Once you ${useDeepLApi ? "confirm your API key" : "are able to connect to the site"}, restart this program.`
     );
     $('#app').append('<br>');
     $('#app').append('All of your progress will be saved.');
