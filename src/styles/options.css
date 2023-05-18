@@ -21,9 +21,9 @@ fieldset {
 
 textarea.deepLApiKey-test-response{
   resize: none;
-  color: black;
-  background-color: transparent;
-  border: 1px solid black;
+  color: var(--mainFont);
+  background-color: var(--translationTransparentBackground);
+  border: 1px solid var(--mainFont);
 }
 
 .red-buttons {
