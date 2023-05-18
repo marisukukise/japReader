@@ -22,7 +22,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyDict');
 
-  const { dictFontSize, fontFamily, showGoal, darkMode } = OPTIONS.get('options')
+  const { 
+    dictFontSize, fontFamily, showGoal, darkMode, 
+    ankiIntegration, ankiDeckName, ankiModelName, 
+    ankiDictForm, ankiDefinitions, ankiJapanese, ankiEnglish
+  } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
   }

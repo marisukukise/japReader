@@ -102,7 +102,7 @@ title="Selecting this will make the background of the translation window transpa
 
         <section id="translationFontSize-selection" class="option">
           <input type="number" id="translationFontSize" name="translationFontSize" min="1">
-          <label for="translationFontSize">Set translation font size</label>
+          <label for="translationFontSize">Translation font size</label>
         </section>
       </fieldset>
 
@@ -137,7 +137,7 @@ title="Selecting this will center the text in the Reader window.">
 
         <section id="readerFontSize-selection" class="option">
           <input type="number" id="readerFontSize" name="readerFontSize" min="1">
-          <label for="readerFontSize">Set reader font size</label>
+          <label for="readerFontSize">Reader font size</label>
         </section>
       </fieldset>
 
@@ -152,12 +152,12 @@ title="Selecting this will show daily goal
 
         <section id="dailyGoal-selection" class="option">
           <input type="number" id="dailyGoal" name="dailyGoal" min="1">
-          <label for="dailyGoal">Set daily goal</label>
+          <label for="dailyGoal">Daily goal</label>
         </section>
 
         <section id="dictFontSize-selection" class="option">
           <input type="number" id="dictFontSize" name="dictFontSize" min="1">
-          <label for="dictFontSize">Set dictionary font size</label>
+          <label for="dictFontSize">Dictionary font size</label>
         </section>
 
       </fieldset>
@@ -166,7 +166,39 @@ title="Selecting this will show daily goal
         <legend>Options window</legend>
         <section id="optionsFontSize-selection" class="option">
           <input type="number" id="optionsFontSize" name="optionsFontSize" min="1">
-          <label for="optionsFontSize">Set options font size</label>
+          <label for="optionsFontSize">Options font size</label>
+        </section>
+      </fieldset>
+
+      <fieldset id="anki">
+        <legend>Anki support</legend>
+        <section id="ankiIntegration-selection" class="option">
+          <input type="checkbox" id="ankiIntegration" name="ankiIntegration">
+          <label for="ankiIntegration">Anki integration</label>
+        </section>
+        <section id="ankiDeckName-selection" class="option">
+          <input type="text" id="ankiDeckName" name="ankiDeckName">
+          <label for="ankiDeckName">Deck name</label>
+        </section>
+        <section id="ankiModelName-selection" class="option">
+          <input type="text" id="ankiModelName" name="ankiModelName">
+          <label for="ankiModelName">Model name</label>
+        </section>
+        <section id="ankiDictForm-selection" class="option field">
+          <input type="text" id="ankiDictForm" name="ankiDictForm">
+          <label for="ankiDictForm">Dictionary form</label>
+        </section>
+        <section id="ankiDefinitions-selection" class="option field">
+          <input type="text" id="ankiDefinitions" name="ankiDefinitions">
+          <label for="ankiDefinitions">Definition list</label>
+        </section>
+        <section id="ankiJapanese-selection" class="option field">
+          <input type="text" id="ankiJapanese" name="ankiJapanese">
+          <label for="ankiJapanese">Japanese sentence</label>
+        </section>
+        <section id="ankiEnglish-selection" class="option field">
+          <input type="text" id="ankiEnglish" name="ankiEnglish">
+          <label for="ankiEnglish">English translated sentence</label>
         </section>
       </fieldset>
     </div>
