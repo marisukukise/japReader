@@ -26,7 +26,6 @@ window.addEventListener('DOMContentLoaded', () => {
       translator
         .translateText(currentText, 'ja', 'en-US')
         .then(result => {
-          console.log(currentText, result)
           ipcRenderer.send('showTranslation', result.text, currentText);
         }).catch(error => {
           ipcRenderer.send('deepLConnectionError');

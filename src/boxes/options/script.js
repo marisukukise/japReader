@@ -118,7 +118,6 @@ window.addEventListener('DOMContentLoaded', () => {
       console.error("auth_key cannot be empty");
       return;
     }
-    console.log("test")
     const translator = new deepl.Translator(authKey);
     translator
       .getUsage()
