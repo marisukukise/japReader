@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
           translator
             .getUsage()
-            .catch(e => {
+            .catch(err => {
               ipcRenderer.send('deepLConnectionError');
             })
         }
