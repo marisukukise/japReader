@@ -25,7 +25,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const { 
     dictFontSize, fontFamily, showGoal, darkMode, 
     ankiIntegration, ankiDeckName, ankiModelName, 
-    ankiDictForm, ankiDefinitions, ankiJapanese, ankiEnglish
+    ankiDictForm, ankiDictFormReading, ankiDictFormFurigana,
+    ankiWord, ankiWordReading, ankiWordFurigana,
+    ankiDefinitions, ankiJapanese, ankiEnglish
   } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
@@ -47,11 +49,13 @@ window.addEventListener('DOMContentLoaded', () => {
         playAudio(currentWordData, btn);
         break;
       case 'q':
-        var btn = document.querySelector('#anki.btn');
-        if (btn.classList.contains('preview')){
-          previewNote(currentWordData, btn)
-        } else {
-          addNote(currentWordData, btn);
+        if(ankiIntegration) {
+          var btn = document.querySelector('#anki.btn');
+          if (btn.classList.contains('preview')){
+            previewNote(currentWordData, btn)
+          } else {
+            addNote(currentWordData, btn);
+          }
         }
         break;
       case 'Escape':
@@ -132,6 +136,11 @@ window.addEventListener('DOMContentLoaded', () => {
   async function __anki__addNote(wordData) {
     const fields = {};
     __anki__populateFieldsIfNonEmpty(fields, `${ankiDictForm}`, wordData.dictForm);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiDictFormReading}`, wordData.dictFormReading);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiDictFormFurigana}`, wordData.dictFuriganaHTML);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiWord}`, wordData.word);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiWordReading}`, wordData.rubyReading);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiWordFurigana}`, wordData.wordFuriganaHTML);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiDefinitions}`, wordData.definitions);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiJapanese}`, wordData.fullText);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiEnglish}`, wordData.english);
@@ -141,17 +150,6 @@ window.addEventListener('DOMContentLoaded', () => {
         deckName: `${ankiDeckName}`,
         modelName: `${ankiModelName}`,
         fields: fields,
-        // {
-          // ankiDictForm: wordData.dictForm,
-          // DictFormReading: wordData.dictFormReading,
-          // DictFormFurigana: wordData.dictFuriganaHTML,
-          // Word: wordData.word,
-          // WordReading: wordData.rubyReading,
-          // WordFurigana: wordData.wordFuriganaHTML,
-          // Definitions: wordData.definitions,
-          // Japanese: wordData.fullText,
-          // English: wordData.english,
-        // },
         options: {
           allowDuplicate: false,
           duplicateScope: "deck",
@@ -188,9 +186,6 @@ window.addEventListener('DOMContentLoaded', () => {
         deckName: `${ankiDeckName}`,
         modelName: `${ankiModelName}`,
         fields: fields 
-        // {
-        // DictForm: wordData.dictForm,
-        // }
       }]
     });
     return res;
@@ -214,6 +209,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(err => {
           btn.textContent = "Could not preview the card";
           btn.classList.remove('preview');
+          console.error(err);
         })
     }
   }
@@ -237,8 +233,9 @@ window.addEventListener('DOMContentLoaded', () => {
           btn.textContent = "Preview the card";
           btn.classList.add('preview');
         })
-        .catch(() => {
+        .catch((err) => {
           btn.textContent = "Could not add the card";
+          console.error(err);
           btn.title = "Check if: (1) the Anki fields are set correctly in the options menu; (2) AnkiConnect is running;"
           btn.classList.add('disabled');
         });
@@ -310,22 +307,25 @@ window.addEventListener('DOMContentLoaded', () => {
     qry_status.classList.add('disabled');
 
 
-    var qry_anki = document.querySelector('#anki.btn');
-    var anki_innerhtml = qry_anki.innerHTML;
-    qry_anki.innerHTML = "Linking AnkiConnect...";
-    qry_anki.classList.add('disabled');
-  __anki__canAddNotes(wordData)
-    .then(res => {
-      var canClick = res[0];
-      checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
-      if (!canClick){
-        qry_anki.classList.remove('disabled');
-        qry_anki.classList.add('preview');
-      }
-    })
-    .catch(err => {
-      qry_anki.innerHTML = "AnkiConnect not found";
-    });
+    if (ankiIntegration) {
+      var qry_anki = document.querySelector('#anki.btn');
+      var anki_innerhtml = qry_anki.innerHTML;
+      qry_anki.innerHTML = "Linking AnkiConnect...";
+      qry_anki.classList.add('disabled');
+    __anki__canAddNotes(wordData)
+      .then(res => {
+        var canClick = res[0];
+        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
+        if (!canClick){
+          qry_anki.classList.remove('disabled');
+          qry_anki.classList.add('preview');
+        }
+      })
+      .catch(err => {
+        qry_anki.innerHTML = "AnkiConnect not found";
+        console.error(err);
+      });
+    }
 
   var qry_audio = document.querySelector('#audio.btn');
   var audio_innerhtml = qry_audio.innerHTML;
@@ -338,6 +338,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
     .catch(err => {
       qry_audio.innerHTML = "Audio not found";
+      console.error(err);
     });
 };
 
@@ -486,7 +487,7 @@ const displayGoalData = () => {
           </fieldset>
         </div>
         <span id="audio" class="btn">Play Audio</span>
-        <span id="anki" class="btn">Add to Anki</span>
+        ${ankiIntegration ? '<span id="anki" class="btn">Add to Anki</span>' : ''}
       </div>
       <div id='status-buttons'>
         <span id="seen" class="btn">Seen</span>
@@ -555,14 +556,16 @@ const displayGoalData = () => {
       playAudio(currentWordData, btn);
     });
     
-    document.querySelector('#anki.btn').addEventListener('click', (e) => {
-      var btn = document.querySelector('#anki.btn');
-      if (btn.classList.contains('preview')){
-        previewNote(currentWordData, btn)
-      } else {
-        addNote(currentWordData, btn);
-      }
-    });
+    if(ankiIntegration) {
+      document.querySelector('#anki.btn').addEventListener('click', (e) => {
+        var btn = document.querySelector('#anki.btn');
+        if (btn.classList.contains('preview')){
+          previewNote(currentWordData, btn)
+        } else {
+          addNote(currentWordData, btn);
+        }
+      });
+    }
 
     $('#dict').html(currentWordData.definitions);
   };
