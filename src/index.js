@@ -28,21 +28,34 @@ let readerOnTop = false;
 let translationOnTop = false;
 let dictOnTop = false;
 
+function filterObjectKeys(unfilteredObj, allowedKeys) {
+  const filtered = Object.keys(unfilteredObj)
+  .filter(key => allowedKeys.includes(key))
+  .reduce((obj, key) => {
+    obj[key] = unfilteredObj[key];
+    return obj;
+  }, {});
+  return filtered;
+}
+
 function createWindow(windowName, windowConfig) {
-  let frame = windowConfig.frame;
-  let transparent = windowConfig.transparent;
-  Object.assign(windowConfig, WINDOW_SETTINGS.get(windowName))
-  windowConfig.frame = frame;
-  windowConfig.transparent = transparent;
+  const allowed = ['width', 'height', 'isMaximized', 'x', 'y']
+
+  console.log("before", windowConfig)
+  Object.assign(windowConfig, filterObjectKeys(WINDOW_SETTINGS.get(windowName), allowed));
+  console.log("after", windowConfig)
   const mainWindow = new BrowserWindow(windowConfig)
   if (windowConfig.isMaximized) {
     mainWindow.maximize()
   }
+
   mainWindow.on("close", () => {
+    windowConfig = {};
     Object.assign(windowConfig, {
       isMaximized: mainWindow.isMaximized()
-    }, mainWindow.getNormalBounds())
+    }, filterObjectKeys(mainWindow.getNormalBounds(), allowed))
     WINDOW_SETTINGS.set(windowName, windowConfig);
+
   });
   return mainWindow;
 }
