@@ -1,3 +1,6 @@
+# 1.8.0
+- Added custom Anki deck support (meaning that you can add words to your own Anki deck)
+
 # 1.7.1
 - Added official DeepL API. It has a limit of 500 000 words per month, so it's mostly here as a backup when the standard way breaks for some reason. But you're free to use it if you want, it's a little bit faster.
 
