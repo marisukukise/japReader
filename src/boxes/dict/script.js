@@ -144,7 +144,6 @@ window.addEventListener('DOMContentLoaded', () => {
     __anki__populateFieldsIfNonEmpty(fields, `${ankiDefinitions}`, wordData.definitions);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiJapanese}`, wordData.fullText);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiEnglish}`, wordData.english);
-    console.log(fields);
     const res = await invoke('addNote', 6, {
       note: {
         deckName: `${ankiDeckName}`,

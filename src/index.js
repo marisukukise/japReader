@@ -41,9 +41,7 @@ function filterObjectKeys(unfilteredObj, allowedKeys) {
 function createWindow(windowName, windowConfig) {
   const allowed = ['width', 'height', 'isMaximized', 'x', 'y']
 
-  console.log("before", windowConfig)
   Object.assign(windowConfig, filterObjectKeys(WINDOW_SETTINGS.get(windowName), allowed));
-  console.log("after", windowConfig)
   const mainWindow = new BrowserWindow(windowConfig)
   if (windowConfig.isMaximized) {
     mainWindow.maximize()
