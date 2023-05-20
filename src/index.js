@@ -42,14 +42,16 @@ function createWindow(windowName, windowConfig) {
   const allowed = ['width', 'height', 'isMaximized', 'x', 'y']
 
   if (WINDOW_SETTINGS.has(windowName)) {
+    const positionSettings = filterObjectKeys(WINDOW_SETTINGS.get(windowName), allowed);
     Object.assign(windowConfig, 
-      filterObjectKeys(WINDOW_SETTINGS.get(windowName), allowed)
+      positionSettings
     );
+    // get rid of rubbish properties
+    WINDOW_SETTINGS.delete(windowName);
+    WINDOW_SETTINGS.set(windowName, positionSettings)
   }
 
-  console.log(windowConfig);
   const mainWindow = new BrowserWindow(windowConfig)
-  console.log(mainWindow.title, mainWindow.identifier)
   if (windowConfig.isMaximized) mainWindow.maximize()
 
   // Events that will update the window position
@@ -59,12 +61,12 @@ function createWindow(windowName, windowConfig) {
   mainWindow.on("unmaximize", () => {
     WINDOW_SETTINGS.set(windowName+".isMaximized", false);
   })
-  mainWindow.on("resized", () => {
+  mainWindow.on(process.platform == 'win32' ? "resized" : "resize", () => {
     let normalBounds = mainWindow.getNormalBounds();
     WINDOW_SETTINGS.set(windowName+".width", normalBounds.width);
     WINDOW_SETTINGS.set(windowName+".height", normalBounds.height);
   })
-  mainWindow.on("moved", () => {
+  mainWindow.on(process.platform == 'win32' ? "moved" : "move", () => {
     let normalBounds = mainWindow.getNormalBounds();
     WINDOW_SETTINGS.set(windowName+".x", normalBounds.x);
     WINDOW_SETTINGS.set(windowName+".y", normalBounds.y);

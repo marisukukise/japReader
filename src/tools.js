@@ -63,7 +63,28 @@ const schemaStatusData = {
     }
 }
 
+
+const schemaWindow = {
+    options: {
+        type: "object",
+        default: {}
+    },
+    translation: {
+        type: "object",
+        default: {}
+    },
+    reader: {
+        type: "object",
+        default: {}
+    },
+    dict: {
+        type: "object",
+        default: {}
+    }
+}
+
 const windowStoreOptions = {
+    schema: schemaWindow,
     name: "window_settings",
     clearInvalidConfig: true,
     cwd: 'config',
