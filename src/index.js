@@ -41,20 +41,35 @@ function filterObjectKeys(unfilteredObj, allowedKeys) {
 function createWindow(windowName, windowConfig) {
   const allowed = ['width', 'height', 'isMaximized', 'x', 'y']
 
-  Object.assign(windowConfig, filterObjectKeys(WINDOW_SETTINGS.get(windowName), allowed));
-  const mainWindow = new BrowserWindow(windowConfig)
-  if (windowConfig.isMaximized) {
-    mainWindow.maximize()
+  if (WINDOW_SETTINGS.has(windowName)) {
+    Object.assign(windowConfig, 
+      filterObjectKeys(WINDOW_SETTINGS.get(windowName), allowed)
+    );
   }
 
-  mainWindow.on("close", () => {
-    windowConfig = {};
-    Object.assign(windowConfig, {
-      isMaximized: mainWindow.isMaximized()
-    }, filterObjectKeys(mainWindow.getNormalBounds(), allowed))
-    WINDOW_SETTINGS.set(windowName, windowConfig);
+  console.log(windowConfig);
+  const mainWindow = new BrowserWindow(windowConfig)
+  console.log(mainWindow.title, mainWindow.identifier)
+  if (windowConfig.isMaximized) mainWindow.maximize()
 
-  });
+  // Events that will update the window position
+  mainWindow.on("maximize", () => {
+    WINDOW_SETTINGS.set(windowName+".isMaximized", true);
+  })
+  mainWindow.on("unmaximize", () => {
+    WINDOW_SETTINGS.set(windowName+".isMaximized", false);
+  })
+  mainWindow.on("resized", () => {
+    let normalBounds = mainWindow.getNormalBounds();
+    WINDOW_SETTINGS.set(windowName+".width", normalBounds.width);
+    WINDOW_SETTINGS.set(windowName+".height", normalBounds.height);
+  })
+  mainWindow.on("moved", () => {
+    let normalBounds = mainWindow.getNormalBounds();
+    WINDOW_SETTINGS.set(windowName+".x", normalBounds.x);
+    WINDOW_SETTINGS.set(windowName+".y", normalBounds.y);
+  })
+
   return mainWindow;
 }
 
@@ -87,6 +102,7 @@ const createBoxes = () => {
 
   const optionsBox = createWindow("options", {
     icon: 'images/logo/icon.png',
+    identifier: 'options',
     show: false,
     width: 800,
     height: 600,
@@ -310,8 +326,8 @@ const createBoxes = () => {
       width: 800,
       height: 200,
       frame: !translationTransparent,
-      minimizable: false,
-      maximizable: false,
+      minimizable: !translationTransparent,
+      maximizable: !translationTransparent,
       transparent: translationTransparent,
       autoHideMenuBar: true,
       webPreferences: {
