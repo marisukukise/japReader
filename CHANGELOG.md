@@ -1,3 +1,6 @@
+# 1.8.2
+- Changed window position saving logic
+
 # 1.8.1
 - Changed the data from window_settings.json to only save positional data, instead of all of the window settings (with paths that could reference previous versions).
 
