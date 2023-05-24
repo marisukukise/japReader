@@ -19,12 +19,12 @@ fieldset {
   padding: 0.75em;
 }
 
-.option.field > input[type="text"]{
+.option.field>input[type="text"] {
   width: 5em;
 }
 
-#anki .option > input#ankiDeckName,
-#anki .option > input#ankiModelName{
+#anki .option>input#ankiDeckName,
+#anki .option>input#ankiModelName {
   width: 12em;
 }
 
@@ -37,19 +37,19 @@ fieldset {
   padding-bottom: 0;
 }
 
-#anki .option.field > input[type="text"]{
+#anki .option.field>input[type="text"] {
   width: 9em;
 }
 
-.option > input[type="number"]{
+.option>input[type="number"] {
   width: 4em;
 }
 
-.option > input#deepLApiKey{
+.option>input#deepLApiKey {
   width: 20em;
 }
 
-input.deepLApiKey-test-response{
+input.deepLApiKey-test-response {
   filter: sepia(1) brightness(0.8);
   width: 16em;
 }
@@ -65,7 +65,7 @@ input.deepLApiKey-test-response{
   margin-right: auto;
 }
 
-#danger-zone{
+#danger-zone {
   margin-top: 1.5em;
   max-width: 37em;
   background-color: var(--dangerZoneBackground);
@@ -78,14 +78,17 @@ details#danger-zone {
   border-radius: 0px;
   padding: 0.5em 0.5em 0;
 }
+
 #danger-zone summary {
   font-weight: bold;
   margin: -0.5em -0.5em 0;
   padding: 0.5em;
 }
+
 details[open]#danger-zone {
   padding: 0.5em;
 }
+
 #danger-zone details[open] summary {
   border-bottom: 1px solid var(--mainFont);
   margin-bottom: 0.5em;

@@ -22,9 +22,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyDict');
 
-  const { 
-    dictFontSize, fontFamily, showGoal, darkMode, 
-    ankiIntegration, ankiDeckName, ankiModelName, 
+  const {
+    dictFontSize, fontFamily, showGoal, darkMode,
+    ankiIntegration, ankiDeckName, ankiModelName,
     ankiDictForm, ankiDictFormReading, ankiDictFormFurigana,
     ankiWord, ankiWordReading, ankiWordFurigana,
     ankiDefinitions, ankiJapanese, ankiEnglish
@@ -49,9 +49,9 @@ window.addEventListener('DOMContentLoaded', () => {
         playAudio(currentWordData, btn);
         break;
       case 'q':
-        if(ankiIntegration) {
+        if (ankiIntegration) {
           var btn = document.querySelector('#anki.btn');
-          if (btn.classList.contains('preview')){
+          if (btn.classList.contains('preview')) {
             previewNote(currentWordData, btn)
           } else {
             addNote(currentWordData, btn);
@@ -72,7 +72,7 @@ window.addEventListener('DOMContentLoaded', () => {
   handleDuckduckgo = (query) => {
     openUrl(`https://duckduckgo.com/?q=${query}&kp=-1&kl=jp-jp&iax=images&ia=images`);
   }
-  
+
   handleJisho = (query) => {
     openUrl(`https://jisho.org/search/${query}`);
   }
@@ -128,7 +128,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const __anki__populateFieldsIfNonEmpty = (fieldsObj, key, value) => {
-    if(key) {
+    if (key) {
       fieldsObj[key] = value;
     }
   }
@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
       notes: [{
         deckName: `${ankiDeckName}`,
         modelName: `${ankiModelName}`,
-        fields: fields 
+        fields: fields
       }]
     });
     return res;
@@ -197,9 +197,9 @@ window.addEventListener('DOMContentLoaded', () => {
       __anki__findNotes(query)
         .then(res => {
           btn.classList.remove('disabled');
-          if(res.length == 1){
+          if (res.length == 1) {
             __anki__guiEditNote(res[0])
-          } else { 
+          } else {
             btn.classList.add('disabled');
             btn.textContent = "Could not preview the card";
             btn.classList.remove('preview');
@@ -311,112 +311,112 @@ window.addEventListener('DOMContentLoaded', () => {
       var anki_innerhtml = qry_anki.innerHTML;
       qry_anki.innerHTML = "Linking AnkiConnect...";
       qry_anki.classList.add('disabled');
-    __anki__canAddNotes(wordData)
+      __anki__canAddNotes(wordData)
+        .then(res => {
+          var canClick = res[0];
+          checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
+          if (!canClick) {
+            qry_anki.classList.remove('disabled');
+            qry_anki.classList.add('preview');
+          }
+        })
+        .catch(err => {
+          qry_anki.innerHTML = "AnkiConnect not found";
+          console.error(err);
+        });
+    }
+
+    var qry_audio = document.querySelector('#audio.btn');
+    var audio_innerhtml = qry_audio.innerHTML;
+    qry_audio.innerHTML = "Searching audio...";
+    qry_audio.classList.add('disabled');
+    __canPlayAudio(wordData)
       .then(res => {
-        var canClick = res[0];
-        checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
-        if (!canClick){
-          qry_anki.classList.remove('disabled');
-          qry_anki.classList.add('preview');
-        }
+        var canClick = res;
+        checkIfDisableButton(qry_audio, canClick, audio_innerhtml, "Audio not available");
       })
       .catch(err => {
-        qry_anki.innerHTML = "AnkiConnect not found";
+        qry_audio.innerHTML = "Audio not found";
         console.error(err);
       });
-    }
+  };
 
-  var qry_audio = document.querySelector('#audio.btn');
-  var audio_innerhtml = qry_audio.innerHTML;
-  qry_audio.innerHTML = "Searching audio...";
-  qry_audio.classList.add('disabled');
-  __canPlayAudio(wordData)
-    .then(res => {
-      var canClick = res;
-      checkIfDisableButton(qry_audio, canClick, audio_innerhtml, "Audio not available");
-    })
-    .catch(err => {
-      qry_audio.innerHTML = "Audio not found";
-      console.error(err);
-    });
-};
-
-const setUpStreak = () => {
-  const goalData = GOAL_DATA.get('goal_data')
-
-  const { dailyGoal } = OPTIONS.get('options')
-
-  const now = new Date();
-  const dateToday = date.format(now, 'YYYY-MM-DD');
-  const dateYesterday = date.format(date.addDays(now, -1), 'YYYY-MM-DD');
-
-  if (goalData.date !== dateToday) {
-    if (goalData.date !== dateYesterday) {
-      goalData.streakCount = 0;
-    } else if (goalData.date === dateYesterday) {
-      if (goalData.goalCount < dailyGoal) goalData.streakCount = 0;
-    }
-    goalData.date = dateToday;
-    goalData.goalCount = 0;
-  }
-
-  GOAL_DATA.set('goal_data', goalData);
-};
-
-const changeStatus = (wordData, newStatus) => {
-  dictForm = wordData.dictForm
-  prevStatus = wordData.status
-  if (prevStatus === 'new' && newStatus === 'seen') {
-    setUpStreak();
-
+  const setUpStreak = () => {
     const goalData = GOAL_DATA.get('goal_data')
 
     const { dailyGoal } = OPTIONS.get('options')
 
-    goalData.goalCount += 1;
+    const now = new Date();
+    const dateToday = date.format(now, 'YYYY-MM-DD');
+    const dateYesterday = date.format(date.addDays(now, -1), 'YYYY-MM-DD');
 
-    if (goalData.goalCount === dailyGoal) {
-      goalData.streakCount += 1;
+    if (goalData.date !== dateToday) {
+      if (goalData.date !== dateYesterday) {
+        goalData.streakCount = 0;
+      } else if (goalData.date === dateYesterday) {
+        if (goalData.goalCount < dailyGoal) goalData.streakCount = 0;
+      }
+      goalData.date = dateToday;
+      goalData.goalCount = 0;
     }
 
-    document.querySelector('#goal-count').textContent = goalData.goalCount;
-
     GOAL_DATA.set('goal_data', goalData);
-  }
+  };
 
-  const statusData = STATUS_DATA.get('status_data')
+  const changeStatus = (wordData, newStatus) => {
+    dictForm = wordData.dictForm
+    prevStatus = wordData.status
+    if (prevStatus === 'new' && newStatus === 'seen') {
+      setUpStreak();
 
-  if (prevStatus === 'known') {
-    statusData.known = statusData.known.filter((elem) => elem !== dictForm);
-  } else if (prevStatus === 'seen') {
-    statusData.seen = statusData.seen.filter((elem) => elem !== dictForm);
-  } else if (prevStatus === 'ignored') {
-    statusData.ignored = statusData.ignored.filter(
-      (elem) => elem !== dictForm
-    );
-  }
+      const goalData = GOAL_DATA.get('goal_data')
 
-  if (newStatus === 'known') {
-    statusData.known.push(dictForm);
-  } else if (newStatus === 'seen') {
-    statusData.seen.push(dictForm);
-  } else if (newStatus === 'ignored') {
-    statusData.ignored.push(dictForm);
-  }
+      const { dailyGoal } = OPTIONS.get('options')
 
-  wordData.status = newStatus;
-  STATUS_DATA.set('status_data', statusData);
-  handleWordData(wordData);
-  ipcRenderer.send('refreshReader');
-};
+      goalData.goalCount += 1;
 
-const displayGoalData = () => {
-  const { goalCount, streakCount } = GOAL_DATA.get('goal_data')
+      if (goalData.goalCount === dailyGoal) {
+        goalData.streakCount += 1;
+      }
 
-  const { dailyGoal } = OPTIONS.get('options')
+      document.querySelector('#goal-count').textContent = goalData.goalCount;
 
-  $('#info').append(
-    `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
+      GOAL_DATA.set('goal_data', goalData);
+    }
+
+    const statusData = STATUS_DATA.get('status_data')
+
+    if (prevStatus === 'known') {
+      statusData.known = statusData.known.filter((elem) => elem !== dictForm);
+    } else if (prevStatus === 'seen') {
+      statusData.seen = statusData.seen.filter((elem) => elem !== dictForm);
+    } else if (prevStatus === 'ignored') {
+      statusData.ignored = statusData.ignored.filter(
+        (elem) => elem !== dictForm
+      );
+    }
+
+    if (newStatus === 'known') {
+      statusData.known.push(dictForm);
+    } else if (newStatus === 'seen') {
+      statusData.seen.push(dictForm);
+    } else if (newStatus === 'ignored') {
+      statusData.ignored.push(dictForm);
+    }
+
+    wordData.status = newStatus;
+    STATUS_DATA.set('status_data', statusData);
+    handleWordData(wordData);
+    ipcRenderer.send('refreshReader');
+  };
+
+  const displayGoalData = () => {
+    const { goalCount, streakCount } = GOAL_DATA.get('goal_data')
+
+    const { dailyGoal } = OPTIONS.get('options')
+
+    $('#info').append(
+      `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
     );
 
     $('#info').append(
@@ -522,7 +522,7 @@ const displayGoalData = () => {
     document.querySelector('#duckduckgo.search').addEventListener('click', (e) => {
       handleDuckduckgo(currentWordData.dictForm)
     });
-    
+
     document.querySelector('#jisho.search').addEventListener('click', (e) => {
       handleJisho(currentWordData.dictForm);
     });
@@ -548,17 +548,17 @@ const displayGoalData = () => {
     });
 
 
-    
+
 
     document.querySelector('#audio.btn').addEventListener('click', (e) => {
       var btn = document.querySelector('#audio.btn');
       playAudio(currentWordData, btn);
     });
-    
-    if(ankiIntegration) {
+
+    if (ankiIntegration) {
       document.querySelector('#anki.btn').addEventListener('click', (e) => {
         var btn = document.querySelector('#anki.btn');
-        if (btn.classList.contains('preview')){
+        if (btn.classList.contains('preview')) {
           previewNote(currentWordData, btn)
         } else {
           addNote(currentWordData, btn);
