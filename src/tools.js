@@ -97,7 +97,7 @@ const schemaHistoryLogs = {
                     type: "string"
                 },
                 translation: {
-                    type: "string"
+                    type: ["string", "null"]
                 }
             }
         }
