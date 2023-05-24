@@ -1,59 +1,59 @@
 :root {
-    --mainFont: #041113;
-    --mainFontFaded: #0411130d;
-    --mainBackground: #e7dee6;
+  --mainFont: #041113;
+  --mainFontFaded: #0411130d;
+  --mainBackground: #e7dee6;
 
-    --scrollbarHead: #272502;
-    --scrollbarBackground: #867f7f;
-    --scrollbarShadow: #000000bf;
+  --scrollbarHead: #272502;
+  --scrollbarBackground: #867f7f;
+  --scrollbarShadow: #000000bf;
 
-    --url: #7d47fc;
+  --url: #7d47fc;
 
-    --dictListColor1: #77777780;
-    --dictListColor2: #99999980;
-    --dictListColor3: #bbbbbb80;
-    --dictListColor4: #dddddd80;
+  --dictListColor1: #77777780;
+  --dictListColor2: #99999980;
+  --dictListColor3: #bbbbbb80;
+  --dictListColor4: #dddddd80;
 
-    --optionsYes: #6cd193;
-    --optionsYesSelected: #26bd62;
-    --optionsNo: #f18588;
-    --optionsNoSelected: #e63b44;
+  --optionsYes: #6cd193;
+  --optionsYesSelected: #26bd62;
+  --optionsNo: #f18588;
+  --optionsNoSelected: #e63b44;
 
-    --statusNew: #1e8cc4;
-    --statusSeen: #db8409;
-    --statusKnown: #32912d;
-    --statusIgnored: #8b8383;
+  --statusNew: #1e8cc4;
+  --statusSeen: #db8409;
+  --statusKnown: #32912d;
+  --statusIgnored: #8b8383;
 
-    --plusOneBackground: #ccb9ca;
-    --plusOneColor: #000000;
-    --plusOneHighlight: #e83d3d;
+  --plusOneBackground: #ccb9ca;
+  --plusOneColor: #000000;
+  --plusOneHighlight: #e83d3d;
 
-    --dangerZoneBackground: #ff000044;
-    --dangerZoneButton: #ff0000;
+  --dangerZoneBackground: #ff000044;
+  --dangerZoneButton: #ff0000;
 
-    --translationBorder: #f5c8ba;
-    --translationTransparentBackground: #ffffffb0;
+  --translationBorder: #f5c8ba;
+  --translationTransparentBackground: #ffffffb0;
 }
 
 html.dark-mode {
-    --mainFont: #f3f9fa;
-    --mainFontFaded: #f3f9fa0d;
-    --mainBackground: #1e0a1c;
+  --mainFont: #f3f9fa;
+  --mainFontFaded: #f3f9fa0d;
+  --mainBackground: #1e0a1c;
 
-    --scrollbarHead: #f5f2ca;
-    --scrollbarBackground: #545454;
-    --scrollbarShadow: #000000bf;
+  --scrollbarHead: #f5f2ca;
+  --scrollbarBackground: #545454;
+  --scrollbarShadow: #000000bf;
 
-    --dictListColor1: #77777780;
-    --dictListColor2: #55555580;
-    --dictListColor3: #33333380;
-    --dictListColor4: #11111180;
+  --dictListColor1: #77777780;
+  --dictListColor2: #55555580;
+  --dictListColor3: #33333380;
+  --dictListColor4: #11111180;
 
-    --plusOneBackground: #2f142d;
-    --plusOneColor: #ffffff;
-    --plusOneHighlight: #650d0d;
+  --plusOneBackground: #2f142d;
+  --plusOneColor: #ffffff;
+  --plusOneHighlight: #650d0d;
 
-    --translationTransparentBackground: #000000b0;
+  --translationTransparentBackground: #000000b0;
 }
 
 @font-face {
@@ -135,4 +135,3 @@ html.dark-mode {
   font-family: ZenOldMincho;
   src: url(../fonts/ZenOldMincho-Regular.ttf);
 }
-
