@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyReader');
 
-  const { tvMode, readerFontSize, fontFamily, addFurigana, fadeText, darkMode, leftClickDisregardStatus } = OPTIONS.get('options')
+  const { tvMode, readerFontSize, fontFamily, useDeepL, addFurigana, fadeText, darkMode, leftClickDisregardStatus } = OPTIONS.get('options')
 
   if (tvMode) document.body.classList.add('tv-mode');
   if (darkMode) {
@@ -264,6 +264,7 @@ window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.on('receiveParsedData', (event, words, fullText) => {
     currentWords = words;
     currentText = fullText;
+    if(!useDeepL) ipcRenderer.send('appendToHistory', currentText, null) 
     handleWords(currentWords);
   });
 

@@ -28,8 +28,8 @@ const appendToHistory = (originalText, translation) => {
 
   const list = HISTORY.get('history');
 
-  if (list)   HISTORY.set('history', list.concat(entry));
-  else        HISTORY.set('history', [entry]);
+  if (list) HISTORY.set('history', list.concat(entry));
+  else HISTORY.set('history', [entry]);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -48,9 +48,9 @@ window.addEventListener('DOMContentLoaded', () => {
           error => {
             ipcRenderer.send('deepLConnectionError');
             console.error(error);
-        })
+          })
         .then(
-          result => appendToHistory(currentText, result),
+          result => ipcRenderer.send('appendToHistory', currentText, result),
           error => console.error(error)
         );
     }
@@ -91,7 +91,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const deeplText = [...targetNode.children].map(x => x.textContent).join(" ");
         const japaneseText = [...sourceNode.children].map(x => x.textContent).join(" ");
         ipcRenderer.send('showTranslation', deeplText, japaneseText);
-        appendToHistory(japaneseText, deeplText);
+        ipcRenderer.send('appendToHistory', japaneseText, deeplText);
       }
     };
 
