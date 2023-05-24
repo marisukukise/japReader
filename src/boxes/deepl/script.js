@@ -18,6 +18,20 @@ if (useDeepLApi) {
   }
 }
 
+const appendToHistory = (originalText, translation) => {
+  if (typeof translation !== 'string') result = null;
+  const entry = {
+    "timestamp": Date.now(),
+    "japanese": originalText,
+    "translation": translation
+  };
+
+  const list = HISTORY.get('history');
+
+  if (list)   HISTORY.set('history', list.concat(entry));
+  else        HISTORY.set('history', [entry]);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.on('translateWithDeepL', (event, text) => {
     ipcRenderer.send('translateNotification');
@@ -26,26 +40,19 @@ window.addEventListener('DOMContentLoaded', () => {
       const translator = new deepl.Translator(deepLApiKey);
       translator
         .translateText(currentText, 'ja', 'en-US')
-        .then(result => {
-          ipcRenderer.send('showTranslation', result.text, currentText);
-        }).catch(error => {
-          ipcRenderer.send('deepLConnectionError');
-          console.error(error);
+        .then(
+          result => {
+            ipcRenderer.send('showTranslation', result.text, currentText);
+            return result.text
+          },
+          error => {
+            ipcRenderer.send('deepLConnectionError');
+            console.error(error);
         })
-      /*
-      .finally(()=> {
-        var entry = {
-          "timestamp": 1,
-          "japanese": currentText,
-          "translation": result.text
-        };
-        var list = HISTORY.get();
-        if (list) 
-          HISTORY.set(list.concat(entry));
-        else 
-          HISTORY.set([entry]);
-      })
-      */
+        .then(
+          result => appendToHistory(currentText, result),
+          error => console.error(error)
+        );
     }
     else {
       document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
@@ -84,6 +91,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const deeplText = [...targetNode.children].map(x => x.textContent).join(" ");
         const japaneseText = [...sourceNode.children].map(x => x.textContent).join(" ");
         ipcRenderer.send('showTranslation', deeplText, japaneseText);
+        appendToHistory(japaneseText, deeplText);
       }
     };
 
