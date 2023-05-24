@@ -22,18 +22,18 @@ const schemaOptions = {
             readerFontSize: { default: 18, type: "number", minimum: 1 },
             dictFontSize: { default: 12, type: "number", minimum: 1 },
             optionsFontSize: { default: 12, type: "number", minimum: 1 },
-            ankiIntegration: { default: true, type: "boolean"},
-            ankiDeckName: { default: "japReader", type: "string"},
-            ankiModelName: { default: "japReader", type: "string"},
-            ankiDictForm: { default: "DictForm", type: "string"},
-            ankiDictFormReading: { default: "DictFormReading", type: "string"},
-            ankiDictFormFurigana: { default: "DictFormFurigana", type: "string"},
-            ankiWord: { default: "Word", type: "string"},
-            ankiWordReading: { default: "WordReading", type: "string"},
-            ankiWordFurigana: { default: "WordFurigana", type: "string"},
-            ankiDefinitions: { default: "Definitions", type: "string"},
-            ankiJapanese: { default: "Japanese", type: "string"},
-            ankiEnglish: { default: "English", type: "string"},
+            ankiIntegration: { default: true, type: "boolean" },
+            ankiDeckName: { default: "japReader", type: "string" },
+            ankiModelName: { default: "japReader", type: "string" },
+            ankiDictForm: { default: "DictForm", type: "string" },
+            ankiDictFormReading: { default: "DictFormReading", type: "string" },
+            ankiDictFormFurigana: { default: "DictFormFurigana", type: "string" },
+            ankiWord: { default: "Word", type: "string" },
+            ankiWordReading: { default: "WordReading", type: "string" },
+            ankiWordFurigana: { default: "WordFurigana", type: "string" },
+            ankiDefinitions: { default: "Definitions", type: "string" },
+            ankiJapanese: { default: "Japanese", type: "string" },
+            ankiEnglish: { default: "English", type: "string" },
         },
         default: {}
     }
@@ -84,22 +84,23 @@ const schemaWindow = {
 }
 
 const schemaHistoryLogs = {
-    type: "array",
-    default: [],
-    required: ["timestamp", "japanese"],
-    items: {
-     type: "object",
-     properties: {
-        timestamp: {
-            type: "number"
-        },
-        japanese: {
-            type: "string"
-        },
-        translation: {
-            type: "string"
-        },
-     },
+    history: {
+        type: "array",
+        required: ["timestamp", "japanese"],
+        items: {
+            type: "object",
+            properties: {
+                timestamp: {
+                    type: "number"
+                },
+                japanese: {
+                    type: "string"
+                },
+                translation: {
+                    type: "string"
+                }
+            }
+        }
     }
 }
 
