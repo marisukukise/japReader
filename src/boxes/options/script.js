@@ -8,6 +8,7 @@ const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
 const GOAL_DATA = new Store(tools.getGoalDataStoreOptions());
 const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
+const HISTORY = new Store(tools.getHistoryLogsOptions());
 
 const handleCheckbox = (checkbox, enable_query, disable_query) => {
   const enable_inputs = document.querySelectorAll(enable_query)
@@ -172,6 +173,17 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   });
 
+  document.querySelector('.reset-history.btn').addEventListener('click', () => {
+    ipcRenderer.invoke('showDialog',
+      "Are you sure you want to reset history logs (clear all saved logs of your search queries) to default?")
+      .then(result => {
+        if (result.response === 0) {
+          HISTORY.clear();
+          ipcRenderer.send('restartProgram');
+        }
+      });
+  });
+  
   document.querySelector('.reset-everything.btn').addEventListener('click', () => {
     ipcRenderer.invoke('showDialog',
       "Are you sure you want to reset ALL settings to default?")
