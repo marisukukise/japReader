@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === 'production') {
 const Store = require('electron-store')
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
+const HISTORY = new Store(tools.getHistoryLogsOptions());
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -30,11 +31,11 @@ let dictOnTop = false;
 
 function filterObjectKeys(unfilteredObj, allowedKeys) {
   const filtered = Object.keys(unfilteredObj)
-  .filter(key => allowedKeys.includes(key))
-  .reduce((obj, key) => {
-    obj[key] = unfilteredObj[key];
-    return obj;
-  }, {});
+    .filter(key => allowedKeys.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = unfilteredObj[key];
+      return obj;
+    }, {});
   return filtered;
 }
 
@@ -43,7 +44,7 @@ function createWindow(windowName, windowConfig) {
 
   if (WINDOW_SETTINGS.has(windowName)) {
     const positionSettings = filterObjectKeys(WINDOW_SETTINGS.get(windowName), allowed);
-    Object.assign(windowConfig, 
+    Object.assign(windowConfig,
       positionSettings
     );
     // get rid of rubbish properties
@@ -56,20 +57,20 @@ function createWindow(windowName, windowConfig) {
 
   // Events that will update the window position
   mainWindow.on("maximize", () => {
-    WINDOW_SETTINGS.set(windowName+".isMaximized", true);
+    WINDOW_SETTINGS.set(windowName + ".isMaximized", true);
   })
   mainWindow.on("unmaximize", () => {
-    WINDOW_SETTINGS.set(windowName+".isMaximized", false);
+    WINDOW_SETTINGS.set(windowName + ".isMaximized", false);
   })
   mainWindow.on(process.platform == 'win32' ? "resized" : "resize", () => {
     let normalBounds = mainWindow.getNormalBounds();
-    WINDOW_SETTINGS.set(windowName+".width", normalBounds.width);
-    WINDOW_SETTINGS.set(windowName+".height", normalBounds.height);
+    WINDOW_SETTINGS.set(windowName + ".width", normalBounds.width);
+    WINDOW_SETTINGS.set(windowName + ".height", normalBounds.height);
   })
   mainWindow.on(process.platform == 'win32' ? "moved" : "move", () => {
     let normalBounds = mainWindow.getNormalBounds();
-    WINDOW_SETTINGS.set(windowName+".x", normalBounds.x);
-    WINDOW_SETTINGS.set(windowName+".y", normalBounds.y);
+    WINDOW_SETTINGS.set(windowName + ".x", normalBounds.x);
+    WINDOW_SETTINGS.set(windowName + ".y", normalBounds.y);
   })
 
   return mainWindow;
@@ -79,8 +80,23 @@ const { useDeepL, useDeepLApi, useReader, translationTransparent } = OPTIONS.get
 
 
 ipcMain.on('openUrl', (event, url) => {
-    shell.openExternal(url);
+  shell.openExternal(url);
 });
+
+ipcMain.on('appendToHistory', (event, originalText, translation) => {
+  if (typeof translation !== 'string' || translation == '') translation = null;
+
+  const entry = {
+    "timestamp": Date.now(),
+    "japanese": originalText,
+    "translation": translation
+  };
+
+  const list = HISTORY.get('history');
+
+  if (list) HISTORY.set('history', list.concat(entry));
+  else HISTORY.set('history', [entry]);
+})
 
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
@@ -285,7 +301,7 @@ const createBoxes = () => {
     ipcMain.on('sendTranslation', (event, englishText) => {
       dictBox.webContents.send('receiveTranslation', englishText);
     });
-    
+
 
     ipcMain.on('readyDict', () => {
     });
@@ -294,7 +310,7 @@ const createBoxes = () => {
   if (useDeepL) {
     const deepLBox = new BrowserWindow({
       icon: 'images/logo/icon.png',
-      show: true,
+      show: false,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
@@ -306,7 +322,7 @@ const createBoxes = () => {
       },
     });
 
-    if (!useDeepLApi){
+    if (!useDeepLApi) {
       deepLBox.loadURL('https://www.deepl.com/translator#ja/en/');
     }
     else {
