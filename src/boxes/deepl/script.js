@@ -9,7 +9,7 @@ const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const HISTORY = new Store(tools.getHistoryLogsOptions());
 const { useDeepLApi, deepLApiKey } = OPTIONS.get('options');
 
-if (useDeepLApi){
+if (useDeepLApi) {
   try {
     const translator = new deepl.Translator(deepLApiKey);
   } catch (error) {
@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.on('translateWithDeepL', (event, text) => {
     ipcRenderer.send('translateNotification');
     const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
-    if(useDeepLApi){
+    if (useDeepLApi) {
       const translator = new deepl.Translator(deepLApiKey);
       translator
         .translateText(currentText, 'ja', 'en-US')
@@ -32,76 +32,76 @@ window.addEventListener('DOMContentLoaded', () => {
           ipcRenderer.send('deepLConnectionError');
           console.error(error);
         })
-        /*
-        .finally(()=> {
-          var entry = {
-            "timestamp": 1,
-            "japanese": currentText,
-            "translation": result.text
-          };
-          var list = HISTORY.get();
-          if (list) 
-            HISTORY.set(list.concat(entry));
-          else 
-            HISTORY.set([entry]);
-        })
-        */
+      /*
+      .finally(()=> {
+        var entry = {
+          "timestamp": 1,
+          "japanese": currentText,
+          "translation": result.text
+        };
+        var list = HISTORY.get();
+        if (list) 
+          HISTORY.set(list.concat(entry));
+        else 
+          HISTORY.set([entry]);
+      })
+      */
     }
-    else{
+    else {
       document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
     }
   });
 
-    if(useDeepLApi){
-      const translator = new deepl.Translator(deepLApiKey, {maxRetries: 1, minTimeout: 2000});
-      const connectionCheck = setTimeout(() => {
-        translator
-          .getUsage()
-          .then(e => {
-            ipcRenderer.send('deepLConnected');
-            clearInterval(connectionCheck);
-          })
-      }, 500);
-
-      setTimeout(() => {
-        if (deepLApiKey == "") {
-          ipcRenderer.send('deepLConnectionError');
-        } else {
-          translator
-            .getUsage()
-            .catch(err => {
-              ipcRenderer.send('deepLConnectionError');
-            })
-        }
-      }, 8000);
-    }
-    else{
-      const targetNode = document.querySelector('div[aria-labelledby="translation-results-heading"]');
-      const sourceNode = document.querySelector('div[aria-labelledby="translation-source-heading"]');
-      const config = { childList: true };
-      const callback = () => {
-        if (targetNode.textContent) {
-          const deeplText = [...targetNode.children].map(x => x.textContent).join(" ");
-          const japaneseText = [...sourceNode.children].map(x => x.textContent).join(" ");
-          ipcRenderer.send('showTranslation', deeplText, japaneseText);
-        }
-      };
-
-      const observer = new MutationObserver(callback);
-      observer.observe(targetNode, config);
-
-      const connectionCheck = setTimeout(() => {
-        if (document.querySelector('.dl_body').length !== 0) {
+  if (useDeepLApi) {
+    const translator = new deepl.Translator(deepLApiKey, { maxRetries: 1, minTimeout: 2000 });
+    const connectionCheck = setTimeout(() => {
+      translator
+        .getUsage()
+        .then(e => {
           ipcRenderer.send('deepLConnected');
           clearInterval(connectionCheck);
-        }
-      }, 500);
+        })
+    }, 500);
 
-      setTimeout(() => {
-        if (document.body.children.length === 0) {
-          ipcRenderer.send('deepLConnectionError');
-        }
-      }, 8000);
-}
+    setTimeout(() => {
+      if (deepLApiKey == "") {
+        ipcRenderer.send('deepLConnectionError');
+      } else {
+        translator
+          .getUsage()
+          .catch(err => {
+            ipcRenderer.send('deepLConnectionError');
+          })
+      }
+    }, 8000);
+  }
+  else {
+    const targetNode = document.querySelector('div[aria-labelledby="translation-results-heading"]');
+    const sourceNode = document.querySelector('div[aria-labelledby="translation-source-heading"]');
+    const config = { childList: true };
+    const callback = () => {
+      if (targetNode.textContent) {
+        const deeplText = [...targetNode.children].map(x => x.textContent).join(" ");
+        const japaneseText = [...sourceNode.children].map(x => x.textContent).join(" ");
+        ipcRenderer.send('showTranslation', deeplText, japaneseText);
+      }
+    };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+
+    const connectionCheck = setTimeout(() => {
+      if (document.querySelector('.dl_body').length !== 0) {
+        ipcRenderer.send('deepLConnected');
+        clearInterval(connectionCheck);
+      }
+    }, 500);
+
+    setTimeout(() => {
+      if (document.body.children.length === 0) {
+        ipcRenderer.send('deepLConnectionError');
+      }
+    }, 8000);
+  }
 });
 

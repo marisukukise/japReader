@@ -122,10 +122,10 @@ window.addEventListener('DOMContentLoaded', () => {
     translator
       .getUsage()
       .then(e => {
-          responseSelector.value = `✅Monthly usage: ${e.character.count}/${e.character.limit}`;
+        responseSelector.value = `✅Monthly usage: ${e.character.count}/${e.character.limit}`;
       }).catch(e => {
-          responseSelector.value = `❌Something went wrong`;
-          console.error(e);
+        responseSelector.value = `❌Something went wrong`;
+        console.error(e);
       })
   })
   document.querySelector('.reset-window-settings.btn').addEventListener('click', () => {

@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.deepl.com; script-src 'self'" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; connect-src 'self' https://*.deepl.com; script-src 'self'" />
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
   <link rel="stylesheet" href="../../styles/all.css" />
   <link rel="stylesheet" href="../../styles/variables.css" />
@@ -22,13 +23,11 @@
     <div id="all-options">
       <fieldset id="general">
         <legend>General</legend>
-        <section id="darkMode-selection" class="option"
-title="Selecting this will turn on the dark mode.">
+        <section id="darkMode-selection" class="option" title="Selecting this will turn on the dark mode.">
           <input type="checkbox" id="darkMode" name="darkMode">
           <label for="darkMode">Dark mode</label>
         </section>
-        <section id="fontFamily-selection" class="option"
-title="Select font family.">
+        <section id="fontFamily-selection" class="option" title="Select font family.">
           <select id="fontFamily" name="fontFamily">
             <optgroup label="Gothic/Sans Serif">
               <option value="NotoSansJP">Noto Sans Japanese</option>
@@ -62,22 +61,22 @@ title="Select font family.">
       <fieldset id="translation">
         <legend>Translation window</legend>
         <section id="useDeepL-selection" class="option"
-title="Selecting this will load the translation window on startup.">
+          title="Selecting this will load the translation window on startup.">
           <input type="checkbox" id="useDeepL" name="useDeepL">
           <label for="useDeepL">Use DeepL translation</label>
         </section>
 
         <section id="useDeepLApi-selection" class="option"
-title="Selecting this will use DeepL API instead of parsing it through the HTML window. This option is faster and more robust, (and more customizable) 
+          title="Selecting this will use DeepL API instead of parsing it through the HTML window. This option is faster and more robust, (and more customizable) 
 however it can only translate 500 000 words per month. It's recommended to keep this off, and have this one as a backup plan just in case, but you're free to use it if you want.">
           <input type="checkbox" id="useDeepLApi" name="useDeepLApi">
           <label for="useDeepLApi">Use DeepL API key (Optional)</label>
         </section>
 
         <section id="deepLApiKey-selection" class="option"
-title="Enter your API key from your https://www.deepl.com/account/summary page.">
-          <input type="text" spellcheck="false" id="deepLApiKey" name="deepLApiKey" 
-          minlength="10" placeholder="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ff">
+          title="Enter your API key from your https://www.deepl.com/account/summary page.">
+          <input type="text" spellcheck="false" id="deepLApiKey" name="deepLApiKey" minlength="10"
+            placeholder="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ff">
           <label for="deepLApiKey">Enter API Key</label> <br>
         </section>
         <section id="deepLApiKey-test" class="test">
@@ -86,20 +85,20 @@ title="Enter your API key from your https://www.deepl.com/account/summary page."
         </section>
 
         <section id="deepLDual-selection" class="option"
-title="Selecting this will add Japanese text below English text in the translation window.">
+          title="Selecting this will add Japanese text below English text in the translation window.">
           <input type="checkbox" id="deepLDual" name="deepLDual">
           <label for="deepLDual">Japanese text in addition to English text in DeepL translation</label>
         </section>
 
         <section id="fadeText-selection" class="option"
-title="Selecting this will make the translation barely visible, when the sentence only has 1 or 0 unknown words. 
+          title="Selecting this will make the translation barely visible, when the sentence only has 1 or 0 unknown words. 
 If you're learning Japanese, this option is good to select, because you can try to figure out the meaning of the sentence on your own before seeing the translation.">
           <input type="checkbox" id="fadeText" name="fadeText">
           <label for="fadeText">Fade out the translation text if the sentence is i+1 or i+0</label>
         </section>
 
         <section id="translationTransparent-selection" class="option"
-title="Selecting this will make the background of the translation window transparent.">
+          title="Selecting this will make the background of the translation window transparent.">
           <input type="checkbox" id="translationTransparent" name="translationTransparent">
           <label for="translationTransparent">Transparent translation window</label>
         </section>
@@ -112,15 +111,13 @@ title="Selecting this will make the background of the translation window transpa
 
       <fieldset id="reader">
         <legend>Reader window</legend>
-        <section id="useReader-selection" class="option"
-title="Selecting this will load the Japanese text reader 
+        <section id="useReader-selection" class="option" title="Selecting this will load the Japanese text reader 
 (a window that parses Japanese text word by word) on startup.">
           <input type="checkbox" id="useReader" name="useReader">
           <label for="useReader">Use Japanese reader</label>
         </section>
 
-        <section id="leftClickDisregardStatus-selection" class="option"
-title="Selecting this will make the left click button change the status of words to 'seen' regardless of their current status.
+        <section id="leftClickDisregardStatus-selection" class="option" title="Selecting this will make the left click button change the status of words to 'seen' regardless of their current status.
 This option was enabled by default before japReader 1.5.3.
 This option is recommended to be left disabled, because then it's a bit 'smarter'.">
           <input type="checkbox" id="leftClickDisregardStatus" name="leftClickDisregardStatus">
@@ -128,13 +125,12 @@ This option is recommended to be left disabled, because then it's a bit 'smarter
         </section>
 
         <section id="addFurigana-selection" class="option"
-title="Selecting this will add furigana to 'new' and 'seen' Japanese words.">
+          title="Selecting this will add furigana to 'new' and 'seen' Japanese words.">
           <input type="checkbox" id="addFurigana" name="addFurigana">
           <label for="addFurigana">Add furigana</label>
         </section>
 
-        <section id="tvMode-selection" class="option"
-title="Selecting this will center the text in the Reader window.">
+        <section id="tvMode-selection" class="option" title="Selecting this will center the text in the Reader window.">
           <input type="checkbox" id="tvMode" name="tvMode">
           <label for="tvMode">Center text</label>
         </section>
@@ -147,8 +143,7 @@ title="Selecting this will center the text in the Reader window.">
 
       <fieldset id="dictionary">
         <legend>Dictionary window</legend>
-        <section id="showGoal-selection" class="option"
-title="Selecting this will show daily goal 
+        <section id="showGoal-selection" class="option" title="Selecting this will show daily goal 
 (this option currently doesn't work, the progress will not update).">
           <input type="checkbox" id="showGoal" name="showGoal">
           <label for="showGoal">Show daily goal</label>
@@ -176,8 +171,7 @@ title="Selecting this will show daily goal
 
       <fieldset id="anki">
         <legend>Anki support</legend>
-        <section id="ankiIntegration-selection" class="option"
-title="Adds integration for your own Anki deck. 
+        <section id="ankiIntegration-selection" class="option" title="Adds integration for your own Anki deck. 
 The fields have to be unique. 
 The field can also be empty in which case it won't be inserted.">
           <input type="checkbox" id="ankiIntegration" name="ankiIntegration">
@@ -255,24 +249,20 @@ The field can also be empty in which case it won't be inserted.">
       <section id="apply" class="option">
         <div class="apply btn">Apply</div>
       </section>
-        <details id="danger-zone">
+      <details id="danger-zone">
         <summary>Big red buttons</summary>
         <div class="red-buttons">
-          <div class="reset-window-settings btn" 
-  title="Reset the remembered state of windows to default settings.">
+          <div class="reset-window-settings btn" title="Reset the remembered state of windows to default settings.">
             Reset window settings</div>
-          <div class="reset-goal-data btn" 
-  title="Reset the daily goal progress.">
+          <div class="reset-goal-data btn" title="Reset the daily goal progress.">
             Reset goal data</div>
           <div class="reset-status-data btn"
-  title="Reset all words status, this option will reset all seen, known, ignored words.">
+            title="Reset all words status, this option will reset all seen, known, ignored words.">
             Reset status data</div>
-          <div class="reset-options btn" 
-  title="Reset options in this menu to default.">Reset options</div>
-          <div class="reset-everything btn" 
-  title="Reset all configuration to default.">Reset everything</div>
+          <div class="reset-options btn" title="Reset options in this menu to default.">Reset options</div>
+          <div class="reset-everything btn" title="Reset all configuration to default.">Reset everything</div>
         </div>
-        </details>
+      </details>
     </div>
   </main>
 </body>

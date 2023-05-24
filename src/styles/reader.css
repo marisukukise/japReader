@@ -20,7 +20,7 @@
   left: 0em;
   right: 0em;
   bottom: 0;
-  transition: top 200ms cubic-bezier(.18,1,0,1);
+  transition: top 200ms cubic-bezier(.18, 1, 0, 1);
 }
 
 .word:hover:after {

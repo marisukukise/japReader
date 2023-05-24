@@ -193,10 +193,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 changeStatusOnClick(currentWordData, 'ignored');
               }
               else {
-                if(leftClickDisregardStatus){
+                if (leftClickDisregardStatus) {
                   changeStatusOnClick(currentWordData, 'seen');
                 } else {
-                  if(currentWordData.status == 'new'){
+                  if (currentWordData.status == 'new') {
                     changeStatusOnClick(currentWordData, 'seen');
                   } else {
                     ipcRenderer.send('sendWordData', wordData);
