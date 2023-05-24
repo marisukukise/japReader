@@ -76,7 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
       $('#app').append('Copy Japanese text to get DeepL translations.');
       if (useDeepLApi) {
         $('#app').append('<br><br>');
-        $('#app').append("You're using DeepL API which has a monthly 500 000 word usage limit. <br> To have unlimited translation consider disabling DeepL API in the options menu.");
+        $('#app').append("You're using DeepL API which has a monthly limit of 500,000 characters. <br> To have unlimited translation consider disabling DeepL API in the options menu.");
       }
     }
   });
