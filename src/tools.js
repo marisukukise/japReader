@@ -83,6 +83,26 @@ const schemaWindow = {
     }
 }
 
+const schemaHistoryLogs = {
+    type: "array",
+    default: [],
+    required: ["timestamp", "japanese"],
+    items: {
+     type: "object",
+     properties: {
+        timestamp: {
+            type: "number"
+        },
+        japanese: {
+            type: "string"
+        },
+        translation: {
+            type: "string"
+        },
+     },
+    }
+}
+
 const windowStoreOptions = {
     schema: schemaWindow,
     name: "window_settings",
@@ -109,6 +129,13 @@ const statusDataStoreOptions = {
     name: "status_data",
     clearInvalidConfig: true,
     cwd: 'config'
+}
+
+const historyLogsOptioms = {
+    schema: schemaHistoryLogs,
+    name: "history",
+    clearInvalidConfig: true,
+    cwd: "logs"
 }
 
 let ___stayTimer;
@@ -144,5 +171,6 @@ module.exports = {
     getOptionsStoreOptions: function () { return optionsStoreOptions; },
     getGoalDataStoreOptions: function () { return goalDataStoreOptions; },
     getStatusDataStoreOptions: function () { return statusDataStoreOptions; },
-    getWindowStoreOptions: function () { return windowStoreOptions; }
+    getWindowStoreOptions: function () { return windowStoreOptions; },
+    getHistoryLogsOptions: function () { return historyLogsOptioms; }
 }

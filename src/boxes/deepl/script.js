@@ -6,7 +6,8 @@ const Store = require('electron-store')
 
 const deepl = require('deepl-node')
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
-const { useDeepLApi, deepLApiKey } = OPTIONS.get('options')
+const HISTORY = new Store(tools.getHistoryLogsOptions());
+const { useDeepLApi, deepLApiKey } = OPTIONS.get('options');
 
 if (useDeepLApi){
   try {
@@ -31,6 +32,20 @@ window.addEventListener('DOMContentLoaded', () => {
           ipcRenderer.send('deepLConnectionError');
           console.error(error);
         })
+        /*
+        .finally(()=> {
+          var entry = {
+            "timestamp": 1,
+            "japanese": currentText,
+            "translation": result.text
+          };
+          var list = HISTORY.get();
+          if (list) 
+            HISTORY.set(list.concat(entry));
+          else 
+            HISTORY.set([entry]);
+        })
+        */
     }
     else{
       document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
