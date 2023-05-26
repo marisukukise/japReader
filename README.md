@@ -32,8 +32,8 @@
 
 # <img src="images/logo/logo.svg" height="96"/> Preview
 ## Examples
-![Example screenshot #2](images/examples/example2.png)
-![Example screenshot #1](images/examples/example1.png)
+![Example screenshot #2](images/examples/example3.png)
+![Example screenshot #1](images/examples/options_menu.png)
 
 
 ## Currently Supported
