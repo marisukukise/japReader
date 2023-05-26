@@ -150,7 +150,7 @@ window.addEventListener('DOMContentLoaded', () => {
           furiganaWordData.forEach((element) => {
             if (element.w.match(/[一-龯]/))
               wordWithFurigana += `<ruby><rb>${element.w}</rb><rt>${element.r}</rt></ruby>`;
-            else wordWithFurigana += element.r;
+            else wordWithFurigana += element.w;
           });
           currentWordData.wordFuriganaHTML = wordWithFurigana;
 
@@ -163,7 +163,7 @@ window.addEventListener('DOMContentLoaded', () => {
           furiganaDictData.forEach((element) => {
             if (element.w.match(/[一-龯]/))
               wordWithFurigana += `<ruby><rb>${element.w}</rb><rt>${element.r}</rt></ruby>`;
-            else wordWithFurigana += element.r;
+            else wordWithFurigana += element.w;
           });
           currentWordData.dictFuriganaHTML = wordWithFurigana;
         }
