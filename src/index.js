@@ -79,9 +79,17 @@ function createWindow(windowName, windowConfig) {
 const { useDeepL, useDeepLApi, useReader, translationTransparent } = OPTIONS.get('options');
 
 
-ipcMain.on('openUrl', (event, url) => {
+ipcMain.on('openExternal', (event, url) => {
   shell.openExternal(url);
 });
+
+ipcMain.on('showItemInFolder', (event, fullPath) => {
+  shell.showItemInFolder(fullPath);
+})
+
+ipcMain.on('openPath', (event, path) => {
+  shell.openPath(path);
+})
 
 ipcMain.on('appendToHistory', (event, originalText, translation) => {
   if (typeof translation !== 'string' || translation == '') translation = null;

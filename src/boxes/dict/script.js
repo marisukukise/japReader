@@ -214,7 +214,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const openUrl = (url) => {
-    ipcRenderer.send("openUrl", url);
+    ipcRenderer.send("openExternal", url);
   }
 
   const addNote = (wordData, btn) => {
