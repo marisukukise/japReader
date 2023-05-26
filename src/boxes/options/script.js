@@ -111,8 +111,16 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  document.querySelector('#deepLApiKey-test > .btn').addEventListener('click', () => {
-    const responseSelector = document.querySelector('.deepLApiKey-test-response');
+  document.querySelector('#openConfigFolder-button > .btn').addEventListener('click', () => {
+    ipcRenderer.send('showItemInFolder', OPTIONS.path)
+  });
+
+  document.querySelector('#openHistory-button > .btn').addEventListener('click', () => {
+    ipcRenderer.send('openPath', HISTORY.path)
+  });
+
+  document.querySelector('#deepLApiKey-button > .btn').addEventListener('click', () => {
+    const responseSelector = document.querySelector('.deepLApiKey-button-response');
     const authKey = document.querySelector('#deepLApiKey').value;
     if (authKey == "") {
       responseSelector.value = `❌Something went wrong`;

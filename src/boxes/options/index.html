@@ -17,254 +17,268 @@
   <main id="app">
     <h1>Options Menu</h1>
     <h3>Hover on the option for more information.</h2>
-    <h3>Press Apply down below to save options.</h2>
-    <h3>The program will be restarted. All your progress will be saved.</h3>
+      <h3>Press Apply down below to save options.</h2>
+        <h3>The program will be restarted. All your progress will be saved.</h3>
 
-    <div id="all-options">
-      <fieldset id="general">
-        <legend>General</legend>
-        <section id="darkMode-selection" class="option" title="Selecting this will turn on the dark mode.">
-          <input type="checkbox" id="darkMode" name="darkMode">
-          <label for="darkMode">Dark mode</label>
-        </section>
-        <section id="fontFamily-selection" class="option" title="Select font family.">
-          <select id="fontFamily" name="fontFamily">
-            <optgroup label="Gothic/Sans Serif">
-              <option value="NotoSansJP">Noto Sans Japanese</option>
-              <option value="BIZUDPGothic">BIZ UDPGothic</option>
-              <option value="MPLUS1p">M PLUS 1p</option>
-              <option value="SawarabiGothic">Sawarabi Gothic</option>
-              <option value="ZenKakuGothicNew">Zen Kaku Gothic New</option>
-            </optgroup>
-            <optgroup label="Mincho/Serif">
-              <option value="NotoSerifJP">Noto Serif Japanese</option>
-              <option value="BIZUDPMincho">BIZ UDPMincho</option>
-              <option value="HinaMincho">Hina Mincho</option>
-              <option value="SawarabiMincho">Sawarabi Mincho</option>
-              <option value="ZenAntique">Zen Antique</option>
-              <option value="ZenOldMincho">Zen Old Mincho</option>
-            </optgroup>
-            <optgroup label="Maru/Rounded">
-              <option value="MPLUSRounded1c">M PLUS Rounded 1c</option>
-              <option value="ZenMaruGothic">Zen Maru Gothic</option>
-            </optgroup>
-            <optgroup label="Funky">
-              <option value="DotGothic16">DotGothic16</option>
-              <option value="ZenKurenaido">Zen Kurenaido</option>
-              <option value="KleeOne">Klee One</option>
-            </optgroup>
-          </select>
-          <label for="fontFamily">Font</label>
-        </section>
-      </fieldset>
+        <div id="all-options">
+          <fieldset id="general">
+            <legend>General</legend>
+            <section id="darkMode-selection" class="option" title="Selecting this will turn on the dark mode.">
+              <input type="checkbox" id="darkMode" name="darkMode">
+              <label for="darkMode">Dark mode</label>
+            </section>
+            <section id="fontFamily-selection" class="option" title="Select font family.">
+              <select id="fontFamily" name="fontFamily">
+                <optgroup label="Gothic/Sans Serif">
+                  <option value="NotoSansJP">Noto Sans Japanese</option>
+                  <option value="BIZUDPGothic">BIZ UDPGothic</option>
+                  <option value="MPLUS1p">M PLUS 1p</option>
+                  <option value="SawarabiGothic">Sawarabi Gothic</option>
+                  <option value="ZenKakuGothicNew">Zen Kaku Gothic New</option>
+                </optgroup>
+                <optgroup label="Mincho/Serif">
+                  <option value="NotoSerifJP">Noto Serif Japanese</option>
+                  <option value="BIZUDPMincho">BIZ UDPMincho</option>
+                  <option value="HinaMincho">Hina Mincho</option>
+                  <option value="SawarabiMincho">Sawarabi Mincho</option>
+                  <option value="ZenAntique">Zen Antique</option>
+                  <option value="ZenOldMincho">Zen Old Mincho</option>
+                </optgroup>
+                <optgroup label="Maru/Rounded">
+                  <option value="MPLUSRounded1c">M PLUS Rounded 1c</option>
+                  <option value="ZenMaruGothic">Zen Maru Gothic</option>
+                </optgroup>
+                <optgroup label="Funky">
+                  <option value="DotGothic16">DotGothic16</option>
+                  <option value="ZenKurenaido">Zen Kurenaido</option>
+                  <option value="KleeOne">Klee One</option>
+                </optgroup>
+              </select>
+              <label for="fontFamily">Font</label>
+            </section>
+          </fieldset>
 
-      <fieldset id="translation">
-        <legend>Translation window</legend>
-        <section id="useDeepL-selection" class="option"
-          title="Selecting this will load the translation window on startup.">
-          <input type="checkbox" id="useDeepL" name="useDeepL">
-          <label for="useDeepL">Use DeepL translation</label>
-        </section>
+          <fieldset id="translation">
+            <legend>Translation window</legend>
+            <section id="useDeepL-selection" class="option"
+              title="Selecting this will load the translation window on startup.">
+              <input type="checkbox" id="useDeepL" name="useDeepL">
+              <label for="useDeepL">Use DeepL translation</label>
+            </section>
 
-        <section id="useDeepLApi-selection" class="option"
-          title="Selecting this will use DeepL API instead of parsing it through the HTML window. This option is faster and more robust, (and more customizable) 
+            <section id="useDeepLApi-selection" class="option"
+              title="Selecting this will use DeepL API instead of parsing it through the HTML window. This option is faster and more robust, (and more customizable) 
 however it can only translate 500 000 words per month. It's recommended to keep this off, and have this one as a backup plan just in case, but you're free to use it if you want.">
-          <input type="checkbox" id="useDeepLApi" name="useDeepLApi">
-          <label for="useDeepLApi">Use DeepL API key (Optional)</label>
-        </section>
+              <input type="checkbox" id="useDeepLApi" name="useDeepLApi">
+              <label for="useDeepLApi">Use DeepL API key (Optional)</label>
+            </section>
 
-        <section id="deepLApiKey-selection" class="option"
-          title="Enter your API key from your https://www.deepl.com/account/summary page.">
-          <input type="text" spellcheck="false" id="deepLApiKey" name="deepLApiKey" minlength="10"
-            placeholder="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ff">
-          <label for="deepLApiKey">Enter API Key</label> <br>
-        </section>
-        <section id="deepLApiKey-test" class="test">
-          <div class="btn">Test the API key</div>
-          <input readonly="readonly" type="text" class="deepLApiKey-test-response">
-        </section>
+            <section id="deepLApiKey-selection" class="option"
+              title="Enter your API key from your https://www.deepl.com/account/summary page.">
+              <input type="text" spellcheck="false" id="deepLApiKey" name="deepLApiKey" minlength="10"
+                placeholder="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ff">
+              <label for="deepLApiKey">Enter API Key</label> <br>
+            </section>
+            <section id="deepLApiKey-button" class="button">
+              <div class="btn">Test the API key</div>
+              <input readonly="readonly" type="text" class="deepLApiKey-button-response">
+            </section>
 
-        <section id="deepLDual-selection" class="option"
-          title="Selecting this will add Japanese text below English text in the translation window.">
-          <input type="checkbox" id="deepLDual" name="deepLDual">
-          <label for="deepLDual">Japanese text in addition to English text in DeepL translation</label>
-        </section>
+            <section id="deepLDual-selection" class="option"
+              title="Selecting this will add Japanese text below English text in the translation window.">
+              <input type="checkbox" id="deepLDual" name="deepLDual">
+              <label for="deepLDual">Japanese text in addition to English text in DeepL translation</label>
+            </section>
 
-        <section id="fadeText-selection" class="option"
-          title="Selecting this will make the translation barely visible, when the sentence only has 1 or 0 unknown words. 
+            <section id="fadeText-selection" class="option"
+              title="Selecting this will make the translation barely visible, when the sentence only has 1 or 0 unknown words. 
 If you're learning Japanese, this option is good to select, because you can try to figure out the meaning of the sentence on your own before seeing the translation.">
-          <input type="checkbox" id="fadeText" name="fadeText">
-          <label for="fadeText">Fade out the translation text if the sentence is i+1 or i+0</label>
-        </section>
+              <input type="checkbox" id="fadeText" name="fadeText">
+              <label for="fadeText">Fade out the translation text if the sentence is i+1 or i+0</label>
+            </section>
 
-        <section id="translationTransparent-selection" class="option"
-          title="Selecting this will make the background of the translation window transparent.">
-          <input type="checkbox" id="translationTransparent" name="translationTransparent">
-          <label for="translationTransparent">Transparent translation window</label>
-        </section>
+            <section id="translationTransparent-selection" class="option"
+              title="Selecting this will make the background of the translation window transparent.">
+              <input type="checkbox" id="translationTransparent" name="translationTransparent">
+              <label for="translationTransparent">Transparent translation window</label>
+            </section>
 
-        <section id="translationFontSize-selection" class="option">
-          <input type="number" id="translationFontSize" name="translationFontSize" min="1">
-          <label for="translationFontSize">Translation font size</label>
-        </section>
-      </fieldset>
+            <section id="translationFontSize-selection" class="option">
+              <input type="number" id="translationFontSize" name="translationFontSize" min="1">
+              <label for="translationFontSize">Translation font size</label>
+            </section>
+          </fieldset>
 
-      <fieldset id="reader">
-        <legend>Reader window</legend>
-        <section id="useReader-selection" class="option" title="Selecting this will load the Japanese text reader 
+          <fieldset id="reader">
+            <legend>Reader window</legend>
+            <section id="useReader-selection" class="option" title="Selecting this will load the Japanese text reader 
 (a window that parses Japanese text word by word) on startup.">
-          <input type="checkbox" id="useReader" name="useReader">
-          <label for="useReader">Use Japanese reader</label>
-        </section>
+              <input type="checkbox" id="useReader" name="useReader">
+              <label for="useReader">Use Japanese reader</label>
+            </section>
 
-        <section id="leftClickDisregardStatus-selection" class="option" title="Selecting this will make the left click button change the status of words to 'seen' regardless of their current status.
+            <section id="leftClickDisregardStatus-selection" class="option" title="Selecting this will make the left click button change the status of words to 'seen' regardless of their current status.
 This option was enabled by default before japReader 1.5.3.
 This option is recommended to be left disabled, because then it's a bit 'smarter'.">
-          <input type="checkbox" id="leftClickDisregardStatus" name="leftClickDisregardStatus">
-          <label for="leftClickDisregardStatus">Always change the word status on left click press</label&#013>
-        </section>
+              <input type="checkbox" id="leftClickDisregardStatus" name="leftClickDisregardStatus">
+              <label for="leftClickDisregardStatus">Always change the word status on left click press</label&#013>
+            </section>
 
-        <section id="addFurigana-selection" class="option"
-          title="Selecting this will add furigana to 'new' and 'seen' Japanese words.">
-          <input type="checkbox" id="addFurigana" name="addFurigana">
-          <label for="addFurigana">Add furigana</label>
-        </section>
+            <section id="addFurigana-selection" class="option"
+              title="Selecting this will add furigana to 'new' and 'seen' Japanese words.">
+              <input type="checkbox" id="addFurigana" name="addFurigana">
+              <label for="addFurigana">Add furigana</label>
+            </section>
 
-        <section id="tvMode-selection" class="option" title="Selecting this will center the text in the Reader window.">
-          <input type="checkbox" id="tvMode" name="tvMode">
-          <label for="tvMode">Center text</label>
-        </section>
+            <section id="tvMode-selection" class="option"
+              title="Selecting this will center the text in the Reader window.">
+              <input type="checkbox" id="tvMode" name="tvMode">
+              <label for="tvMode">Center text</label>
+            </section>
 
-        <section id="readerFontSize-selection" class="option">
-          <input type="number" id="readerFontSize" name="readerFontSize" min="1">
-          <label for="readerFontSize">Reader font size</label>
-        </section>
-      </fieldset>
+            <section id="readerFontSize-selection" class="option">
+              <input type="number" id="readerFontSize" name="readerFontSize" min="1">
+              <label for="readerFontSize">Reader font size</label>
+            </section>
+          </fieldset>
 
-      <fieldset id="dictionary">
-        <legend>Dictionary window</legend>
-        <section id="showGoal-selection" class="option" title="Selecting this will show daily goal 
+          <fieldset id="dictionary">
+            <legend>Dictionary window</legend>
+            <section id="showGoal-selection" class="option" title="Selecting this will show daily goal 
 (this option currently doesn't work, the progress will not update).">
-          <input type="checkbox" id="showGoal" name="showGoal">
-          <label for="showGoal">Show daily goal</label>
-        </section>
+              <input type="checkbox" id="showGoal" name="showGoal">
+              <label for="showGoal">Show daily goal</label>
+            </section>
 
-        <section id="dailyGoal-selection" class="option">
-          <input type="number" id="dailyGoal" name="dailyGoal" min="1">
-          <label for="dailyGoal">Daily goal</label>
-        </section>
+            <section id="dailyGoal-selection" class="option">
+              <input type="number" id="dailyGoal" name="dailyGoal" min="1">
+              <label for="dailyGoal">Daily goal</label>
+            </section>
 
-        <section id="dictFontSize-selection" class="option">
-          <input type="number" id="dictFontSize" name="dictFontSize" min="1">
-          <label for="dictFontSize">Dictionary font size</label>
-        </section>
+            <section id="dictFontSize-selection" class="option">
+              <input type="number" id="dictFontSize" name="dictFontSize" min="1">
+              <label for="dictFontSize">Dictionary font size</label>
+            </section>
 
-      </fieldset>
+          </fieldset>
 
-      <fieldset id="options">
-        <legend>Options window</legend>
-        <section id="optionsFontSize-selection" class="option">
-          <input type="number" id="optionsFontSize" name="optionsFontSize" min="1">
-          <label for="optionsFontSize">Options font size</label>
-        </section>
-      </fieldset>
+          <fieldset id="options">
+            <legend>Options window</legend>
+            <section id="optionsFontSize-selection" class="option">
+              <input type="number" id="optionsFontSize" name="optionsFontSize" min="1">
+              <label for="optionsFontSize">Options font size</label>
+            </section>
+          </fieldset>
 
-      <fieldset id="anki">
-        <legend>Anki support</legend>
-        <section id="ankiIntegration-selection" class="option" title="Adds integration for your own Anki deck. 
+          <fieldset id="anki">
+            <legend>Anki support</legend>
+            <section id="ankiIntegration-selection" class="option" title="Adds integration for your own Anki deck. 
 The fields have to be unique. 
 The field can also be empty in which case it won't be inserted.">
-          <input type="checkbox" id="ankiIntegration" name="ankiIntegration">
-          <label for="ankiIntegration">Anki integration (requires AnkiConnect)</label>
-        </section>
-        <section id="ankiDeckName-selection" class="option">
-          <input type="text" spellcheck="false" id="ankiDeckName" name="ankiDeckName">
-          <label for="ankiDeckName">Deck name</label>
-        </section>
-        <section id="ankiModelName-selection" class="option">
-          <input type="text" spellcheck="false" id="ankiModelName" name="ankiModelName">
-          <label for="ankiModelName">Model name</label>
-        </section>
-        <section>
-          <div>Field names (must be unique or empty to ignore):</div>
-        </section>
-        <section id="ankiDictForm-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiDictForm" name="ankiDictForm">
-          <label for="ankiDictForm">
-            Dictionary form
-          </label>
-        </section>
-        <section id="ankiDictFormReading-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiDictFormReading" name="ankiDictFormReading">
-          <label for="ankiDictFormReading">
-            Dictionary form (hiragana)
-          </label>
-        </section>
-        <section id="ankiDictFormFurigana-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiDictFormFurigana" name="ankiDictFormFurigana">
-          <label for="ankiDictFormFurigana">
-            Dictionary form (furigana)
-          </label>
-        </section>
-        <section id="ankiWord-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiWord" name="ankiWord">
-          <label for="ankiWord">
-            Sentence form
-          </label>
-        </section>
-        <section id="ankiWordReading-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiWordReading" name="ankiWordReading">
-          <label for="ankiWordReading">
-            Sentence form (hiragana)
-          </label>
-        </section>
-        <section id="ankiWordFurigana-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiWordFurigana" name="ankiWordFurigana">
-          <label for="ankiWordFurigana">
-            Sentence form (furigana)
-          </label>
-        </section>
-        <section id="ankiDefinitions-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiDefinitions" name="ankiDefinitions">
-          <label for="ankiDefinitions">
-            Definition list
-          </label>
-        </section>
-        <section id="ankiJapanese-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiJapanese" name="ankiJapanese">
-          <label for="ankiJapanese">
-            Full Japanese sentence
-          </label>
-        </section>
-        <section id="ankiEnglish-selection" class="option field">
-          <input type="text" spellcheck="false" id="ankiEnglish" name="ankiEnglish">
-          <label for="ankiEnglish">
-            Full English sentence
-          </label>
-        </section>
-      </fieldset>
-    </div>
+              <input type="checkbox" id="ankiIntegration" name="ankiIntegration">
+              <label for="ankiIntegration">Anki integration (requires AnkiConnect)</label>
+            </section>
+            <section id="ankiDeckName-selection" class="option">
+              <input type="text" spellcheck="false" id="ankiDeckName" name="ankiDeckName">
+              <label for="ankiDeckName">Deck name</label>
+            </section>
+            <section id="ankiModelName-selection" class="option">
+              <input type="text" spellcheck="false" id="ankiModelName" name="ankiModelName">
+              <label for="ankiModelName">Model name</label>
+            </section>
+            <section>
+              <div>Field names (must be unique or empty to ignore):</div>
+            </section>
+            <section id="ankiDictForm-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiDictForm" name="ankiDictForm">
+              <label for="ankiDictForm">
+                Dictionary form
+              </label>
+            </section>
+            <section id="ankiDictFormReading-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiDictFormReading" name="ankiDictFormReading">
+              <label for="ankiDictFormReading">
+                Dictionary form (hiragana)
+              </label>
+            </section>
+            <section id="ankiDictFormFurigana-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiDictFormFurigana" name="ankiDictFormFurigana">
+              <label for="ankiDictFormFurigana">
+                Dictionary form (furigana)
+              </label>
+            </section>
+            <section id="ankiWord-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiWord" name="ankiWord">
+              <label for="ankiWord">
+                Sentence form
+              </label>
+            </section>
+            <section id="ankiWordReading-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiWordReading" name="ankiWordReading">
+              <label for="ankiWordReading">
+                Sentence form (hiragana)
+              </label>
+            </section>
+            <section id="ankiWordFurigana-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiWordFurigana" name="ankiWordFurigana">
+              <label for="ankiWordFurigana">
+                Sentence form (furigana)
+              </label>
+            </section>
+            <section id="ankiDefinitions-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiDefinitions" name="ankiDefinitions">
+              <label for="ankiDefinitions">
+                Definition list
+              </label>
+            </section>
+            <section id="ankiJapanese-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiJapanese" name="ankiJapanese">
+              <label for="ankiJapanese">
+                Full Japanese sentence
+              </label>
+            </section>
+            <section id="ankiEnglish-selection" class="option field">
+              <input type="text" spellcheck="false" id="ankiEnglish" name="ankiEnglish">
+              <label for="ankiEnglish">
+                Full English sentence
+              </label>
+            </section>
+          </fieldset>
 
-    <div id="buttons">
-      <section id="apply" class="option">
-        <div class="apply btn">Apply</div>
-      </section>
-      <details id="danger-zone">
-        <summary>Big red buttons</summary>
-        <div class="red-buttons">
-          <div class="reset-window-settings btn" title="Reset the remembered state of windows to default settings.">
-            Reset window settings</div>
-          <div class="reset-goal-data btn" title="Reset the daily goal progress.">
-            Reset goal data</div>
-          <div class="reset-status-data btn"
-            title="Reset all words status, this option will reset all seen, known, ignored words.">
-            Reset status data</div>
-          <div class="reset-options btn" title="Reset options in this menu to default.">Reset options</div>
-          <div class="reset-history btn" title="Clear the history logs completely">Reset history logs</div>
-          <div class="reset-everything btn" title="Reset all configuration to default.">Reset everything</div>
+          <fieldset id="advanced">
+            <legend>Advanced</legend>
+            <div class="alert alert-primary">
+              Only change the config files manually if you know what you're doing.
+            </div>
+            <section id="openConfigFolder-button" class="button">
+              <div class="btn">Open config folder</div>
+            </section>
+            <section id="openHistory-button" class="button">
+              <div class="btn">Open history file</div>
+            </section>
+          </fieldset>
         </div>
-      </details>
-    </div>
+
+        <div id="buttons">
+          <section id="apply" class="option">
+            <div class="apply btn">Apply</div>
+          </section>
+          <details id="danger-zone">
+            <summary>Big red buttons</summary>
+            <div class="red-buttons">
+              <div class="reset-window-settings btn" title="Reset the remembered state of windows to default settings.">
+                Reset window settings</div>
+              <div class="reset-goal-data btn" title="Reset the daily goal progress.">
+                Reset goal data</div>
+              <div class="reset-status-data btn"
+                title="Reset all words status, this option will reset all seen, known, ignored words.">
+                Reset status data</div>
+              <div class="reset-options btn" title="Reset options in this menu to default.">Reset options</div>
+              <div class="reset-history btn" title="Clear the history logs completely">Reset history logs</div>
+              <div class="reset-everything btn" title="Reset all configuration to default.">Reset everything</div>
+            </div>
+          </details>
+        </div>
   </main>
 </body>
 
