@@ -1,3 +1,7 @@
+# 1.9.0
+- Added lookup history saved to a .json file (japanese sentences + translation gets saved to a file)
+- Added some CSS fluff (or bloat)
+
 # 1.8.2
 - Changed window position saving logic
 
