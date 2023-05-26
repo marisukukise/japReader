@@ -120,6 +120,7 @@
   overflow-y: auto;
   margin: 0;
   padding: 0;
+  line-height: normal;
 }
 
 #dict dt,
@@ -133,8 +134,13 @@
 }
 
 #dict ol {
-  margin-block-start: 0em;
+  margin-block-start: 0.5em;
   padding-inline-start: 1em;
+  line-height: 1.1em;
+}
+
+#dict ol li {
+  padding: 0.2em 0;
 }
 
 #dict ol li:nth-child(6n+1) {

@@ -6,12 +6,37 @@ html {
   margin: 0 auto;
 }
 
+h1, h2, h3 {
+  padding: 0 1em;
+  margin: 0.2em 0;
+}
+
+h1 {
+  margin-bottom: 0.75em;
+  text-decoration: underline;
+}
+
+legend {
+  font-weight: bold;
+}
+
+label {
+  cursor: pointer;
+}
+
+input[disabled] + label {
+  opacity: 0.5;
+}
+input[type="checkbox"]:checked + label {
+  font-weight: bold;
+}
+
 #all-options {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1em;
-  padding: 3em;
+  gap: 0.5em;
+  padding: 1em;
 }
 
 fieldset {
@@ -19,39 +44,64 @@ fieldset {
   padding: 0.75em;
 }
 
-.option.field>input[type="text"] {
-  width: 5em;
+input, select {
+  font-size: .75em;
 }
 
-#anki .option>input#ankiDeckName,
-#anki .option>input#ankiModelName {
-  width: 12em;
-}
-
-#anki .option.field * {
-  font-size: calc(2em / 3);
-}
-
-#anki .option.option.field {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-#anki .option.field>input[type="text"] {
-  width: 9em;
-}
-
-.option>input[type="number"] {
+input[type="number"] {
   width: 4em;
 }
 
-.option>input#deepLApiKey {
-  width: 20em;
+#anki input[type="text"] {
+  width: 9em;
+}
+
+input#deepLApiKey {
+  width: 22em;
 }
 
 input.deepLApiKey-test-response {
   filter: sepia(1) brightness(0.8);
   width: 16em;
+}
+
+.option input[type="checkbox"] {
+  display: none;
+}
+.option input:not([disabled]):hover + label,
+.option select:not([disabled]):hover + label {
+  color: var(--statusSeen);
+}
+.option input[type="checkbox"]:hover + label:before { 
+  border: .04em solid var(--statusSeen);
+  box-shadow: .08em .04em 0 var(--statusSeen)!important;
+}
+.option input[type="checkbox"] + label:last-child {
+  margin-bottom: 0;
+}
+.option input[type="checkbox"] + label:before {
+  content: "";
+  display: block;
+  width: 0.6em;
+  height: 0.6em;
+  border: .04em solid var(--statusIgnored);
+  border-radius: 0.15em;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto 0;
+  -webkit-transition: all 200ms, background 200ms cubic-bezier(.18, 1, 0, 1);
+  transition: all 200ms, background 200ms cubic-bezier(.18, 1, 0, 1);
+  box-shadow: -.08em -.04em 0 var(--statusIgnored);
+  background: var(--mainBackground);
+}
+.option input[type="checkbox"]:checked + label:before {
+  border: .04em solid var(--mainFont);
+  border-radius: 0.15em;
+  background: var(--statusKnown);
+  box-shadow: .08em .04em 0 var(--statusIgnored);
 }
 
 .red-buttons {
@@ -75,7 +125,7 @@ input.deepLApiKey-test-response {
 
 details#danger-zone {
   border: 1px solid var(--mainFont);
-  border-radius: 0px;
+  border-radius: 0;
   padding: 0.5em 0.5em 0;
 }
 
@@ -108,6 +158,10 @@ section {
 label {
   position: relative;
   bottom: 0.1em;
+}
+
+.option input[type="checkbox"] + label {
+  padding-left: 1em;
 }
 
 section#apply {
