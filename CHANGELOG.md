@@ -1,6 +1,7 @@
 # 1.9.0
-- Added lookup history saved to a .json file (japanese sentences + translation gets saved to a file)
-- Added some CSS fluff (or bloat)
+- Added lookup history saved to a .json file (Japanese sentences and DeepL translation gets saved to a .json file)
+- Added some CSS fluff (or bloat) to the options menu
+- Fixed a bug where katakana was turned into hiragana in the reader window
 
 # 1.8.2
 - Changed window position saving logic
