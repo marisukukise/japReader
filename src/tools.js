@@ -86,7 +86,6 @@ const schemaWindow = {
 const schemaHistoryLogs = {
     history: {
         type: "array",
-        required: ["timestamp", "japanese"],
         items: {
             type: "object",
             properties: {

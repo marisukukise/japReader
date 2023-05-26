@@ -112,11 +112,13 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelector('#openConfigFolder-button > .btn').addEventListener('click', () => {
-    ipcRenderer.send('showItemInFolder', OPTIONS.path)
+    const dirname = require('path').dirname(OPTIONS.path)
+    ipcRenderer.send('openPath', dirname)
   });
 
-  document.querySelector('#openHistory-button > .btn').addEventListener('click', () => {
-    ipcRenderer.send('openPath', HISTORY.path)
+  document.querySelector('#openLogsFolder-button > .btn').addEventListener('click', () => {
+    const dirname = require('path').dirname(HISTORY.path)
+    ipcRenderer.send('openPath', dirname)
   });
 
   document.querySelector('#deepLApiKey-button > .btn').addEventListener('click', () => {
@@ -201,6 +203,7 @@ window.addEventListener('DOMContentLoaded', () => {
           OPTIONS.clear();
           STATUS_DATA.clear();
           GOAL_DATA.clear();
+          HISTORY.clear();
           ipcRenderer.send('restartProgram');
         }
       });
