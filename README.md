@@ -30,7 +30,7 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
     - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
     - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
     - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
-    - [How do I get Anki card creation to work?](#how-do-i-get-anki-card-creation-to-work)
+    - [How do I get Anki note creation to work?](#how-do-i-get-anki-note-creation-to-work)
     - [I can't press a button / something doesn't work](#i-cant-press-a-button--something-doesnt-work)
     - [Why does the text \"i+1\" keep showing?](#why-does-the-text-i1-keep-showing)
     - [Why does the translation text dim sometimes?](#why-does-the-translation-text-dim-sometimes)
@@ -88,7 +88,7 @@ Alternatively, if you don't want to install, you can download the .zip package:
     <i>For Linux</i>: <code>sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux</code><br>
     <i>For MacOS</i>: (I don't know the command) Grant necessary permissions to the file <code>node_modules/clipboard-event/platform/clipboard-event-handler-mac</code></li>
   <li> Build files <code>npm run make</code></li>
-  <li> The built files will be output in <code>out/make/<your_platform>/x64</code> folder</li>
+  <li> The built files will be output in <code>out/make/&lt;your_platform&gt;/x64</code> folder</li>
 </ol>
 
 If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
@@ -166,13 +166,12 @@ In the Reader window you can quickly change the status of a word with mouse butt
 9.  Open japReader
 
 
-### How do I get Anki card creation to work?
+### How do I get Anki note creation to work?
 1.  Install [Anki](https://apps.ankiweb.net/)
 2.  Install the [AnkiConnect
     addon](https://ankiweb.net/shared/info/2055492159)
 3. Fill in the Anki deck information in the Options menu (press `O` to open it)
-4.  Click `Add to Anki` in the Dictionary window, and card data should
-    be generated for the `japReader` Anki deck
+4.  Click `Add to Anki` in the Dictionary window, and an anki note should be added to your Anki deck
 
 If you don't want to configure anything, you can download 
 [`Anki_japReader.apkg`](https://github.com/marisukukise/japReader/releases/latest) 
