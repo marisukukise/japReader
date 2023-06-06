@@ -1,31 +1,31 @@
-# [![](images/logo/logo_32.png)](#japreader) japReader
+# [![](images/logo/logo_32.png)](#-japreader) japReader
 This is a continuation of japReader originally developed by [seth-js](https://github.com/seth-js)
 
 
 
-# [![](images/logo/logo_32.png)](#preview) Preview
+# [![](images/logo/logo_32.png)](#-preview) Preview
 ![Example screenshot #2](images/examples/example3.png)
 ![Example screenshot #1](images/examples/options_menu.png)
 
 
 
 <!-- TOC -->
-# [![](images/logo/logo_32.png)](#table-of-contents) Table of Contents
-- [japReader](#japreader)
-- [Preview](#preview)
-- [Table of Contents](#table-of-contents)
-- [Features](#features)
-- [Installation](#installation)
+# [![](images/logo/logo_32.png)](#-table-of-contents) Table of Contents
+- [japReader](#-japreader)
+- [Preview](#-preview)
+- [Table of Contents](#-table-of-contents)
+- [Features](#-features)
+- [Installation](#-installation)
     - [Windows](#windows)
     - [Linux/MacOS](#linuxmacos)
-- [Build](#build)
-- [Technical information](#technical-information)
+- [Build](#-build)
+- [Technical information](#-technical-information)
     - [Configuration files](#configuration-files)
     - [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
-- [Controls](#controls)
+- [Controls](#-controls)
     - [Keybindings](#keybindings)
     - [Mouse buttons](#mouse-buttons)
-- [FAQ](#faq)
+- [FAQ](#-faq)
     - [How does this work?](#how-does-this-work)
     - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
     - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
@@ -39,7 +39,7 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 
 
 
-# [![](images/logo/logo_32.png)](#features) Features
+# [![](images/logo/logo_32.png)](#-features) Features
 * Parser and dictionary from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana)
 * Furigana
 * Translation history
@@ -49,7 +49,7 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 
 
 
-# [![](images/logo/logo_32.png)](#installation) Installation
+# [![](images/logo/logo_32.png)](#-installation) Installation
 ### Windows
 1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
 2. Download a file like `japreader-x.y.z.Setup.exe`
@@ -68,7 +68,7 @@ Alternatively, if you don't want to install, you can download the .zip package:
 
 
 
-# [![](images/logo/logo_32.png)](#build) Build
+# [![](images/logo/logo_32.png)](#-build) Build
 <ol>
   <li>
     Download and install <a href="https://nodejs.org/en/download/">node.js</a>
@@ -95,7 +95,7 @@ If you want to run this without installing, in point 6. of [Build](#Build) you c
 
 
 
-# [![](images/logo/logo_32.png)](#technical-information) Technical information
+# [![](images/logo/logo_32.png)](#-technical-information) Technical information
 ### Configuration files
 
 Configuration files are stored in:
@@ -114,7 +114,7 @@ you can do everything that was intended through GUI in the options menu
 2. Open side by side: the [configuration files](#configuration-files) folder and the old configuration folder `data` in pre-1.5 japReader in the install location.
 3. Open the corresponding files one by one (e.g. `status_data.json`) and paste the data to fit the new template
 
-# [![](images/logo/logo_32.png)](#controls) Controls
+# [![](images/logo/logo_32.png)](#-controls) Controls
 ### Keybindings
 - `O` Open Options Menu 
 - `S` Toggle Stay On Top  
@@ -129,7 +129,7 @@ In the Reader window you can quickly change the status of a word with mouse butt
 - `Ctrl+LMB` set to Ignored
 
 
-# [![](images/logo/logo_32.png)](#faq) FAQ
+# [![](images/logo/logo_32.png)](#-faq) FAQ
 ### How does this work?
 * It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
 * The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
