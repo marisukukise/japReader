@@ -6,11 +6,32 @@ const os = require('os');
 const charLimit = 90;
 let clipboardText = '';
 
-const handleChange = () => {
-  let text = clipboard.readText().trim();
+const formatText = (text) => {
+  text = text
+    // remove symbols (heart, star, etc.)
+    .replace(/[\u22c0-\u266b]/g, '')
+    // turn half-width digits into full-width
+    .replace(
+      /[0-9]/g,
+      function(ch) { return String.fromCharCode(ch.charCodeAt(0) + 0xfee0); }
+    );
+  return text;
+}
 
-  // remove symbols (heart, star, etc.)
-  text = text.replace(/[\u22c0-\u266b]/g, '');
+const handleChange = () => {
+  console.log(clipboard.readText())
+  clipboardContent = clipboard.readText()
+  if (clipboardContent.includes("???")) {
+    console.error("Clipboard content:", clipboardContent);
+  } else {
+    console.log("Clipboard content:", clipboardContent);
+  }
+  
+  let text = clipboard.readText().trim();
+  console.log("Trimmed text: ",text)
+
+  text = formatText(text);
+  console.log("Formatted text: ",text)
 
   if (text !== clipboardText && /[一-龯]|[ぁ-んァ-ン]|…/.test(text)) {
     clipboardText = text;
@@ -35,6 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
   */
   clipboardListener.startListening();
   clipboardListener.on('change', () => {
+    console.log('\nCLIPBOARD CHANGE DETECTED');
     handleChange();
   });
 });
