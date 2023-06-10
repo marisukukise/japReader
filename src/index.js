@@ -109,7 +109,7 @@ ipcMain.on('appendToHistory', (event, originalText, translation) => {
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
     icon: 'images/logo/icon.png',
-    show: false,
+    show: true,
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -242,7 +242,7 @@ const createBoxes = () => {
 
     const ichiBox = new BrowserWindow({
       icon: 'images/logo/icon.png',
-      show: false,
+      show: true,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
