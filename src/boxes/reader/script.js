@@ -114,6 +114,44 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.send('openDict');
   }
 
+  const getFuriganaWordData = (currentWordData) => {
+    try {
+      const furiganaWordData = fit(
+        currentWordData.word,
+        currentWordData.rubyReading,
+        {
+          type: 'object',
+        },
+      );
+      return furiganaWordData;
+    }
+    catch {
+      return [{
+        w: currentWordData.word,
+        r: currentWordData.rubyReading,
+      }]
+    }
+  }
+
+  const getFuriganaDictData = (currentWordData) => {
+    try {
+      const furiganaDictData = fit(
+        currentWordData.dictForm,
+        currentWordData.dictFormReading,
+        {
+          type: 'object',
+        },
+      );
+      return furiganaDictData;
+    }
+    catch {
+      return [{
+        w: currentWordData.dictForm,
+        r: currentWordData.dictFormReading
+      }]
+    }
+  }
+
   const handleWords = (words) => {
     $('#app').empty();
 
@@ -129,21 +167,8 @@ window.addEventListener('DOMContentLoaded', () => {
           `<span class="word">${currentWordData.word}</span>`,
         );
 
-        const furiganaWordData = fit(
-          currentWordData.word,
-          currentWordData.rubyReading,
-          {
-            type: 'object',
-          },
-        );
-
-        const furiganaDictData = fit(
-          currentWordData.dictForm,
-          currentWordData.dictFormReading,
-          {
-            type: 'object',
-          },
-        );
+        const furiganaWordData = getFuriganaWordData(currentWordData);
+        const furiganaDictData = getFuriganaDictData(currentWordData);
 
         if (furiganaWordData) {
           let wordWithFurigana = '';
