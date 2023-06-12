@@ -6,7 +6,9 @@ const os = require('os');
 const charLimit = 90;
 let clipboardText = '';
 
-const clipboardReads = 20;
+// Time complexity is pretty bad on Linux,
+// so keep this under 20
+const clipboardReads = 11;
 
 let TOTAL_READS = 0;
 let MISREADINGS = 0;
@@ -42,7 +44,7 @@ const handleChange = (operationID) => {
   console.info("Start readings @ ", a_read);
 
   let clipboard_reads = [];
-  // Read clipboard 20 times in a row and get majority value
+  // Read clipboard multiple times in a row and get majority value
   // Because sometimes at low frequency (exact reason unknown)
   // Clipboard reads return empty strings.
   for (var i = 0; i < clipboardReads; i++) {
