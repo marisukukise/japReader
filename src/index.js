@@ -1,6 +1,8 @@
 require('module-alias/register')
 
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
+const { spawn } = require('child_process');
+
 const tools = require('@tools');
 const log = require('electron-log')
 
@@ -88,8 +90,15 @@ ipcMain.on('showItemInFolder', (event, fullPath) => {
 })
 
 ipcMain.on('openPath', (event, path) => {
-  shell.openPath(path);
-})
+  if (process.platform === 'linux') {
+    // Spawn a detached process using xdg-open on Linux
+    spawn('xdg-open', [path], { detached: true, stdio: 'ignore' })
+      .unref(); // Unreference the child process to detach it
+  } else {
+    // Open the folder with shell.openPath on other platforms
+    shell.openPath(path);
+  }
+});
 
 ipcMain.on('appendToHistory', (event, originalText, translation) => {
   if (typeof translation !== 'string' || translation == '') translation = null;
@@ -109,7 +118,7 @@ ipcMain.on('appendToHistory', (event, originalText, translation) => {
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
     icon: 'images/logo/icon.png',
-    show: true,
+    show: false,
     width: 800,
     height: 600,
     autoHideMenuBar: true,
@@ -242,7 +251,7 @@ const createBoxes = () => {
 
     const ichiBox = new BrowserWindow({
       icon: 'images/logo/icon.png',
-      show: true,
+      show: false,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
