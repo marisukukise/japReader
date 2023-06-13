@@ -24,10 +24,14 @@ label {
   cursor: pointer;
 }
 
+input[disabled], input[disabled] + label, input[readonly="readonly"] {
+  cursor: not-allowed;
+}
+
 input[disabled] + label {
   opacity: 0.5;
 }
-input[type="checkbox"]:checked + label {
+input[type="checkbox"]:checked + label, input[type="number"] + label, input[type="text"] + label {
   font-weight: bold;
 }
 
