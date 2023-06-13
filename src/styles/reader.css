@@ -61,8 +61,7 @@
   text-align: center;
 }
 
-.known ruby rt,
-.ignored ruby rt {
+.word:not(.furigana) ruby rt {
   visibility: hidden;
 }
 

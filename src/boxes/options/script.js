@@ -33,6 +33,8 @@ const handleOptionConflicts = () => {
     '#translation input:not(#useDeepL, #deepLApiKey), #reader input#useReader', null)
   setOnReadyAndOnClickListener(document.querySelector('#useReader'),
     '#reader input:not(#useReader), #translation input#useDeepL, #dictionary input', null)
+  setOnReadyAndOnClickListener(document.querySelector('#showGoal'),
+    '#dictionary #dailyGoal', null)
 }
 
 const { optionsFontSize, fontFamily } = OPTIONS.get('options')
@@ -61,6 +63,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   Object.entries(optionsData).forEach(([key, value]) => {
     let element = document.querySelector(`#${key}`);
+    if (!element)
+      return
     switch (typeof value) {
       case 'boolean':
         element.checked = value;
@@ -92,6 +96,10 @@ window.addEventListener('DOMContentLoaded', () => {
         if (result.response === 0) {
           Object.entries(optionsData).forEach(([key, value]) => {
             let element = document.querySelector(`#${key}`);
+            if (!element) {
+              delete optionsData[key]
+              return;
+            }
             switch (typeof value) {
               case 'boolean':
                 optionsData[key] = element.checked;
@@ -108,6 +116,9 @@ window.addEventListener('DOMContentLoaded', () => {
           OPTIONS.set('options', optionsData);
           ipcRenderer.send('restartProgram');
         }
+      })
+      .catch(err => {
+        console.error(err);
       });
   });
 

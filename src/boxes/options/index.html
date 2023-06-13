@@ -117,18 +117,35 @@ If you're learning Japanese, this option is good to select, because you can try 
               <label for="useReader">Use Japanese reader</label>
             </section>
 
-            <section id="leftClickDisregardStatus-selection" class="option" title="Selecting this will make the left click button change the status of words to 'seen' regardless of their current status.
-This option was enabled by default before japReader 1.5.3.
-This option is recommended to be left disabled, because then it's a bit 'smarter'.">
+            <section id="leftClickDisregardStatus-selection" class="option" title="Whether left click button should always change status of words to 'seen'.
+The behavior is a bit 'smarter' if you leave this off.">
               <input type="checkbox" id="leftClickDisregardStatus" name="leftClickDisregardStatus">
-              <label for="leftClickDisregardStatus">Always change the word status on left click press</label&#013>
+              <label for="leftClickDisregardStatus">Always set status to 'seen' on mouse click</label>
             </section>
 
-            <section id="addFurigana-selection" class="option"
-              title="Selecting this will add furigana to 'new' and 'seen' Japanese words.">
-              <input type="checkbox" id="addFurigana" name="addFurigana">
-              <label for="addFurigana">Add furigana</label>
-            </section>
+            <fieldset id="furigana">
+              <legend>Furigana</legend>
+              <section id="addFuriganaNew-selection" class="option"
+                title="Add furigana to Japanese words with 'new' status.">
+                <input type="checkbox" id="addFuriganaNew" name="addFuriganaNew">
+                <label for="addFuriganaNew">New</label>
+              </section>
+              <section id="addFuriganaSeen-selection" class="option"
+                title="Add furigana to Japanese words with 'seen' status.">
+                <input type="checkbox" id="addFuriganaSeen" name="addFuriganaSeen">
+                <label for="addFuriganaSeen">Seen</label>
+              </section>
+              <section id="addFuriganaKnown-selection" class="option"
+                title="Add furigana to Japanese words with 'known' status.">
+                <input type="checkbox" id="addFuriganaKnown" name="addFuriganaKnown">
+                <label for="addFuriganaKnown">Known</label>
+              </section>
+              <section id="addFuriganaIgnored-selection" class="option"
+                title="Add furigana to Japanese words with 'ignored' status.">
+                <input type="checkbox" id="addFuriganaIgnored" name="addFuriganaIgnored">
+                <label for="addFuriganaIgnored">Ignored</label>
+              </section>
+            </fieldset>
 
             <section id="tvMode-selection" class="option"
               title="Selecting this will center the text in the Reader window.">
