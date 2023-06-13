@@ -4,21 +4,6 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('
 const { spawn } = require('child_process');
 
 const tools = require('@tools');
-const log = require('electron-log')
-
-const logFormat = '{level} | {y}-{m}-{d} {h}:{i}:{s}.{ms} | {text}';
-log.transports.console.format = logFormat;
-log.transports.file.format = logFormat;
-if (process.env.NODE_ENV === 'production') {
-  log.transports.file.level = 'error';
-  log.transports.console.level = 'error';
-} else if (process.env.NODE_ENV === 'development') {
-  log.transports.console.level = 'debug';
-  log.transports.file.level = 'debug';
-} else {
-  log.transports.console.level = 'warn';
-  log.transports.file.level = 'warn';
-}
 
 const Store = require('electron-store')
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
