@@ -1,7 +1,7 @@
 {
   "name": "japreader",
   "productName": "japreader",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "An Electron app that helps you read Japanese text",
   "main": "src/index.js",
   "scripts": {
