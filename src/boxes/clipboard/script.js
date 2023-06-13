@@ -5,11 +5,13 @@ const os = require('os');
 
 const charLimit = 90;
 let clipboardText = '';
+
+const clipboardReads = 20;
+
 let TOTAL_READS = 0;
 let MISREADINGS = 0;
 
 const formatText = (text) => {
-  console.log(text)
   text = text.trim()
     // remove symbols (heart, star, etc.)
     .replace(/[\u22c0-\u266b]/g, '')
@@ -21,20 +23,37 @@ const formatText = (text) => {
   return text;
 }
 
+let count = 0;
+let sum = 0;
+
+const calculateRunningAverage = (newNumber) => {
+  count++;
+  sum += newNumber;
+  return sum/count;  
+}
+
 const handleChange = (operationID) => {
- console.info("<Operation ", operationID, ">")
+  let a_operation = Date.now();
+  console.info("<Operation ", operationID, ">", a_operation);
+
   console.info("Detected clipboard change @ ", Date.now())
-  console.info("Start readings @ ",Date.now())
+
+  let a_read = Date.now();
+  console.info("Start readings @ ", a_read);
+
   let clipboard_reads = [];
   // Read clipboard 20 times in a row and get majority value
   // Because sometimes at low frequency (exact reason unknown)
   // Clipboard reads return empty strings.
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < clipboardReads; i++) {
     clipboard_reads[i] = clipboard.readText();
     TOTAL_READS += 1;
   }
-  console.info("Stop readings @ ",Date.now())
-  console.info("Start finding majority @ ",Date.now())
+  let b_read = Date.now();
+  console.info("Stop readings @ ", b_read, "Took ", b_read-a_read, "ms");
+  
+  let a_majority = Date.now();
+  console.info("Start finding majority @ ", a_majority);
 
   const counts = {};
   for (const e of clipboard_reads) counts[e] = counts[e] ? counts[e] + 1 : 1;
@@ -47,19 +66,26 @@ const handleChange = (operationID) => {
     const majority_string = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
     text = majority_string;
     console.debug(majority_string);
-    MISREADINGS += 20-counts[majority_string];
-    console.error(`DETECTED ${20-counts[majority_string]} MISREADINGS. ${((MISREADINGS/TOTAL_READS)*100).toFixed(3)}% OF TOTAL READS WERE MISREADINGS.`)
+    MISREADINGS += clipboardReads-counts[majority_string];
+    console.error(`DETECTED ${clipboardReads-counts[majority_string]} MISREADINGS. ${((MISREADINGS/TOTAL_READS)*100).toFixed(3)}% OF TOTAL READS WERE MISREADINGS.`)
   }
   else {
     text = Object.keys(counts)[0];
   }
-  console.info("Stop finding majority @ ",Date.now())
+
+  let b_majority = Date.now();
+  console.info("Stop finding majority @ ", b_majority, "Took ", b_majority-a_majority, "ms");
   console.table([TOTAL_READS, MISREADINGS])
+
 
   text = formatText(text);
   console.log("Copied text: ",text);
 
-  console.info("</Operation ", operationID, ">")
+  let b_operation = Date.now();
+  console.info("</Operation ", operationID, ">", "Took ", b_operation-a_operation, "ms");
+
+  console.info(`Average operation time after: ${count+1} iterations: ${calculateRunningAverage(b_operation-a_operation)}`)
+  
 
   if (text !== clipboardText && /[一-龯]|[ぁ-んァ-ン]|…/.test(text)) {
     clipboardText = text;
