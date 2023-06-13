@@ -22,7 +22,7 @@ const formatText = (text) => {
   return text;
 }
 
-const handleChange = (operationID) => {
+const handleChange = () => {
   let text = clipboard.readText();
   
   // Perform two additional reads to see if misreading was detected,
@@ -30,7 +30,7 @@ const handleChange = (operationID) => {
   // clipboard.readText() return empty strings.
   if (text == "" || text != clipboard.readText() || text != clipboard.readText()) {
     // If detected a misreading in the sample of 3 reads (rare case),
-    // read clipboard many times in a row and get majority value
+    // read clipboard many times in a row and get majority value from the array
     
     let clipboard_reads = [];
     for (var i = 0; i < clipboardReads; i++) clipboard_reads[i] = clipboard.readText();
@@ -68,6 +68,6 @@ window.addEventListener('DOMContentLoaded', () => {
   */
   clipboardListener.startListening();
   clipboardListener.on('change', () => {
-    handleChange(Math.random());
+    handleChange();
   });
 });
