@@ -126,10 +126,13 @@ window.addEventListener('DOMContentLoaded', () => {
       return furiganaWordData;
     }
     catch {
-      return [{
-        w: currentWordData.word,
-        r: currentWordData.rubyReading,
-      }]
+      // return anyway if the word is a digit
+      if (/^[０１２３４５６７８９]+$/.test(currentWordData.dictForm)){
+        return [{
+          w: currentWordData.word,
+          r: currentWordData.rubyReading,
+        }]
+      }
     }
   }
 
@@ -144,11 +147,14 @@ window.addEventListener('DOMContentLoaded', () => {
       );
       return furiganaDictData;
     }
-    catch {
-      return [{
-        w: currentWordData.dictForm,
-        r: currentWordData.dictFormReading
-      }]
+    catch (err) {
+      // return anyway if the word is a digit
+      if (/^[０１２３４５６７８９]+$/.test(currentWordData.dictForm)){
+        return [{
+          w: currentWordData.dictForm,
+          r: currentWordData.dictFormReading
+        }]
+      }
     }
   }
 
@@ -173,7 +179,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (furiganaWordData) {
           let wordWithFurigana = '';
           furiganaWordData.forEach((element) => {
-            if (element.w.match(/[一-龯]/))
+            // Check if element contains kanji
+            if (element.w.match(/\p{Script=Han}/u))
               wordWithFurigana += `<ruby><rb>${element.w}</rb><rt>${element.r}</rt></ruby>`;
             else wordWithFurigana += element.w;
           });
@@ -186,7 +193,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (furiganaDictData) {
           let wordWithFurigana = '';
           furiganaDictData.forEach((element) => {
-            if (element.w.match(/[一-龯]/))
+            // Check if element contains kanji
+            if (element.w.match(/\p{Script=Han}/u))
               wordWithFurigana += `<ruby><rb>${element.w}</rb><rt>${element.r}</rt></ruby>`;
             else wordWithFurigana += element.w;
           });

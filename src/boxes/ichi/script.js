@@ -116,7 +116,6 @@ window.addEventListener('DOMContentLoaded', () => {
             '.current-word'
           ).innerHTML;
 
-        console.log(wordData);
         words.push(wordData);
 
         word.classList.remove('current-word');
