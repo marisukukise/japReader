@@ -100,6 +100,7 @@ ipcMain.on('appendToHistory', (event, originalText, translation) => {
   else HISTORY.set('history', [entry]);
 })
 
+
 const createBoxes = () => {
   const clipboardBox = new BrowserWindow({
     icon: 'images/logo/icon.png',
@@ -436,6 +437,9 @@ const createBoxes = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  // Load missing props in options from schema
+  OPTIONS.set('options', OPTIONS.store.options)
+
   createBoxes();
 
   app.on('browser-window-focus', () => {
