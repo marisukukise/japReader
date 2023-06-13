@@ -41,7 +41,20 @@ input[type="checkbox"]:checked + label {
 
 fieldset {
   text-align: left;
+  display: inline;
   padding: 0.75em;
+  border-style: groove;
+  border-width: medium;
+}
+
+fieldset > fieldset {
+  margin: 0.5em;
+  border-width: thin;
+}
+
+#furigana{
+  display: inline-grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 input, select {

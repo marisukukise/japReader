@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.send('readyReader');
 
-  const { tvMode, readerFontSize, fontFamily, useDeepL, addFurigana, fadeText, darkMode, leftClickDisregardStatus } = OPTIONS.get('options')
+  const { tvMode, readerFontSize, fontFamily, useDeepL, addFuriganaNew, addFuriganaSeen, addFuriganaKnown, addFuriganaIgnored, fadeText, darkMode, leftClickDisregardStatus } = OPTIONS.get('options')
 
   if (tvMode) document.body.classList.add('tv-mode');
   if (darkMode) {
@@ -186,8 +186,7 @@ window.addEventListener('DOMContentLoaded', () => {
           });
           currentWordData.wordFuriganaHTML = wordWithFurigana;
 
-          if (addFurigana)
-            wordElement = $(`<span class="word">${wordWithFurigana}</span>`);
+          wordElement = $(`<span class="word">${wordWithFurigana}</span>`);
         }
 
         if (furiganaDictData) {
@@ -204,15 +203,27 @@ window.addEventListener('DOMContentLoaded', () => {
         if (known.includes(currentWordData.dictForm)) {
           $(wordElement).addClass('known');
           currentWordData.status = 'known';
+          if (addFuriganaKnown) {
+            $(wordElement).addClass('furigana');
+          }
         } else if (seen.includes(currentWordData.dictForm)) {
           $(wordElement).addClass('seen');
           currentWordData.status = 'seen';
+          if (addFuriganaSeen) {
+            $(wordElement).addClass('furigana');
+          }
         } else if (ignored.includes(currentWordData.dictForm)) {
           $(wordElement).addClass('ignored');
           currentWordData.status = 'ignored';
+          if (addFuriganaIgnored) {
+            $(wordElement).addClass('furigana');
+          }
         } else {
           $(wordElement).addClass('new');
           currentWordData.status = 'new';
+          if (addFuriganaNew) {
+            $(wordElement).addClass('furigana');
+          }
         }
 
         currentWordData.fullText = currentText;
