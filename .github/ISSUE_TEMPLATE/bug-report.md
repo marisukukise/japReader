@@ -1,6 +1,6 @@
 ---
-name: Report a bug
-about: Bug report for japReader
+name: Bug report
+about: Report a bug in japReader
 title: "[BUG]"
 labels: bug
 assignees: ''
