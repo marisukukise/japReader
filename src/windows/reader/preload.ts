@@ -1,4 +1,4 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+// This is the preload script file of the reader window.
+// Learn more: https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 console.log(Date.now(), "preload.ts")

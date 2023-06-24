@@ -1,3 +1,6 @@
+// This is the main process file
+// Learn more: https://www.electronjs.org/docs/latest/tutorial/process-model#the-main-process
+
 import { app, BrowserWindow } from 'electron';
 declare const READER_WEBPACK_ENTRY: string;
 declare const READER_PRELOAD_WEBPACK_ENTRY: string;
