@@ -32,9 +32,9 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
     - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
     - [How do I get Anki note creation to work?](#how-do-i-get-anki-note-creation-to-work)
     - [I can't press a button / something doesn't work](#i-cant-press-a-button--something-doesnt-work)
-    - [Whoes the text \"i+1\" keep showing?  ](#why-does-the-text-i1-keep-showing--ins)
-    - [Why does the translation text dim sometimes?  ](#why-does-the-translation-text-dim-sometimes--ins)
-    - [I don\'t like a feature, is there any way I can turn it off?  ](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off--ins)
+    - [Whoes the text \"i+1\" keep showing?  ](#why-does-the-text-i1-keep-showing--)
+    - [Why does the translation text dim sometimes?  ](#why-does-the-translation-text-dim-sometimes--)
+    - [I don\'t like a feature, is there any way I can turn it off?  ](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off--)
 <!-- /TOC -->
 
 
