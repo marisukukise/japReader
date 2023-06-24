@@ -26,4 +26,7 @@
  * ```
  */
 
+console.log(Date.now(),"renderer.ts 1");
+import './index.css';
 import './app';
+console.log(Date.now(),"renderer.ts 2");
