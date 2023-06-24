@@ -10,25 +10,26 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 
 
 <!-- TOC -->
-# [![](images/logo/logo_32.png)](#-table-of-contents) Table of Contents
-- [japReader](#-japreader)
-- [Preview](#-preview)
-- [Table of Contents](#-table-of-contents)
-- [Features](#-features)
-- [Installation](#-installation)
+# Table of Contents
+- [japReader](#japreader)
+- [Preview](#preview)
+- [Table of Contents](#table-of-contents)
+- [Features](#features)
+- [Installation](#installation)
     - [Windows](#windows)
     - [Linux/MacOS](#linuxmacos)
-- [Build](#-build)
-- [Technical information](#-technical-information)
+- [Build](#build)
+- [Technical information](#technical-information)
     - [Configuration files](#configuration-files)
     - [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
-- [Controls](#-controls)
+- [Controls](#controls)
     - [Keybindings](#keybindings)
     - [Mouse buttons](#mouse-buttons)
-- [FAQ](#-faq)
+- [FAQ](#faq)
     - [How does this work?](#how-does-this-work)
     - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
     - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
+    - [How do I read manga with this?](#how-do-i-read-manga-with-this)
     - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
     - [How do I get Anki note creation to work?](#how-do-i-get-anki-note-creation-to-work)
     - [I can't press a button / something doesn't work](#i-cant-press-a-button--something-doesnt-work)
@@ -137,23 +138,32 @@ In the Reader window you can quickly change the status of a word with mouse butt
 
 
 ### How do I read VNs with this?
-1.  Download and install a Japanese VN
-2.  Download, install, and open
+1.  Install and open a Japanese VN
+2.  Install and open
     [Textractor](https://github.com/Artikash/Textractor)
-3.  Open the VN
-4.  Hook the text
-5.  Open japReader
+3.  Hook the text and use "Copy to Clipboard" extension in Textractor, 
+    so that the dialogue from the VN is automatically copied to your clipboard.
+4.  Open japReader
 
 
 ### How do I read LNs/Ebooks with this?
-1.  Open your LN/Ebook (I can recommend https://reader.ttsu.app/)
-2.  Open japReader
-3.  If you can, highlight and copy a few sentences from the LN/Ebook
+Just copy some text from your book while having japReader open.
 
+### How do I read manga with this?
+1.  Obtain a local copy of raw manga scans
+2.  Use [mokuro](https://github.com/kha-white/mokuro)
+    to analyze every page with OCR and generate a file
+    with copyable text
+3.  (Optional) Use [Mokuro2Pdf](https://github.com/Kartoffel0/Mokuro2Pdf)
+    to get a pdf file with manga with copyable text
+    (it may be more convenient than the .html file that mokuro generates)
+4.  Copy some text to clipboard while having japReader open.
 
 ### How do I watch Drama/Movies/Anime with this?
-1.  Get a local copy of the show/movie that you want to watch
-2.  Get the Japanese subtitles for what you want to watch
+For video media, there are probably better ways to get a Japanese dictionary
+than japReader, but you can try using japReader too.
+1.  Obtain a local copy of anime with subtitles
+2.  Obtain Japanese subtitles for what you want to watch
 3.  Download [mpv](https://mpv.io/)
 4.  Download and install
     [this](https://github.com/Ben-Kerman/mpv-sub-scripts) plugin and
