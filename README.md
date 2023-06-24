@@ -2,7 +2,6 @@
 This is a continuation of japReader originally developed by [seth-js](https://github.com/seth-js)
 
 
-
 # [![](images/logo/logo_32.png)](#-preview) Preview
 ![Example screenshot #2](images/examples/example3.png)
 ![Example screenshot #1](images/examples/options_menu.png)
@@ -51,7 +50,7 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 
 
 # [![](images/logo/logo_32.png)](#-installation) Installation
-### Windows
+### <ins>Windows</ins>
 1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
 2. Download a file like `japreader-x.y.z.Setup.exe`
 3. Run it. The .exe is not signed, so there might be some warnings. 
@@ -62,7 +61,7 @@ Alternatively, if you don't want to install, you can download the .zip package:
 3. Extract it and run with `japreader.exe`
 
 
-### Linux/MacOS
+### <ins>Linux/MacOS</ins>
 1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
 2. Download a file matching your distribution
 3. Install the file using your package manager and sudo version
@@ -97,7 +96,7 @@ If you want to run this without installing, in point 6. of [Build](#Build) you c
 
 
 # [![](images/logo/logo_32.png)](#-technical-information) Technical information
-### Configuration files
+### <ins>Configuration files</ins>
 
 Configuration files are stored in:
 
@@ -109,21 +108,21 @@ Configuration files are stored in:
 Although it's not recommended to change anything there, 
 you can do everything that was intended through GUI in the options menu
 
-### How to migrate data from old japReader
+### <ins>How to migrate data from old japReader</ins>
 
 1. Backup your old data in case something goes wrong
 2. Open side by side: the [configuration files](#configuration-files) folder and the old configuration folder `data` in pre-1.5 japReader in the install location.
 3. Open the corresponding files one by one (e.g. `status_data.json`) and paste the data to fit the new template
 
 # [![](images/logo/logo_32.png)](#-controls) Controls
-### Keybindings
+### <ins>Keybindings</ins>
 - `O` Open Options Menu 
 - `S` Toggle Stay On Top  
 - `H` (in Translation Window) Toggle Transparent Translation Window
 - `A` (in Dictionary) Play Audio  
 - `Q` (in Dictionary) Add to Anki  
 
-### Mouse buttons
+### <ins>Mouse buttons</ins>
 In the Reader window you can quickly change the status of a word with mouse buttons:
 - `LMB` set to Seen
 - `RMB` set to Known
@@ -131,52 +130,47 @@ In the Reader window you can quickly change the status of a word with mouse butt
 
 
 # [![](images/logo/logo_32.png)](#-faq) FAQ
-### How does this work?
+### <ins>How does this work?</ins>
 * It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
 * The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
 * The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
 
 
-### How do I read VNs with this?
-1.  Install and open a Japanese VN
-2.  Install and open
-    [Textractor](https://github.com/Artikash/Textractor)
-3.  Hook the text and use "Copy to Clipboard" extension in Textractor, 
-    so that the dialogue from the VN is automatically copied to your clipboard.
-4.  Open japReader
+### <ins>How do I read VNs with this?</ins>
+Use [Textractor](https://github.com/Artikash/Textractor) with "Copy to Clipboard" extension.
 
+### <ins>How do I read LNs/Ebooks with this?</ins>
+Just copy some Japanese text from your book.
 
-### How do I read LNs/Ebooks with this?
-Just copy some text from your book while having japReader open.
+### <ins>How do I read manga with this?</ins>
+__Option 1:__
 
-### How do I read manga with this?
-1.  Obtain a local copy of raw manga scans
-2.  Use [mokuro](https://github.com/kha-white/mokuro)
-    to analyze every page with OCR and generate a file
-    with copyable text
-3.  (Optional) Use [Mokuro2Pdf](https://github.com/Kartoffel0/Mokuro2Pdf)
-    to get a pdf file with manga with copyable text
-    (it may be more convenient than the .html file that mokuro generates)
-4.  Copy some text to clipboard while having japReader open.
+Use [mangareader](https://wonderwize.github.io/mangareader/) - browser-side manga reader, no need to download anything,
+just select one of the bubbles and it will copy it to clipboard and get picked up by japReader
 
-### How do I watch Drama/Movies/Anime with this?
+__Option 2:__
+
+Use [mokuro](https://github.com/kha-white/mokuro) - manga text generator, it scans the entire manga volume
+and outputs a .html file with selectable text for all text that the OCR detected. This program probably has better OCR, but I may be wrong.
+
+(Optional) after you've generated your manga with mokuro, you can use [Mokuro2Pdf](https://github.com/Kartoffel0/Mokuro2Pdf) 
+to get a pdf file with manga with copyable text (it may be more convenient than the .html file that mokuro generates)
+
+### <ins>How do I watch Drama/Movies/Anime with this?</ins>
 For video media, there are probably better ways to get a Japanese dictionary
 than japReader, but you can try using japReader too.
-1.  Obtain a local copy of anime with subtitles
-2.  Obtain Japanese subtitles for what you want to watch
-3.  Download [mpv](https://mpv.io/)
-4.  Download and install
+1.  Download [mpv](https://mpv.io/)
+2.  Download and install
     [this](https://github.com/Ben-Kerman/mpv-sub-scripts) plugin and
     [this](https://github.com/perogiue/mpv-scripts) plugin for mpv
-5.  Open the video with mpv
-6.  Switch to Japanese subtitles with the J key
-7.  Press the \* key (shift+8) to automatically copy subtitles to your
+3.  Open the video with mpv
+4.  Switch to Japanese subtitles with the J key
+5.  Press the \* key (shift+8) to automatically copy subtitles to your
     clipboard
-8.  Press the N key to pause at the end of each subtitle line
-9.  Open japReader
+6.  Press the N key to pause at the end of each subtitle line
 
 
-### How do I get Anki note creation to work?
+### <ins>How do I get Anki note creation to work?</ins>
 1.  Install [Anki](https://apps.ankiweb.net/)
 2.  Install the [AnkiConnect
     addon](https://ankiweb.net/shared/info/2055492159)
@@ -187,7 +181,7 @@ If you don't want to configure anything, you can download
 [`Anki_japReader.apkg`](https://github.com/marisukukise/japReader/releases/latest) 
 and load it to Anki. The default settings are preconfigured for this deck.
 
-### I can't press a button / something doesn't work
+### <ins>I can't press a button / something doesn't work</ins>
 If something doesn't work, and the buttons to reset the options can't be clicked (this sometimes happens on program update, when old settings remain), then before opening the issue you should try to:
 1. Go to your [configuration files](#configuration-files)
 2. Delete the files `options.json` and `window_settings.json`
@@ -195,14 +189,14 @@ This will keep your word data, but will just reset the options to default
 
 If this still doesn't work, then something might be wrong with cache from old versions, in which case you should delete the entire japReader folder (one step up the [configuration folder](#configuration-files)). But remember to backup your `config/status_data.json` file before, because it contains your seen/known/etc data.
 
-### Why does the text \"i+1\" keep showing?  
+### <ins>Why does the text \"i+1\" keep showing?  </ins>
 When the the text \"i+1\" shows up, that means there is only one unknown word in the sentence. This is perfect for sentence/vocab Anki cards.
 
 
-### Why does the translation text dim sometimes?  
+### <ins>Why does the translation text dim sometimes?  </ins>
 This happens when there is only one unknown word in the sentence. You should hopefully be able to not depend on the translation. 
 But you can turn this feature off.
 
 
-### I don\'t like a feature, is there any way I can turn it off?  
+### <ins>I don\'t like a feature, is there any way I can turn it off?  </ins>
 Press `O` while one of the windows is in focus. The options menu will open up. All settings can be modified from there.
