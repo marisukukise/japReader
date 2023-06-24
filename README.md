@@ -9,22 +9,22 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 
 
 <!-- TOC -->
-# Table of Contents
-- [japReader](#japreader)
-- [Preview](#preview)
-- [Table of Contents](#table-of-contents)
-- [Features](#features)
-- [Installation](#installation)
+# [![](images/logo/logo_32.png)](#-table-of-contents) Table of Contents
+- [japReader](#-japreader)
+- [Preview](#-preview)
+- [Table of Contents](#-table-of-contents)
+- [Features](#-features)
+- [Installation](#-installation)
     - [Windows](#windows)
     - [Linux/MacOS](#linuxmacos)
-- [Build](#build)
-- [Technical information](#technical-information)
+- [Build](#-build)
+- [Technical information](#-technical-information)
     - [Configuration files](#configuration-files)
     - [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
-- [Controls](#controls)
+- [Controls](#-controls)
     - [Keybindings](#keybindings)
     - [Mouse buttons](#mouse-buttons)
-- [FAQ](#faq)
+- [FAQ](#-faq)
     - [How does this work?](#how-does-this-work)
     - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
     - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
@@ -32,9 +32,9 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
     - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
     - [How do I get Anki note creation to work?](#how-do-i-get-anki-note-creation-to-work)
     - [I can't press a button / something doesn't work](#i-cant-press-a-button--something-doesnt-work)
-    - [Why does the text \"i+1\" keep showing?](#why-does-the-text-i1-keep-showing)
-    - [Why does the translation text dim sometimes?](#why-does-the-translation-text-dim-sometimes)
-    - [I don\'t like a feature, is there any way I can turn it off?](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off)
+    - [Whoes the text \"i+1\" keep showing?  ](#why-does-the-text-i1-keep-showing--ins)
+    - [Why does the translation text dim sometimes?  ](#why-does-the-translation-text-dim-sometimes--ins)
+    - [I don\'t like a feature, is there any way I can turn it off?  ](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off--ins)
 <!-- /TOC -->
 
 
