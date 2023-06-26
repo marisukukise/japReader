@@ -4,6 +4,7 @@
 // Learn more: https://www.electronjs.org/docs/latest/tutorial/process-model#the-renderer-process
 
 console.log(Date.now(),"renderer.ts 1");
-import './index.css';
+
+import './style.scss';
 import './app';
 console.log(Date.now(),"renderer.ts 2");
