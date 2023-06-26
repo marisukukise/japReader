@@ -49,6 +49,7 @@ const handleChange = () => {
     if (clipboardText.length >= charLimit) {
       ipcRenderer.send('tooManyCharacters');
     } else {
+      console.log(clipboardText);
       ipcRenderer.send('clipboardChanged', clipboardText);
       ipcRenderer.send('parseNotification');
     }
@@ -56,8 +57,10 @@ const handleChange = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
+  console.log("ee")
   clipboardListener.startListening();
   clipboardListener.on('change', () => {
+    console.log("uu?")
     handleChange();
   });
 });
