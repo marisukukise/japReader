@@ -1562,6 +1562,11 @@ cli-truncate@^2.1.0:
     slice-ansi "^3.0.0"
     string-width "^4.2.0"
 
+clipboard-event@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/clipboard-event/-/clipboard-event-1.6.0.tgz#2cd6c6d469b635e3d9be73e2d0cc554cdf17f3d5"
+  integrity sha512-a69QYimd43xM+5hcHkucs0V/QoiZz1fqEFRTnewOITVQOtypRLbCx76Q91Djn6h7O24817dQw44sFUxRYWIuYA==
+
 cliui@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-6.0.0.tgz#511d702c0c4e41ca156d7d0e96021f23e13225b1"

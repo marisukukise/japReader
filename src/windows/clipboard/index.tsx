@@ -1,8 +1,7 @@
 // This is the React file of the reader window.
 // It is responsible for inserting DOM structure into the main element in the index.html file.
 
-import './local.scss';
-import '../../globals/scss/global.scss';
+import './style.scss';
 import { Reader } from './front/Reader';
 
 import { createRoot } from 'react-dom/client';
