@@ -22,14 +22,12 @@ const config: ForgeConfig = {
       //devContentSecurityPolicy: "connect-src 'self'; default-src 'self'; script-src 'self'",
       renderer: {
         config: rendererConfig,
+        nodeIntegration: true,
         entryPoints: [
           {
             html: './src/windows/reader/index.html',
             js: './src/windows/reader/index.tsx',
             name: 'reader',
-            preload: {
-              js: './src/windows/reader/preload.ts',
-            },
           },
           {
             html: './src/windows/ichi/index.html',
