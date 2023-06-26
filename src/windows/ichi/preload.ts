@@ -2,7 +2,6 @@
 // Learn more: https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 export {};
-
 const { ipcRenderer, contextBridge } = require('electron');
 
 // The renderer process does NOT have access to Electron API
@@ -12,6 +11,6 @@ const ICHI_API = {
     log: (message: string) => ipcRenderer.send("log", message)
 }
 
-console.log("preload")
 
+declare global { interface Window { api?: any; }}
 contextBridge.exposeInMainWorld("api", ICHI_API);
