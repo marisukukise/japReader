@@ -4,6 +4,7 @@
 import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 
 declare const READER_WEBPACK_ENTRY: string;
+declare const CLIPBOARD_WEBPACK_ENTRY: string;
 declare const ICHI_WEBPACK_ENTRY: string;
 declare const ICHI_PRELOAD_WEBPACK_ENTRY: string;
 
@@ -27,6 +28,18 @@ const createWindow = (): void => {
 
   readerWindow.loadURL(READER_WEBPACK_ENTRY);
   readerWindow.webContents.openDevTools();
+
+  const clipboardWindow = new BrowserWindow({
+    height: 600,
+    width: 800,
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
+  });
+
+  clipboardWindow.loadURL(CLIPBOARD_WEBPACK_ENTRY);
+  clipboardWindow.webContents.openDevTools();
 
   const ichiWindow = new BrowserWindow({
     height: 600,

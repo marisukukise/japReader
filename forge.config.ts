@@ -30,6 +30,11 @@ const config: ForgeConfig = {
             name: 'reader',
           },
           {
+            html: './src/windows/clipboard/index.html',
+            js: './src/windows/clipboard/index.ts',
+            name: 'clipboard',
+          },
+          {
             html: './src/windows/ichi/index.html',
             js: './src/windows/ichi/index.tsx',
             name: 'ichi',
