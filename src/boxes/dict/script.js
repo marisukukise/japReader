@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ankiIntegration, ankiDeckName, ankiModelName,
     ankiDictForm, ankiDictFormReading, ankiDictFormFurigana,
     ankiWord, ankiWordReading, ankiWordFurigana,
-    ankiDefinitions, ankiJapanese, ankiEnglish
+    ankiDefinitions, ankiJapanese, ankiEnglish, toogleBoldWord
   } = OPTIONS.get('options')
   if (darkMode) {
     document.documentElement.classList.add('dark-mode');
@@ -133,6 +133,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const __anki__boldTargetWord = (fullText, word) => {
+    return fullText.replaceAll(word, `<b>${word}</b>`);
+  }
+
   async function __anki__addNote(wordData) {
     const fields = {};
     __anki__populateFieldsIfNonEmpty(fields, `${ankiDictForm}`, wordData.dictForm);
@@ -142,7 +146,10 @@ window.addEventListener('DOMContentLoaded', () => {
     __anki__populateFieldsIfNonEmpty(fields, `${ankiWordReading}`, wordData.rubyReading);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiWordFurigana}`, wordData.wordFuriganaHTML);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiDefinitions}`, wordData.definitions);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiJapanese}`, wordData.fullText);
+    __anki__populateFieldsIfNonEmpty(fields, `${ankiJapanese}`,
+    toogleBoldWord ? 
+    __anki__boldTargetWord(wordData.fullText, wordData.word)
+    : wordData.fullText);
     __anki__populateFieldsIfNonEmpty(fields, `${ankiEnglish}`, wordData.english);
     const res = await invoke('addNote', 6, {
       note: {

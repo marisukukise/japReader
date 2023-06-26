@@ -26,6 +26,7 @@ const schemaOptions = {
             dictFontSize: { default: 12, type: "number", minimum: 1 },
             optionsFontSize: { default: 12, type: "number", minimum: 1 },
             ankiIntegration: { default: false, type: "boolean" },
+            toogleBoldWord: { default: false, type: "boolean" },
             ankiDeckName: { default: "japReader", type: "string" },
             ankiModelName: { default: "japReader", type: "string" },
             ankiDictForm: { default: "DictForm", type: "string" },
