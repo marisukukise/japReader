@@ -7,7 +7,7 @@ const { ipcRenderer, contextBridge } = require('electron');
 // The renderer process does NOT have access to Electron API
 // So the methods that need Electron API must be exposed here
 
-const READER_API = {
+const ICHI_API = {
 }
 
-contextBridge.exposeInMainWorld("api", READER_API);
+contextBridge.exposeInMainWorld("api", ICHI_API);

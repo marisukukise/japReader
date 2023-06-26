@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "path": "^0.12.7",
+    "furigana": "^0.19.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

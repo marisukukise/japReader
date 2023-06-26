@@ -19,16 +19,26 @@ const config: ForgeConfig = {
     new AutoUnpackNativesPlugin({}),
     new WebpackPlugin({
       mainConfig,
+      //devContentSecurityPolicy: "connect-src 'self'; default-src 'self'; script-src 'self'",
       renderer: {
         config: rendererConfig,
         entryPoints: [
           {
             html: './src/windows/reader/index.html',
-            js: './src/windows/reader/renderer.ts',
+            js: './src/windows/reader/index.tsx',
             name: 'reader',
             preload: {
               js: './src/windows/reader/preload.ts',
             },
+          },
+          {
+            html: './src/windows/ichi/index.html',
+            js: './src/windows/ichi/index.tsx',
+            name: 'ichi',
+            preload: {
+              js: './src/windows/ichi/preload.ts',
+            },
+            nodeIntegration: false,
           },
         ],
       },
