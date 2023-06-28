@@ -46,6 +46,15 @@ const config: ForgeConfig = {
             },
             nodeIntegration: false,
           },
+          {
+            html: './src/windows/deep/index.html',
+            js: './src/windows/deep/index.ts',
+            name: 'deep',
+            preload: {
+              js: './src/windows/deep/preload.ts',
+            },
+            nodeIntegration: false,
+          },
         ],
       },
     }),

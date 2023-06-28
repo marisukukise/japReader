@@ -1,16 +1,30 @@
 // This is the main process file
 // Learn more: https://www.electronjs.org/docs/latest/tutorial/process-model#the-main-process
 
-// To turn on logging, create a file named '.env' in the root of the repository with contents 'JAPREADER_ENV="dev"'
+/* To turn on logging, create a file named '.env' in the root of the repository
+  Available variables: 
+  - JAPREADER_LOGS (with log level value: https://github.com/megahertz/electron-log#log-levels)
+  - JAPREADER_SHOW_ALL_WINDOWS ("true" for yes, otherwise no)
+*/  
 
 import { dialog, app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import 'dotenv/config';
 import log from 'electron-log';
+import { read } from 'original-fs';
 const path = require('path');
 
 log.initialize({ preload: true });
-log.transports.file.level = process.env.JAPREADER_ENV === "dev" ? "silly": false;
-log.transports.console.level = process.env.JAPREADER_ENV === "dev" ? "silly": false;
+
+// Reading the log level from the environment variable, and if not applicable, then set default (in else)
+if (["error", "warn", "info", "verbose", "debug", "silly"].includes(process.env.JAPREADER_LOGS)) {
+  // @ts-expect-error
+  log.transports.file.level = process.env.JAPREADER_LOGS;
+  // @ts-expect-error
+  log.transports.console.level = process.env.JAPREADER_LOGS;
+} else {
+  log.transports.file.level = "info";
+  log.transports.console.level = "warn";
+}
 
 log.errorHandler.startCatching({
   showDialog: false,
@@ -38,12 +52,13 @@ log.errorHandler.startCatching({
       });
   }
 });
+
 log.debug('Initialized the main process');
 
 declare const READER_WEBPACK_ENTRY: string;
-declare const ICHI_WEBPACK_ENTRY: string;
 declare const CLIPBOARD_WEBPACK_ENTRY: string;
 declare const ICHI_PRELOAD_WEBPACK_ENTRY: string;
+declare const DEEP_PRELOAD_WEBPACK_ENTRY: string;
 
 ipcMain.on("log", (event, message) => {
   console.log(message);
@@ -56,15 +71,27 @@ ipcMain.handle("get/libPath", async (event) => {
     return app.isPackaged ? path.join(process.resourcesPath, 'lib') : path.join(process.cwd(), 'src', 'lib');
 });
 
-if (require('electron-squirrel-startup')) {
-  app.quit();
+
+const showWindowWhenReady = (window: BrowserWindow, shouldShowInProduction: boolean): void => {
+  // Set the environment variable JAPREADER_SHOW_ALL_WINDOWS to "true" to show all windows
+
+  if (shouldShowInProduction) {
+    window.once('ready-to-show', () => { window.show(); });
+    return;
+  } 
+
+  // Added for debugging convenience
+  if(process.env.JAPREADER_SHOW_ALL_WINDOWS === "true") {
+    window.once('ready-to-show', () => { window.show(); });
+    return;
+  }
 }
 
-const createWindow = (): void => {
-
-  const readerWindow = new BrowserWindow({
+const createReaderWindow = (): BrowserWindow => {
+ const readerWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    show: false,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -73,6 +100,8 @@ const createWindow = (): void => {
 
   readerWindow.loadURL(READER_WEBPACK_ENTRY);
   readerWindow.webContents.openDevTools();
+
+  showWindowWhenReady(readerWindow, true);
 
   ipcMain.on('sendParsedData', (event, words, fullText) => {
     readerWindow.webContents.send('receiveParsedData', words, fullText);
@@ -86,21 +115,34 @@ const createWindow = (): void => {
     readerWindow.webContents.send('ichiConnectionError');
   });
 
+
+  return readerWindow;
+}
+
+const createClipboardWindow = (): BrowserWindow => {
   const clipboardWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
-    webPreferences: {
-      contextIsolation: false,
-      nodeIntegration: true,
-    },
-  });
+      height: 600,
+      width: 800,
+      show: false,
+      webPreferences: {
+        contextIsolation: false,
+        nodeIntegration: true,
+      },
+    });
 
-  clipboardWindow.loadURL(CLIPBOARD_WEBPACK_ENTRY);
-  clipboardWindow.webContents.openDevTools();
+    clipboardWindow.loadURL(CLIPBOARD_WEBPACK_ENTRY);
+    clipboardWindow.webContents.openDevTools();
 
+    showWindowWhenReady(clipboardWindow, false);
+
+    return clipboardWindow;
+}
+
+const createIchiWindow = (): BrowserWindow => {
   const ichiWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -112,16 +154,116 @@ const createWindow = (): void => {
   ichiWindow.loadURL('https://ichi.moe/cl/qr/?q=&r=kana');
   ichiWindow.webContents.openDevTools();
 
+  showWindowWhenReady(ichiWindow, false);
+
   ipcMain.on('clipboardChanged', (event, text) => {
     ichiWindow.webContents.send('parseWithIchi', text);
   });
+
+  return ichiWindow;
+}
+
+const createDeepWindow = (): BrowserWindow => {
+  const deepWindow = new BrowserWindow({
+    height: 600,
+    width: 800,
+    show: false,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false,
+      preload: ICHI_PRELOAD_WEBPACK_ENTRY,
+    },
+  });
+
+  deepWindow.loadURL('https://www.deepl.com/translator#ja/en/');
+  deepWindow.webContents.openDevTools();
+
+  showWindowWhenReady(deepWindow, false);
+
+  return deepWindow;
+}
+
+const createTranslationWindow = (): BrowserWindow => {
+ const translationWindow = new BrowserWindow({
+    height: 600,
+    width: 800,
+    show: false,
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
+  });
+
+  translationWindow.loadURL(READER_WEBPACK_ENTRY);
+  translationWindow.webContents.openDevTools();
+
+  showWindowWhenReady(translationWindow, true);
+  
+  return translationWindow;
+}
+
+const createDictionaryWindow = (): BrowserWindow => {
+ const dictionaryWindow = new BrowserWindow({
+    height: 600,
+    width: 800,
+    show: false,
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
+  });
+
+  dictionaryWindow.loadURL(READER_WEBPACK_ENTRY);
+  dictionaryWindow.webContents.openDevTools();
+
+  showWindowWhenReady(dictionaryWindow, true);
+
+  return dictionaryWindow;
+}
+
+const createSettingsWindow = (): BrowserWindow => {
+ const settingsWindow = new BrowserWindow({
+    height: 600,
+    width: 800,
+    show: false,
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
+  });
+
+  settingsWindow.loadURL(READER_WEBPACK_ENTRY);
+  settingsWindow.webContents.openDevTools();
+
+  showWindowWhenReady(settingsWindow, true);
+
+  return settingsWindow;
+}
+
+
+
+const initializeApp = (): void => {
+
+  const clipboardWindow = createClipboardWindow();
+  const ichiWindow = createIchiWindow();
+  const readerWindow = createReaderWindow();
+  const deepWindow = createDeepWindow();
+  const dictionaryWindow = createDictionaryWindow();
+  const settingsWindow = createSettingsWindow();
+  const translationWindow = createTranslationWindow();
+
 };
 
 
-app.whenReady().then(() => {
-  createWindow();
+if (require('electron-squirrel-startup')) {
+  app.quit();
+}
 
-    app.on('browser-window-focus', () => {
+app.whenReady().then(() => {
+  initializeApp();
+
+  app.on('browser-window-focus', () => {
     globalShortcut.register('CommandOrControl+R', () => { });
     globalShortcut.register('Control+W', () => { });
     globalShortcut.register('F5', () => { });
@@ -135,7 +277,7 @@ app.whenReady().then(() => {
 })
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  if (BrowserWindow.getAllWindows().length === 0) initializeApp();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
