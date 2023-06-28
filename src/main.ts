@@ -2,6 +2,18 @@
 // Learn more: https://www.electronjs.org/docs/latest/tutorial/process-model#the-main-process
 
 import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
+import log from 'electron-log';
+const path = require('path');
+
+log.initialize({ preload: true });
+if (process.env.NODE_ENV === "development") {
+	log.transports.file.level = false;
+	log.transports.console.level = false;
+}
+if (process.env.NODE_ENV === "production") {
+	log.transports.file.level = false;
+	log.transports.console.level = false;
+}
 
 declare const READER_WEBPACK_ENTRY: string;
 declare const CLIPBOARD_WEBPACK_ENTRY: string;
@@ -10,13 +22,21 @@ declare const ICHI_PRELOAD_WEBPACK_ENTRY: string;
 
 ipcMain.on("log", (event, message) => {
   console.log(message);
-})
+});
+
+ipcMain.handle("get/libPath", async (event) => {
+    // Some libraries (like clipboard-event) can't get packaged in order to work (for example because they use executable files)
+    // Those libraries are in the src/lib folder and this function returns its path for both unpackaged and packaged versions
+    // So use this function whenever you use a module from the src/lib path
+    return app.isPackaged ? path.join(process.resourcesPath, 'lib') : path.join(process.cwd(), 'src', 'lib');
+});
 
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
 const createWindow = (): void => {
+  log.info('Log from the main process');
   const readerWindow = new BrowserWindow({
     height: 600,
     width: 800,

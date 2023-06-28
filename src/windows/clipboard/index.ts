@@ -1,6 +1,7 @@
 const { ipcRenderer, clipboard } = require('electron');
 const clipboardListener = require('clipboard-event');
-import path from 'path'
+import log from 'electron-log/renderer';
+log.info('Log from the renderer process');
 
 const charLimit = 90;
 let clipboardText = '';
@@ -58,10 +59,11 @@ const handleChange = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log(path.join(process.resourcesPath, 'lib', 'clipboard-event', 'platform', 'clipboard-event-handler-win32.exe'));
-  clipboardListener.startListening();
-  clipboardListener.on('change', () => {
-    console.log("uu?")
-    handleChange();
+  ipcRenderer.invoke("get/libPath").then((libPath: string) => {
+    clipboardListener.startListening(libPath);
+    clipboardListener.on('change', () => {
+      console.log("uu?")
+      handleChange();
+    });
   });
 });

@@ -7,18 +7,18 @@ class ClipboardEventListener extends EventEmitter {
     super();
     this.child = null;
   }
-
-  startListening() {
+  
+  startListening(libPath) {
 
     const { platform } = process;
     if (platform === 'win32') {
-      this.child = execFile(path.join(process.resourcesPath, 'lib', 'clipboard-event', 'platform', 'clipboard-event-handler-win32.exe'));
+      this.child = execFile(path.join(libPath, 'clipboard-event', 'platform', 'clipboard-event-handler-win32.exe'));
     }
     else if (platform === 'linux') {
-      this.child = execFile(path.join(process.resourcesPath, 'lib', 'clipboard-event', 'platform', 'clipboard-event-handler-linux'));
+      this.child = execFile(path.join(libPath, 'clipboard-event', 'platform', 'clipboard-event-handler-linux'));
     }
     else if (platform === 'darwin') {
-      this.child = execFile(path.join(process.resourcesPath, 'lib', 'clipboard-event', 'platform', 'clipboard-event-handler-mac'));
+      this.child = execFile(path.join(libPath, 'clipboard-event', 'platform', 'clipboard-event-handler-mac'));
     }
     else {
       throw 'Not yet supported';
