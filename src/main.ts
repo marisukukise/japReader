@@ -8,6 +8,7 @@
 */
 
 import { dialog, app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
+
 import 'dotenv/config';
 import log from 'electron-log';
 const path = require('path');
