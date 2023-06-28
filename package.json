@@ -42,7 +42,7 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
-    "clipboard-event": "^1.6.0",
+    "clipboard-event": "file:./src/lib/clipboard-event",
     "electron-squirrel-startup": "^1.0.0",
     "furigana": "^0.19.3",
     "path": "^0.12.7",

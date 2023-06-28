@@ -1,0 +1,30 @@
+{
+  "name": "clipboard-event",
+  "version": "1.6.0",
+  "description": "Clipboard change event for Node.js/Electron.js/NW.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudhakar3697/node-clipboard-event.git"
+  },
+  "keywords": [
+    "clipboard",
+    "clipboard-event",
+    "clipboard-change",
+    "clipboard-monitor"
+  ],
+  "author": "sudhakar3697 <sudax3@gmail.com>",
+  "license": "MIT",
+  "exports": {
+    "import": "./index.js",
+    "require": "./index.cjs"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/sudhakar3697/node-clipboard-event/issues"
+  },
+  "homepage": "https://github.com/sudhakar3697/node-clipboard-event#readme"
+}

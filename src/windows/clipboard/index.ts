@@ -1,5 +1,6 @@
 const { ipcRenderer, clipboard } = require('electron');
 const clipboardListener = require('clipboard-event');
+import path from 'path'
 
 const charLimit = 90;
 let clipboardText = '';
@@ -57,7 +58,7 @@ const handleChange = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log("ee")
+  console.log(path.join(process.resourcesPath, 'lib', 'clipboard-event', 'platform', 'clipboard-event-handler-win32.exe'));
   clipboardListener.startListening();
   clipboardListener.on('change', () => {
     console.log("uu?")

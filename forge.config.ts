@@ -12,8 +12,8 @@ import { rendererConfig } from './webpack.renderer.config';
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    extraResource: [
-      "./node_modules/clipboard-event/platform/clipboard-event-handler-win32.exe"
+     "extraResource": [
+      "./src/lib/",
     ]
   },
   rebuildConfig: {},
