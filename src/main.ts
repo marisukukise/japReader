@@ -1,21 +1,47 @@
 // This is the main process file
 // Learn more: https://www.electronjs.org/docs/latest/tutorial/process-model#the-main-process
 
-import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
+// To turn on logging, create a file named '.env' in the root of the repository with contents 'JAPREADER_ENV="dev"'
+
+import { dialog, app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
+import 'dotenv/config';
 import log from 'electron-log';
 const path = require('path');
 
 log.initialize({ preload: true });
-if (process.env.NODE_ENV === "development") {
-	log.transports.file.level = false;
-	log.transports.console.level = false;
-}
-if (process.env.NODE_ENV === "production") {
-	log.transports.file.level = false;
-	log.transports.console.level = false;
-}
+log.transports.file.level = process.env.JAPREADER_ENV === "dev" ? "silly": false;
+log.transports.console.level = process.env.JAPREADER_ENV === "dev" ? "silly": false;
+
+log.errorHandler.startCatching({
+  showDialog: false,
+  onError({ createIssue, error, processType, versions }) {
+    if (processType === 'renderer') {
+      return;
+    } 
+    dialog.showMessageBox({
+      title: 'An error occurred',
+      message: error.message,
+      detail: error.stack,
+      type: 'error',
+      buttons: ['Ignore', 'Report', 'Exit'],
+    }).then((result) => {
+        if (result.response === 1) {
+          createIssue('https://github.com/marisekukisu/japReader-React/issues/new', {
+            title: `Error report for ${versions.app}`,
+            body: 'Error:\n```' + error.stack + '\n```\n' + `OS: ${versions.os}`
+          });
+          return;
+        }
+        if (result.response === 2) {
+          app.quit();
+        }
+      });
+  }
+});
+log.debug('Initialized the main process');
 
 declare const READER_WEBPACK_ENTRY: string;
+declare const ICHI_WEBPACK_ENTRY: string;
 declare const CLIPBOARD_WEBPACK_ENTRY: string;
 declare const ICHI_PRELOAD_WEBPACK_ENTRY: string;
 
@@ -35,7 +61,7 @@ if (require('electron-squirrel-startup')) {
 }
 
 const createWindow = (): void => {
-  log.info('Log from the main process');
+
   const readerWindow = new BrowserWindow({
     height: 600,
     width: 800,
@@ -64,9 +90,10 @@ const createWindow = (): void => {
     height: 600,
     width: 800,
     webPreferences: {
-      preload: ICHI_PRELOAD_WEBPACK_ENTRY,
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: false,
+      preload: ICHI_PRELOAD_WEBPACK_ENTRY,
     },
   });
 

@@ -41,18 +41,3 @@ class ClipboardEventListener extends EventEmitter {
 }
 
 export default new ClipboardEventListener();
-
-// Sample usage
-/*
-import clipboardListener from 'clipboard-event'
-
-// To start listening
-clipboardListener.startListening();
-
-clipboardListener.on('change', () => {
-  console.log('Clipboard changed');
-});
-
-// To stop listening
-clipboardListener.stopListening();
-*/

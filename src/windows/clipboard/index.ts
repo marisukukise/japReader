@@ -1,7 +1,9 @@
-const { ipcRenderer, clipboard } = require('electron');
+const { dialog, ipcRenderer, clipboard } = require('electron');
 const clipboardListener = require('clipboard-event');
+
 import log from 'electron-log/renderer';
-log.info('Log from the renderer process');
+log.silly('Log from the clipboard process');
+
 
 const charLimit = 90;
 let clipboardText = '';
