@@ -5,6 +5,7 @@ import { dialog } from 'electron';
 
 import log from 'electron-log/renderer';
 log.silly('Log from the reader process');
+log.silly("reader sandboxed?",process.sandboxed)
 
 
 

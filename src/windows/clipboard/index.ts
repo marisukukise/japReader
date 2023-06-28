@@ -3,6 +3,7 @@ const clipboardListener = require('clipboard-event');
 
 import log from 'electron-log/renderer';
 log.silly('Log from the clipboard process');
+log.silly("clipboard sandboxed?",process.sandboxed)
 
 
 const charLimit = 90;
@@ -34,8 +35,8 @@ const handleChange = () => {
     // If detected a misreading in the sample of 3 reads (rare case),
     // read clipboard many times in a row and get majority value from the array
     
-    let clipboard_reads: any = [];
-    for (var i = 0; i < clipboardReads; i++) clipboard_reads[i] = clipboard.readText();
+    const clipboard_reads: any = [];
+    for (let i = 0; i < clipboardReads; i++) clipboard_reads[i] = clipboard.readText();
 
     const counts: any = {};
     for (const e of clipboard_reads) counts[e] = counts[e] ? counts[e] + 1 : 1;

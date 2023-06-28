@@ -74,6 +74,18 @@ const createWindow = (): void => {
   readerWindow.loadURL(READER_WEBPACK_ENTRY);
   readerWindow.webContents.openDevTools();
 
+  ipcMain.on('sendParsedData', (event, words, fullText) => {
+    readerWindow.webContents.send('receiveParsedData', words, fullText);
+  });
+
+  ipcMain.on('ichiConnected', () => {
+    readerWindow.webContents.send('ichiConnected');
+  });
+
+  ipcMain.on('ichiConnectionError', () => {
+    readerWindow.webContents.send('ichiConnectionError');
+  });
+
   const clipboardWindow = new BrowserWindow({
     height: 600,
     width: 800,
@@ -99,6 +111,10 @@ const createWindow = (): void => {
 
   ichiWindow.loadURL('https://ichi.moe/cl/qr/?q=&r=kana');
   ichiWindow.webContents.openDevTools();
+
+  ipcMain.on('clipboardChanged', (event, text) => {
+    ichiWindow.webContents.send('parseWithIchi', text);
+  });
 };
 
 
