@@ -38,8 +38,7 @@ const config: ForgeConfig = {
             name: 'clipboard',
           },
           {
-            html: './src/windows/ichi/index.html',
-            js: './src/windows/ichi/index.tsx',
+            js: './src/windows/ichi/index.ts',
             name: 'ichi',
             preload: {
               js: './src/windows/ichi/preload.ts',

@@ -17,7 +17,6 @@ if (process.env.NODE_ENV === "production") {
 
 declare const READER_WEBPACK_ENTRY: string;
 declare const CLIPBOARD_WEBPACK_ENTRY: string;
-declare const ICHI_WEBPACK_ENTRY: string;
 declare const ICHI_PRELOAD_WEBPACK_ENTRY: string;
 
 ipcMain.on("log", (event, message) => {
@@ -71,7 +70,7 @@ const createWindow = (): void => {
     },
   });
 
-  ichiWindow.loadURL(ICHI_WEBPACK_ENTRY);
+  ichiWindow.loadURL('https://ichi.moe/cl/qr/?q=&r=kana');
   ichiWindow.webContents.openDevTools();
 };
 
