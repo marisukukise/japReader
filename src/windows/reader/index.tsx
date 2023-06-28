@@ -1,13 +1,8 @@
 // This is the React file of the reader window.
 // It is responsible for inserting DOM structure into the main element in the index.html file.
 
-import { dialog } from 'electron';
-
 import log from 'electron-log/renderer';
-log.silly('Log from the reader process');
-log.silly("reader sandboxed?",process.sandboxed)
-
-
+log.silly('Initialized the reader process');
 
 
 import './local.scss';

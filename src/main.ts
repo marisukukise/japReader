@@ -10,7 +10,6 @@
 import { dialog, app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import 'dotenv/config';
 import log from 'electron-log';
-import { read } from 'original-fs';
 const path = require('path');
 
 log.initialize({ preload: true });
@@ -37,12 +36,12 @@ log.errorHandler.startCatching({
       message: error.message,
       detail: error.stack,
       type: 'error',
-      buttons: ['Ignore', 'Report', 'Exit'],
+      buttons: ['Ignore', 'Report on github', 'Exit'],
     }).then((result) => {
         if (result.response === 1) {
-          createIssue('https://github.com/marisekukisu/japReader-React/issues/new', {
-            title: `Error report for ${versions.app}`,
-            body: 'Error:\n```' + error.stack + '\n```\n' + `OS: ${versions.os}`
+          createIssue('https://github.com/marisukukise/japReader/issues/new', {
+            title: `[ERROR] Report for ${versions.app}`,
+            body: 'Error message:\n```' + error.stack + '\n```\n\n' + `OS: ${versions.os}\n\nDescription of what lead to the error:\n\n\n\nAdditional info (optional):\n\n`
           });
           return;
         }
@@ -53,9 +52,12 @@ log.errorHandler.startCatching({
   }
 });
 
-log.debug('Initialized the main process');
+log.silly('Initialized the main process');
 
 declare const READER_WEBPACK_ENTRY: string;
+declare const DICTIONARY_WEBPACK_ENTRY: string;
+declare const SETTINGS_WEBPACK_ENTRY: string;
+declare const TRANSLATION_WEBPACK_ENTRY: string;
 declare const CLIPBOARD_WEBPACK_ENTRY: string;
 declare const ICHI_PRELOAD_WEBPACK_ENTRY: string;
 declare const DEEP_PRELOAD_WEBPACK_ENTRY: string;
@@ -172,7 +174,7 @@ const createDeepWindow = (): BrowserWindow => {
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false,
-      preload: ICHI_PRELOAD_WEBPACK_ENTRY,
+      preload: DEEP_PRELOAD_WEBPACK_ENTRY,
     },
   });
 
@@ -195,7 +197,7 @@ const createTranslationWindow = (): BrowserWindow => {
     },
   });
 
-  translationWindow.loadURL(READER_WEBPACK_ENTRY);
+  translationWindow.loadURL(TRANSLATION_WEBPACK_ENTRY);
   translationWindow.webContents.openDevTools();
 
   showWindowWhenReady(translationWindow, true);
@@ -214,7 +216,7 @@ const createDictionaryWindow = (): BrowserWindow => {
     },
   });
 
-  dictionaryWindow.loadURL(READER_WEBPACK_ENTRY);
+  dictionaryWindow.loadURL(DICTIONARY_WEBPACK_ENTRY);
   dictionaryWindow.webContents.openDevTools();
 
   showWindowWhenReady(dictionaryWindow, true);
@@ -233,7 +235,7 @@ const createSettingsWindow = (): BrowserWindow => {
     },
   });
 
-  settingsWindow.loadURL(READER_WEBPACK_ENTRY);
+  settingsWindow.loadURL(SETTINGS_WEBPACK_ENTRY);
   settingsWindow.webContents.openDevTools();
 
   showWindowWhenReady(settingsWindow, true);

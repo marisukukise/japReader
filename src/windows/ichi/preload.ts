@@ -1,5 +1,5 @@
 import log from 'electron-log/renderer';
-log.silly('Log from the ichi preload');
+log.silly('Initialized the ichi process');
 
 const { ipcRenderer } = require('electron');
 

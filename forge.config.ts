@@ -33,6 +33,21 @@ const config: ForgeConfig = {
             name: 'reader',
           },
           {
+            html: './src/windows/dictionary/index.html',
+            js: './src/windows/dictionary/index.tsx',
+            name: 'dictionary',
+          },
+          {
+            html: './src/windows/translation/index.html',
+            js: './src/windows/translation/index.tsx',
+            name: 'translation',
+          },
+          {
+            html: './src/windows/settings/index.html',
+            js: './src/windows/settings/index.tsx',
+            name: 'settings',
+          },
+          {
             html: './src/windows/clipboard/index.html',
             js: './src/windows/clipboard/index.ts',
             name: 'clipboard',
