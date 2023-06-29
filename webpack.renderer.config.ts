@@ -17,7 +17,8 @@ export const rendererConfig: Configuration = {
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
     alias: {
-      '@globals': path.resolve(__dirname, 'src/globals')
+      '@globals': path.resolve(__dirname, 'src/globals'),
+      '@src': path.resolve(__dirname, 'src')
     }
   },
 };

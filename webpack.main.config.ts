@@ -16,7 +16,8 @@ export const mainConfig: Configuration = {
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
     alias: {
-      '@globals': path.resolve(__dirname, 'src/globals')
+      '@globals': path.resolve(__dirname, 'src/globals'),
+      '@src': path.resolve(__dirname, 'src')
     }
   },
 };

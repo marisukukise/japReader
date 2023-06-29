@@ -1,7 +1,5 @@
-import log from 'electron-log/renderer';
-log.silly('Initialized the ichi process');
-
 const { ipcRenderer } = require('electron');
+import log from 'electron-log/renderer';
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
@@ -187,7 +185,8 @@ window.addEventListener('DOMContentLoaded', () => {
       fullText += element.textContent;
     });
 
-    console.log(fullText);
+    log.silly("Words returned from ichi: ", returnedWords);
+    log.silly("Full text returned from ichi: ", fullText);
     ipcRenderer.send('sendParsedData', returnedWords, fullText);
   }
 });
