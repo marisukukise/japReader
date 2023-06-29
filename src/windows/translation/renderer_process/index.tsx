@@ -5,7 +5,7 @@ import log from 'electron-log/renderer';
 log.silly('Initialized the translation process');
 
 import './local.scss';
-import '../../../globals/scss/global.scss';
+import '@globals/scss/global.scss';
 import { Translation } from './front/Translation';
 
 import { createRoot } from 'react-dom/client';

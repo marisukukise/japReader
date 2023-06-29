@@ -6,7 +6,7 @@ log.silly('Initialized the reader process');
 
 
 import './local.scss';
-import '../../../globals/scss/global.scss';
+import '@globals/scss/global.scss';
 import { Reader } from './front/Reader';
 
 import { createRoot } from 'react-dom/client';

@@ -6,7 +6,7 @@ log.silly('Initialized the dictionary process');
 
 
 import './local.scss';
-import '../../../globals/scss/global.scss';
+import '@globals/scss/global.scss';
 import { Dictionary } from './front/Dictionary';
 
 import { createRoot } from 'react-dom/client';
