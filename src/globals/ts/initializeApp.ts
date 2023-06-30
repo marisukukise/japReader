@@ -8,32 +8,32 @@ const useReader = true;
 // Modules that create BrowserWindows and their
 // predefined URLs for BrowserWindows from the Webpack
 // @ts-expect-error @src is a webpack alias
-import { createClipboardWindow } from '@src/windows/clipboard/main_process/create';
+import { createClipboardWindow } from '@src/windows/clipboard/_init';
 declare const CLIPBOARD_WEBPACK_ENTRY: string;
 
 // @ts-expect-error @src is a webpack alias
-import { createDeepWindow } from '@src/windows/deep/main_process/create';
+import { createDeepWindow } from '@src/windows/deep/_init';
 declare const DEEP_WEBPACK_ENTRY: string;
 declare const DEEP_PRELOAD_WEBPACK_ENTRY: string;
 
 // @ts-expect-error @src is a webpack alias
-import { createIchiWindow } from '@src/windows/ichi/main_process/create';
+import { createIchiWindow } from '@src/windows/ichi/_init';
 declare const ICHI_PRELOAD_WEBPACK_ENTRY: string;
 
 // @ts-expect-error @src is a webpack alias
-import { createTranslationWindow } from '@src/windows/translation/main_process/create';
+import { createTranslationWindow } from '@src/windows/translation/_init';
 declare const TRANSLATION_WEBPACK_ENTRY: string;
 
 // @ts-expect-error @src is a webpack alias
-import { createReaderWindow } from '@src/windows/reader/main_process/create';
+import { createReaderWindow } from '@src/windows/reader/_init';
 declare const READER_WEBPACK_ENTRY: string;
 
 // @ts-expect-error @src is a webpack alias
-import { createDictionaryWindow } from '@src/windows/dictionary/main_process/create';
+import { createDictionaryWindow } from '@src/windows/dictionary/_init';
 declare const DICTIONARY_WEBPACK_ENTRY: string;
 
 // @ts-expect-error @src is a webpack alias
-import { createSettingsWindow } from '@src/windows/settings/main_process/create';
+import { createSettingsWindow } from '@src/windows/settings/_init';
 declare const SETTINGS_WEBPACK_ENTRY: string;
 
 
