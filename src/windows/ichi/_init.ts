@@ -33,5 +33,9 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
   });
 
 
+  ipcMain.on("set/clipboard/isReady", (event) =>  { 
+    ichiWindow.webContents.send("set/clipboard/isReady")
+  });
+
   return ichiWindow;
 }

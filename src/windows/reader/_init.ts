@@ -66,5 +66,9 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.webContents.send('refreshReader');
   });
 
+  ipcMain.on("set/ichi/isReady", (event) =>  { 
+    readerWindow.webContents.send("set/ichi/isReady")
+  });
+
   return readerWindow;
 }

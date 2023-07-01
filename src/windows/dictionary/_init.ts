@@ -41,5 +41,9 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
     dictionaryWindow.webContents.send('receiveTranslation', englishText);
   });
 
+  ipcMain.on("set/reader/isReady", (event) =>  { 
+    dictionaryWindow.webContents.send("set/reader/isReady")
+  });
+
   return dictionaryWindow;
 }

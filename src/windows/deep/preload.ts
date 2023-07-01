@@ -63,6 +63,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .getUsage()
         .then((e: any) => {
           ipcRenderer.send('deepLConnected');
+          ipcRenderer.send("set/deep/isReady");
           log.debug("Connected to DeepL");
           clearInterval(connectionCheck);
         })
@@ -104,6 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (document.querySelector('.dl_body').children.length !== 0) {
         log.verbose("Connected to DeepL.com href")
         ipcRenderer.send('deepLConnected');
+        ipcRenderer.send("set/deep/isReady");
         clearInterval(connectionCheck);
       }
     }, 500);

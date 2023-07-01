@@ -85,6 +85,9 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     });
   }
 
+  ipcMain.on("set/deep/isReady", (event) =>  { 
+    translationWindow.webContents.send("set/deep/isReady")
+  });
 
   showWindowWhenReady(translationWindow, true);
 

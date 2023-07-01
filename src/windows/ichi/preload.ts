@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const connectionCheck = setTimeout(() => {
     if (document.querySelector('.wrapper')) {
       ipcRenderer.send('ichiConnected');
+      ipcRenderer.send('set/ichi/isReady');
       clearInterval(connectionCheck);
     }
   }, 500);

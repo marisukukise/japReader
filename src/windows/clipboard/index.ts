@@ -61,12 +61,16 @@ const handleChange = () => {
 
 window.addEventListener('DOMContentLoaded', () => {
   log.debug("DOMContentLoaded in clipboard")
+
   ipcRenderer.invoke("get/libPath").then((libPath: string) => {
     log.verbose("Listening to clipboard changes...")
     clipboardListener.startListening(libPath);
+
+    ipcRenderer.send("set/clipboard/isReady")
     clipboardListener.on('change', () => {
       log.verbose("Clipboard change detected")
       handleChange();
     });
+
   });
 });

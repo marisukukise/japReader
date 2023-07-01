@@ -34,8 +34,8 @@ export const initializeApp = (): void => {
   log.debug("Initializing japReader windows...")
 
   const clipboardWindow = createClipboardWindow(CLIPBOARD_WEBPACK_ENTRY);
-  const ichiWindow = createIchiWindow(ICHI_PRELOAD_WEBPACK_ENTRY);
   if (useReader) {
+    const ichiWindow = createIchiWindow(ICHI_PRELOAD_WEBPACK_ENTRY);
     const readerWindow = createReaderWindow(READER_WEBPACK_ENTRY);
   }
   if (useDeepL) {
