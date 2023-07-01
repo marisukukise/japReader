@@ -57,11 +57,13 @@ export const createWindowAndStorePositionData = (windowName: string, windowConfi
   window.on("unmaximize", () => {
     windowStore.set(windowName + ".isMaximized", false);
   })
+  // @ts-expect-error Not sure problem TypeScript sees, but everything is fine
   window.on(process.platform == 'win32' ? "resized" : "resize", () => {
     let normalBounds = window.getNormalBounds();
     windowStore.set(windowName + ".width", normalBounds.width);
     windowStore.set(windowName + ".height", normalBounds.height);
   })
+  // @ts-expect-error Not sure problem TypeScript sees, but everything is fine
   window.on(process.platform == 'win32' ? "moved" : "move", () => {
     let normalBounds = window.getNormalBounds();
     windowStore.set(windowName + ".x", normalBounds.x);

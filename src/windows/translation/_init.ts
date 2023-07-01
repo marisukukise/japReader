@@ -1,5 +1,5 @@
 import { app, dialog, BrowserWindow, ipcMain } from "electron";
-// @ts-expect-error @globals is a webpack alias
+
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
 
 import log from 'electron-log';

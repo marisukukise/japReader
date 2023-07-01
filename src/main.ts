@@ -8,20 +8,17 @@
 
 import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 
-// @ts-expect-error @globals is a webpack alias
 import { setupLogging } from '@globals/ts/setupLogging';
 import log from 'electron-log';
 // Setups the logging mechanism
 setupLogging();
 
 
-// @ts-expect-error @globals is a webpack alias
 import { startMainListeners } from '@globals/ts/startMainListeners';
 // Activates all ipcMain listeners defined in the globals folder
 startMainListeners();
 
 
-// @ts-expect-error @globals is a webpack alias
 import { initializeApp } from '@globals/ts/initializeApp';
 app.whenReady().then(() => {
   // Creates all windows and their listeners
