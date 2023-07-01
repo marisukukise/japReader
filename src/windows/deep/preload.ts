@@ -1,7 +1,12 @@
 
 const { ipcRenderer } = require('electron');
 const deepl = require('deepl-node');
-const { useDeepLApi, deepLApiKey } = {"useDeepLApi": false, "deepLApiKey": ""};
+
+
+import { getSettingsStore } from "@globals/ts/initializeStore";
+const settingsStore = getSettingsStore();
+const { useDeepLApi, deepLApiKey } = settingsStore.get("options")
+
 import log from 'electron-log/renderer';
 
 if (useDeepLApi) {

@@ -1,8 +1,8 @@
 import log from 'electron-log';
 
-const useDeepLApi = false;
-const useDeepL = true;
-const useReader = true;
+import { getSettingsStore } from "@globals/ts/initializeStore";
+const settingsStore = getSettingsStore();
+const { useDeepL, useReader } = settingsStore.get("options")
 
 
 // Modules that create BrowserWindows and their

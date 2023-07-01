@@ -4,7 +4,9 @@ import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/
 
 import log from 'electron-log';
 
-const useReader = true;
+import { getSettingsStore } from "@globals/ts/initializeStore";
+const settingsStore = getSettingsStore();
+const { useReader } = settingsStore.get("options")
 
 export const createTranslationWindow = (webpack_entry: string): BrowserWindow => {
   log.debug("Creating translation BrowserWindow...")

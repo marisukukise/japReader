@@ -3,7 +3,10 @@ import { BrowserWindow, ipcMain } from "electron";
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
 import log from 'electron-log';
 
-const useDeepLApi = false;
+
+import { getSettingsStore } from "@globals/ts/initializeStore";
+const settingsStore = getSettingsStore();
+const { useDeepLApi } = settingsStore.get("options")
 
 export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: string): BrowserWindow => {
   log.debug("Creating deep BrowserWindow...")

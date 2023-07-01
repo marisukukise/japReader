@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .replace(/[0-9]+\. /g, '')
         .replace(/\s/g, '');
       readingText = Array.from(readingText)
-        .filter((char) => /[ぁ-んァ-ン]/.test(char))
+        .filter((char) => /[\p{Script=Hiragana}\p{Script=Katakana}]/u.test(char))
         .join('');
       return readingText;
     };

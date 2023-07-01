@@ -45,7 +45,7 @@ const handleChange = () => {
 
   text = formatText(text);
 
-  if (text !== clipboardText && /[一-龯]|[ぁ-んァ-ン]|…/.test(text)) {
+  if (text !== clipboardText && /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]|…/u.test(text)) {
     clipboardText = text;
 
     if (clipboardText.length >= charLimit) {

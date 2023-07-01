@@ -117,6 +117,7 @@ const windowStoreOptions = {
     cwd: 'config',
 }
 
+// TODO: change filename of settingsStore to settings.json from options.json
 const settingsStoreOptions = {
     schema: schemaOptions,
     name: "options",
