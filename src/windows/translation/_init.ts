@@ -56,7 +56,7 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
   });
 
   if (!useReader) {
-    translationWindow.on('close', (e) => {
+    translationWindow.on('close', (event: any) => {
       const choice = dialog.showMessageBoxSync(translationWindow,
         {
           type: 'question',
@@ -65,7 +65,7 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
           message: 'Are you sure you want to quit?'
         });
       if (choice == 1) {
-        e.preventDefault();
+        event.preventDefault();
       }
       else {
         BrowserWindow.getAllWindows().filter(win => win.id != translationWindow.id)
@@ -77,8 +77,8 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     });
   }
   else {
-    translationWindow.on('close', (e) => {
-      e.preventDefault();
+    translationWindow.on('close', (event: any) => {
+      event.preventDefault();
       translationWindow.hide();
     });
   }

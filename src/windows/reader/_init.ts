@@ -22,7 +22,7 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
 
   showWindowWhenReady(readerWindow, true);
 
-  readerWindow.on('close', (e) => {
+  readerWindow.on('close', (event: any) => {
     const choice = dialog.showMessageBoxSync(readerWindow,
       {
         type: 'question',
@@ -31,7 +31,7 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
         message: 'Are you sure you want to quit?'
       });
     if (choice == 1) {
-      e.preventDefault();
+      event.preventDefault();
     }
     else {
       BrowserWindow.getAllWindows().filter(win => win.id != readerWindow.id)

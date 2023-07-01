@@ -21,7 +21,7 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
 
   showWindowWhenReady(settingsWindow, true);
 
-  settingsWindow.on('close', (event) => {
+  settingsWindow.on('close', (event: any) => {
     event.preventDefault();
     settingsWindow.hide();
   });

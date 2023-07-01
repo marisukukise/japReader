@@ -21,8 +21,8 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
 
   showWindowWhenReady(dictionaryWindow, true);
 
-  dictionaryWindow.on('close', (e) => {
-    e.preventDefault();
+  dictionaryWindow.on('close', (event: any) => {
+    event.preventDefault();
     dictionaryWindow.hide();
   });
   ipcMain.on('openDict', () => {

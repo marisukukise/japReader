@@ -25,8 +25,8 @@ export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: s
 
   showWindowWhenReady(deepWindow, false);
 
-  deepWindow.on('close', (e) => {
-    e.preventDefault();
+  deepWindow.on('close', (event: any) => {
+    event.preventDefault();
     deepWindow.hide();
   });
 

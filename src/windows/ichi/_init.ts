@@ -23,8 +23,8 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
 
   showWindowWhenReady(ichiWindow, false);
 
-  ichiWindow.on('close', (e) => {
-    e.preventDefault();
+  ichiWindow.on('close', (event: any) => {
+    event.preventDefault();
     ichiWindow.hide();
   });
 
