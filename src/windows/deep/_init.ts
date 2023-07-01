@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 // @ts-expect-error @globals is a webpack alias
-import { showWindowWhenReady } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
 import log from 'electron-log';
 
 const useDeepLApi = false;
@@ -8,7 +8,7 @@ const useDeepLApi = false;
 export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: string): BrowserWindow => {
   log.debug("Creating deep BrowserWindow...")
 
-  const deepWindow = new BrowserWindow({
+  const deepWindow = createWindowAndStorePositionData("deep", {
     height: 600,
     width: 800,
     show: false,

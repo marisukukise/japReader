@@ -1,13 +1,13 @@
 
 import { app, dialog, BrowserWindow, ipcMain } from "electron";
 // @ts-expect-error @globals is a webpack alias
-import { showWindowWhenReady } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
 import log from 'electron-log';
 
 export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
   log.debug("Creating reader BrowserWindow...")
 
-  const readerWindow = new BrowserWindow({
+  const readerWindow = createWindowAndStorePositionData("reader", {
     height: 600,
     width: 800,
     show: false,

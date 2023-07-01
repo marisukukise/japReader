@@ -10,6 +10,7 @@ import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 
 // @ts-expect-error @globals is a webpack alias
 import { setupLogging } from '@globals/ts/setupLogging';
+import log from 'electron-log';
 // Setups the logging mechanism
 setupLogging();
 

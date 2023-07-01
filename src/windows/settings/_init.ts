@@ -1,12 +1,12 @@
 import { dialog, BrowserWindow, ipcMain } from "electron";
 // @ts-expect-error @globals is a webpack alias
-import { showWindowWhenReady } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
 import log from 'electron-log';
 
 export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
   log.debug("Creating settings BrowserWindow...")
 
-  const settingsWindow = new BrowserWindow({
+  const settingsWindow = createWindowAndStorePositionData("settings", {
     height: 600,
     width: 800,
     show: false,
