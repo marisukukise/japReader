@@ -20,4 +20,9 @@ export const mainConfig: Configuration = {
       '@src': path.resolve(__dirname, 'src')
     }
   },
+  mode: 'development',
+  devtool: 'inline-source-map',
+  devServer: {
+    static: './dist'
+  }
 };

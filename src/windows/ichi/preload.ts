@@ -1,6 +1,8 @@
 const { ipcRenderer } = require('electron');
 import log from 'electron-log/renderer';
 
+
+
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
   const $ = require('jquery');
