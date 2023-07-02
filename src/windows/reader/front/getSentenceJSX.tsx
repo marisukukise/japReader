@@ -29,13 +29,13 @@ const getFuriganaData = (w: string, r: string): FuriganaObject[] => {
 
 const getFuriganaJSX = (furiganaList: FuriganaObject[]): JSX.Element => {
   return (<>{
-    furiganaList.map((furiganaEntry: FuriganaObject) => 
-      <>
+    furiganaList.map((furiganaEntry: FuriganaObject, index: number) => 
+      <ruby key={index}>
         {furiganaEntry.w.match(/\p{Script=Han}/u) ?
-          <ruby>{furiganaEntry.w}<rp>（</rp><rt>{furiganaEntry.r}</rt><rp>）</rp></ruby> :
+          <>{furiganaEntry.w}<rp>（</rp><rt>{furiganaEntry.r}</rt><rp>）</rp></> :
           <>{furiganaEntry.w}</>
         }
-      </>
+      </ruby>
     )
   }</>)
 }

@@ -1,8 +1,10 @@
 import { BiLoaderCircle } from "react-icons/bi";
 import "./Loader.scss";
 
-export const Loader = () => {
+const Loader = () => {
     return (<span className="loader-icon">
         <BiLoaderCircle />
     </span>)
 }
+
+export default Loader;

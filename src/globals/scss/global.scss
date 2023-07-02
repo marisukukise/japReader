@@ -1,7 +1,27 @@
 @forward 'partials';
-
 // This is a global SCSS file applied to all windows.
 
-body {
+:root {
+    --mainBackground: #1e0a1c;
+    --scrollbarHead: #f5f2ca;
+    --scrollbarBackground: #545454;
+    --scrollbarShadow: #000000bf;
+}
 
+::-webkit-scrollbar {
+    background: var(--scrollbarBackground);
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbarHead);
+    border-radius: 1ex;
+    -webkit-border-radius: 1ex;
+    box-shadow: 0px 1px 2px var(--scrollbarShadow);
+    -webkit-box-shadow: 0px 1px 2px var(--scrollbarShadow);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--mainBackground);
 }

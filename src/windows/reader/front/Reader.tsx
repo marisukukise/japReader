@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 import { useEffect, useRef, useState } from "react";
 import log from 'electron-log/renderer';
-import { Loader } from "@globals/components/Loader/Loader";
+import Loader from "@globals/components/Loader/Loader";
 import { getSentenceJSX } from "./getSentenceJSX";
 
 
@@ -94,5 +94,5 @@ export const Reader = () => {
             isIchiReady={isIchiReady}
             japaneseSentence={japaneseSentence}
             words={currentWords.current} />
-    );
+    )
 }
