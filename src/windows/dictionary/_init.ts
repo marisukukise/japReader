@@ -25,6 +25,11 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
     event.preventDefault();
     dictionaryWindow.hide();
   });
+
+  dictionaryWindow.on('blur', (event: any) => {
+    dictionaryWindow.webContents.send('blur')
+  })
+
   ipcMain.on('openDict', () => {
     dictionaryWindow.show();
   });

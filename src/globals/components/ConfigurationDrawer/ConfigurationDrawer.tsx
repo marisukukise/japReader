@@ -19,6 +19,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { ipcRenderer } from 'electron';
+import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
+import log from 'electron-log/renderer';
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -30,15 +33,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export interface ConfigurationDrawerProps {
-
+type Setting = {
+  key: string,
+  label: string,
+  icon: JSX.Element,
+  fn: () => void,
 }
 
+type ConfigurationDrawerProps = {
+  settings: Setting[]
+}
 
-
-const ConfigurationDrawer = ({settings}): JSX.Element => {
+const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Element => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -47,6 +56,12 @@ const ConfigurationDrawer = ({settings}): JSX.Element => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    ipcRenderer.on("blur", (event: any) => {
+      handleDrawerClose();
+    })
+  }, [])
 
 
   return (
@@ -84,14 +99,14 @@ const ConfigurationDrawer = ({settings}): JSX.Element => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List sx={{display: "flex", flexDirection: "row-reverse", alignItems: "flex-start"}}>
+        <List sx={{ display: "flex", flexDirection: "row-reverse", alignItems: "flex-start" }}>
           {settings.map((setting: any) => (
             <ListItem key={setting.key} disablePadding>
-              <ListItemButton sx={{flexDirection: "column"}} onClick={setting.fn}>
-                <ListItemIcon sx={{minWidth: "fit-content"}}>
+              <ListItemButton sx={{ flexDirection: "column" }} onClick={setting.fn}>
+                <ListItemIcon sx={{ minWidth: "fit-content" }}>
                   {setting.icon}
                 </ListItemIcon>
-                <ListItemText sx={{writingMode: "vertical-rl"}} primary={setting.label} />
+                <ListItemText sx={{ writingMode: "vertical-rl" }} primary={setting.label} />
               </ListItemButton>
             </ListItem>
           ))}

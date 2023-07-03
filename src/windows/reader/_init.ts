@@ -42,6 +42,10 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     }
   });
 
+  readerWindow.on('blur', (event: any) => {
+    readerWindow.webContents.send('blur')
+  })
+
   ipcMain.on('tooManyCharacters', () => {
     readerWindow.webContents.send('tooManyCharacters');
   });

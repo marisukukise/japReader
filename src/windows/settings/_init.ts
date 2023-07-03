@@ -26,6 +26,10 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
     settingsWindow.hide();
   });
 
+  settingsWindow.on('blur', (event: any) => {
+    settingsWindow.webContents.send('blur')
+  })
+
   ipcMain.on('openOptions', () => {
     settingsWindow.show();
   });

@@ -37,6 +37,10 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     );
   });
 
+  translationWindow.on('blur', (event: any) => {
+    translationWindow.webContents.send('blur')
+  })
+
   ipcMain.on('requestTranslation', () => {
     translationWindow.webContents.send('requestTranslation');
   });
