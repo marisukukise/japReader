@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
 
 export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow => {
@@ -33,8 +33,8 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
   });
 
 
-  ipcMain.on("set/clipboard/isReady", (event) =>  { 
-    ichiWindow.webContents.send("set/clipboard/isReady")
+  ipcMain.on("announce/clipboard/isReady", (event) =>  { 
+    ichiWindow.webContents.send("announce/clipboard/isReady")
   });
 
   return ichiWindow;

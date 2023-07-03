@@ -8,18 +8,18 @@
 
 import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 
-import { setupLogging } from '@globals/ts/setupLogging';
+import { setupLogging } from '@globals/ts/main/setupLogging';
 import log from 'electron-log';
 // Setups the logging mechanism
 setupLogging();
 
 
-import { startMainListeners } from '@globals/ts/startMainListeners';
+import { startMainListeners } from '@globals/ts/main/startMainListeners';
 // Activates all ipcMain listeners defined in the globals folder
 startMainListeners();
 
 
-import { initializeApp } from '@globals/ts/initializeApp';
+import { initializeApp } from '@globals/ts/main/initializeApp';
 app.whenReady().then(() => {
   // Creates all windows and their listeners
   initializeApp();

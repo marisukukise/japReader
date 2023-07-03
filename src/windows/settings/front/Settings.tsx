@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export const Settings = () => {
     
     useEffect(()=>{
-        ipcRenderer.send("set/settings/isReady")
+        ipcRenderer.send("announce/settings/isReady")
     },[])
 
     return (

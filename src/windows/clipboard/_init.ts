@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
 
 export const createClipboardWindow = (webpack_entry: string): BrowserWindow => {

@@ -3,7 +3,7 @@ const { ipcRenderer } = require('electron');
 const deepl = require('deepl-node');
 
 
-import { getSettingsStore } from "@globals/ts/initializeStore";
+import { getSettingsStore } from "@globals/ts/main/initializeStore";
 const settingsStore = getSettingsStore();
 const { useDeepLApi, deepLApiKey } = settingsStore.get("options")
 
@@ -63,7 +63,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .getUsage()
         .then((e: any) => {
           ipcRenderer.send('deepLConnected');
-          ipcRenderer.send("set/deep/isReady");
+          ipcRenderer.send("announce/deep/isReady");
           log.debug("Connected to DeepL");
           clearInterval(connectionCheck);
         })
@@ -105,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (document.querySelector('.dl_body').children.length !== 0) {
         log.verbose("Connected to DeepL.com href")
         ipcRenderer.send('deepLConnected');
-        ipcRenderer.send("set/deep/isReady");
+        ipcRenderer.send("announce/deep/isReady");
         clearInterval(connectionCheck);
       }
     }, 500);

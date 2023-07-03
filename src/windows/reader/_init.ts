@@ -1,7 +1,7 @@
 
 import { app, dialog, BrowserWindow, ipcMain } from "electron";
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
 
 export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
@@ -70,8 +70,8 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.webContents.send('refreshReader');
   });
 
-  ipcMain.on("set/ichi/isReady", (event) =>  { 
-    readerWindow.webContents.send("set/ichi/isReady")
+  ipcMain.on("announce/ichi/isReady", (event) =>  { 
+    readerWindow.webContents.send("announce/ichi/isReady")
   });
 
   return readerWindow;

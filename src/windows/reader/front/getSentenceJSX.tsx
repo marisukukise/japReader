@@ -1,62 +1,81 @@
-const { fit } = require("furigana");
-import { getStatusDataStore } from "@globals/ts/initializeStore";
+import { getStatusDataStore } from "@globals/ts/main/initializeStore";
 const statusDataStore = getStatusDataStore();
+import { FuriganaJSX } from "@globals/ts/renderer/helpers";
+import { ipcRenderer } from "electron";
 import log from 'electron-log/renderer';
+import { FC, useEffect, useState } from "react";
 
-type FuriganaObject = {
-  w: string,
-  r: string,
+const MOUSE_BUTTONS = {
+  'MAIN_BUTTON': 0, // Usually left button
+  'SECONDARY_BUTTON': 2, // Usually right button
+  'MIDDLE_BUTTON': 1, // Middle button
+  'FOURTH_BUTTON': 3, // Typically the 'browser back' button
+  'FIFTH_BUTTON': 4, // Typically the 'browser forward' button
 }
 
-type ParsedWordData = {
-  word: string,
-  dictForm: string,
-  dictFormReading: string,
-  rubyReading: string,
-  definitions: string,
+const getWordStatusData = (dictionaryForm: string): string => {
+  const statusDataList = statusDataStore.get("status_data");
+
+  let status = "new"
+  if (statusDataList.known.includes(dictionaryForm)) status = "known"
+  if (statusDataList.seen.includes(dictionaryForm)) status = "seen"
+  if (statusDataList.ignored.includes(dictionaryForm)) status = "ignored"
+
+  return status;
 }
 
+type WordProps = {
+  wordData: japReader.IchiParsedWordData
+}
+const Word = ({ wordData }: WordProps): JSX.Element => {
+  const [wordStatus, setWordStatus] = useState(getWordStatusData(wordData.dictForm))
+  const wordFuriganaJSX = <FuriganaJSX kanaOrKanji={wordData.word} kana={wordData.rubyReading} />
 
-const getFuriganaData = (w: string, r: string): FuriganaObject[] => {
-  try {
-    return fit(w, r, { type: 'object' });
-  } catch (err) {
-    // return anyway if the word is a digit
-    if (/^[０１２３４５６７８９]+$/.test(w))
-      return [{ w: w, r: r }]
+  const handleMouseDown = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>): boolean => {
+    console.log(event.button, event.buttons)
+    switch (event.button) {
+      case MOUSE_BUTTONS.MAIN_BUTTON:
+        if (event.ctrlKey) // + Ctrl 
+          setWordStatus('ignored');
+        else if (wordStatus == 'new')
+          setWordStatus('seen');
+        break;
+      case MOUSE_BUTTONS.SECONDARY_BUTTON:
+        setWordStatus('known');
+        break;
+    }
+    const extendedWordData: japReader.ExtendedWordData = {
+      ...wordData,
+      status: wordStatus
+    }
+    ipcRenderer.send('sendWordData', extendedWordData);
+    ipcRenderer.send('openDict');
+
+    return true;
   }
+
+
+  if (!wordData.definitions)
+    return <span className="junk">{wordData.word}</span>
+
+
+  return (
+    <span
+      onMouseDown={(event) => handleMouseDown(event)}
+      className={wordStatus || 'word'}>
+
+      {wordFuriganaJSX}
+
+    </span>)
 }
 
-const getFuriganaJSX = (furiganaList: FuriganaObject[]): JSX.Element => {
-  return (<>{
-    furiganaList.map((furiganaEntry: FuriganaObject, index: number) => 
-      <ruby key={index}>
-        {furiganaEntry.w.match(/\p{Script=Han}/u) ?
-          <>{furiganaEntry.w}<rp>（</rp><rt>{furiganaEntry.r}</rt><rp>）</rp></> :
-          <>{furiganaEntry.w}</>
-        }
-      </ruby>
-    )
-  }</>)
+type SentenceProps = {
+  words: japReader.IchiParsedWordData[]
 }
-
-const parseWord = (word: ParsedWordData): JSX.Element => {
-  const furiganaWordData = getFuriganaData(word.word, word.rubyReading)
-  const furiganaDictData = (word.word == word.dictForm) ?
-    furiganaWordData : getFuriganaData(word.dictForm, word.dictFormReading)
-
-
-  return (<>
-    {getFuriganaJSX(furiganaWordData)}
-  </>)
-}
-
-export const getSentenceJSX = (words: ParsedWordData[]): JSX.Element => {
-  return (<>
-    {words.map((word: ParsedWordData, index: number) => 
-      <span className="word" key={index}>
-        {parseWord(word)}
-      </span>
+export const Sentence = ({ words }: SentenceProps): JSX.Element => {
+  return (<div className="sentence">
+    {words.map((wordData: japReader.IchiParsedWordData, index: number) =>
+      <Word key={index} wordData={wordData} />
     )}
-  </>)
+  </div>)
 }

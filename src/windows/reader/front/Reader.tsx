@@ -2,7 +2,7 @@ import { ipcRenderer } from "electron";
 import { useEffect, useRef, useState } from "react";
 import log from 'electron-log/renderer';
 import Loader from "@globals/components/Loader/Loader";
-import { getSentenceJSX } from "./getSentenceJSX";
+import { Sentence } from "./getSentenceJSX";
 
 
 const ConnectingToIchiMessage = () => {
@@ -25,16 +25,7 @@ const ParseNotificationMessage = () => {
     </div>)
 }
 
-const ParsedJapaneseSentence = (props: any) => {
-    const words = props.words;
-
-    return (<div className='parsed-sentence'>
-        {getSentenceJSX(words)}
-    </div>)
-}
-
-
-const Outcome = (props: any) => {
+const Message = (props: any) => {
     const isIchiReady = props.isIchiReady;
     const japaneseSentence = props.japaneseSentence;
     const words = props.words;
@@ -42,7 +33,7 @@ const Outcome = (props: any) => {
     if (!isIchiReady) return (<ConnectingToIchiMessage />)
     if (japaneseSentence == '') return (<ConnectedToIchiMessage />)
     if (japaneseSentence == '/parsing/') return (<ParseNotificationMessage />)
-    return (<ParsedJapaneseSentence words={words} />)
+    return (<Sentence words={words} />)
 }
 
 
@@ -55,7 +46,7 @@ export const Reader = () => {
     useEffect(() => {
         log.log("mounted reader")
 
-        ipcRenderer.send("set/reader/isReady")
+        ipcRenderer.send("announce/reader/isReady")
 
         ipcRenderer.on("receiveParsedData", (event, words: any[], japaneseSentence: string) => {
             log.log(words)
@@ -70,7 +61,7 @@ export const Reader = () => {
         })
 
         // Case #1: Reader loaded before Ichi
-        ipcRenderer.on("set/ichi/isReady", () => {
+        ipcRenderer.on("announce/ichi/isReady", () => {
             setIchiReady(true);
         })
 
@@ -85,14 +76,15 @@ export const Reader = () => {
             log.log("unmounted reader")
             ipcRenderer.removeAllListeners("receiveParsedData");
             ipcRenderer.removeAllListeners("parseNotification");
-            ipcRenderer.removeAllListeners("set/ichi/isReady");
+            ipcRenderer.removeAllListeners("announce/ichi/isReady");
         }
     }, [])
 
     return (
-        <Outcome
+        <Message
             isIchiReady={isIchiReady}
             japaneseSentence={japaneseSentence}
-            words={currentWords.current} />
+            words={currentWords.current} 
+        />
     )
 }

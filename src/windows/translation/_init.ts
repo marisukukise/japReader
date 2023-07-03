@@ -1,10 +1,10 @@
 import { app, dialog, BrowserWindow, ipcMain } from "electron";
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 
 import log from 'electron-log';
 
-import { getSettingsStore } from "@globals/ts/initializeStore";
+import { getSettingsStore } from "@globals/ts/main/initializeStore";
 const settingsStore = getSettingsStore();
 const { useReader } = settingsStore.get("options")
 
@@ -89,8 +89,8 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     });
   }
 
-  ipcMain.on("set/deep/isReady", (event) =>  { 
-    translationWindow.webContents.send("set/deep/isReady")
+  ipcMain.on("announce/deep/isReady", (event) =>  { 
+    translationWindow.webContents.send("announce/deep/isReady")
   });
 
   showWindowWhenReady(translationWindow, true);

@@ -66,7 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
     log.verbose("Listening to clipboard changes...")
     clipboardListener.startListening(libPath);
 
-    ipcRenderer.send("set/clipboard/isReady")
+    ipcRenderer.send("announce/clipboard/isReady")
     clipboardListener.on('change', () => {
       log.verbose("Clipboard change detected")
       handleChange();

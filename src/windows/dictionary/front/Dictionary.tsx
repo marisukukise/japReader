@@ -6,12 +6,12 @@ export const Dictionary = () => {
     const [isReaderReady, setReaderReady] = useState(false);
 
     // Case #1: Dictionary loaded before Reader
-    ipcRenderer.on("set/reader/isReady", (event: any) => {
+    ipcRenderer.on("announce/reader/isReady", (event: any) => {
         setReaderReady(true);
     })
 
     useEffect(()=>{
-        ipcRenderer.send("set/dictionary/isReady")
+        ipcRenderer.send("announce/dictionary/isReady")
 
         // Case #2: Raeder loaded before Dictionary
         if (!isReaderReady) {

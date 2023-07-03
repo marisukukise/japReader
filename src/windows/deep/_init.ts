@@ -1,10 +1,10 @@
 import { BrowserWindow, ipcMain } from "electron";
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
 
 
-import { getSettingsStore } from "@globals/ts/initializeStore";
+import { getSettingsStore } from "@globals/ts/main/initializeStore";
 const settingsStore = getSettingsStore();
 const { useDeepLApi } = settingsStore.get("options")
 

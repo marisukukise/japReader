@@ -1,6 +1,6 @@
 import { BrowserWindow } from "electron";
 import log from 'electron-log';
-import { getWindowStore } from "@globals/ts/initializeStore";
+import { getWindowStore } from "@globals/ts/main/initializeStore";
 const windowStore = getWindowStore();
 
 export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProduction: boolean): void => {

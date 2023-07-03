@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/helpers";
+import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
 
 export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => {
@@ -46,8 +46,8 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
     dictionaryWindow.webContents.send('receiveTranslation', englishText);
   });
 
-  ipcMain.on("set/reader/isReady", (event) =>  { 
-    dictionaryWindow.webContents.send("set/reader/isReady")
+  ipcMain.on("announce/reader/isReady", (event) =>  { 
+    dictionaryWindow.webContents.send("announce/reader/isReady")
   });
 
   return dictionaryWindow;

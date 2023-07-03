@@ -6,12 +6,12 @@ export const Translation = () => {
     const [isDeepReady, setDeepReady] = useState(false);
 
     // Case #1: Translation loaded before DeepL
-    ipcRenderer.on("set/deep/isReady", (event: any) => {
+    ipcRenderer.on("announce/deep/isReady", (event: any) => {
         setDeepReady(true);
     })
 
     useEffect(()=>{
-        ipcRenderer.send("set/translation/isReady")
+        ipcRenderer.send("announce/translation/isReady")
 
         // Case #2: DeepL loaded before Translation
         if (!isDeepReady) {

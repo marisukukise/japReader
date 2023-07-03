@@ -14,13 +14,13 @@ let isSettingsWindowReady = false;
 export function startMainListeners() {
     log.debug("Starting ipcMain listeners...")
 
-    ipcMain.on("set/clipboard/isReady",     (event) =>  { isClipboardWindowReady = true; log.log("clipboard is ready")  })
-    ipcMain.on("set/deep/isReady",          (event) =>  { isDeepWindowReady = true; log.log("deep is ready") })
-    ipcMain.on("set/ichi/isReady",          (event) =>  { isIchiWindowReady = true; log.log("ichi is ready") })
-    ipcMain.on("set/reader/isReady",        (event) =>  { isReaderWindowReady = true; log.log("reader is ready") })
-    ipcMain.on("set/translation/isReady",   (event) =>  { isTranslationWindowReady = true; log.log("translation is ready") })
-    ipcMain.on("set/dictionary/isReady",    (event) =>  { isDictionaryWindowReady = true; log.log("dictionary is ready") })
-    ipcMain.on("set/settings/isReady",      (event) =>  { isSettingsWindowReady = true; log.log("settings is ready") })
+    ipcMain.on("announce/clipboard/isReady",     (event) =>  { isClipboardWindowReady = true; log.log("clipboard is ready")  })
+    ipcMain.on("announce/deep/isReady",          (event) =>  { isDeepWindowReady = true; log.log("deep is ready") })
+    ipcMain.on("announce/ichi/isReady",          (event) =>  { isIchiWindowReady = true; log.log("ichi is ready") })
+    ipcMain.on("announce/reader/isReady",        (event) =>  { isReaderWindowReady = true; log.log("reader is ready") })
+    ipcMain.on("announce/translation/isReady",   (event) =>  { isTranslationWindowReady = true; log.log("translation is ready") })
+    ipcMain.on("announce/dictionary/isReady",    (event) =>  { isDictionaryWindowReady = true; log.log("dictionary is ready") })
+    ipcMain.on("announce/settings/isReady",      (event) =>  { isSettingsWindowReady = true; log.log("settings is ready") })
 
 
     ipcMain.handle("get/clipboard/isReady", async (event) => { return isClipboardWindowReady });

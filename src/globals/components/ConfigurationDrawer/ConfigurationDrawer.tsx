@@ -33,15 +33,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-type Setting = {
-  key: string,
-  label: string,
-  icon: JSX.Element,
-  fn: () => void,
-}
 
 type ConfigurationDrawerProps = {
-  settings: Setting[]
+  settings: japReader.ConfigurationDrawerSetting[]
 }
 
 const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Element => {

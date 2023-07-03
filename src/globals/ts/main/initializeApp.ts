@@ -1,6 +1,6 @@
 import log from 'electron-log';
 
-import { getSettingsStore } from "@globals/ts/initializeStore";
+import { getSettingsStore } from "@globals/ts/main/initializeStore";
 const settingsStore = getSettingsStore();
 const { useDeepL, useReader } = settingsStore.get("options")
 
