@@ -1,201 +1,178 @@
+// Some black magic is going on in this file
+// Better left alone as long as it works
+
 const { ipcRenderer } = require('electron');
 import log from 'electron-log/renderer';
 
 
+const WORDS: japReader.IchiParsedWordData[] = [];
+const PARSED_WORDS: japReader.IchiParsedWordData[] = [];
+let FULL_TEXT: string = '';
+let EMPTY_WORD_DATA: japReader.IchiParsedWordData = {
+  word: '',
+  dictForm: '',
+  dictFormReading: '',
+  rubyReading: '',
+  definitions: '',
+};
+
+
+const addMissingCharacters = (wordData: japReader.IchiParsedWordData, index: any): void => {
+  const searchIndex = FULL_TEXT.indexOf(wordData.word);
+
+  if (searchIndex > 0) {
+    const missingText = FULL_TEXT.substring(0, searchIndex);
+    Array.from(missingText).forEach((char) => {
+      PARSED_WORDS.push({
+        ...EMPTY_WORD_DATA,
+        word: char,
+      });
+    });
+
+    FULL_TEXT = FULL_TEXT.replace(missingText, '');
+    addMissingCharacters(wordData, null);
+  } else {
+    PARSED_WORDS.push(wordData);
+    FULL_TEXT = FULL_TEXT.replace(wordData.word, '');
+  }
+
+  if (index === WORDS.length - 1 && FULL_TEXT.length > 0) {
+    Array.from(FULL_TEXT).forEach((char) => {
+      PARSED_WORDS.push({
+        ...EMPTY_WORD_DATA,
+        word: char,
+      });
+    });
+  }
+};
+
+
+const getDictForm = (text: string): string => {
+  return text
+    .replace(/ 【.+/g, '')
+    .replace(/[0-9]+\. /g, '')
+    .replace(/\s/g, '');
+}
+
+const getReading = (text: string): string => {
+  let readingText = text
+    .replace(/.+【/g, '')
+    .replace(/】/g, '')
+    .replace(/[0-9]+\. /g, '')
+    .replace(/\s/g, '');
+  readingText = Array.from(readingText)
+    .filter((char) => /[\p{Script=Hiragana}\p{Script=Katakana}]/u.test(char))
+    .join('');
+  return readingText;
+}
+
+const getWord = (text: string): string => {
+  return text
+    .replace(/ 【.+/, '')
+    .replace(/[0-9]+\. /, '');
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
   const $ = require('jquery');
 
-  ipcRenderer.on('parseWithIchi', (event, text) => {
+  ipcRenderer.on('announce/clipboard/changeDetected', (event, text) => {
     document.location.href = `https://ichi.moe/cl/qr/?q=${text}&r=kana`;
   });
 
   const connectionCheck = setTimeout(() => {
     if (document.querySelector('.wrapper')) {
-      ipcRenderer.send('ichiConnected');
       ipcRenderer.send('announce/ichi/isReady');
       clearInterval(connectionCheck);
     }
   }, 500);
 
-  if (
-    document.location.href !== 'https://ichi.moe/cl/qr/?q=&r=kana' &&
-    document.location.href.includes('https://ichi.moe/')
-  ) {
-    Array.from(document.querySelectorAll('.gloss-row')).forEach((row) => {
-      if (!row.classList.contains('hidden')) row.classList.add('word-chunk');
-    });
+  if (document.location.href === 'https://ichi.moe/cl/qr/?q=&r=kana')
+    return;
+  if (!document.location.href.includes('https://ichi.moe/'))
+    return;
 
-    const getDictForm = (text: string) =>
-      text
-        .replace(/ 【.+/g, '')
-        .replace(/[0-9]+\. /g, '')
-        .replace(/\s/g, '');
+  const gloss_row = document.querySelectorAll('.gloss-row');
+  Array.from(gloss_row).forEach((row) => {
+    if (!row.classList.contains('hidden'))
+      row.classList.add('word-chunk');
+  });
 
-    const getReading = (text: string) => {
-      let readingText = text
-        .replace(/.+【/g, '')
-        .replace(/】/g, '')
-        .replace(/[0-9]+\. /g, '')
-        .replace(/\s/g, '');
-      readingText = Array.from(readingText)
-        .filter((char) => /[\p{Script=Hiragana}\p{Script=Katakana}]/u.test(char))
-        .join('');
-      return readingText;
-    };
+  const jsp_panes = document.querySelectorAll('.word-chunk .jspPane')
+  Array.from(jsp_panes).forEach((jsp_pane: Element) => {
+    const wordData = { ...EMPTY_WORD_DATA }
 
-    const getWord = (text: string) =>
-      text.replace(/ 【.+/, '').replace(/[0-9]+\. /, '');
+    jsp_pane.classList.add('current-word');
 
-    const words: any[] = [];
+    const first_child_dt = document.querySelector('.current-word dt:first-child');
+    wordData.word = getWord(first_child_dt.textContent);
 
-    Array.from(document.querySelectorAll('.word-chunk .jspPane')).forEach(
-      (word) => {
-        const wordData = {
-          word: '',
-          dictForm: '',
-          dictFormReading: '',
-          rubyReading: '',
-          definitions: '',
-        };
+    const dt = document.querySelector('.current-word dt');
+    const compounds = document.querySelector('.current-word .compounds');
+    const conj_gloss_dt = document.querySelector('.current-word .conj-gloss dl dt');
+    const conjugations_dt = $('.current-word .compounds dd:first .conjugations dl dt');
+    const first_dt = $('.current-word .compounds dt:first');
+    const current_word = document.querySelector('.current-word')
 
-        word.classList.add('current-word');
-
-        wordData.word = getWord(
-          document.querySelector('.current-word dt:first-child').textContent
-        );
-
-        if (document.querySelector('.current-word .compounds')) {
-          if (
-            $('.current-word .compounds dd:first .conjugations dl dt').length >
-            0
-          ) {
-            wordData.dictForm = getDictForm(
-              $('.current-word .compounds dd:first .conjugations dl dt')[0]
-                .textContent
-            );
-            wordData.dictFormReading = getReading(
-              $('.current-word .compounds dd:first .conjugations dl dt')[0]
-                .textContent
-            );
-          } else {
-            wordData.dictForm = getDictForm(
-              $('.current-word .compounds dt:first')[0].textContent
-            );
-            word.classList.add('testing');
-            wordData.dictFormReading = getReading(
-              $('.current-word .compounds dt:first')[0].textContent
-            );
-          }
-          wordData.rubyReading = getReading(
-            document.querySelector('.current-word dt').textContent
-          );
-        } else if (document.querySelector('.current-word .conj-gloss dl dt')) {
-          wordData.dictForm = getDictForm(
-            document.querySelector('.current-word .conj-gloss dl dt')
-              .textContent
-          );
-          wordData.dictFormReading = getReading(
-            document.querySelector('.current-word .conj-gloss dl dt')
-              .textContent
-          );
-          wordData.rubyReading = getReading(
-            document.querySelector('.current-word dt').textContent
-          );
-        } else {
-          wordData.dictForm = getDictForm(
-            document.querySelector('.current-word dt').textContent
-          );
-          wordData.dictFormReading = getReading(
-            document.querySelector('.current-word dt').textContent
-          );
-          wordData.rubyReading = getReading(
-            document.querySelector('.current-word dt').textContent
-          );
-        }
-
-        if (document.querySelector('.current-word').innerHTML.includes('['))
-          wordData.definitions = document.querySelector(
-            '.current-word'
-          ).innerHTML;
-
-        words.push(wordData);
-
-        word.classList.remove('current-word');
+    if (compounds) {
+      if (conjugations_dt.length > 0) {
+        wordData.dictForm = getDictForm(conjugations_dt[0].textContent);
+        wordData.dictFormReading = getReading(conjugations_dt[0].textContent);
       }
-    );
-
-    let fullText = '';
-
-    Array.from(document.querySelectorAll('.query-text')).forEach((element) => {
-      fullText += element.textContent;
-    });
-
-    if (words.length === 0)
-      words.push({
-        word: fullText,
-        dictForm: '',
-        dictFormReading: '',
-        rubyReading: '',
-        definitions: '',
-      });
-
-    const returnedWords: any[] = [];
-
-    const addMissingCharacters = (wordData: any, index: any) => {
-      const searchIndex = fullText.indexOf(wordData.word);
-
-      if (searchIndex > 0) {
-        const missingText = fullText.substring(0, searchIndex);
-        Array.from(missingText).forEach((char) => {
-          returnedWords.push({
-            word: char,
-            dictForm: '',
-            dictFormReading: '',
-            rubyReading: '',
-            definitions: '',
-          });
-        });
-
-        fullText = fullText.replace(missingText, '');
-        addMissingCharacters(wordData, null);
-      } else {
-        returnedWords.push(wordData);
-        fullText = fullText.replace(wordData.word, '');
+      else {
+        wordData.dictForm = getDictForm(first_dt[0].textContent);
+        wordData.dictFormReading = getReading(first_dt[0].textContent);
       }
 
-      if (index === words.length - 1 && fullText.length > 0) {
-        Array.from(fullText).forEach((char) => {
-          returnedWords.push({
-            word: char,
-            dictForm: '',
-            dictFormReading: '',
-            rubyReading: '',
-            definitions: '',
-          });
-        });
-      }
-    };
+      wordData.rubyReading = getReading(dt.textContent);
+    }
+    else if (conj_gloss_dt) {
+      wordData.dictForm = getDictForm(conj_gloss_dt.textContent);
+      wordData.dictFormReading = getReading(conj_gloss_dt.textContent);
+      wordData.rubyReading = getReading(dt.textContent);
+    }
+    else {
+      wordData.dictForm = getDictForm(dt.textContent);
+      wordData.dictFormReading = getReading(dt.textContent);
+      wordData.rubyReading = getReading(dt.textContent);
+    }
 
-    words.forEach((wordData, index) => {
-      addMissingCharacters(wordData, index);
-    });
+    if (current_word.innerHTML.includes('[')) {
+      wordData.definitions = current_word.innerHTML;
+    }
 
-    fullText = '';
+    WORDS.push(wordData);
 
-    Array.from(document.querySelectorAll('.query-text')).forEach((element) => {
-      fullText += element.textContent;
-    });
-
-    log.silly("Words returned from ichi: ", returnedWords);
-    log.silly("Full text returned from ichi: ", fullText);
-    ipcRenderer.send('sendParsedData', returnedWords, fullText);
+    jsp_pane.classList.remove('current-word');
   }
+  );
+
+  const query_text = document.querySelectorAll('.query-text');
+  Array.from(query_text).forEach((element) => {
+    FULL_TEXT += element.textContent;
+  });
+
+  if (WORDS.length === 0)
+    WORDS.push({
+      ...EMPTY_WORD_DATA,
+      word: FULL_TEXT,
+    });
+
+  WORDS.forEach((wordData, index) => {
+    addMissingCharacters(wordData, index);
+  });
+
+  FULL_TEXT = '';
+
+  Array.from(query_text).forEach((element) => {
+    FULL_TEXT += element.textContent;
+  });
+
+  ipcRenderer.send('set/ichi/wordData', PARSED_WORDS, FULL_TEXT);
 });
 
 setTimeout(() => {
   if (document.body.children.length === 0) {
-    ipcRenderer.send('ichiConnectionError');
+    ipcRenderer.send('announce/ichi/connectionError');
   }
 }, 10000);

@@ -21,7 +21,7 @@ export const mainConfig: Configuration = {
     }
   },
   mode: 'development',
-  devtool: 'eval',
+  devtool: 'eval-cheap-source-map',
   devServer: {
     static: './dist'
   }

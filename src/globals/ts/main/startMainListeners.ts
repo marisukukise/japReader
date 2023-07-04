@@ -9,7 +9,6 @@ let isReaderWindowReady = false;
 let isTranslationWindowReady = false;
 let isDictionaryWindowReady = false;
 let isSettingsWindowReady = false;
-let ichiParsedData: japReader.IchiParsedWordData[] = [];
 
 export function startMainListeners() {
     log.debug("Starting ipcMain listeners...")
