@@ -79,8 +79,6 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
     // Get the store
     const statusDataList = statusDataStore.get("status_data");
 
-    console.table([wordStatus, nextWordStatus, wordData.dictForm])
-
     // Filter out the old status from the list if the state is not "new"
     if ([WORD_DATA_STATUSES.SEEN, WORD_DATA_STATUSES.KNOWN, WORD_DATA_STATUSES.IGNORED].includes(wordStatus))
       statusDataList[`${wordStatus}`] = statusDataList[`${wordStatus}`]
@@ -93,7 +91,8 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
     statusDataStore.set('status_data', statusDataList)
 
     // Send messages to dictionary
-    ipcRenderer.send('sendWordData', extendedWordData);
+    console.log(extendedWordData)
+    ipcRenderer.send('set/reader/extendedWordData', extendedWordData);
     ipcRenderer.send('openDict');
 
     return true;
@@ -102,7 +101,7 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
   return wordData.definitions
     ? <span
       onMouseDown={(event) => handleMouseDown(event)}
-      className={wordStatus || 'word'}>
+      className={wordStatus + " word"}>
       <FuriganaJSX kanaOrKanji={wordData.word} kana={wordData.rubyReading} />
     </span>
     : <span className='junk'>{wordData.word}</span>

@@ -2,7 +2,7 @@ import { ipcRenderer } from "electron";
 import { useEffect, useRef, useState } from "react";
 import log from 'electron-log/renderer';
 import Loader from "@globals/components/Loader/Loader";
-import { Sentence } from "./getSentenceJSX";
+import { Sentence } from "./Sentence";
 
 
 
@@ -99,6 +99,7 @@ export const Reader = () => {
         return () => {
             log.log("unmounted reader")
             ipcRenderer.removeAllListeners("set/ichi/wordData");
+            ipcRenderer.removeAllListeners("announce/ichi/connectionError");
             ipcRenderer.removeAllListeners("announce/clipboard/changeDetected");
             ipcRenderer.removeAllListeners("announce/ichi/isReady");
         }

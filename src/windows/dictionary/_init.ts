@@ -19,7 +19,7 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
   dictionaryWindow.loadURL(webpack_entry);
   if (process.env.JAPREADER_ENV === 'dev') dictionaryWindow.webContents.openDevTools();
 
-  showWindowWhenReady(dictionaryWindow, true);
+  showWindowWhenReady(dictionaryWindow, false);
 
   dictionaryWindow.on('close', (event: any) => {
     event.preventDefault();
@@ -44,6 +44,10 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
 
   ipcMain.on('sendTranslation', (event, englishText) => {
     dictionaryWindow.webContents.send('receiveTranslation', englishText);
+  });
+
+  ipcMain.on('set/reader/extendedWordData', (event, word: japReader.ExtendedWordData) => {
+    dictionaryWindow.webContents.send('set/reader/extendedWordData', word);
   });
 
   ipcMain.on("announce/reader/isReady", (event) =>  { 

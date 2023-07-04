@@ -6,27 +6,12 @@ import '@globals/scss/global.scss';
 import { Reader } from './front/Reader';
 import log from 'electron-log/renderer';
 
-import MailIcon from '@mui/icons-material/Mail';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
+import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings';
 
 const settings = [
-    {
-        key: "open-settings",
-        label: "設定をあける",
-        icon: <MailIcon />,
-        fn: () => {
-            log.log("opened-settings")
-        }
-    },
-    {
-        key: "dark-mode",
-        label: "夜モード",
-        icon: <AcUnitIcon />,
-        fn: () => {
-            log.log("toggled-dark-mode")
-        }
-    },
+    ConfigurationDrawerSettings.open_settings,
+    ConfigurationDrawerSettings.dark_mode,
 ]
 
 import { createRoot } from 'react-dom/client';

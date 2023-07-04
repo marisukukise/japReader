@@ -35,12 +35,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 type ConfigurationDrawerProps = {
-  settings: japReader.ConfigurationDrawerSetting[]
+  settings: japReader.ConfigurationDrawerSettingContents[]
 }
 
 const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Element => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  console.log(settings);
 
 
   const handleDrawerOpen = () => {
@@ -94,8 +95,8 @@ const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Elemen
         </DrawerHeader>
         <Divider />
         <List sx={{ display: "flex", flexDirection: "row-reverse", alignItems: "flex-start" }}>
-          {settings.map((setting: any) => (
-            <ListItem key={setting.key} disablePadding>
+          {settings.map((setting: japReader.ConfigurationDrawerSettingContents, index: number) => (
+            <ListItem key={index} disablePadding>
               <ListItemButton sx={{ flexDirection: "column" }} onClick={setting.fn}>
                 <ListItemIcon sx={{ minWidth: "fit-content" }}>
                   {setting.icon}

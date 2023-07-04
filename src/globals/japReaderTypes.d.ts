@@ -1,6 +1,4 @@
 declare namespace japReader {
-
-
     interface IchiParsedWordData {
         word: string;
         dictForm: string;
@@ -14,11 +12,15 @@ declare namespace japReader {
     }
 
 
-    interface ConfigurationDrawerSetting {
-        key: string;
+    
+    interface ConfigurationDrawerSettingContents {
         label: string;
         icon: JSX.Element;
         fn: () => void;
+    }
+
+    interface ConfigurationDrawerSetting {
+        [key: string]: ConfigurationDrawerSettingContents
     }
 
     interface FuriganaObject {

@@ -19,7 +19,7 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
   settingsWindow.loadURL(webpack_entry);
   if (process.env.JAPREADER_ENV === 'dev') settingsWindow.webContents.openDevTools();
 
-  showWindowWhenReady(settingsWindow, true);
+  showWindowWhenReady(settingsWindow, false);
 
   settingsWindow.on('close', (event: any) => {
     event.preventDefault();
