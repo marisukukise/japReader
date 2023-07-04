@@ -40,35 +40,34 @@ const schemaOptions = {
     }
 }
 
-
 interface StatusData {
-  seen: string[];
-  known: string[];
-  ignored: string[];
+    seen: string[];
+    known: string[];
+    ignored: string[];
 }
 
 interface SchemaStatusData {
-  status_data: {
-    type: "object";
-    properties: {
-      seen: { default: string[]; type: "array" };
-      known: { default: string[]; type: "array" };
-      ignored: { default: string[]; type: "array" };
+    status_data: {
+        type: "object";
+        properties: {
+            seen: { default: string[]; type: "array" };
+            known: { default: string[]; type: "array" };
+            ignored: { default: string[]; type: "array" };
+        };
+        default: StatusData;
     };
-    default: StatusData;
-  };
 }
 
 const schemaStatusData: SchemaStatusData = {
-  status_data: {
-    type: "object",
-    properties: {
-      seen: { default: [], type: "array" },
-      known: { default: [], type: "array" },
-      ignored: { default: [], type: "array" },
+    status_data: {
+        type: "object",
+        properties: {
+            seen: { default: [], type: "array" },
+            known: { default: [], type: "array" },
+            ignored: { default: [], type: "array" },
+        },
+        default: { seen: [], known: [], ignored: [] },
     },
-    default: { seen: [], known: [], ignored: [] },
-  },
 };
 
 const schemaWindow = {

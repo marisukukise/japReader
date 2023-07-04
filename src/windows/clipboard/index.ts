@@ -53,22 +53,18 @@ const handleChange = () => {
       ipcRenderer.send('tooManyCharacters');
     } else {
       log.info("Detected japanese text in clipboard: ", clipboardText)
-      ipcRenderer.send('clipboardChanged', clipboardText);
-      ipcRenderer.send('parseNotification');
+      ipcRenderer.send('announce/clipboard/changeDetected', clipboardText);
     }
   }
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  log.debug("DOMContentLoaded in clipboard")
 
   ipcRenderer.invoke("get/libPath").then((libPath: string) => {
-    log.verbose("Listening to clipboard changes...")
     clipboardListener.startListening(libPath);
 
     ipcRenderer.send("announce/clipboard/isReady")
     clipboardListener.on('change', () => {
-      log.verbose("Clipboard change detected")
       handleChange();
     });
 

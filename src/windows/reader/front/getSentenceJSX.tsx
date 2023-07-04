@@ -3,23 +3,30 @@ const statusDataStore = getStatusDataStore();
 import { FuriganaJSX } from "@globals/ts/renderer/helpers";
 import { ipcRenderer } from "electron";
 import log from 'electron-log/renderer';
-import { FC, useEffect, useState } from "react";
+import { useState } from "react";
 
 const MOUSE_BUTTONS = {
-  'MAIN_BUTTON': 0, // Usually left button
-  'SECONDARY_BUTTON': 2, // Usually right button
-  'MIDDLE_BUTTON': 1, // Middle button
-  'FOURTH_BUTTON': 3, // Typically the 'browser back' button
-  'FIFTH_BUTTON': 4, // Typically the 'browser forward' button
+  'MAIN': 0, // Usually left button
+  'SECONDARY': 2, // Usually right button
+  'MIDDLE': 1, // Middle button
+  'FOURTH': 3, // Typically the 'browser back' button
+  'FIFTH': 4, // Typically the 'browser forward' button
+}
+
+const WORD_DATA_STATUSES = {
+  NEW: "new",
+  SEEN: "seen",
+  KNOWN: "known",
+  IGNORED: "ignored",
 }
 
 const getWordStatusData = (dictionaryForm: string): string => {
   const statusDataList = statusDataStore.get("status_data");
 
-  let status = "new"
-  if (statusDataList.known.includes(dictionaryForm)) status = "known"
-  if (statusDataList.seen.includes(dictionaryForm)) status = "seen"
-  if (statusDataList.ignored.includes(dictionaryForm)) status = "ignored"
+  let status = WORD_DATA_STATUSES.NEW
+  if (statusDataList.known.includes(dictionaryForm)) status = WORD_DATA_STATUSES.KNOWN
+  if (statusDataList.seen.includes(dictionaryForm)) status = WORD_DATA_STATUSES.SEEN
+  if (statusDataList.ignored.includes(dictionaryForm)) status = WORD_DATA_STATUSES.IGNORED
 
   return status;
 }
@@ -29,51 +36,83 @@ type WordProps = {
 }
 const Word = ({ wordData }: WordProps): JSX.Element => {
   const [wordStatus, setWordStatus] = useState(getWordStatusData(wordData.dictForm))
-  const wordFuriganaJSX = <FuriganaJSX kanaOrKanji={wordData.word} kana={wordData.rubyReading} />
 
   const handleMouseDown = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>): boolean => {
-    console.log(event.button, event.buttons)
+    // Only continue when pressed main or secondary button
+    if (![MOUSE_BUTTONS.MAIN, MOUSE_BUTTONS.SECONDARY].includes(event.button))
+      return;
+
+    let nextWordStatus = wordStatus;
+
     switch (event.button) {
-      case MOUSE_BUTTONS.MAIN_BUTTON:
-        if (event.ctrlKey) // + Ctrl 
-          setWordStatus('ignored');
-        else if (wordStatus == 'new')
-          setWordStatus('seen');
+
+      // Left mouse button
+      case MOUSE_BUTTONS.MAIN:
+        // + CTRL
+        if (event.ctrlKey)
+          nextWordStatus = WORD_DATA_STATUSES.IGNORED;
+
+        else if (wordStatus == WORD_DATA_STATUSES.NEW)
+          nextWordStatus = WORD_DATA_STATUSES.SEEN;
+
         break;
-      case MOUSE_BUTTONS.SECONDARY_BUTTON:
-        setWordStatus('known');
+
+      // Right mouse button
+      case MOUSE_BUTTONS.SECONDARY:
+        nextWordStatus = WORD_DATA_STATUSES.KNOWN;
         break;
+
+      default:
+        console.log("unknown code")
+
     }
+
+    setWordStatus(nextWordStatus);
+
+    // Create word data object for ditionary
     const extendedWordData: japReader.ExtendedWordData = {
       ...wordData,
-      status: wordStatus
+      status: nextWordStatus
     }
+
+
+    // Get the store
+    const statusDataList = statusDataStore.get("status_data");
+
+    console.table([wordStatus, nextWordStatus, wordData.dictForm])
+
+    // Filter out the old status from the list if the state is not "new"
+    if ([WORD_DATA_STATUSES.SEEN, WORD_DATA_STATUSES.KNOWN, WORD_DATA_STATUSES.IGNORED].includes(wordStatus))
+      statusDataList[`${wordStatus}`] = statusDataList[`${wordStatus}`]
+        .filter((elem: string) => elem !== wordData.dictForm)
+
+    // Push the new status to the list
+    statusDataList[`${nextWordStatus}`].push(wordData.dictForm)
+
+    // Update the store
+    statusDataStore.set('status_data', statusDataList)
+
+    // Send messages to dictionary
     ipcRenderer.send('sendWordData', extendedWordData);
     ipcRenderer.send('openDict');
 
     return true;
   }
 
-
-  if (!wordData.definitions)
-    return <span className="junk">{wordData.word}</span>
-
-
-  return (
-    <span
+  return wordData.definitions
+    ? <span
       onMouseDown={(event) => handleMouseDown(event)}
       className={wordStatus || 'word'}>
-
-      {wordFuriganaJSX}
-
-    </span>)
+      <FuriganaJSX kanaOrKanji={wordData.word} kana={wordData.rubyReading} />
+    </span>
+    : <span className='junk'>{wordData.word}</span>
 }
 
 type SentenceProps = {
   words: japReader.IchiParsedWordData[]
 }
 export const Sentence = ({ words }: SentenceProps): JSX.Element => {
-  return (<div className="sentence">
+  return (<div className='sentence'>
     {words.map((wordData: japReader.IchiParsedWordData, index: number) =>
       <Word key={index} wordData={wordData} />
     )}

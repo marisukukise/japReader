@@ -21,7 +21,7 @@ export const mainConfig: Configuration = {
     }
   },
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'eval',
   devServer: {
     static: './dist'
   }

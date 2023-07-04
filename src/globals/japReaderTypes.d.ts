@@ -1,4 +1,6 @@
 declare namespace japReader {
+
+
     interface IchiParsedWordData {
         word: string;
         dictForm: string;

@@ -50,20 +50,16 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.webContents.send('tooManyCharacters');
   });
 
-  ipcMain.on('parseNotification', () => {
-    readerWindow.webContents.send('parseNotification');
+  ipcMain.on('announce/clipboard/changeDetected', () => {
+    readerWindow.webContents.send('announce/clipboard/changeDetected');
   });
 
-  ipcMain.on('ichiConnected', () => {
-    readerWindow.webContents.send('ichiConnected');
+  ipcMain.on('announce/ichi/connectionError', () => {
+    readerWindow.webContents.send('announce/ichi/connectionError');
   });
 
-  ipcMain.on('ichiConnectionError', () => {
-    readerWindow.webContents.send('ichiConnectionError');
-  });
-
-  ipcMain.on('sendParsedData', (event, words, fullText) => {
-    readerWindow.webContents.send('receiveParsedData', words, fullText);
+  ipcMain.on('set/ichi/wordData', (event, words, fullText) => {
+    readerWindow.webContents.send('set/ichi/wordData', words, fullText);
   });
 
   ipcMain.on('refreshReader', () => {

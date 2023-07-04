@@ -28,8 +28,8 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
     ichiWindow.hide();
   });
 
-  ipcMain.on('clipboardChanged', (event, text) => {
-    ichiWindow.webContents.send('parseWithIchi', text);
+  ipcMain.on('announce/clipboard/changeDetected', (event, text) => {
+    ichiWindow.webContents.send('announce/clipboard/changeDetected', text);
   });
 
 

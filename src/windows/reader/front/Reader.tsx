@@ -5,9 +5,18 @@ import Loader from "@globals/components/Loader/Loader";
 import { Sentence } from "./getSentenceJSX";
 
 
+
+const IchiFailedMessage = () => {
+    return (<div className='ichi-state-msg connecting'>
+        Failed to connect to <span className="url">https://ichi.moe/</span>.<br/>
+        Check your internet connection and restart japReader.
+    </div>)
+}
+
 const ConnectingToIchiMessage = () => {
     return (<div className='ichi-state-msg connecting'>
-        Connecting to <span className="url">https://ichi.moe/</span>...
+        <Loader /> Connecting to <span className="url">https://ichi.moe/</span>...<br/>
+        Please wait patiently.
     </div>)
 }
 
@@ -18,8 +27,12 @@ const ConnectedToIchiMessage = () => {
 }
 
 const ParseNotificationMessage = () => {
-    // Some bloat 4 fun
-    var verbs = ['Dissecting', 'Analyzing', 'Loading', 'Inspecting', 'Scrutinizing'];
+    // Some bloated messages 4 fun
+    var verbs = [
+        'Dissecting', 'Analyzing', 'Loading', 'Inspecting', 
+        'Scrutinizing', 'Parsing', 'Breaking down', 'Resolving',
+        'Decomposing', 'Surveying', 'Probing', 'Scanning'
+    ];
     return (<div className='parse-notification-msg'>
         <Loader /> {verbs[Math.floor(Math.random() * verbs.length)]}...
     </div>)
@@ -27,9 +40,11 @@ const ParseNotificationMessage = () => {
 
 const Message = (props: any) => {
     const isIchiReady = props.isIchiReady;
+    const didIchiFail = props.didIchiFail;
     const japaneseSentence = props.japaneseSentence;
     const words = props.words;
 
+    if (didIchiFail) return (<IchiFailedMessage />)
     if (!isIchiReady) return (<ConnectingToIchiMessage />)
     if (japaneseSentence == '') return (<ConnectedToIchiMessage />)
     if (japaneseSentence == '/parsing/') return (<ParseNotificationMessage />)
@@ -39,23 +54,32 @@ const Message = (props: any) => {
 
 export const Reader = () => {
     const [isIchiReady, setIchiReady] = useState(false);
+    const [didIchiFail, setIchiFailed] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useState('');
     const currentWords = useRef({})
 
+    const getSentenceData = (words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
+
+    }
 
     useEffect(() => {
         log.log("mounted reader")
 
         ipcRenderer.send("announce/reader/isReady")
 
-        ipcRenderer.on("receiveParsedData", (event, words: any[], japaneseSentence: string) => {
-            log.log(words)
-            log.log(japaneseSentence)
+        ipcRenderer.on("set/ichi/wordData", (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
+            // TODO: Somehow add memoization to Japanese sentences, 
+            // so that common ones don't have to wait for ichi
             currentWords.current = words;
             setJapaneseSentence(japaneseSentence);
         })
 
-        ipcRenderer.on("parseNotification", () => {
+        ipcRenderer.on("announce/ichi/connectionError", () => {
+            log.log("ichi failed")
+            setIchiFailed(true);
+        })
+
+        ipcRenderer.on("announce/clipboard/changeDetected", () => {
             log.log("parsing")
             setJapaneseSentence("/parsing/");
         })
@@ -74,8 +98,8 @@ export const Reader = () => {
 
         return () => {
             log.log("unmounted reader")
-            ipcRenderer.removeAllListeners("receiveParsedData");
-            ipcRenderer.removeAllListeners("parseNotification");
+            ipcRenderer.removeAllListeners("set/ichi/wordData");
+            ipcRenderer.removeAllListeners("announce/clipboard/changeDetected");
             ipcRenderer.removeAllListeners("announce/ichi/isReady");
         }
     }, [])
@@ -83,6 +107,7 @@ export const Reader = () => {
     return (
         <Message
             isIchiReady={isIchiReady}
+            didIchiFail={didIchiFail}
             japaneseSentence={japaneseSentence}
             words={currentWords.current} 
         />
