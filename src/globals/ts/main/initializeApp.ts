@@ -34,14 +34,14 @@ export const initializeApp = (): void => {
   log.debug("Initializing japReader windows...")
 
   const clipboardWindow = createClipboardWindow(CLIPBOARD_WEBPACK_ENTRY);
+  const settingsWindow = createSettingsWindow(SETTINGS_WEBPACK_ENTRY);
   if (useReader) {
     const ichiWindow = createIchiWindow(ICHI_PRELOAD_WEBPACK_ENTRY);
     const readerWindow = createReaderWindow(READER_WEBPACK_ENTRY);
+    const dictionaryWindow = createDictionaryWindow(DICTIONARY_WEBPACK_ENTRY);
   }
   if (useDeepL) {
     const deepWindow = createDeepWindow(DEEP_PRELOAD_WEBPACK_ENTRY, DEEP_WEBPACK_ENTRY);
     const translationWindow = createTranslationWindow(TRANSLATION_WEBPACK_ENTRY);
   }
-  const dictionaryWindow = createDictionaryWindow(DICTIONARY_WEBPACK_ENTRY);
-  const settingsWindow = createSettingsWindow(SETTINGS_WEBPACK_ENTRY);
 };

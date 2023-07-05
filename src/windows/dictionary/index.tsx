@@ -5,31 +5,15 @@
 import './local.scss';
 import '@globals/scss/global.scss';
 import { Dictionary } from './front/Dictionary';
-import log from 'electron-log/renderer';
 
-import MailIcon from '@mui/icons-material/Mail';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 
-const settings = [
-    {
-        key: "open-settings",
-        label: "設定をあける",
-        icon: <MailIcon />,
-        fn: () => {
-            log.log("opened-settings")
-        }
-    },
-    {
-        key: "dark-mode",
-        label: "夜モード",
-        icon: <AcUnitIcon />,
-        fn: () => {
-            log.log("toggled-dark-mode")
-        }
-    },
-]
+import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings';
 
+const settings = [
+    ConfigurationDrawerSettings.open_settings,
+    ConfigurationDrawerSettings.dark_mode,
+]
 
 
 import { createRoot } from 'react-dom/client';

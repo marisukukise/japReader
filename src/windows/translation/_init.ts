@@ -15,6 +15,8 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     height: 600,
     width: 800,
     show: false,
+    frame: false,
+    transparent: true,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -85,6 +87,12 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
 
   ipcMain.on("announce/deep/isReady", (event) =>  { 
     translationWindow.webContents.send("announce/deep/isReady")
+  });
+
+  translationWindow.setBackgroundColor("hsla(100, 80%, 62%, 0.28)");
+    ipcMain.on('set/translation/windowBackgroundColor', (event, value) => {
+    log.log("received color: ", value)
+    translationWindow.setBackgroundColor(value);
   });
 
   showWindowWhenReady(translationWindow, true);

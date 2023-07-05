@@ -93,7 +93,7 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
     // Send messages to dictionary
     console.log(extendedWordData)
     ipcRenderer.send('set/reader/extendedWordData', extendedWordData);
-    ipcRenderer.send('openDict');
+    ipcRenderer.send('set/dictionary/open');
 
     return true;
   }

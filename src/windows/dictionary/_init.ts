@@ -30,7 +30,7 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
     dictionaryWindow.webContents.send('blur')
   })
 
-  ipcMain.on('openDict', () => {
+  ipcMain.on('set/dictionary/open', () => {
     dictionaryWindow.show();
   });
 

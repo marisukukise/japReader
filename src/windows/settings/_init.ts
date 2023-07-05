@@ -30,7 +30,7 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
     settingsWindow.webContents.send('blur')
   })
 
-  ipcMain.on('openOptions', () => {
+  ipcMain.on('set/settings/open', () => {
     settingsWindow.show();
   });
 
