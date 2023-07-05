@@ -1,6 +1,49 @@
-import { app, dialog } from "electron";
+import { app, dialog, ipcRenderer } from "electron";
 import 'dotenv/config';
 import log from 'electron-log';
+
+
+const addColorToLog = (
+    message: log.LogMessage,
+    color: 'red' | 'green' | 'blue' | 'cyan' | 'magenta' | 'yellow' | 'black' | 'white',
+    otherCSS: string = ''):
+    log.LogMessage => {
+
+    const hasCustomStyles = message.data[0].includes('%c')
+    message.data[0] = '%c' + message.data[0]
+    if (hasCustomStyles)
+        message.data[1] = `color: ${color};${otherCSS};` + message.data[1]
+    else
+        message.data.splice(1, 0, `color: ${color};${otherCSS};`)
+    return message
+}
+
+export const createScopedLog = (log: any, scopeName: string): any => {
+    log.hooks.push((message: any, transport: any) => {
+        if (transport !== log.transports.console)
+            return message
+
+        switch (message.level) {
+            case 'error':
+                return addColorToLog(message, 'red', 'font-size: 2rem; font-weight: bold;')
+            case 'warn':
+                return addColorToLog(message, 'yellow', 'font-size: 1rem; font-weight: bold;')
+            case 'info':
+                return addColorToLog(message, 'white')
+            case 'debug':
+                return addColorToLog(message, 'green')
+            case 'verbose':
+                return addColorToLog(message, 'cyan', 'font-size: 0.75rem;')
+            case 'silly':
+                return addColorToLog(message, 'black', 'font-size: 0.75rem;')
+            default:
+                return message
+        }
+    });
+    const newLog = log.scope(scopeName)
+    return newLog;
+}
+
 
 export function setupLogging() {
     log.initialize({ preload: true });
@@ -43,6 +86,8 @@ export function setupLogging() {
         }
     });
 
+    log.transports.file.format = '[{y}/{m}/{d} {h}:{i}:{s}.{ms}] [{level}] {scope} {text}';
+    const mainLog = createScopedLog(log, 'main');
 
-    log.debug("Logging initialized")
+    mainLog.info("Logging initialized")
 }
