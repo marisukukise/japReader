@@ -7,8 +7,8 @@ import log from 'electron-log/renderer';
 
 const WORDS: japReader.IchiParsedWordData[] = [];
 const PARSED_WORDS: japReader.IchiParsedWordData[] = [];
-let FULL_TEXT: string = '';
-let EMPTY_WORD_DATA: japReader.IchiParsedWordData = {
+let FULL_TEXT = '';
+const EMPTY_WORD_DATA: japReader.IchiParsedWordData = {
   word: '',
   dictForm: '',
   dictFormReading: '',
@@ -73,6 +73,7 @@ const getWord = (text: string): string => {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  log.debug("DOMContentLoaded in ichi");
   // eslint-disable-next-line global-require
   const $ = require('jquery');
 

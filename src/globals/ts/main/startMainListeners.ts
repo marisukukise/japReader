@@ -1,6 +1,8 @@
 import path from 'path';
 import log from 'electron-log';
 import { app, ipcMain } from 'electron';
+import { getHistoryStore } from "@globals/ts/main/initializeStore";
+const historyStore = getHistoryStore();
 
 let isClipboardWindowReady = false;
 let isDeepWindowReady = false;
@@ -13,13 +15,13 @@ let isSettingsWindowReady = false;
 export function startMainListeners() {
     log.debug("Starting ipcMain listeners...")
 
-    ipcMain.on("announce/clipboard/isReady",     (event) =>  { isClipboardWindowReady = true; log.log("clipboard is ready")  })
-    ipcMain.on("announce/deep/isReady",          (event) =>  { isDeepWindowReady = true; log.log("deep is ready") })
-    ipcMain.on("announce/ichi/isReady",          (event) =>  { isIchiWindowReady = true; log.log("ichi is ready") })
-    ipcMain.on("announce/reader/isReady",        (event) =>  { isReaderWindowReady = true; log.log("reader is ready") })
-    ipcMain.on("announce/translation/isReady",   (event) =>  { isTranslationWindowReady = true; log.log("translation is ready") })
-    ipcMain.on("announce/dictionary/isReady",    (event) =>  { isDictionaryWindowReady = true; log.log("dictionary is ready") })
-    ipcMain.on("announce/settings/isReady",      (event) =>  { isSettingsWindowReady = true; log.log("settings is ready") })
+    ipcMain.on("announce/clipboard/isReady", (event) => { isClipboardWindowReady = true; log.log("clipboard is ready") })
+    ipcMain.on("announce/deep/isReady", (event) => { isDeepWindowReady = true; log.log("deep is ready") })
+    ipcMain.on("announce/ichi/isReady", (event) => { isIchiWindowReady = true; log.log("ichi is ready") })
+    ipcMain.on("announce/reader/isReady", (event) => { isReaderWindowReady = true; log.log("reader is ready") })
+    ipcMain.on("announce/translation/isReady", (event) => { isTranslationWindowReady = true; log.log("translation is ready") })
+    ipcMain.on("announce/dictionary/isReady", (event) => { isDictionaryWindowReady = true; log.log("dictionary is ready") })
+    ipcMain.on("announce/settings/isReady", (event) => { isSettingsWindowReady = true; log.log("settings is ready") })
 
 
     ipcMain.handle("get/clipboard/isReady", async (event) => { return isClipboardWindowReady });
@@ -40,6 +42,24 @@ export function startMainListeners() {
         app.relaunch();
         app.exit();
     });
+
+
+    ipcMain.on('append/historyStore/entry', (event, originalText, translation) => {
+        if (typeof translation !== 'string' || translation == '') translation = null;
+
+        const entry = {
+            "timestamp": Date.now(),
+            "japanese": originalText,
+            "translation": translation
+        };
+
+        const list = historyStore.get('history');
+
+        // TODO: maybe change concat to push, not sure if it's faster
+        if (list) historyStore.set('history', list.concat(entry));
+        else historyStore.set('history', [entry]);
+    })
+
 
     ipcMain.handle("get/libPath", async (event) => {
         // Some libraries (like clipboard-event) can't get packaged in order to work (for example because they use executable files)

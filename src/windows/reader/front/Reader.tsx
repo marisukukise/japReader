@@ -3,19 +3,23 @@ import { useEffect, useRef, useState } from "react";
 import log from 'electron-log/renderer';
 import Loader from "@globals/components/Loader/Loader";
 import { Sentence } from "./Sentence";
+import { listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
 
+import { getSettingsStore } from "@globals/ts/main/initializeStore";
+const settingsStore = getSettingsStore();
+const { useDeepL } = settingsStore.get("options")
 
 
 const IchiFailedMessage = () => {
-    return (<div className='ichi-state-msg connecting'>
-        Failed to connect to <span className="url">https://ichi.moe/</span>.<br/>
+    return (<div className='ichi-state-msg failed'>
+        Failed to connect to <span className="url">https://ichi.moe/</span>.<br />
         Check your internet connection and restart japReader.
     </div>)
 }
 
 const ConnectingToIchiMessage = () => {
     return (<div className='ichi-state-msg connecting'>
-        <Loader /> Connecting to <span className="url">https://ichi.moe/</span>...<br/>
+        <Loader /> Connecting to <span className="url">https://ichi.moe/</span>...<br />
         Please wait patiently.
     </div>)
 }
@@ -26,10 +30,18 @@ const ConnectedToIchiMessage = () => {
     </div>)
 }
 
+const TooManyCharactersCopiedMessage = () => {
+    return (<div className='ichi-state-msg too-many-characters'>
+        Too many characters copied to clipboard. <br/>
+        No request has been made to <span className="url">https://ichi.moe/</span>. <br/>
+        This has been implemented to prevent you from getting banned.
+    </div>)
+}
+
 const ParseNotificationMessage = () => {
     // Some bloated messages 4 fun
-    var verbs = [
-        'Dissecting', 'Analyzing', 'Loading', 'Inspecting', 
+    const verbs = [
+        'Dissecting', 'Analyzing', 'Loading', 'Inspecting',
         'Scrutinizing', 'Parsing', 'Breaking down', 'Resolving',
         'Decomposing', 'Surveying', 'Probing', 'Scanning'
     ];
@@ -47,6 +59,7 @@ const Message = (props: any) => {
     if (didIchiFail) return (<IchiFailedMessage />)
     if (!isIchiReady) return (<ConnectingToIchiMessage />)
     if (japaneseSentence == '') return (<ConnectedToIchiMessage />)
+    if (japaneseSentence == '/tooManyCharacters/') return (<TooManyCharactersCopiedMessage />)
     if (japaneseSentence == '/parsing/') return (<ParseNotificationMessage />)
     return (<Sentence words={words} />)
 }
@@ -58,20 +71,20 @@ export const Reader = () => {
     const [japaneseSentence, setJapaneseSentence] = useState('');
     const currentWords = useRef({})
 
-    const getSentenceData = (words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
-
-    }
 
     useEffect(() => {
         log.log("mounted reader")
 
         ipcRenderer.send("announce/reader/isReady")
 
+        listenForAnotherWindowIsReady('ichi', isIchiReady, setIchiReady)
+
         ipcRenderer.on("set/ichi/wordData", (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
             // TODO: Somehow add memoization to Japanese sentences, 
             // so that common ones don't have to wait for ichi
             currentWords.current = words;
             setJapaneseSentence(japaneseSentence);
+            if (!useDeepL) ipcRenderer.send('append/historyStore/entry', japaneseSentence, null)
         })
 
         ipcRenderer.on("announce/ichi/connectionError", () => {
@@ -84,24 +97,19 @@ export const Reader = () => {
             setJapaneseSentence("/parsing/");
         })
 
-        // Case #1: Reader loaded before Ichi
-        ipcRenderer.on("announce/ichi/isReady", () => {
-            setIchiReady(true);
+        ipcRenderer.on("announce/clipboard/tooManyCharacters", () => {
+            log.log("tooManyCharacters")
+            setJapaneseSentence("/tooManyCharacters/");
         })
 
-        // Case #2: Ichi loaded before Reader
-        if (!isIchiReady) {
-            ipcRenderer.invoke("get/ichi/isReady")
-                .then((result: boolean) => { setIchiReady(result); })
-                .catch((error: any) => { log.log(error) });
-        }
 
         return () => {
             log.log("unmounted reader")
             ipcRenderer.removeAllListeners("set/ichi/wordData");
             ipcRenderer.removeAllListeners("announce/ichi/connectionError");
             ipcRenderer.removeAllListeners("announce/clipboard/changeDetected");
-            ipcRenderer.removeAllListeners("announce/ichi/isReady");
+            ipcRenderer.removeAllListeners("announce/clipboard/tooManyCharacters");
+            removeListenerForAnotherWindow('ichi')
         }
     }, [])
 
@@ -110,7 +118,7 @@ export const Reader = () => {
             isIchiReady={isIchiReady}
             didIchiFail={didIchiFail}
             japaneseSentence={japaneseSentence}
-            words={currentWords.current} 
+            words={currentWords.current}
         />
     )
 }

@@ -33,8 +33,8 @@ export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: s
     deepWindow.hide();
   });
 
-  ipcMain.on('clipboardChanged', (event, text) => {
-    deepWindow.webContents.send('translateWithDeepL', text);
+  ipcMain.on('announce/clipboard/changeDetected', (event, text) => {
+    deepWindow.webContents.send('announce/clipboard/changeDetected', text);
   });
 
 

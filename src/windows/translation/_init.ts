@@ -29,12 +29,8 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     translationWindow.webContents.send('fadeText', shouldFade);
   });
 
-  ipcMain.on('showTranslation', (event, sourceText, targetText) => {
-    translationWindow.webContents.send(
-      'showTranslation',
-      sourceText,
-      targetText
-    );
+  ipcMain.on('set/deep/translationText', (event, sourceText, targetText) => {
+    translationWindow.webContents.send('set/deep/translationText', sourceText, targetText);
   });
 
   translationWindow.on('blur', (event: any) => {
@@ -45,20 +41,18 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     translationWindow.webContents.send('requestTranslation');
   });
 
-  ipcMain.on('tooManyCharacters', () => {
-    translationWindow.webContents.send('tooManyCharacters');
+  ipcMain.on('announce/clipboard/tooManyCharacters', () => {
+    translationWindow.webContents.send('announce/clipboard/tooManyCharacters');
   });
 
-  ipcMain.on('translateNotification', () => {
-    translationWindow.webContents.send('translateNotification');
+
+  ipcMain.on('announce/clipboard/changeDetected', () => {
+    translationWindow.webContents.send('announce/clipboard/changeDetected');
   });
 
-  ipcMain.on('deepLConnected', () => {
-    translationWindow.webContents.send('deepLConnected');
-  });
 
-  ipcMain.on('deepLConnectionError', () => {
-    translationWindow.webContents.send('deepLConnectionError');
+  ipcMain.on('announce/deep/connectionError', () => {
+    translationWindow.webContents.send('announce/deep/connectionError');
   });
 
   if (!useReader) {

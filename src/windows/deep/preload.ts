@@ -15,7 +15,7 @@ if (useDeepLApi) {
     const translator = new deepl.Translator(deepLApiKey);
     log.debug("DeepL API key is correct")
   } catch (error) {
-    ipcRenderer.send('deepLConnectionError');
+    ipcRenderer.send('announce/deep/connectionError');
     log.error("DeepL API key is wrong");
     log.error(error)
   }
@@ -24,9 +24,8 @@ if (useDeepLApi) {
 window.addEventListener('DOMContentLoaded', () => {
   log.debug("DOMContentLoaded in deep");
 
-  ipcRenderer.on('translateWithDeepL', (event, text) => {
+  ipcRenderer.on('announce/clipboard/changeDetected', (event, text) => {
     log.debug("Attempting to translate with DeepL");
-    ipcRenderer.send('translateNotification');
     const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
 
     if (useDeepLApi) {
@@ -37,20 +36,21 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(
           (result: any) => {
             log.info("Translated text with DeepL: ", result.text);
-            ipcRenderer.send('showTranslation', result.text, currentText);
+            ipcRenderer.send('set/deep/translationText', result.text, currentText);
             return result.text
           },
           (error: any) => {
-            ipcRenderer.send('deepLConnectionError');
+            ipcRenderer.send('announce/deep/connectionError');
             log.error(error);
           })
         .then(
-          (result: any) => ipcRenderer.send('appendToHistory', currentText, result),
+          (result: any) => ipcRenderer.send('append/historyStore/entry', currentText, result),
           (error: any) => log.error(error)
         );
     }
     else {
       log.debug("Using DeepL.com href")
+      document.location.href = `https://www.deepl.com/translator#ja/en/`;
       document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
     }
   });
@@ -62,7 +62,6 @@ window.addEventListener('DOMContentLoaded', () => {
       translator
         .getUsage()
         .then((e: any) => {
-          ipcRenderer.send('deepLConnected');
           ipcRenderer.send("announce/deep/isReady");
           log.debug("Connected to DeepL");
           clearInterval(connectionCheck);
@@ -71,13 +70,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       if (deepLApiKey == "") {
-        ipcRenderer.send('deepLConnectionError');
+        ipcRenderer.send('announce/deep/connectionError');
         log.error("DeepL API key is wrong");
       } else {
         translator
           .getUsage()
           .catch((err: any) => {
-            ipcRenderer.send('deepLConnectionError');
+            ipcRenderer.send('announce/deep/connectionError');
             log.error(err);
           })
       }
@@ -93,8 +92,8 @@ window.addEventListener('DOMContentLoaded', () => {
         log.silly("Detected DeepL English on the website: ", deeplText)
         const japaneseText = [...sourceNode.children].map(x => x.textContent).join(" ");
         log.silly("Detected DeepL Japanese on the website: ", japaneseText)
-        ipcRenderer.send('showTranslation', deeplText, japaneseText);
-        ipcRenderer.send('appendToHistory', japaneseText, deeplText);
+        ipcRenderer.send('set/deep/translationText', deeplText, japaneseText);
+        ipcRenderer.send('append/historyStore/entry', japaneseText, deeplText);
       }
     };
 
@@ -104,7 +103,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const connectionCheck = setTimeout(() => {
       if (document.querySelector('.dl_body').children.length !== 0) {
         log.verbose("Connected to DeepL.com href")
-        ipcRenderer.send('deepLConnected');
         ipcRenderer.send("announce/deep/isReady");
         clearInterval(connectionCheck);
       }
@@ -112,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       if (document.body.children.length === 0) {
-        ipcRenderer.send('deepLConnectionError');
+        ipcRenderer.send('announce/deep/connectionError');
         log.verbose("Couldn't connect to DeepL.com href")
       }
     }, 8000);

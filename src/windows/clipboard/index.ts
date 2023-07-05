@@ -50,7 +50,7 @@ const handleChange = () => {
 
     if (clipboardText.length >= charLimit) {
       log.warn("Too many characters copied")
-      ipcRenderer.send('tooManyCharacters');
+      ipcRenderer.send('announce/clipboard/tooManyCharacters');
     } else {
       log.info("Detected japanese text in clipboard: ", clipboardText)
       ipcRenderer.send('announce/clipboard/changeDetected', clipboardText);

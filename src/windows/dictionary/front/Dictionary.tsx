@@ -1,9 +1,12 @@
 import { ipcRenderer } from "electron";
 import { useEffect, useRef, useState } from "react";
-import { FuriganaJSX } from "@globals/ts/renderer/helpers";
+import { FuriganaJSX, listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
 import log from 'electron-log/renderer';
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from '@mui/material/Button';
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 
 export const Dictionary = () => {
     const [isReaderReady, setReaderReady] = useState(false);
@@ -11,6 +14,7 @@ export const Dictionary = () => {
     const [dictForm, setDictForm] = useState("")
     const [dictFormReading, setDictFormReading] = useState("")
     const [definitions, setDefinitions] = useState("")
+
 
 
     useEffect(() => {
@@ -25,21 +29,11 @@ export const Dictionary = () => {
             setDefinitions(extendedWordData.definitions);
         })
 
-        // Case #1: Dictionary loaded before Reader
-        ipcRenderer.on("announce/reader/isReady", () => {
-            setReaderReady(true);
-        })
-
-        // Case #2: Raeder loaded before Dictionary
-        if (!isReaderReady) {
-            ipcRenderer.invoke("get/reader/isReady")
-                .then((result: boolean) => { setReaderReady(result); })
-                .catch((error: any) => { log.log(error) });
-        }
+        listenForAnotherWindowIsReady('reader', isReaderReady, setReaderReady)
 
         return () => {
             log.log("unmounted reader")
-            ipcRenderer.removeAllListeners("set/reader/extendedWordData");
+            removeListenerForAnotherWindow('reader')
             ipcRenderer.removeAllListeners("announce/reader/isReady");
         }
     }, [])
@@ -48,21 +42,31 @@ export const Dictionary = () => {
         return { __html: html_code }
     }
 
-    console.log("rendered")
-    return (<>
-    <div>
-    <Button variant="outlined">Outlined</Button>
-    </div>
-    <div>
-    <Button variant="outlined">Outlined</Button>
-    </div>
+    return (dictForm ? <Box sx={{height: "100%"}}>
+        <div>Stats</div>
+        <Stack direction="row" spacing={2}>
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        </Stack>
+        <div>
+            <Button variant="outlined">Play audio</Button>
+        </div>
+        <div>
+            <Button variant="outlined">Add to Anki</Button>
+        </div>
         <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-            <Button>One</Button>
-            <Button>Two</Button>
-            <Button>Three</Button>
+            <Button>Seen</Button>
+            <Button>Known</Button>
+            <Button>Ignored</Button>
         </ButtonGroup>
-        <h1><FuriganaJSX kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
-        <h4>{status}</h4>
+        <h1 className={status}><FuriganaJSX  kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
         <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
-    </>)
+    </Box>
+    : <Box sx={{height: "100%"}}>
+        <Skeleton height="5%"/>
+        <Skeleton height="25%" />
+        <Skeleton height="10%" />
+        <Skeleton height="60%" />
+    </Box>)
 }
