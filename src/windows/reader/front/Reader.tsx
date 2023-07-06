@@ -1,6 +1,8 @@
 import { ipcRenderer } from "electron";
 import { useEffect, useRef, useState } from "react";
-import log from 'electron-log/renderer';
+import log_renderer from 'electron-log/renderer';
+import { createScopedLog } from "@globals/ts/main/setupLogging";
+const log = createScopedLog(log_renderer, 'reader')
 import Loader from "@globals/components/Loader/Loader";
 import { Sentence } from "./Sentence";
 import { listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
@@ -71,6 +73,7 @@ export const Reader = () => {
     const [japaneseSentence, setJapaneseSentence] = useState('');
     const currentWords = useRef({})
 
+    log.log("%crendering reader", "color: red; font-size:1.5rem; font-weight: bold;")
 
     useEffect(() => {
         log.log("mounted reader")

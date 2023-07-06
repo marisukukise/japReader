@@ -9,7 +9,6 @@
 import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 
 import { setupLogging } from '@globals/ts/main/setupLogging';
-import log from 'electron-log';
 // Setups the logging mechanism
 setupLogging();
 
