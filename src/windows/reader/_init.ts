@@ -11,8 +11,8 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     height: 600,
     width: 800,
     show: false,
-    frame: false,
-    transparent: true,
+    // frame: false,
+    // transparent: true,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -80,8 +80,8 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.setAlwaysOnTop(value, 'screen-saver')
   })
 
-  ipcMain.on('set/reader/open', () => {
-    readerWindow.show();
+  ipcMain.on('set/reader/focus', () => {
+    readerWindow.focus();
   });
 
   return readerWindow;

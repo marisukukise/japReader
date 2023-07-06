@@ -1,23 +1,18 @@
-import CheckIcon from '@mui/icons-material/Check';
-import ToggleButton from '@mui/material/ToggleButton';
 import { ipcRenderer } from 'electron';
 import { useState } from 'react';
 
-export default function OnTopToggleButton({ipcChannel}: {ipcChannel: string}) {
+import Anchor from '@geist-ui/icons/anchor'
+import Checkbox from '@geist-ui/core/esm/checkbox';
+
+export default function OnTopToggleButton({ ipcChannel }: { ipcChannel: string }) {
   const [selected, setSelected] = useState(false);
 
-    const handleChange = () => {
-        ipcRenderer.send(ipcChannel, !selected);
-        setSelected(!selected)
-    }
+  const handleChange = () => {
+    ipcRenderer.send(ipcChannel, !selected);
+    setSelected(!selected)
+  }
 
   return (
-    <ToggleButton
-      value="check"
-      selected={selected}
-      onChange={handleChange}
-    >
-      <CheckIcon />
-    </ToggleButton>
+    <Checkbox onChange={handleChange} checked={selected}><Anchor /></Checkbox>
   );
 }

@@ -4,22 +4,12 @@
 import './local.scss';
 import '@globals/scss/global.scss';
 import { Settings } from './front/Settings';
-
-
-import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
-
-import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
-
-const settings = [
-    ConfigurationDrawerSettings.open_settings,
-    ConfigurationDrawerSettings.dark_mode,
-]
-
+import { GeistProvider, CssBaseline } from '@geist-ui/core'
 
 import { createRoot } from 'react-dom/client';
 const container = document.getElementById('settings');
 const root = createRoot(container!);
-root.render(<>
+root.render(<GeistProvider>
+    <CssBaseline />
     <Settings />
-    <ConfigurationDrawer settings={settings} />
-</>);
+</GeistProvider>);

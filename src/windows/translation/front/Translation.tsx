@@ -1,10 +1,27 @@
 import { ipcRenderer } from "electron";
 import { useEffect, useState } from "react";
-import log from 'electron-log/renderer';
+
+import log_renderer from 'electron-log/renderer';
+import { createScopedLog } from "@globals/ts/main/setupLogging";
+const log = createScopedLog(log_renderer, 'translation')
+
 import { listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
 import { TranslatedSentence } from './TranslatedSentence';
 import Loader from "@globals/components/Loader/Loader";
 import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
+import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
+import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
+
+import { Page } from '@geist-ui/core'
+
+const settings = [
+    ConfigurationDrawerSettings.open_settings,
+    ConfigurationDrawerSettings.dark_mode,
+    ConfigurationDrawerSettings.translation_background_color_picker,
+    ConfigurationDrawerSettings.translation_on_top_button,
+]
+
+
 
 const DeepFailedMessage = () => {
     return (<div className='deep-state-msg failed'>
@@ -69,6 +86,9 @@ export const Translation = () => {
     const [japaneseSentence, setJapaneseSentence] = useState('')
 
 
+    useEffect(() => {
+        ipcRenderer.send("set/translation/focus");
+    }, [japaneseSentence])
 
     useEffect(() => {
         ipcRenderer.send("announce/translation/isReady")
@@ -105,14 +125,16 @@ export const Translation = () => {
         }
     }, [])
 
-    return (
-        <>
-            <DraggableBar />
+    return (<>
+        <DraggableBar />
+        <Page>
             <Message
                 isDeepReady={isDeepReady}
                 didDeepFail={didDeepFail}
                 translatedSentence={translatedSentence}
                 japaneseSentence={japaneseSentence}
             />
-        </>)
+        </Page>
+        <ConfigurationDrawer settings={settings} />
+    </>)
 }

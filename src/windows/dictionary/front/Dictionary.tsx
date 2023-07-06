@@ -1,13 +1,24 @@
 import { ipcRenderer } from "electron";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+
+import log_renderer from 'electron-log/renderer';
+import { createScopedLog } from "@globals/ts/main/setupLogging";
+const log = createScopedLog(log_renderer, 'dictionary')
+
 import { FuriganaJSX, listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
-import log from 'electron-log/renderer';
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from '@mui/material/Button';
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
+import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
+import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
+
+import { Page } from '@geist-ui/core'
+
+const settings = [
+    ConfigurationDrawerSettings.open_settings,
+    ConfigurationDrawerSettings.dark_mode,
+    ConfigurationDrawerSettings.dictionary_background_color_picker,
+    ConfigurationDrawerSettings.dictionary_on_top_button,
+]
+
 
 export const Dictionary = () => {
     const [isReaderReady, setReaderReady] = useState(false);
@@ -44,32 +55,28 @@ export const Dictionary = () => {
     }
 
     return (<>
-    <DraggableBar/>
-    {dictForm ? <Box sx={{height: "100%"}}>
-        <div>Stats</div>
-        <Stack direction="row" spacing={2}>
-            <div>Item 1</div>
-            <div>Item 2</div>
-            <div>Item 3</div>
-        </Stack>
-        <div>
-            <Button variant="outlined">Play audio</Button>
-        </div>
-        <div>
-            <Button variant="outlined">Add to Anki</Button>
-        </div>
-        <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-            <Button>Seen</Button>
-            <Button>Known</Button>
-            <Button>Ignored</Button>
-        </ButtonGroup>
-        <h1 className={status}><FuriganaJSX  kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
-        <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
-    </Box>
-    : <Box sx={{height: "100%"}}>
-        <Skeleton height="5%"/>
-        <Skeleton height="25%" />
-        <Skeleton height="10%" />
-        <Skeleton height="60%" />
-    </Box>}</>)
+        <DraggableBar />
+        <Page>
+            <div>Stats</div>
+            <div>
+                <div>Item 1</div>
+                <div>Item 2</div>
+                <div>Item 3</div>
+            </div>
+            <div>
+                <button>Play audio</button>
+            </div>
+            <div>
+                <button>Add to Anki</button>
+            </div>
+            <div>
+                <button>Seen</button>
+                <button>Known</button>
+                <button>Ignored</button>
+            </div>
+            <h1 className={status}><FuriganaJSX kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
+            <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
+        </Page>
+        <ConfigurationDrawer settings={settings} />
+    </>)
 }

@@ -4,25 +4,12 @@
 import './local.scss';
 import '@globals/scss/global.scss';
 import { Translation } from './front/Translation';
-
-import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
-
-import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
-
-const settings = [
-    ConfigurationDrawerSettings.open_settings,
-    ConfigurationDrawerSettings.dark_mode,
-    ConfigurationDrawerSettings.translation_background_color_picker,
-    ConfigurationDrawerSettings.translation_on_top_button,
-]
-
-
-
+import { GeistProvider, CssBaseline } from '@geist-ui/core'
 
 import { createRoot } from 'react-dom/client';
 const container = document.getElementById('translation');
 const root = createRoot(container!);
-root.render(<>
+root.render(<GeistProvider>
+    <CssBaseline />
     <Translation />
-    <ConfigurationDrawer settings={settings} />
-</>);
+</GeistProvider>);

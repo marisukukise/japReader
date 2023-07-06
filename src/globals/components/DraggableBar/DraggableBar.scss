@@ -6,4 +6,6 @@
     height: 20px;
     -webkit-app-region: drag;
     background-color: white;
+    background-size: 5px 5px;
+    background-image: repeating-linear-gradient(5deg, white 0, white 1px, black 0, white 50%);
 }

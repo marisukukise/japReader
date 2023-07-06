@@ -1,8 +1,36 @@
 @forward 'partials';
 // This is a global SCSS file applied to all windows.
 
-body{
-    color:white;
+body {
+    color: white;
+    background:
+        linear-gradient(to right, black 1px, transparent 1px) 0 0,
+        linear-gradient(to right, black 1px, transparent 1px) 0 100%,
+        linear-gradient(to left, black 1px, transparent 1px) 100% 0,
+        linear-gradient(to left, black 1px, transparent 1px) 100% 100%,
+        linear-gradient(to bottom, black 1px, transparent 1px) 0 0,
+        linear-gradient(to bottom, black 1px, transparent 1px) 100% 0,
+        linear-gradient(to top, black 1px, transparent 1px) 0 100%,
+        linear-gradient(to top, black 1px, transparent 1px) 100% 100%,
+        linear-gradient(to right, red 2px, transparent 2px) 0 0,
+        linear-gradient(to right, red 2px, transparent 2px) 0 100%,
+        linear-gradient(to left, red 2px, transparent 2px) 100% 0,
+        linear-gradient(to left, red 2px, transparent 2px) 100% 100%,
+        linear-gradient(to bottom, red 2px, transparent 2px) 0 0,
+        linear-gradient(to bottom, red 2px, transparent 2px) 100% 0,
+        linear-gradient(to top, red 2px, transparent 2px) 0 100%,
+        linear-gradient(to top, red 2px, transparent 2px) 100% 100%,
+        linear-gradient(to right, white 3px, transparent 3px) 0 0,
+        linear-gradient(to right, white 3px, transparent 3px) 0 100%,
+        linear-gradient(to left, white 3px, transparent 3px) 100% 0,
+        linear-gradient(to left, white 3px, transparent 3px) 100% 100%,
+        linear-gradient(to bottom, white 3px, transparent 3px) 0 0,
+        linear-gradient(to bottom, white 3px, transparent 3px) 100% 0,
+        linear-gradient(to top, white 3px, transparent 3px) 0 100%,
+        linear-gradient(to top, white 3px, transparent 3px) 100% 100%;
+
+    background-repeat: no-repeat;
+    background-size: 10px 10px;
 }
 
 :root {
@@ -28,4 +56,8 @@ body{
 
 ::-webkit-scrollbar-corner {
     background: var(--mainBackground);
+}
+
+.url {
+    color: blue;
 }

@@ -17,7 +17,6 @@ export const WindowColorPicker = ({ipcChannel}: {ipcChannel: string}) => {
         ipcRenderer.send(ipcChannel, COLOR);
     }
 
-
     return (<>
         <ChromePicker color={color} onChange={onChange} onChangeComplete={onChangeComplete}/>
     </>)

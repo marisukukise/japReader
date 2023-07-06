@@ -97,6 +97,10 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     translationWindow.setAlwaysOnTop(value, 'screen-saver')
   })
 
+  ipcMain.on('set/reader/focus', () => {
+    translationWindow.focus();
+  });
+
   showWindowWhenReady(translationWindow, true);
 
   return translationWindow;

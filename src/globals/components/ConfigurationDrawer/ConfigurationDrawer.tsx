@@ -1,96 +1,43 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Fab from '@mui/material/Fab';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { ipcRenderer } from 'electron';
-
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
+import Button from "@geist-ui/core/esm/button"
+import ChevronUp from '@geist-ui/icons/chevronUp'
+import Drawer from "@geist-ui/core/esm/drawer"
+import { ipcRenderer } from "electron"
+import { useEffect, useState } from "react"
 
 
 type ConfigurationDrawerProps = {
   settings: any[]
 }
-
 const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Element => {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [state, setState] = useState(false)
+  const open = () => { setState(true) }
+  const close = () => { setState(false) }
 
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  React.useEffect(() => {
+  useEffect(() => {
     ipcRenderer.on("blur", (event: any) => {
-      handleDrawerClose();
+      close()
     })
   }, [])
 
-
   return (
-    <Box sx={{}}>
-      <Fab
-        size="medium"
-        aria-label="open drawer"
-        onClick={handleDrawerOpen}
-        sx={{
-          position: 'fixed', bottom: 0, right: 0,
-          ...(open && { display: 'none' })
-        }}
-      >
-        <SettingsIcon fontSize="large" />
-      </Fab>
-      <Drawer
-        sx={{
-          position: 'fixed', bottom: 0,
-          height: "fit-content",
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            height: "fit-content",
-            boxSizing: 'border-box',
-            flexDirection: "row-reverse",
-          },
-        }}
-        variant="persistent"
-        anchor="bottom"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton
-            onClick={handleDrawerClose}>
-            <ExpandMoreIcon />
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <div>
-          {settings.map((setting: any, index: number) => <span key={index}>{setting}</span>)}
-        </div>
+    <div className="drawer-component">
+      <Button ghost auto scale={2 / 3} px={0.6}
+        style={{ position: "fixed", bottom: 0, left: 0 }}
+        onClick={() => open()}
+        iconRight={<ChevronUp />}
+      />
+      <Drawer wrapClassName="drawer-wrapper" visible={state} onClose={() => setState(false)} placement='bottom'>
+        <Drawer.Title>Window-specific settings</Drawer.Title>
+        <Drawer.Subtitle>These options will be applied to the current window</Drawer.Subtitle>
+        <Drawer.Content>
+          <div className="settings">
+            {settings.map((setting: any, index: number) =>
+              <div className="setting" key={index}>{setting}</div>)}
+          </div>
+        </Drawer.Content>
       </Drawer>
-    </Box>
-  );
+    </div>
+  )
 }
-
 
 export default ConfigurationDrawer;

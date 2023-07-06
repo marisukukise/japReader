@@ -1,9 +1,9 @@
-import { BiLoaderCircle } from "react-icons/bi";
+import GeistLoader from '@geist-ui/icons/loader'
 import "./Loader.scss";
 
 const Loader = () => {
     return (<span className="loader-icon">
-        <BiLoaderCircle />
+        <GeistLoader />
     </span>)
 }
 

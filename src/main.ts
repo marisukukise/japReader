@@ -23,22 +23,43 @@ app.whenReady().then(() => {
   // Creates all windows and their listeners
   initializeApp();
 
+  const DISABLED_SHORTCUTS = [
+      // Reloading can lead to some bugs
+      'CommandOrControl+R',
+      'CommandOrControl+Shift+R',
+      'F5',
+      // Quitting should only be through Alt+F4 and buttons
+      'CommandOrControl+W',
+      // Zooming should be implemented in each Window renderer
+      'CommandOrControl+numadd',
+      'CommandOrControl+Shift+numadd',
+      'CommandOrControl+numsub',
+      'CommandOrControl+Shift+numsub',
+      'CommandOrControl+Plus',
+      'CommandOrControl+Shift+Plus',
+      'CommandOrControl+0',
+      'CommandOrControl+Shift+0',
+  ];
+
   app.on('browser-window-focus', () => {
-    globalShortcut.register('CommandOrControl+R', () => { });
-    globalShortcut.register('Control+W', () => { });
-    globalShortcut.register('F5', () => { });
+    globalShortcut.registerAll(DISABLED_SHORTCUTS, () => {});
   });
 
   app.on('browser-window-blur', () => {
-    globalShortcut.unregister('CommandOrControl+R');
-    globalShortcut.unregister('Control+W');
-    globalShortcut.unregister('F5');
+    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+      globalShortcut.unregister(SHORTCUT);
+    })
   });
 })
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) initializeApp();
 });
+
+app.on('will-quit', () => {
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll()
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
