@@ -7,7 +7,7 @@ import { Reader } from './front/Reader';
 import log from 'electron-log/renderer';
 
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
-import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings';
+import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,

@@ -7,11 +7,12 @@ import { Translation } from './front/Translation';
 
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 
-import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings';
+import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,
     ConfigurationDrawerSettings.dark_mode,
+    ConfigurationDrawerSettings.window_background_color,
 ]
 
 

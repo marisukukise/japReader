@@ -25,6 +25,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
     "@electron-forge/plugin-webpack": "^6.2.1",
     "@types/react": "^18.2.14",
+    "@types/react-color": "^3.0.6",
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
@@ -57,6 +58,7 @@
     "furigana": "^0.19.3",
     "jquery": "^3.7.0",
     "react": "^18.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1"
   }

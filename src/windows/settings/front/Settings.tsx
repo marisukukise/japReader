@@ -8,7 +8,7 @@ export const Settings = () => {
     const rangeId = useId();
 
 
-    function toHex(d) {
+    function toHex(d: number) {
         return ("0" + (Number(d).toString(16))).slice(-2).toLowerCase()
     }
 
@@ -22,7 +22,7 @@ export const Settings = () => {
 
     return (<>
         <input type="color" id={colorId} onChange={(event) => setColorValue(event.target.value)} />
-        <input type="range" min="0" max="255" step="1" value={rangeValue.toString()} id={rangeId} onChange={(event) => setRangeValue(parseInt(event.target.value))} />
+        <input type="range" min="0" max="254" step="1" value={rangeValue.toString()} id={rangeId} onChange={(event) => setRangeValue(parseInt(event.target.value))} />
         <span>{colorValue}</span>
         <h1>Welcome from the Settings window</h1>
     </>)
