@@ -11,6 +11,8 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     height: 600,
     width: 800,
     show: false,
+    frame: false,
+    transparent: true,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -66,8 +68,20 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.webContents.send('refreshReader');
   });
 
-  ipcMain.on("announce/ichi/isReady", (event) =>  { 
+  ipcMain.on("announce/ichi/isReady", (event) => {
     readerWindow.webContents.send("announce/ichi/isReady")
+  });
+
+  ipcMain.on('set/reader/windowBackgroundColor', (event, value) => {
+    readerWindow.setBackgroundColor(value);
+  });
+
+  ipcMain.on('set/reader/onTop', (event, value) => {
+    readerWindow.setAlwaysOnTop(value, 'screen-saver')
+  })
+
+  ipcMain.on('set/reader/open', () => {
+    readerWindow.show();
   });
 
   return readerWindow;

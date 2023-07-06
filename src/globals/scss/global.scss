@@ -1,6 +1,10 @@
 @forward 'partials';
 // This is a global SCSS file applied to all windows.
 
+body{
+    color:white;
+}
+
 :root {
     --mainBackground: #1e0a1c;
     --scrollbarHead: #f5f2ca;

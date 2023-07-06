@@ -4,17 +4,18 @@ import log from 'electron-log/renderer';
 import { listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
 import { TranslatedSentence } from './TranslatedSentence';
 import Loader from "@globals/components/Loader/Loader";
+import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 
 const DeepFailedMessage = () => {
     return (<div className='deep-state-msg failed'>
-        Failed to connect to <span className="url">https://deepl.com/</span>.<br/>
+        Failed to connect to <span className="url">https://deepl.com/</span>.<br />
         Check your internet connection and restart japReader.
     </div>)
 }
 
 const ConnectingToDeepMessage = () => {
     return (<div className='deep-state-msg connecting'>
-        <Loader /> Connecting to <span className="url">https://deepl.com/</span>...<br/>
+        <Loader /> Connecting to <span className="url">https://deepl.com/</span>...<br />
         Please wait patiently.
     </div>)
 }
@@ -27,8 +28,8 @@ const ConnectedToDeepMessage = () => {
 
 const TooManyCharactersCopiedMessage = () => {
     return (<div className='deep-state-msg too-many-characters'>
-        Too many characters copied to clipboard. <br/>
-        No request has been made to <span className="url">https://deepl.com/</span>. <br/>
+        Too many characters copied to clipboard. <br />
+        No request has been made to <span className="url">https://deepl.com/</span>. <br />
         This has been implemented to prevent you from getting banned.
     </div>)
 }
@@ -104,11 +105,14 @@ export const Translation = () => {
         }
     }, [])
 
-    return (<Message
-        isDeepReady={isDeepReady}
-        didDeepFail={didDeepFail}
-        translatedSentence={translatedSentence}
-        japaneseSentence={japaneseSentence}
-    />
-    )
+    return (
+        <>
+            <DraggableBar />
+            <Message
+                isDeepReady={isDeepReady}
+                didDeepFail={didDeepFail}
+                translatedSentence={translatedSentence}
+                japaneseSentence={japaneseSentence}
+            />
+        </>)
 }

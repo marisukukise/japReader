@@ -85,15 +85,17 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     });
   }
 
-  ipcMain.on("announce/deep/isReady", (event) =>  { 
+  ipcMain.on("announce/deep/isReady", (event) => {
     translationWindow.webContents.send("announce/deep/isReady")
   });
 
-  translationWindow.setBackgroundColor("hsla(100, 80%, 62%, 0.28)");
-    ipcMain.on('set/translation/windowBackgroundColor', (event, value) => {
-    log.log("received color: ", value)
+  ipcMain.on('set/translation/windowBackgroundColor', (event, value) => {
     translationWindow.setBackgroundColor(value);
   });
+
+  ipcMain.on('set/translation/onTop', (event, value) => {
+    translationWindow.setAlwaysOnTop(value, 'screen-saver')
+  })
 
   showWindowWhenReady(translationWindow, true);
 

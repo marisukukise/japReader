@@ -2,12 +2,12 @@ import { ipcRenderer } from "electron";
 import React, { useState } from "react"
 import { ChromePicker, SketchPicker } from "react-color"
 
-export const WindowColorPicker = (ipcChannel: string) => {
+export const WindowColorPicker = ({ipcChannel}: {ipcChannel: string}) => {
     const [color, setColor] = useState({ r: 255, g: 255, b: 255, a: 1 });
-    const onChange = (color) => {
+    const onChange = (color: any) => {
         setColor(color.rgb);
     }
-    const onChangeComplete = (color) => {
+    const onChangeComplete = (color: any) => {
         const r = color.rgb.r;
         const g = color.rgb.g;
         const b = color.rgb.b;

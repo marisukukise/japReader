@@ -10,6 +10,8 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
     height: 600,
     width: 800,
     show: false,
+    frame: false,
+    transparent: true,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -53,6 +55,14 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
   ipcMain.on("announce/reader/isReady", (event) =>  { 
     dictionaryWindow.webContents.send("announce/reader/isReady")
   });
+
+  ipcMain.on('set/dictionary/windowBackgroundColor', (event, value) => {
+    dictionaryWindow.setBackgroundColor(value);
+  });
+
+  ipcMain.on('set/dictionary/onTop', (event, value) => {
+    dictionaryWindow.setAlwaysOnTop(value, 'screen-saver')
+  })
 
   return dictionaryWindow;
 }

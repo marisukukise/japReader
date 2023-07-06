@@ -12,7 +12,8 @@ import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDr
 const settings = [
     ConfigurationDrawerSettings.open_settings,
     ConfigurationDrawerSettings.dark_mode,
-    ConfigurationDrawerSettings.window_background_color,
+    ConfigurationDrawerSettings.translation_background_color_picker,
+    ConfigurationDrawerSettings.translation_on_top_button,
 ]
 
 

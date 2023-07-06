@@ -13,6 +13,8 @@ import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDr
 const settings = [
     ConfigurationDrawerSettings.open_settings,
     ConfigurationDrawerSettings.dark_mode,
+    ConfigurationDrawerSettings.dictionary_background_color_picker,
+    ConfigurationDrawerSettings.dictionary_on_top_button,
 ]
 
 

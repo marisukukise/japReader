@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 
 export const Dictionary = () => {
     const [isReaderReady, setReaderReady] = useState(false);
@@ -42,7 +43,9 @@ export const Dictionary = () => {
         return { __html: html_code }
     }
 
-    return (dictForm ? <Box sx={{height: "100%"}}>
+    return (<>
+    <DraggableBar/>
+    {dictForm ? <Box sx={{height: "100%"}}>
         <div>Stats</div>
         <Stack direction="row" spacing={2}>
             <div>Item 1</div>
@@ -68,5 +71,5 @@ export const Dictionary = () => {
         <Skeleton height="25%" />
         <Skeleton height="10%" />
         <Skeleton height="60%" />
-    </Box>)
+    </Box>}</>)
 }
