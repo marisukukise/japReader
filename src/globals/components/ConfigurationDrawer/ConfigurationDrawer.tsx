@@ -22,6 +22,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { ipcRenderer } from 'electron';
 import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
 import log from 'electron-log/renderer';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -35,13 +36,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 type ConfigurationDrawerProps = {
-  settings: japReader.ConfigurationDrawerSettingContents[]
+  settings: any[]
 }
 
 const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Element => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  console.log(settings);
 
 
   const handleDrawerOpen = () => {
@@ -94,18 +94,9 @@ const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Elemen
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List sx={{ display: "flex", flexDirection: "row-reverse", alignItems: "flex-start" }}>
-          {settings.map((setting: japReader.ConfigurationDrawerSettingContents, index: number) => (
-            <ListItem key={index} disablePadding>
-              <ListItemButton sx={{ flexDirection: "column" }} onClick={setting.fn}>
-                <ListItemIcon sx={{ minWidth: "fit-content" }}>
-                  {setting.icon}
-                </ListItemIcon>
-                <ListItemText sx={{ writingMode: "vertical-rl" }} primary={setting.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        <div>
+          {settings.map((setting: any, index: number) => <span key={index}>{setting}</span>)}
+        </div>
       </Drawer>
     </Box>
   );
