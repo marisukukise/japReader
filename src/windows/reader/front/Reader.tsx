@@ -16,7 +16,7 @@ import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
-import { Text, Page } from '@geist-ui/core'
+import { Text } from '@geist-ui/core'
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,
@@ -136,14 +136,14 @@ export const Reader = () => {
 
     return (<>
         <DraggableBar />
-        <Page>
+        <div>
             <Message
                 isIchiReady={isIchiReady}
                 didIchiFail={didIchiFail}
                 japaneseSentence={japaneseSentence}
                 words={currentWords.current}
             />
-        </Page>
+        </div>
         <ConfigurationDrawer settings={settings} />
     </>)
 }

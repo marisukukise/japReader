@@ -22,7 +22,7 @@ const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Elemen
   return (
     <div className="drawer-component">
       <Button ghost auto scale={2 / 3} px={0.6}
-        style={{ position: "fixed", bottom: 0, left: 0 }}
+        style={{ position: "fixed", bottom: 10, left: 10 }}
         onClick={() => open()}
         iconRight={<ChevronUp />}
       />

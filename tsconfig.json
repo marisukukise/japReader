@@ -15,7 +15,8 @@
     "paths": {
       "*": ["node_modules/*"],
       "@globals/*": ["src/globals/*"],
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@fonts/*": ["src/fonts/*"],
     }
   },
   "include": ["src/**/*"]

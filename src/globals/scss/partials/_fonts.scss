@@ -1,0 +1,15 @@
+:root {
+  --main-font-family: "NotoSansJP";
+}
+
+$font-path: "@fonts" !default;
+
+@font-face {
+  font-family: NotoSansJP;
+  src: url('#{$font-path}/NotoSansJP-Regular.ttf');
+}
+
+@font-face {
+  font-family: NotoSerifJP;
+  src: url('#{$font-path}/NotoSerifJP-Regular.otf');
+}

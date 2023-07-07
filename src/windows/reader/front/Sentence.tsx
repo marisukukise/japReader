@@ -4,6 +4,7 @@ import { FuriganaJSX } from "@globals/ts/renderer/helpers";
 import { ipcRenderer } from "electron";
 import log from 'electron-log/renderer';
 import { useState } from "react";
+import { Text } from '@geist-ui/core'
 
 const MOUSE_BUTTONS = {
   'MAIN': 0, // Usually left button
@@ -63,7 +64,7 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
         break;
 
       default:
-        console.log("unknown code")
+        console.log("unknown mouse code")
 
     }
 
@@ -111,9 +112,9 @@ type SentenceProps = {
   words: japReader.IchiParsedWordData[]
 }
 export const Sentence = ({ words }: SentenceProps): JSX.Element => {
-  return (<div className='sentence'>
+  return (<Text p className='sentence'>
     {words.map((wordData: japReader.IchiParsedWordData, index: number) =>
       <Word key={index} wordData={wordData} />
     )}
-  </div>)
+  </Text>)
 }

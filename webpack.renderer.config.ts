@@ -6,7 +6,14 @@ import path from 'path';
 
 rules.push({
   test: /\.s[ac]ss$/i,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }],
+  use: [
+    { loader: 'style-loader' }, { loader: 'css-loader' }, 
+  { loader: 'sass-loader',
+    options: {
+      webpackImporter: true,
+    }
+}
+],
 });
 
 export const rendererConfig: Configuration = {
@@ -18,7 +25,8 @@ export const rendererConfig: Configuration = {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
     alias: {
       '@globals': path.resolve(__dirname, 'src/globals'),
-      '@src': path.resolve(__dirname, 'src')
+      '@src': path.resolve(__dirname, 'src'),
+      '@fonts': path.resolve(__dirname, 'src/fonts'),
     }
   },
 };

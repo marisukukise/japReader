@@ -65,3 +65,34 @@ export const removeListenerForAnotherWindow = (
 ): void => {
   ipcRenderer.removeAllListeners(`announce/${awaitedWindowName}/isReady`);
 }
+
+export const zoom = (conditionForZoomIn: boolean) => {
+  // if conditionForZoomIn true:  then zoom in
+  // if conditionForZoomIn false: then zoom out
+  const root = document.querySelector(':root') as HTMLElement;
+  const fontSizeRootPropertry = '--main-font-size'
+  const minFontSize = 6
+
+  const currentFontSize = parseInt(
+    getComputedStyle(root)
+      .getPropertyValue(fontSizeRootPropertry)
+      .slice(0, -2)
+  );
+  root.style.setProperty(
+    fontSizeRootPropertry,
+    (currentFontSize + (conditionForZoomIn ? 1 : (currentFontSize > minFontSize ? -1 : 0))).toString() + "px"
+  );
+}
+
+export const fontSizeEventListener = () => {
+  window.addEventListener('wheel', (event) => {
+    if (event.ctrlKey) zoom(event.deltaY < 0)
+  }, { passive: false })
+
+  window.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && (event.key == '=' || event.key == '+'))
+      zoom(true)
+    if (event.ctrlKey && (event.key == '-'))
+      zoom(false)
+  }, {passive: false})
+}

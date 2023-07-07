@@ -15,13 +15,16 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     height: 600,
     width: 800,
     show: false,
-    frame: false,
-    transparent: true,
+    zoomFactor: 1.0,
+    // frame: false,
+    // transparent: true,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
     },
   });
+
+
 
   translationWindow.loadURL(webpack_entry);
   if (process.env.JAPREADER_ENV === 'dev') translationWindow.webContents.openDevTools();

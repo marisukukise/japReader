@@ -4,8 +4,13 @@ import { getWindowStore } from "@globals/ts/main/initializeStore";
 const windowStore = getWindowStore();
 
 export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProduction: boolean): void => {
-  // Set the environment variable JAPREADER_ENV to "dev" to show all windows
+  window.webContents.on('did-finish-load', () => {
+    window.webContents.setZoomFactor(1);
+    window.webContents.setZoomLevel(0);
+    window.webContents.setVisualZoomLevelLimits(1, 1);
+  })
 
+  // Set the environment variable JAPREADER_ENV to "dev" to show all windows
   if (shouldShowInProduction) {
     window.once('ready-to-show', () => { 
       window.show(); 

@@ -1,4 +1,4 @@
-import { Sentence } from "@src/windows/reader/front/Sentence"
+import { Text } from '@geist-ui/core'
 
 export const TranslatedSentence = (
     { translatedSentence, japaneseSentence }: {
@@ -7,7 +7,7 @@ export const TranslatedSentence = (
     }
 ): JSX.Element => {
     return <>
-    <div className='translatedSentence'>{translatedSentence}</div>
-    <div className='japaneseSentence'>{japaneseSentence}</div>
+    <Text p className='translatedSentence'>{translatedSentence}</Text>
+    <Text p className='japaneseSentence'>{japaneseSentence}</Text>
     </>
 }

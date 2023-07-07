@@ -1,9 +1,9 @@
 .draggable-bar {
-    position:absolute;
+    position:fixed;
     top:0;
     left:0;
     width: 100%;
-    height: 20px;
+    height: var(--draggable-bar-height);
     -webkit-app-region: drag;
     background-color: white;
     background-size: 5px 5px;

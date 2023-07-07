@@ -1,14 +1,33 @@
+html,
+body,
+main,
+div,
+span,
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--main-font-family), "NotoSansJP", "メイリオ", Meiryo, Tahoma, Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif !important;
+}
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-weight: 700;
     line-height: 1.1;
     margin-top: 0;
 }
 
 p {
-    margin-top: 0;
+    margin-top: 0 !important;
 }
 
-a, a:visited, a:active {
+a,
+a:visited,
+a:active {
     text-decoration: none;
 }

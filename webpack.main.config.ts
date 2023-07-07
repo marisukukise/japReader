@@ -17,7 +17,8 @@ export const mainConfig: Configuration = {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
     alias: {
       '@globals': path.resolve(__dirname, 'src/globals'),
-      '@src': path.resolve(__dirname, 'src')
+      '@src': path.resolve(__dirname, 'src'),
+      '@fonts': path.resolve(__dirname, 'src/fonts'),
     }
   },
   mode: 'development',

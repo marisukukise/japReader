@@ -2,7 +2,6 @@
 // It is responsible for inserting DOM structure into the main element in the index.html file.
 
 import './local.scss';
-import '@globals/scss/global.scss';
 import { Settings } from './front/Settings';
 import { GeistProvider, CssBaseline } from '@geist-ui/core'
 

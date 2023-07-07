@@ -12,7 +12,7 @@ import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
-import { Page } from '@geist-ui/core'
+import { Text } from '@geist-ui/core'
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,
@@ -24,31 +24,31 @@ const settings = [
 
 
 const DeepFailedMessage = () => {
-    return (<div className='deep-state-msg failed'>
+    return (<Text p className='deep-state-msg failed'>
         Failed to connect to <span className="url">https://deepl.com/</span>.<br />
         Check your internet connection and restart japReader.
-    </div>)
+    </Text>)
 }
 
 const ConnectingToDeepMessage = () => {
-    return (<div className='deep-state-msg connecting'>
+    return (<Text p className='deep-state-msg connecting'>
         <Loader /> Connecting to <span className="url">https://deepl.com/</span>...<br />
         Please wait patiently.
-    </div>)
+    </Text>)
 }
 
 const ConnectedToDeepMessage = () => {
-    return (<div className='deep-state-msg connected'>
+    return (<Text p className='deep-state-msg connected'>
         Successfully connected to <span className="url">https://deepl.com/</span>!
-    </div>)
+    </Text>)
 }
 
 const TooManyCharactersCopiedMessage = () => {
-    return (<div className='deep-state-msg too-many-characters'>
+    return (<Text p className='deep-state-msg too-many-characters'>
         Too many characters copied to clipboard. <br />
         No request has been made to <span className="url">https://deepl.com/</span>. <br />
         This has been implemented to prevent you from getting banned.
-    </div>)
+    </Text>)
 }
 
 const ParseNotificationMessage = () => {
@@ -57,9 +57,9 @@ const ParseNotificationMessage = () => {
         'Translating', 'Transcribing', 'Deciphering', 'Decoding',
         'Transliterating', 'Rendering', 'Transposing', 'Transmutating'
     ];
-    return (<div className='parse-notification-msg'>
+    return (<Text p className='parse-notification-msg'>
         <Loader /> {verbs[Math.floor(Math.random() * verbs.length)]}...
-    </div>)
+    </Text>)
 }
 
 
@@ -127,14 +127,14 @@ export const Translation = () => {
 
     return (<>
         <DraggableBar />
-        <Page>
+        <div>
             <Message
                 isDeepReady={isDeepReady}
                 didDeepFail={didDeepFail}
                 translatedSentence={translatedSentence}
                 japaneseSentence={japaneseSentence}
             />
-        </Page>
+        </div>
         <ConfigurationDrawer settings={settings} />
     </>)
 }

@@ -37,12 +37,16 @@ app.whenReady().then(() => {
       'CommandOrControl+Shift+numsub',
       'CommandOrControl+Plus',
       'CommandOrControl+Shift+Plus',
+      'CommandOrControl+-',
+      'CommandOrControl+Shift+-',
       'CommandOrControl+0',
       'CommandOrControl+Shift+0',
   ];
 
   app.on('browser-window-focus', () => {
-    globalShortcut.registerAll(DISABLED_SHORTCUTS, () => {});
+    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+      globalShortcut.register(SHORTCUT, () => {});
+    })
   });
 
   app.on('browser-window-blur', () => {

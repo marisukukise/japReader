@@ -10,7 +10,7 @@ import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
-import { Page } from '@geist-ui/core'
+import { Text } from '@geist-ui/core'
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,
@@ -56,7 +56,7 @@ export const Dictionary = () => {
 
     return (<>
         <DraggableBar />
-        <Page>
+        <div>
             <div>Stats</div>
             <div>
                 <div>Item 1</div>
@@ -76,7 +76,28 @@ export const Dictionary = () => {
             </div>
             <h1 className={status}><FuriganaJSX kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
             <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
-        </Page>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+            <h1>LOREM IPSUM</h1>
+        </div>
         <ConfigurationDrawer settings={settings} />
     </>)
 }

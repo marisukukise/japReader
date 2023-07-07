@@ -10,6 +10,7 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
     height: 600,
     width: 800,
     show: false,
+    zoomFactor: 1.0,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,

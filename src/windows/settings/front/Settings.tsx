@@ -9,8 +9,6 @@ import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
-import { Page } from '@geist-ui/core'
-
 const settings = [
     ConfigurationDrawerSettings.open_settings,
     ConfigurationDrawerSettings.dark_mode,
@@ -19,9 +17,9 @@ const settings = [
 export const Settings = () => {
     return (<>
         <DraggableBar />
-        <Page>
+        <div>
 
-        </Page>
+        </div>
         <ConfigurationDrawer settings={settings} />
     </>)
 }

@@ -11,6 +11,7 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     height: 600,
     width: 800,
     show: false,
+    zoomFactor: 1.0,
     // frame: false,
     // transparent: true,
     webPreferences: {
