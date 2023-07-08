@@ -1,13 +1,12 @@
-import { app, dialog, BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow } from "electron";
 
-import { getWindowStore } from "@globals/ts/main/initializeStore";
+import { getWindowStore , getSettingsStore } from "@globals/ts/main/initializeStore";
 const windowStore = getWindowStore();
 import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from "@globals/ts/main/helpers";
 
-import log from 'electron-log';
 import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
-import { getSettingsStore } from "@globals/ts/main/initializeStore";
+
 const settingsStore = getSettingsStore();
 const { useReader } = settingsStore.get("options")
 

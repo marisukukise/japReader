@@ -6,7 +6,7 @@
   - JAPREADER_ENV ("dev" for a lot of windows etc., otherwise normal mode)
 */
 
-import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
+import { app, BrowserWindow, globalShortcut } from 'electron';
 
 import { setupLogging } from '@globals/ts/main/setupLogging';
 // Setups the logging mechanism

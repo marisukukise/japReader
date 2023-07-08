@@ -11,7 +11,7 @@ import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
-import { Text, Grid, Button, ButtonGroup, Spacer } from '@geist-ui/core'
+import { Grid, Button, ButtonGroup } from '@geist-ui/core'
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,

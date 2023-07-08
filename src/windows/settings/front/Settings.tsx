@@ -1,5 +1,3 @@
-import { ipcRenderer } from "electron";
-import { useEffect, useState } from "react";
 
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from "@globals/ts/main/setupLogging";
@@ -8,7 +6,6 @@ const log = createScopedLog(log_renderer, 'settings')
 import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
-import { Checkboard } from "react-color";
 import { Button, Checkbox, Input } from "@geist-ui/core";
 
 const settings = [

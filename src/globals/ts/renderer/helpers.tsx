@@ -1,9 +1,9 @@
 import { ipcRenderer } from "electron";
 import React from "react";
 import log from 'electron-log/renderer';
-import { getStatusDataStore } from "@globals/ts/main/initializeStore";
+import { getStatusDataStore , getWindowStore } from "@globals/ts/main/initializeStore";
 const statusDataStore = getStatusDataStore();
-import { getWindowStore } from "@globals/ts/main/initializeStore";
+
 const windowStore = getWindowStore();
 const { fit } = require("furigana");
 import { IPC_CHANNELS, WORD_DATA_STATUSES } from "@globals/ts/main/objects";

@@ -1,7 +1,6 @@
-import { dialog, BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings } from "@globals/ts/main/helpers";
-import log from 'electron-log';
 import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 import { getWindowStore } from "@globals/ts/main/initializeStore";

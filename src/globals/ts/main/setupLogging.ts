@@ -1,4 +1,4 @@
-import { app, dialog, ipcRenderer } from "electron";
+import { app, dialog } from "electron";
 import 'dotenv/config';
 import log from 'electron-log';
 
@@ -6,7 +6,7 @@ import log from 'electron-log';
 const addColorToLog = (
     message: log.LogMessage,
     color: 'red' | 'green' | 'blue' | 'cyan' | 'magenta' | 'yellow' | 'black' | 'white',
-    otherCSS: string = ''):
+    otherCSS = ''):
     log.LogMessage => {
 
     const hasCustomStyles = message.data[0].includes('%c')

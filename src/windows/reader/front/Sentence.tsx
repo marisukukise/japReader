@@ -1,9 +1,8 @@
-import { FuriganaJSX, updateWordStatusStore } from "@globals/ts/renderer/helpers";
+import { FuriganaJSX, updateWordStatusStore , getWordStatusData } from "@globals/ts/renderer/helpers";
 import { ipcRenderer } from "electron";
-import log from 'electron-log/renderer';
 import { useEffect, useState } from "react";
 import { Text } from '@geist-ui/core'
-import { getWordStatusData } from "@globals/ts/renderer/helpers";
+
 import { IPC_CHANNELS, WORD_DATA_STATUSES } from "@globals/ts/main/objects";
 
 const MOUSE_BUTTONS = {

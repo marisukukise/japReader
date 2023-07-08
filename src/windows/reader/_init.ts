@@ -1,8 +1,7 @@
 
-import { app, dialog, BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from "@globals/ts/main/helpers";
-import log from 'electron-log';
 import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
