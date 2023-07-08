@@ -14,6 +14,7 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
   const translationWindow = createWindowAndStorePositionData("translation", {
     height: 600,
     width: 800,
+    backgroundColor: '#e7dee6',
     show: false,
     zoomFactor: 1.0,
     frame: false,
@@ -31,7 +32,7 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
 
   if (!useReader) {
     translationWindow.on('close', (event: any) => {
-      showExitDialog(translationWindow)
+      showExitDialog(translationWindow, event)
     });
   }
   else {

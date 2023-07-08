@@ -10,8 +10,6 @@ const settingsStore = getSettingsStore();
 const { useDeepLApi } = settingsStore.get("options")
 
 export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: string): BrowserWindow => {
-  log.debug("Creating deep BrowserWindow...")
-
   const deepWindow = createWindowAndStorePositionData("deep", {
     height: 600,
     width: 800,

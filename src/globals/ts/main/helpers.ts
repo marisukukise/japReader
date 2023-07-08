@@ -51,7 +51,7 @@ export const passMessageToRenderer = (window: BrowserWindow, ipcChannel: string)
   })
 }
 
-export const showExitDialog = (window: BrowserWindow): void => {
+export const showExitDialog = (window: BrowserWindow, event: any): void => {
   const choice = dialog.showMessageBoxSync(window,
     {
       type: 'question',
@@ -111,11 +111,12 @@ export const createWindowAndStorePositionData = (windowName: string, windowConfi
   log.debug(`Creating ${windowName} BrowserWindow...`)
 
   const allowed = ['width', 'height', 'isMaximized', 'x', 'y', 'backgroundColor']
-  const DEFAULT_BACKGROUND_COLOR = '#e7dee6';
 
   if (windowStore.has(windowName)) {
-    if (!windowStore.has(`${windowName}.backgroundColor`))
-      windowStore.set(`${windowName}.backgroundColor`, DEFAULT_BACKGROUND_COLOR)
+    let additional = {}
+    if (windowStore.has(`${windowName}.additional`)) {
+      additional = windowStore.get(`${windowName}.additional`)
+    }
 
     const windowSettings = filterObjectKeys(windowStore.get(windowName), allowed);
     Object.assign(windowConfig,
@@ -123,7 +124,7 @@ export const createWindowAndStorePositionData = (windowName: string, windowConfi
     );
     // get rid of rubbish properties
     windowStore.delete(windowName);
-    windowStore.set(windowName, windowSettings)
+    windowStore.set(windowName, Object.keys(additional).length === 0 ? windowSettings : {...windowSettings, "additional": additional})
   }
 
   const window = new BrowserWindow(windowConfig)

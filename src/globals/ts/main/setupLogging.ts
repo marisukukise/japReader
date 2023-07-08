@@ -20,25 +20,28 @@ const addColorToLog = (
 
 export const createScopedLog = (log: any, scopeName: string): any => {
     log.hooks.push((message: any, transport: any) => {
+        if (message) {
         if (transport !== log.transports.console)
             return message
 
-        switch (message.level) {
-            case 'error':
-                return addColorToLog(message, 'red', 'font-size: 2rem; font-weight: bold;')
-            case 'warn':
-                return addColorToLog(message, 'yellow', 'font-size: 1rem; font-weight: bold;')
-            case 'info':
-                return addColorToLog(message, 'white')
-            case 'debug':
-                return addColorToLog(message, 'green')
-            case 'verbose':
-                return addColorToLog(message, 'cyan', 'font-size: 0.75rem;')
-            case 'silly':
-                return addColorToLog(message, 'black', 'font-size: 0.75rem;')
-            default:
-                return message
+            switch (message.level) {
+                case 'error':
+                    return addColorToLog(message, 'red', 'font-size: 2rem; font-weight: bold;')
+                case 'warn':
+                    return addColorToLog(message, 'yellow', 'font-size: 1rem; font-weight: bold;')
+                case 'info':
+                    return addColorToLog(message, 'white')
+                case 'debug':
+                    return addColorToLog(message, 'green')
+                case 'verbose':
+                    return addColorToLog(message, 'cyan', 'font-size: 0.75rem;')
+                case 'silly':
+                    return addColorToLog(message, 'black', 'font-size: 0.75rem;')
+                default:
+                    return message;
+            }
         }
+        else return message;
     });
     const newLog = log.scope(scopeName)
     return newLog;

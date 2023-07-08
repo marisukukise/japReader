@@ -44,8 +44,5 @@ export const initializeApp = (): void => {
   if (useDeepL) {
     const deepWindow = createDeepWindow(DEEP_PRELOAD_WEBPACK_ENTRY, DEEP_WEBPACK_ENTRY);
     const translationWindow = createTranslationWindow(TRANSLATION_WEBPACK_ENTRY);
-
   }
-
-  
 };

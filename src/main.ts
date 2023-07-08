@@ -24,36 +24,38 @@ app.whenReady().then(() => {
   initializeApp();
 
   const DISABLED_SHORTCUTS = [
-      // Reloading can lead to some bugs
-      'CommandOrControl+R',
-      'CommandOrControl+Shift+R',
-      'F5',
-      // Quitting should only be through Alt+F4 and buttons
-      'CommandOrControl+W',
-      // Zooming should be implemented in each Window renderer
-      'CommandOrControl+numadd',
-      'CommandOrControl+Shift+numadd',
-      'CommandOrControl+numsub',
-      'CommandOrControl+Shift+numsub',
-      'CommandOrControl+Plus',
-      'CommandOrControl+Shift+Plus',
-      'CommandOrControl+-',
-      'CommandOrControl+Shift+-',
-      'CommandOrControl+0',
-      'CommandOrControl+Shift+0',
+    // Reloading can lead to some bugs
+    'CommandOrControl+R',
+    'CommandOrControl+Shift+R',
+    'F5',
+    // Quitting should only be through Alt+F4 and buttons
+    'CommandOrControl+W',
+    // Zooming should be implemented in each Window renderer
+    'CommandOrControl+numadd',
+    'CommandOrControl+Shift+numadd',
+    'CommandOrControl+numsub',
+    'CommandOrControl+Shift+numsub',
+    'CommandOrControl+Plus',
+    'CommandOrControl+Shift+Plus',
+    'CommandOrControl+-',
+    'CommandOrControl+Shift+-',
+    'CommandOrControl+0',
+    'CommandOrControl+Shift+0',
   ];
 
-  app.on('browser-window-focus', () => {
-    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
-      globalShortcut.register(SHORTCUT, () => {});
-    })
-  });
+  if (process.env.JAPREADER_ENV !== "dev") {
+    app.on('browser-window-focus', () => {
+      DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+        globalShortcut.register(SHORTCUT, () => { });
+      })
+    });
 
-  app.on('browser-window-blur', () => {
-    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
-      globalShortcut.unregister(SHORTCUT);
-    })
-  });
+    app.on('browser-window-blur', () => {
+      DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+        globalShortcut.unregister(SHORTCUT);
+      })
+    });
+  }
 })
 
 app.on('activate', () => {

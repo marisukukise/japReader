@@ -7,6 +7,7 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
   const dictionaryWindow = createWindowAndStorePositionData("dictionary", {
     height: 600,
     width: 800,
+    backgroundColor: '#e7dee6',
     show: false,
     zoomFactor: 1.0,
     frame: false,
@@ -28,6 +29,7 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
 
   passMessageToRenderer(dictionaryWindow, IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA)
   passMessageToRenderer(dictionaryWindow, IPC_CHANNELS.READER.ANNOUNCE.IS_READY)
+  passMessageToRenderer(dictionaryWindow, IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED)
 
   return dictionaryWindow;
 }

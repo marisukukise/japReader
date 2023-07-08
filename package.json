@@ -5,7 +5,7 @@
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "electron-forge start --inspect-electron",
     "log": "electron-forge start --enable-logging",
     "package": "electron-forge package",
     "make": "electron-forge make",

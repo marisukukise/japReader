@@ -5,7 +5,12 @@
     width: 100%;
     height: var(--draggable-bar-height);
     -webkit-app-region: drag;
-    background-color: white;
+    cursor: grab;
+    background-color: var(--primary-background);
     background-size: 5px 5px;
-    background-image: repeating-linear-gradient(5deg, white 0, white 1px, black 0, white 50%);
+    background-image: repeating-linear-gradient(5deg, var(--primary-background) 0, var(--primary-background) 1px, black 0, var(--primary-background) 50%);
+}
+
+.draggable-bar:hover {
+    cursor: grab;
 }

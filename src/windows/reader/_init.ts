@@ -8,6 +8,7 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
   const readerWindow = createWindowAndStorePositionData("reader", {
     height: 600,
     width: 800,
+    backgroundColor: '#e7dee6',
     show: false,
     zoomFactor: 1.0,
     frame: false,
@@ -24,7 +25,7 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
   showWindowWhenReady(readerWindow, true);
 
   readerWindow.on('close', (event: any) => {
-    showExitDialog(readerWindow);
+    showExitDialog(readerWindow, event);
   });
 
   passMessageToRenderer(readerWindow, IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS)

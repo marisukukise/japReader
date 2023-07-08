@@ -1,10 +1,13 @@
 import { ipcRenderer } from "electron";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from "@globals/ts/main/setupLogging";
 const log = createScopedLog(log_renderer, 'dictionary')
 import { IPC_CHANNELS, WORD_DATA_STATUSES } from "@globals/ts/main/objects";
+
+import { getStatusDataStore } from "@globals/ts/main/initializeStore";
+const statusDataStore = getStatusDataStore();
 
 import { FuriganaJSX, listenForAnotherWindowIsReady, updateWordStatusStore } from "@globals/ts/renderer/helpers";
 import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
@@ -20,15 +23,20 @@ const settings = [
     ConfigurationDrawerSettings.dictionary_on_top_button,
 ]
 
-
 export const Dictionary = () => {
     const [isReaderReady, setReaderReady] = useState(false);
     const [status, setStatus] = useState("")
     const [dictForm, setDictForm] = useState("")
     const [dictFormReading, setDictFormReading] = useState("")
     const [definitions, setDefinitions] = useState("")
-
-
+    const [known, setKnown] = useState(
+        statusDataStore.has(`status_data.${WORD_DATA_STATUSES.KNOWN}`) ?
+            statusDataStore.get(`status_data.${WORD_DATA_STATUSES.KNOWN}`).length : 0
+    )
+    const [seen, setSeen] = useState(
+        statusDataStore.has(`status_data.${WORD_DATA_STATUSES.SEEN}`) ?
+            statusDataStore.get(`status_data.${WORD_DATA_STATUSES.SEEN}`).length : 0
+    )
 
     useEffect(() => {
         log.log("mounted dictionary")
@@ -42,13 +50,26 @@ export const Dictionary = () => {
             setDefinitions(extendedWordData.definitions);
         })
 
-        listenForAnotherWindowIsReady(IPC_CHANNELS.READER, 
+
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
+            if (newStatus == WORD_DATA_STATUSES.SEEN)
+                setSeen((seen: number) => seen + 1);
+            if (newStatus == WORD_DATA_STATUSES.KNOWN)
+                setKnown((known: number) => known + 1);
+            if (prevStatus == WORD_DATA_STATUSES.SEEN)
+                setSeen((seen: number) => seen - 1)
+            if (prevStatus == WORD_DATA_STATUSES.KNOWN)
+                setKnown((known: number) => known - 1)
+        });
+
+        listenForAnotherWindowIsReady(IPC_CHANNELS.READER,
             isReaderReady, setReaderReady);
 
         return () => {
-            log.log("unmounted reader")
+            log.log("unmounted dictionary")
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.IS_READY);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED)
         }
     }, [])
 
@@ -57,30 +78,35 @@ export const Dictionary = () => {
     }
 
     const setSeenStatus = () => {
-        updateWordStatusStore(dictForm, WORD_DATA_STATUSES.SEEN)
-        setStatus(WORD_DATA_STATUSES.SEEN)
-
+        if (dictForm) {
+            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.SEEN)
+            setStatus(WORD_DATA_STATUSES.SEEN)
+        }
     }
     const setKnownStatus = () => {
-        updateWordStatusStore(dictForm, WORD_DATA_STATUSES.KNOWN)
-        setStatus(WORD_DATA_STATUSES.KNOWN)
+        if (dictForm) {
+            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.KNOWN)
+            setStatus(WORD_DATA_STATUSES.KNOWN)
+        }
     }
     const setIgnoredStatus = () => {
-        updateWordStatusStore(dictForm, WORD_DATA_STATUSES.IGNORED)
-        setStatus(WORD_DATA_STATUSES.IGNORED)
+        if (dictForm) {
+            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.IGNORED)
+            setStatus(WORD_DATA_STATUSES.IGNORED)
+        }
     }
 
     return (<>
         <DraggableBar />
         <div>
-            <Grid.Container gap={2} justify="space-between" height="100px">
-                <Grid xs={6}>stat1</Grid>
-                <Grid xs={6}>stat2</Grid>
+            <Grid.Container gap={2} justify="space-between">
+                <Grid xs={12} justify="flex-start">Seen: {seen}</Grid>
+                <Grid xs={12} justify="flex-end">Known: {known}</Grid>
             </Grid.Container>
-            <Grid.Container gap={2} justify="center" height="100px">
-                <Grid xs={6}>gr1</Grid>
-                <Grid xs={6}>gr2</Grid>
-                <Grid xs={6}>gr3</Grid>
+            <Grid.Container gap={2} justify="center">
+                <Grid xs={8} justify="flex-end">gr1</Grid>
+                <Grid xs={8} justify="center">gr2</Grid>
+                <Grid xs={8} justify="flex-start">gr3</Grid>
             </Grid.Container>
 
             <div>

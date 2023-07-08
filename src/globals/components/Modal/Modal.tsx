@@ -8,9 +8,9 @@ export const Modal = ({ title, subtitle, buttonText, children }: any) => {
         setState(false)
     }
     return (
-        <div>
+        <div className="modal-component">
             <Button auto onClick={handler}>{buttonText}</Button>
-            <ModalGeist visible={state} onClose={closeHandler}>
+            <ModalGeist wrapClassName="modal-wrapper" visible={state} onClose={closeHandler}>
                 <ModalGeist.Title>{title}</ModalGeist.Title>
                 {subtitle ? <ModalGeist.Subtitle>{subtitle}</ModalGeist.Subtitle> : null}
                 <ModalGeist.Content>

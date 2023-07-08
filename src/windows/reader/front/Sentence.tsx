@@ -20,10 +20,9 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
   const [wordStatus, setWordStatus] = useState(getWordStatusData(wordData.dictForm))
 
   useEffect(() => {
-    ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus) => {
+    ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
       if (wordData.dictForm == dictionaryForm) {
         setWordStatus(newStatus)
-        console.log("changed status")
       }
     });
     return () => {
@@ -72,13 +71,15 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
     // Send messages to dictionary
     console.log(extendedWordData)
     ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, extendedWordData);
-    ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.OPEN);
+    ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.SHOW);
 
-    updateWordStatusStore(wordData.dictForm, nextWordStatus)
+    if(wordData.dictForm)
+      updateWordStatusStore(wordData.dictForm, nextWordStatus)
 
     return true;
   }
 
+  
   return wordData.definitions
     ? <span
       onMouseDown={(event) => handleMouseDown(event)}

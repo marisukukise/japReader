@@ -5,8 +5,6 @@ import log from 'electron-log';
 import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow => {
-  log.debug("Creating ichi BrowserWindow...")
-
   const ichiWindow = createWindowAndStorePositionData("ichi", {
     height: 600,
     width: 800,

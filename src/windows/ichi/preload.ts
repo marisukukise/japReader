@@ -56,14 +56,16 @@ const getDictForm = (text: string): string => {
 }
 
 const getReading = (text: string): string => {
+  log.log("getReading before:", text)
   let readingText = text
     .replace(/.+【/g, '')
     .replace(/】/g, '')
     .replace(/[0-9]+\. /g, '')
     .replace(/\s/g, '');
   readingText = Array.from(readingText)
-    .filter((char) => /[\p{Script=Hiragana}\p{Script=Katakana}]/u.test(char))
+    .filter((char) => /[\p{Script=Hiragana}\p{Script=Katakana}|ー]/u.test(char))
     .join('');
+  log.log("getReading after:", readingText)
   return readingText;
 }
 

@@ -102,6 +102,7 @@ export const Reader = () => {
         ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
             // TODO: Somehow add memoization to Japanese sentences, 
             // so that common ones don't have to wait for ichi
+            log.log("received from ichi:", words, japaneseSentence)
             currentWords.current = words;
             setJapaneseSentence(japaneseSentence);
             if (!useDeepL) ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, japaneseSentence, null)

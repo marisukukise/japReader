@@ -4,8 +4,6 @@ import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/
 import log from 'electron-log';
 
 export const createClipboardWindow = (webpack_entry: string): BrowserWindow => {
-  log.debug("Creating clipboard BrowserWindow...")
-
   const clipboardWindow = createWindowAndStorePositionData("clipboard", {
     height: 600,
     width: 800,

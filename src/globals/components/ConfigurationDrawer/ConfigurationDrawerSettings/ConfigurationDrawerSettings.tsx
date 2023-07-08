@@ -6,7 +6,7 @@ import Settings from '@geist-ui/icons/settings';
 import Moon from '@geist-ui/icons/moon'
 import ColorPickerButton from './ColorPickerButton';
 import { ipcRenderer } from 'electron';
-import { changeFontColor } from '@globals/ts/renderer/helpers';
+import { changeBackgroundColorVariable, changeFontColor } from '@globals/ts/renderer/helpers';
 
 const shownWindows = ['reader', 'translation', 'dictionary', 'settings']
 
@@ -19,6 +19,7 @@ const createSettingsForEachWindow = () => {
         obj[`${windowName}_background_color_picker`] = <ColorPickerButton
             callback={(color: string) => {
                 ipcRenderer.send(ipcBase.SET.BACKGROUND_COLOR, color)
+                changeBackgroundColorVariable(windowName, color)
             }}
             title={windowName[0].toUpperCase() + windowName.slice(1)}
             subtitle="Set background color"
