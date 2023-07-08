@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from "@globals/ts/main/setupLogging";
 const log = createScopedLog(log_renderer, 'reader')
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 import { getSettingsStore } from "@globals/ts/main/initializeStore";
 const settingsStore = getSettingsStore();
 const { useDeepL } = settingsStore.get("options")
 
-import { listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
+import { listenForAnotherWindowIsReady } from "@globals/ts/renderer/helpers";
 import { Sentence } from "./Sentence";
 import Loader from "@globals/components/Loader/Loader";
 import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
@@ -92,29 +93,31 @@ export const Reader = () => {
     useEffect(() => {
         log.log("mounted reader")
 
-        ipcRenderer.send("announce/reader/isReady")
+        ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.IS_READY)
 
-        listenForAnotherWindowIsReady('ichi', isIchiReady, setIchiReady)
+        listenForAnotherWindowIsReady(IPC_CHANNELS.ICHI,
+            isIchiReady,
+            setIchiReady);
 
-        ipcRenderer.on("set/ichi/wordData", (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
+        ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
             // TODO: Somehow add memoization to Japanese sentences, 
             // so that common ones don't have to wait for ichi
             currentWords.current = words;
             setJapaneseSentence(japaneseSentence);
-            if (!useDeepL) ipcRenderer.send('append/historyStore/entry', japaneseSentence, null)
+            if (!useDeepL) ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, japaneseSentence, null)
         })
 
-        ipcRenderer.on("announce/ichi/connectionError", () => {
+        ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR, () => {
             log.log("ichi failed")
             setIchiFailed(true);
         })
 
-        ipcRenderer.on("announce/clipboard/changeDetected", () => {
+        ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, () => {
             log.log("parsing")
             setJapaneseSentence("/parsing/");
         })
 
-        ipcRenderer.on("announce/clipboard/tooManyCharacters", () => {
+        ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS, () => {
             log.log("tooManyCharacters")
             setJapaneseSentence("/tooManyCharacters/");
         })
@@ -122,16 +125,16 @@ export const Reader = () => {
 
         return () => {
             log.log("unmounted reader")
-            ipcRenderer.removeAllListeners("set/ichi/wordData");
-            ipcRenderer.removeAllListeners("announce/ichi/connectionError");
-            ipcRenderer.removeAllListeners("announce/clipboard/changeDetected");
-            ipcRenderer.removeAllListeners("announce/clipboard/tooManyCharacters");
-            removeListenerForAnotherWindow('ichi')
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.IS_READY);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS);
         }
     }, [])
 
     useEffect(() => {
-        ipcRenderer.send("set/reader/focus");
+        ipcRenderer.send(IPC_CHANNELS.READER.SET.FOCUS);
     }, [japaneseSentence])
 
     return (<>

@@ -2,7 +2,13 @@
 // Learn more about SASS/SCSS: https://sass-lang.com/documentation/syntax 
 
 @use "@globals/scss/global" as global;
+@use "sass:color";
+
 
 #dictionary {
-
+    div.spacer-container > div {
+        background: var(--primary-font);
+        opacity: 0.5;
+        border-radius: 15px;
+    }
 }

@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from "@globals/ts/main/setupLogging";
 const log = createScopedLog(log_renderer, 'translation')
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
-import { listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
+import { listenForAnotherWindowIsReady  } from "@globals/ts/renderer/helpers";
 import { TranslatedSentence } from './TranslatedSentence';
 import Loader from "@globals/components/Loader/Loader";
 import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
@@ -87,41 +88,42 @@ export const Translation = () => {
 
 
     useEffect(() => {
-        ipcRenderer.send("set/translation/focus");
+        ipcRenderer.send(IPC_CHANNELS.TRANSLATION.SET.FOCUS);
     }, [japaneseSentence])
 
     useEffect(() => {
-        ipcRenderer.send("announce/translation/isReady")
+        ipcRenderer.send(IPC_CHANNELS.TRANSLATION.ANNOUNCE.IS_READY)
 
-        listenForAnotherWindowIsReady('deep', isDeepReady, setDeepReady)
+        listenForAnotherWindowIsReady(IPC_CHANNELS.DEEP, 
+            isDeepReady, setDeepReady)
 
-        ipcRenderer.on("set/deep/translationText", (event, translatedSentence: string, japaneseSentence: string) => {
+        ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, translatedSentence: string, japaneseSentence: string) => {
             setTranslatedSentence(translatedSentence);
             setJapaneseSentence(japaneseSentence);
         });
 
-        ipcRenderer.on("announce/deep/connectionError", () => {
+        ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR, () => {
             log.log("deep failed");
             setDeepFailed(true);
         })
 
 
-        ipcRenderer.on("announce/clipboard/changeDetected", () => {
+        ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, () => {
             log.log("parsing")
             setTranslatedSentence("/parsing/");
         })
 
-        ipcRenderer.on("announce/clipboard/tooManyCharacters", () => {
+        ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS, () => {
             log.log("tooManyCharacters")
             setTranslatedSentence("/tooManyCharacters/");
         })
 
         return () => {
-            removeListenerForAnotherWindow('deep')
-            ipcRenderer.removeAllListeners("announce/deep/connectionError");
-            ipcRenderer.removeAllListeners("set/deep/translationText");
-            ipcRenderer.removeAllListeners("announce/clipboard/changeDetected");
-            ipcRenderer.removeAllListeners("announce/clipboard/tooManyCharacters");
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS);
         }
     }, [])
 

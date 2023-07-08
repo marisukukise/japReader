@@ -3,6 +3,7 @@ import { app, dialog, BrowserWindow, ipcMain } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
   log.debug("Creating reader BrowserWindow...")
@@ -49,39 +50,39 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.webContents.send('blur')
   })
 
-  ipcMain.on('announce/clipboard/tooManyCharacters', () => {
-    readerWindow.webContents.send('announce/clipboard/tooManyCharacters');
+  ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS, () => {
+    readerWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS);
   });
 
-  ipcMain.on('announce/clipboard/changeDetected', () => {
-    readerWindow.webContents.send('announce/clipboard/changeDetected');
+  ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, () => {
+    readerWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED);
   });
 
-  ipcMain.on('announce/ichi/connectionError', () => {
-    readerWindow.webContents.send('announce/ichi/connectionError');
+  ipcMain.on(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR, () => {
+    readerWindow.webContents.send(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR);
   });
 
-  ipcMain.on('set/ichi/wordData', (event, words, fullText) => {
-    readerWindow.webContents.send('set/ichi/wordData', words, fullText);
+  ipcMain.on(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, (event, words, fullText) => {
+    readerWindow.webContents.send(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, words, fullText);
   });
 
-  ipcMain.on('refreshReader', () => {
-    readerWindow.webContents.send('refreshReader');
+  ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, desiredStatus) => {
+    readerWindow.webContents.send(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, dictionaryForm, desiredStatus)
+  })
+
+  ipcMain.on(IPC_CHANNELS.ICHI.ANNOUNCE.IS_READY, (event) => {
+    readerWindow.webContents.send(IPC_CHANNELS.ICHI.ANNOUNCE.IS_READY)
   });
 
-  ipcMain.on("announce/ichi/isReady", (event) => {
-    readerWindow.webContents.send("announce/ichi/isReady")
-  });
-
-  ipcMain.on('set/reader/windowBackgroundColor', (event, value) => {
+  ipcMain.on(IPC_CHANNELS.READER.SET.BACKGROUND_COLOR, (event, value) => {
     readerWindow.setBackgroundColor(value);
   });
 
-  ipcMain.on('set/reader/onTop', (event, value) => {
+  ipcMain.on(IPC_CHANNELS.READER.SET.ALWAYS_ON_TOP, (event, value) => {
     readerWindow.setAlwaysOnTop(value, 'screen-saver')
   })
 
-  ipcMain.on('set/reader/focus', () => {
+  ipcMain.on(IPC_CHANNELS.READER.SET.FOCUS, () => {
     readerWindow.focus();
   });
 

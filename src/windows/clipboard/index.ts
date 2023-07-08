@@ -1,6 +1,7 @@
 const { dialog, ipcRenderer, clipboard } = require('electron');
 const clipboardListener = require('clipboard-event');
 import log from 'electron-log/renderer';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 const charLimit = 90;
 let clipboardText = '';
@@ -50,20 +51,20 @@ const handleChange = () => {
 
     if (clipboardText.length >= charLimit) {
       log.warn("Too many characters copied")
-      ipcRenderer.send('announce/clipboard/tooManyCharacters');
+      ipcRenderer.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS);
     } else {
       log.info("Detected japanese text in clipboard: ", clipboardText)
-      ipcRenderer.send('announce/clipboard/changeDetected', clipboardText);
+      ipcRenderer.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, clipboardText);
     }
   }
 };
 
 window.addEventListener('DOMContentLoaded', () => {
 
-  ipcRenderer.invoke("get/libPath").then((libPath: string) => {
+  ipcRenderer.invoke(IPC_CHANNELS.MAIN.REQUEST.LIB_PATH).then((libPath: string) => {
     clipboardListener.startListening(libPath);
 
-    ipcRenderer.send("announce/clipboard/isReady")
+    ipcRenderer.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY)
     clipboardListener.on('change', () => {
       handleChange();
     });

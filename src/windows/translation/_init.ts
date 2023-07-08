@@ -3,6 +3,7 @@ import { app, dialog, BrowserWindow, ipcMain } from "electron";
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 
 import log from 'electron-log';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 import { getSettingsStore } from "@globals/ts/main/initializeStore";
 const settingsStore = getSettingsStore();
@@ -34,8 +35,8 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     translationWindow.webContents.send('fadeText', shouldFade);
   });
 
-  ipcMain.on('set/deep/translationText', (event, sourceText, targetText) => {
-    translationWindow.webContents.send('set/deep/translationText', sourceText, targetText);
+  ipcMain.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, sourceText, targetText) => {
+    translationWindow.webContents.send(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, sourceText, targetText);
   });
 
   translationWindow.on('blur', (event: any) => {
@@ -46,18 +47,18 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     translationWindow.webContents.send('requestTranslation');
   });
 
-  ipcMain.on('announce/clipboard/tooManyCharacters', () => {
-    translationWindow.webContents.send('announce/clipboard/tooManyCharacters');
+  ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS, () => {
+    translationWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS);
   });
 
 
-  ipcMain.on('announce/clipboard/changeDetected', () => {
-    translationWindow.webContents.send('announce/clipboard/changeDetected');
+  ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, () => {
+    translationWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED);
   });
 
 
-  ipcMain.on('announce/deep/connectionError', () => {
-    translationWindow.webContents.send('announce/deep/connectionError');
+  ipcMain.on(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR, () => {
+    translationWindow.webContents.send(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
   });
 
   if (!useReader) {
@@ -88,19 +89,19 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     });
   }
 
-  ipcMain.on("announce/deep/isReady", (event) => {
-    translationWindow.webContents.send("announce/deep/isReady")
+  ipcMain.on(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY, (event) => {
+    translationWindow.webContents.send(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY)
   });
 
-  ipcMain.on('set/translation/windowBackgroundColor', (event, value) => {
+  ipcMain.on(IPC_CHANNELS.TRANSLATION.SET.BACKGROUND_COLOR, (event, value) => {
     translationWindow.setBackgroundColor(value);
   });
 
-  ipcMain.on('set/translation/onTop', (event, value) => {
+  ipcMain.on(IPC_CHANNELS.TRANSLATION.SET.ALWAYS_ON_TOP, (event, value) => {
     translationWindow.setAlwaysOnTop(value, 'screen-saver')
   })
 
-  ipcMain.on('set/reader/focus', () => {
+  ipcMain.on(IPC_CHANNELS.READER.SET.FOCUS, () => {
     translationWindow.focus();
   });
 

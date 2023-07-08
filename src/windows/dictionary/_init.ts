@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => {
   log.debug("Creating dictionary BrowserWindow...")
@@ -33,35 +34,23 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
     dictionaryWindow.webContents.send('blur')
   })
 
-  ipcMain.on('set/dictionary/open', () => {
+  ipcMain.on(IPC_CHANNELS.DICTIONARY.SET.OPEN, () => {
     dictionaryWindow.show();
   });
 
-  ipcMain.on('hideDict', () => {
-    dictionaryWindow.hide();
+  ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, (event, word: japReader.ExtendedWordData) => {
+    dictionaryWindow.webContents.send(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, word);
   });
 
-  ipcMain.on('sendWordData', (event, wordData) => {
-    dictionaryWindow.webContents.send('receiveWordData', wordData);
+  ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.IS_READY, (event) =>  { 
+    dictionaryWindow.webContents.send(IPC_CHANNELS.READER.ANNOUNCE.IS_READY)
   });
 
-  ipcMain.on('sendTranslation', (event, englishText) => {
-    dictionaryWindow.webContents.send('receiveTranslation', englishText);
-  });
-
-  ipcMain.on('set/reader/extendedWordData', (event, word: japReader.ExtendedWordData) => {
-    dictionaryWindow.webContents.send('set/reader/extendedWordData', word);
-  });
-
-  ipcMain.on("announce/reader/isReady", (event) =>  { 
-    dictionaryWindow.webContents.send("announce/reader/isReady")
-  });
-
-  ipcMain.on('set/dictionary/windowBackgroundColor', (event, value) => {
+  ipcMain.on(IPC_CHANNELS.DICTIONARY.SET.BACKGROUND_COLOR, (event, value) => {
     dictionaryWindow.setBackgroundColor(value);
   });
 
-  ipcMain.on('set/dictionary/onTop', (event, value) => {
+  ipcMain.on(IPC_CHANNELS.DICTIONARY.SET.ALWAYS_ON_TOP, (event, value) => {
     dictionaryWindow.setAlwaysOnTop(value, 'screen-saver')
   })
 

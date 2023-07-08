@@ -3,6 +3,7 @@
 
 const { ipcRenderer } = require('electron');
 import log from 'electron-log/renderer';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 
 const WORDS: japReader.IchiParsedWordData[] = [];
@@ -77,13 +78,13 @@ window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line global-require
   const $ = require('jquery');
 
-  ipcRenderer.on('announce/clipboard/changeDetected', (event, text) => {
+  ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
     document.location.href = `https://ichi.moe/cl/qr/?q=${text}&r=kana`;
   });
 
   const connectionCheck = setTimeout(() => {
     if (document.querySelector('.wrapper')) {
-      ipcRenderer.send('announce/ichi/isReady');
+      ipcRenderer.send(IPC_CHANNELS.ICHI.ANNOUNCE.IS_READY);
       clearInterval(connectionCheck);
     }
   }, 500);
@@ -169,11 +170,11 @@ window.addEventListener('DOMContentLoaded', () => {
     FULL_TEXT += element.textContent;
   });
 
-  ipcRenderer.send('set/ichi/wordData', PARSED_WORDS, FULL_TEXT);
+  ipcRenderer.send(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, PARSED_WORDS, FULL_TEXT);
 });
 
 setTimeout(() => {
   if (document.body.children.length === 0) {
-    ipcRenderer.send('announce/ichi/connectionError');
+    ipcRenderer.send(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR);
   }
 }, 10000);

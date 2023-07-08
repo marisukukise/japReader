@@ -1,10 +1,10 @@
-import { getStatusDataStore } from "@globals/ts/main/initializeStore";
-const statusDataStore = getStatusDataStore();
-import { FuriganaJSX } from "@globals/ts/renderer/helpers";
+import { FuriganaJSX, updateWordStatusStore } from "@globals/ts/renderer/helpers";
 import { ipcRenderer } from "electron";
 import log from 'electron-log/renderer';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text } from '@geist-ui/core'
+import { getWordStatusData } from "@globals/ts/renderer/helpers";
+import { IPC_CHANNELS, WORD_DATA_STATUSES } from "@globals/ts/main/objects";
 
 const MOUSE_BUTTONS = {
   'MAIN': 0, // Usually left button
@@ -14,29 +14,23 @@ const MOUSE_BUTTONS = {
   'FIFTH': 4, // Typically the 'browser forward' button
 }
 
-const WORD_DATA_STATUSES = {
-  NEW: "new",
-  SEEN: "seen",
-  KNOWN: "known",
-  IGNORED: "ignored",
-}
-
-const getWordStatusData = (dictionaryForm: string): string => {
-  const statusDataList = statusDataStore.get("status_data");
-
-  let status = WORD_DATA_STATUSES.NEW
-  if (statusDataList.known.includes(dictionaryForm)) status = WORD_DATA_STATUSES.KNOWN
-  if (statusDataList.seen.includes(dictionaryForm)) status = WORD_DATA_STATUSES.SEEN
-  if (statusDataList.ignored.includes(dictionaryForm)) status = WORD_DATA_STATUSES.IGNORED
-
-  return status;
-}
-
 type WordProps = {
   wordData: japReader.IchiParsedWordData
 }
 const Word = ({ wordData }: WordProps): JSX.Element => {
   const [wordStatus, setWordStatus] = useState(getWordStatusData(wordData.dictForm))
+
+  useEffect(() => {
+    ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus) => {
+      if (wordData.dictForm == dictionaryForm) {
+        setWordStatus(newStatus)
+        console.log("changed status")
+      }
+    });
+    return () => {
+      ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
+    }
+  }, [])
 
   const handleMouseDown = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>): boolean => {
     // Only continue when pressed main or secondary button
@@ -76,25 +70,12 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
       status: nextWordStatus
     }
 
-
-    // Get the store
-    const statusDataList = statusDataStore.get("status_data");
-
-    // Filter out the old status from the list if the state is not "new"
-    if ([WORD_DATA_STATUSES.SEEN, WORD_DATA_STATUSES.KNOWN, WORD_DATA_STATUSES.IGNORED].includes(wordStatus))
-      statusDataList[`${wordStatus}`] = statusDataList[`${wordStatus}`]
-        .filter((elem: string) => elem !== wordData.dictForm)
-
-    // Push the new status to the list
-    statusDataList[`${nextWordStatus}`].push(wordData.dictForm)
-
-    // Update the store
-    statusDataStore.set('status_data', statusDataList)
-
     // Send messages to dictionary
     console.log(extendedWordData)
-    ipcRenderer.send('set/reader/extendedWordData', extendedWordData);
-    ipcRenderer.send('set/dictionary/open');
+    ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, extendedWordData);
+    ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.OPEN);
+
+    updateWordStatusStore(wordData.dictForm, nextWordStatus)
 
     return true;
   }
@@ -112,6 +93,8 @@ type SentenceProps = {
   words: japReader.IchiParsedWordData[]
 }
 export const Sentence = ({ words }: SentenceProps): JSX.Element => {
+  // TODO: Detect Words with the same dictionary form in the Sentence
+
   return (<Text p className='sentence'>
     {words.map((wordData: japReader.IchiParsedWordData, index: number) =>
       <Word key={index} wordData={wordData} />

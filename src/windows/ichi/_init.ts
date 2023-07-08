@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow => {
   log.debug("Creating ichi BrowserWindow...")
@@ -28,13 +29,13 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
     ichiWindow.hide();
   });
 
-  ipcMain.on('announce/clipboard/changeDetected', (event, text) => {
-    ichiWindow.webContents.send('announce/clipboard/changeDetected', text);
+  ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
+    ichiWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, text);
   });
 
 
-  ipcMain.on("announce/clipboard/isReady", (event) =>  { 
-    ichiWindow.webContents.send("announce/clipboard/isReady")
+  ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, (event) =>  { 
+    ichiWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY)
   });
 
   return ichiWindow;

@@ -1,6 +1,8 @@
 
 const { ipcRenderer } = require('electron');
 const deepl = require('deepl-node');
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
+
 
 
 import { getSettingsStore } from "@globals/ts/main/initializeStore";
@@ -15,7 +17,7 @@ if (useDeepLApi) {
     const translator = new deepl.Translator(deepLApiKey);
     log.debug("DeepL API key is correct")
   } catch (error) {
-    ipcRenderer.send('announce/deep/connectionError');
+    ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
     log.error("DeepL API key is wrong");
     log.error(error)
   }
@@ -24,7 +26,7 @@ if (useDeepLApi) {
 window.addEventListener('DOMContentLoaded', () => {
   log.debug("DOMContentLoaded in deep");
 
-  ipcRenderer.on('announce/clipboard/changeDetected', (event, text) => {
+  ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
     log.debug("Attempting to translate with DeepL");
     const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
 
@@ -36,15 +38,15 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(
           (result: any) => {
             log.info("Translated text with DeepL: ", result.text);
-            ipcRenderer.send('set/deep/translationText', result.text, currentText);
+            ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, result.text, currentText);
             return result.text
           },
           (error: any) => {
-            ipcRenderer.send('announce/deep/connectionError');
+            ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
             log.error(error);
           })
         .then(
-          (result: any) => ipcRenderer.send('append/historyStore/entry', currentText, result),
+          (result: any) => ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, currentText, result),
           (error: any) => log.error(error)
         );
     }
@@ -62,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
       translator
         .getUsage()
         .then((e: any) => {
-          ipcRenderer.send("announce/deep/isReady");
+          ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY);
           log.debug("Connected to DeepL");
           clearInterval(connectionCheck);
         })
@@ -70,13 +72,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       if (deepLApiKey == "") {
-        ipcRenderer.send('announce/deep/connectionError');
+        ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
         log.error("DeepL API key is wrong");
       } else {
         translator
           .getUsage()
           .catch((err: any) => {
-            ipcRenderer.send('announce/deep/connectionError');
+            ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
             log.error(err);
           })
       }
@@ -92,8 +94,8 @@ window.addEventListener('DOMContentLoaded', () => {
         log.silly("Detected DeepL English on the website: ", deeplText)
         const japaneseText = [...sourceNode.children].map(x => x.textContent).join(" ");
         log.silly("Detected DeepL Japanese on the website: ", japaneseText)
-        ipcRenderer.send('set/deep/translationText', deeplText, japaneseText);
-        ipcRenderer.send('append/historyStore/entry', japaneseText, deeplText);
+        ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, deeplText, japaneseText);
+        ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, japaneseText, deeplText);
       }
     };
 
@@ -103,14 +105,14 @@ window.addEventListener('DOMContentLoaded', () => {
     const connectionCheck = setTimeout(() => {
       if (document.querySelector('.dl_body').children.length !== 0) {
         log.verbose("Connected to DeepL.com href")
-        ipcRenderer.send("announce/deep/isReady");
+        ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY);
         clearInterval(connectionCheck);
       }
     }, 500);
 
     setTimeout(() => {
       if (document.body.children.length === 0) {
-        ipcRenderer.send('announce/deep/connectionError');
+        ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
         log.verbose("Couldn't connect to DeepL.com href")
       }
     }, 8000);

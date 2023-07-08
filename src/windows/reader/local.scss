@@ -2,6 +2,68 @@
 // Learn more about SASS/SCSS: https://sass-lang.com/documentation/syntax 
 
 @use "@globals/scss/global" as global;
+
 #reader {
 
+    .word,
+    .junk {
+        display: inline-block;
+        line-height: 1.1em;
+        margin-bottom: 0.4em;
+        text-decoration: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .word {
+        &:hover {
+            cursor: pointer;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: 0em;
+            right: 0em;
+            bottom: 0;
+            transition: top 200ms cubic-bezier(.18, 1, 0, 1);
+        }
+
+        &:hover:after {
+            top: -0.2ex !important;
+        }
+
+        &.new,
+        &.seen,
+        &.known,
+        &.ignored {
+            &:after {
+                top: calc(100% - 0.33ex);
+                transform: translateY(0.2ex);
+            }
+        }
+
+        &.new:after {
+            background-color: var(--statusNew);
+        }
+
+        &.seen:after {
+            background-color: var(--statusSeen);
+        }
+
+        &.known:after {
+            background-color: var(--statusKnown);
+        }
+
+        &.ignored:after {
+            background-color: var(--statusIgnored);
+        }
+
+        .new:hover,
+        .seen:hover {
+            background-color: transparent;
+        }
+
+    }
 }

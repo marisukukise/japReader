@@ -20,4 +20,5 @@ declare namespace japReader {
         r: string;
     }
 
+
 }

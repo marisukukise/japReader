@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from "@globals/ts/main/setupLogging";
 const log = createScopedLog(log_renderer, 'dictionary')
+import { IPC_CHANNELS, WORD_DATA_STATUSES } from "@globals/ts/main/objects";
 
-import { FuriganaJSX, listenForAnotherWindowIsReady, removeListenerForAnotherWindow } from "@globals/ts/renderer/helpers";
+import { FuriganaJSX, listenForAnotherWindowIsReady, updateWordStatusStore } from "@globals/ts/renderer/helpers";
 import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
 
-import { Text } from '@geist-ui/core'
+import { Text, Grid, Button, ButtonGroup, Spacer } from '@geist-ui/core'
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,
@@ -32,21 +33,22 @@ export const Dictionary = () => {
     useEffect(() => {
         log.log("mounted dictionary")
 
-        ipcRenderer.send("announce/dictionary/isReady")
+        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.ANNOUNCE.IS_READY)
 
-        ipcRenderer.on("set/reader/extendedWordData", (event, extendedWordData: japReader.ExtendedWordData) => {
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, (event, extendedWordData: japReader.ExtendedWordData) => {
             setStatus(extendedWordData.status);
             setDictForm(extendedWordData.dictForm);
             setDictFormReading(extendedWordData.dictFormReading);
             setDefinitions(extendedWordData.definitions);
         })
 
-        listenForAnotherWindowIsReady('reader', isReaderReady, setReaderReady)
+        listenForAnotherWindowIsReady(IPC_CHANNELS.READER, 
+            isReaderReady, setReaderReady);
 
         return () => {
             log.log("unmounted reader")
-            removeListenerForAnotherWindow('reader')
-            ipcRenderer.removeAllListeners("announce/reader/isReady");
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.IS_READY);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA);
         }
     }, [])
 
@@ -54,49 +56,47 @@ export const Dictionary = () => {
         return { __html: html_code }
     }
 
+    const setSeenStatus = () => {
+        updateWordStatusStore(dictForm, WORD_DATA_STATUSES.SEEN)
+        setStatus(WORD_DATA_STATUSES.SEEN)
+
+    }
+    const setKnownStatus = () => {
+        updateWordStatusStore(dictForm, WORD_DATA_STATUSES.KNOWN)
+        setStatus(WORD_DATA_STATUSES.KNOWN)
+    }
+    const setIgnoredStatus = () => {
+        updateWordStatusStore(dictForm, WORD_DATA_STATUSES.IGNORED)
+        setStatus(WORD_DATA_STATUSES.IGNORED)
+    }
+
     return (<>
         <DraggableBar />
         <div>
-            <div>Stats</div>
+            <Grid.Container gap={2} justify="space-between" height="100px">
+                <Grid xs={6}>stat1</Grid>
+                <Grid xs={6}>stat2</Grid>
+            </Grid.Container>
+            <Grid.Container gap={2} justify="center" height="100px">
+                <Grid xs={6}>gr1</Grid>
+                <Grid xs={6}>gr2</Grid>
+                <Grid xs={6}>gr3</Grid>
+            </Grid.Container>
+
             <div>
-                <div>Item 1</div>
-                <div>Item 2</div>
-                <div>Item 3</div>
+                <Button>Play audio</Button>
             </div>
             <div>
-                <button>Play audio</button>
+                <Button>Add to Anki</Button>
             </div>
-            <div>
-                <button>Add to Anki</button>
-            </div>
-            <div>
-                <button>Seen</button>
-                <button>Known</button>
-                <button>Ignored</button>
-            </div>
+
+            <ButtonGroup>
+                <Button onClick={setSeenStatus}>Seen</Button>
+                <Button onClick={setKnownStatus}>Known</Button>
+                <Button onClick={setIgnoredStatus}>Ignored</Button>
+            </ButtonGroup>
             <h1 className={status}><FuriganaJSX kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
             <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
-            <h1>LOREM IPSUM</h1>
         </div>
         <ConfigurationDrawer settings={settings} />
     </>)

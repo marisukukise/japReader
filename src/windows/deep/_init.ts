@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 
 import { getSettingsStore } from "@globals/ts/main/initializeStore";
@@ -33,8 +34,8 @@ export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: s
     deepWindow.hide();
   });
 
-  ipcMain.on('announce/clipboard/changeDetected', (event, text) => {
-    deepWindow.webContents.send('announce/clipboard/changeDetected', text);
+  ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
+    deepWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, text);
   });
 
 

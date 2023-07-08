@@ -1,7 +1,11 @@
 // This is the React file of the reader window.
 // It is responsible for inserting DOM structure into the main element in the index.html file.
 
+import { fontSizeEventListener } from '@globals/ts/renderer/helpers';
+fontSizeEventListener();
+
 import './local.scss';
+
 import { Settings } from './front/Settings';
 import { GeistProvider, CssBaseline } from '@geist-ui/core'
 

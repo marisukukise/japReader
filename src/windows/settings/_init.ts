@@ -2,6 +2,7 @@ import { dialog, BrowserWindow, ipcMain } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
 import log from 'electron-log';
+import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
   log.debug("Creating settings BrowserWindow...")
@@ -31,15 +32,7 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
     settingsWindow.webContents.send('blur')
   })
 
-  ipcMain.on('set/settings/open', () => {
-    settingsWindow.show();
-  });
-
-  ipcMain.on('hideOptions', () => {
-    settingsWindow.hide();
-  });
-
-  ipcMain.handle('showDialog', async (e, message) => {
+  ipcMain.handle(IPC_CHANNELS.SETTINGS.REQUEST.SHOW_DIALOG, async (e, message) => {
     const result = dialog.showMessageBox(settingsWindow, {
       type: 'question',
       buttons: ['Yes', 'No'],
