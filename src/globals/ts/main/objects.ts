@@ -6,7 +6,6 @@ export const WORD_DATA_STATUSES = {
 }
 
 export const IPC_CHANNELS = {
-    ELECTRON: {},
     MAIN: {
         HANDLE: {
             RESTART_PROGRAM: "restartProgram"
@@ -27,8 +26,11 @@ export const IPC_CHANNELS = {
     },
     READER: {
         SET: {
+            SHOW: "set/reader/show",
+            HIDE: "set/reader/hide",
             FOCUS: "set/reader/focus",
             BACKGROUND_COLOR: "set/reader/windowBackgroundColor",
+            FONT_COLOR: "set/reader/windowFontColor",
             ALWAYS_ON_TOP: "set/reader/onTop",
         },
         ANNOUNCE: {
@@ -37,6 +39,7 @@ export const IPC_CHANNELS = {
             EXTENDED_WORDS_DATA: "set/reader/extendedWordData",
         },
         REQUEST: {
+            SHOW_DIALOG: "request/reader/showDialog",
             IS_READY: "request/reader/isReady",
         },
     },
@@ -53,13 +56,17 @@ export const IPC_CHANNELS = {
     TRANSLATION: {
         SET: {
             FOCUS: "set/translation/focus",
+            SHOW: "set/translation/show",
+            HIDE: "set/translation/hide",
             BACKGROUND_COLOR: "set/translation/windowBackgroundColor",
+            FONT_COLOR: "set/translation/windowFontColor",
             ALWAYS_ON_TOP: "set/translation/onTop",
         },
         ANNOUNCE: {
             IS_READY: "announce/translation/isReady",
         },
         REQUEST: {
+            SHOW_DIALOG: "request/translation/showDialog",
             IS_READY: "request/translation/isReady",
         },
     },
@@ -75,6 +82,9 @@ export const IPC_CHANNELS = {
     },
     DICTIONARY: {
         SET: {
+            FOCUS: "set/dictionary/focus",
+            SHOW: "set/dictionary/show",
+            HIDE: "set/dictionary/hide",
             BACKGROUND_COLOR: "set/dictionary/windowBackgroundColor",
             ALWAYS_ON_TOP: "set/dictionary/onTop",
             OPEN: "set/dictionary/open",
@@ -83,15 +93,24 @@ export const IPC_CHANNELS = {
             IS_READY: "announce/dictionary/isReady",
         },
         REQUEST: {
+            SHOW_DIALOG: "request/dictionary/showDialog",
             IS_READY: "request/dictionary/isReady",
         },
     },
     SETTINGS: {
+        SET: {
+            FOCUS: "set/settings/focus",
+            SHOW: "set/settings/show",
+            HIDE: "set/settings/hide",
+            BACKGROUND_COLOR: "set/settings/windowBackgroundColor",
+            ALWAYS_ON_TOP: "set/settings/onTop",
+            OPEN: "set/settings/open",
+        },
         ANNOUNCE: {
             IS_READY: "announce/settings/isReady",
         },
         REQUEST: {
-            SHOW_DIALOG: "showDialog",
+            SHOW_DIALOG: "request/settings/showDialog",
             IS_READY: "request/settings/isReady",
         },
     },

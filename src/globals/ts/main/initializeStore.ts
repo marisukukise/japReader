@@ -70,21 +70,36 @@ const schemaStatusData: SchemaStatusData = {
     },
 };
 
+const schemaAllowedProperties = {
+    'width': { type: "number"},
+    'height': { type: "number"},
+    'x': { type: "number"},
+    'y': { type: "number"},
+    'isMaximized': { type: "boolean"},
+    'backgroundColor': { type: "string"},
+    'fontColor': { type: "string"},
+    'fontSize': { type: "string"},
+}
+
 const schemaWindow = {
-    options: {
+    settings: {
         type: "object",
+        properties: schemaAllowedProperties,
         default: {}
     },
     translation: {
         type: "object",
+        properties: schemaAllowedProperties,
         default: {}
     },
     reader: {
         type: "object",
+        properties: schemaAllowedProperties,
         default: {}
     },
     dict: {
         type: "object",
+        properties: schemaAllowedProperties,
         default: {}
     }
 }

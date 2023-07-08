@@ -3,6 +3,8 @@ import React from "react";
 import log from 'electron-log/renderer';
 import { getStatusDataStore } from "@globals/ts/main/initializeStore";
 const statusDataStore = getStatusDataStore();
+import { getWindowStore } from "@globals/ts/main/initializeStore";
+const windowStore = getWindowStore();
 const { fit } = require("furigana");
 import { IPC_CHANNELS, WORD_DATA_STATUSES } from "@globals/ts/main/objects";
 
@@ -63,35 +65,70 @@ export const listenForAnotherWindowIsReady = (
   }
 }
 
-export const zoom = (conditionForZoomIn: boolean) => {
+export const changeFontColor = (windowName: string, color: string) => {
+  const root = document.querySelector(':root') as HTMLElement;
+  const fontColorRootProperty = '--primary-font';
+  try {
+    windowStore.set(`${windowName}.backgroundColor`, color);
+    root.style.setProperty(
+      fontColorRootProperty,
+      color
+    );
+  } catch {
+    throw new Error("Wrong color format")
+  }
+}
+
+export const zoom = (windowName: string, conditionForZoomIn: boolean) => {
   // if conditionForZoomIn true:  then zoom in
   // if conditionForZoomIn false: then zoom out
   const root = document.querySelector(':root') as HTMLElement;
-  const fontSizeRootPropertry = '--main-font-size'
-  const minFontSize = 6
+  const fontSizeRootPropertry = '--main-font-size';
+  const minFontSize = 6;
 
   const currentFontSize = parseInt(
     getComputedStyle(root)
       .getPropertyValue(fontSizeRootPropertry)
       .slice(0, -2)
   );
+  const newFontSize = (currentFontSize + (conditionForZoomIn ? 1 : (currentFontSize > minFontSize ? -1 : 0))).toString() + "px"
   root.style.setProperty(
     fontSizeRootPropertry,
-    (currentFontSize + (conditionForZoomIn ? 1 : (currentFontSize > minFontSize ? -1 : 0))).toString() + "px"
+    newFontSize
   );
+    windowStore.set(`${windowName}.fontSize`, newFontSize);
 }
 
-export const fontSizeEventListener = () => {
+export const fontSizeEventListener = (windowName: string) => {
   window.addEventListener('wheel', (event) => {
-    if (event.ctrlKey) zoom(event.deltaY < 0)
+    if (event.ctrlKey) zoom(windowName, event.deltaY < 0)
   }, { passive: false })
 
   window.addEventListener('keydown', (event) => {
     if (event.ctrlKey && (event.key == '=' || event.key == '+'))
-      zoom(true)
+      zoom(windowName, true)
     if (event.ctrlKey && (event.key == '-'))
-      zoom(false)
-  }, {passive: false})
+      zoom(windowName, false)
+  }, { passive: false })
+}
+
+export const initializeWindowSettingsFromStore = (windowName: string) => {
+  const root = document.querySelector(':root') as HTMLElement;
+  const fontSizeRootPropertry = '--main-font-size';
+  const fontColorRootProperty = '--primary-font';
+  if (windowStore.has(`${windowName}.fontSize`) && /^\d+px$/.test(windowStore.get(`${windowName}.fontSize`))) {
+    root.style.setProperty(
+      fontSizeRootPropertry,
+      windowStore.get(`${windowName}.fontSize`)
+    );
+  }
+  if (windowStore.has(`${windowName}.fontColor`)) {
+    root.style.setProperty(
+      fontColorRootProperty,
+      windowStore.get(`${windowName}.fontColor`)
+    );
+  }
+
 }
 
 const newStatus = WORD_DATA_STATUSES.NEW
@@ -111,28 +148,28 @@ export const getWordStatusData = (dictionaryForm: string): string => {
 }
 
 export const updateWordStatusStore = (dictionaryForm: string, desiredStatus: string) => {
-    if (!/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]|…/u.test(dictionaryForm)) {
-      return;
-    }
+  if (!/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]|…/u.test(dictionaryForm)) {
+    return;
+  }
 
-    if(![seenStatus, knownStatus, ignoredStatus].includes(desiredStatus)) {
-      throw new Error(`Status ${desiredStatus} is not defined.`)
-    }
-    
-    // Get the store
-    const statusDataList = statusDataStore.get("status_data");
+  if (![seenStatus, knownStatus, ignoredStatus].includes(desiredStatus)) {
+    throw new Error(`Status ${desiredStatus} is not defined.`)
+  }
 
-    // Filter out the word from all statuses
-    [seenStatus, knownStatus, ignoredStatus].forEach((status: string) => {
-      statusDataList[`${status}`] = statusDataList[`${status}`]
-        .filter((elem: string) => elem !== dictionaryForm)
-    })
+  // Get the store
+  const statusDataList = statusDataStore.get("status_data");
 
-    // Push the new status to the list
-    statusDataList[`${desiredStatus}`].push(dictionaryForm)
+  // Filter out the word from all statuses
+  [seenStatus, knownStatus, ignoredStatus].forEach((status: string) => {
+    statusDataList[`${status}`] = statusDataList[`${status}`]
+      .filter((elem: string) => elem !== dictionaryForm)
+  })
 
-    // Update the store
-    statusDataStore.set('status_data', statusDataList)
-    log.log(`Changed status of ${dictionaryForm} to ${desiredStatus} in status data store`)
-    ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, dictionaryForm, desiredStatus)
+  // Push the new status to the list
+  statusDataList[`${desiredStatus}`].push(dictionaryForm)
+
+  // Update the store
+  statusDataStore.set('status_data', statusDataList)
+  log.log(`Changed status of ${dictionaryForm} to ${desiredStatus} in status data store`)
+  ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, dictionaryForm, desiredStatus)
 }

@@ -12,8 +12,9 @@ import { Checkboard } from "react-color";
 import { Button, Checkbox, Input } from "@geist-ui/core";
 
 const settings = [
-    ConfigurationDrawerSettings.open_settings,
-    ConfigurationDrawerSettings.dark_mode,
+    ConfigurationDrawerSettings.settings_background_color_picker,
+    ConfigurationDrawerSettings.settings_font_color_picker,
+    ConfigurationDrawerSettings.settings_on_top_button,
 ]
 
 export const Settings = () => {

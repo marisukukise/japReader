@@ -15,8 +15,8 @@ import { Text, Grid, Button, ButtonGroup, Spacer } from '@geist-ui/core'
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,
-    ConfigurationDrawerSettings.dark_mode,
     ConfigurationDrawerSettings.dictionary_background_color_picker,
+    ConfigurationDrawerSettings.dictionary_font_color_picker,
     ConfigurationDrawerSettings.dictionary_on_top_button,
 ]
 

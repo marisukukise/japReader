@@ -21,8 +21,8 @@ import { Text } from '@geist-ui/core'
 
 const settings = [
     ConfigurationDrawerSettings.open_settings,
-    ConfigurationDrawerSettings.dark_mode,
     ConfigurationDrawerSettings.reader_background_color_picker,
+    ConfigurationDrawerSettings.reader_font_color_picker,
     ConfigurationDrawerSettings.reader_on_top_button,
 ]
 

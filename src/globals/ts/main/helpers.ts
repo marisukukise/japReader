@@ -1,7 +1,75 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, app, dialog, ipcMain } from "electron";
 import log from 'electron-log';
 import { getWindowStore } from "@globals/ts/main/initializeStore";
 const windowStore = getWindowStore();
+
+export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowName: string, ipcBase: any): void => {
+  if (process.env.JAPREADER_ENV === 'dev') window.webContents.openDevTools();
+
+  ipcMain.on(ipcBase.SET.BACKGROUND_COLOR, (event, value) => {
+    windowStore.set(`${windowName}.backgroundColor`, value);
+    window.setBackgroundColor(value);
+  });
+
+  ipcMain.on(ipcBase.SET.ALWAYS_ON_TOP, (event, value) => {
+    window.setAlwaysOnTop(value, 'pop-up-menu')
+  })
+
+  ipcMain.on(ipcBase.SET.FOCUS, () => {
+    window.focus();
+  });
+
+  ipcMain.on(ipcBase.SET.SHOW, () => {
+    window.show();
+  });
+
+  ipcMain.on(ipcBase.SET.HIDE, () => {
+    window.hide();
+  });
+
+  window.on('blur', () => {
+    window.webContents.send('blur')
+  })
+
+
+  ipcMain.handle(ipcBase.REQUEST.SHOW_DIALOG, async (e, message) => {
+    const result = dialog.showMessageBox(window, {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      title: 'Confirm',
+      message: message
+    });
+    return result;
+  })
+
+
+}
+
+export const passMessageToRenderer = (window: BrowserWindow, ipcChannel: string) => {
+  ipcMain.on(ipcChannel, (event, ...args: any[]) => {
+    window.webContents.send(ipcChannel, ...args)
+  })
+}
+
+export const showExitDialog = (window: BrowserWindow): void => {
+  const choice = dialog.showMessageBoxSync(window,
+    {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      title: 'Confirm',
+      message: 'Are you sure you want to quit?'
+    });
+  if (choice == 1) {
+    event.preventDefault();
+  }
+  else {
+    BrowserWindow.getAllWindows().filter(win => win.id != window.id)
+      .forEach(win => {
+        win.close()
+      })
+    app.exit();
+  }
+}
 
 export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProduction: boolean): void => {
   window.webContents.on('did-finish-load', () => {
@@ -12,8 +80,8 @@ export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProductio
 
   // Set the environment variable JAPREADER_ENV to "dev" to show all windows
   if (shouldShowInProduction) {
-    window.once('ready-to-show', () => { 
-      window.show(); 
+    window.once('ready-to-show', () => {
+      window.show();
       log.silly("Showing ", window.getTitle())
     });
     return;
@@ -21,8 +89,8 @@ export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProductio
 
   // Added for debugging convenience
   if (process.env.JAPREADER_ENV === "dev") {
-    window.once('ready-to-show', () => { 
-      window.show(); 
+    window.once('ready-to-show', () => {
+      window.show();
       log.silly("Showing ", window.getTitle())
     });
     return;
@@ -40,16 +108,22 @@ function filterObjectKeys(unfilteredObj: any, allowedKeys: string[]) {
 }
 
 export const createWindowAndStorePositionData = (windowName: string, windowConfig: any) => {
-  const allowed = ['width', 'height', 'isMaximized', 'x', 'y']
+  log.debug(`Creating ${windowName} BrowserWindow...`)
+
+  const allowed = ['width', 'height', 'isMaximized', 'x', 'y', 'backgroundColor']
+  const DEFAULT_BACKGROUND_COLOR = '#e7dee6';
 
   if (windowStore.has(windowName)) {
-    const positionSettings = filterObjectKeys(windowStore.get(windowName), allowed);
+    if (!windowStore.has(`${windowName}.backgroundColor`))
+      windowStore.set(`${windowName}.backgroundColor`, DEFAULT_BACKGROUND_COLOR)
+
+    const windowSettings = filterObjectKeys(windowStore.get(windowName), allowed);
     Object.assign(windowConfig,
-      positionSettings
+      windowSettings
     );
     // get rid of rubbish properties
     windowStore.delete(windowName);
-    windowStore.set(windowName, positionSettings)
+    windowStore.set(windowName, windowSettings)
   }
 
   const window = new BrowserWindow(windowConfig)
