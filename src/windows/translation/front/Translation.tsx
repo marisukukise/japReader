@@ -1,19 +1,19 @@
 import { ipcRenderer } from 'electron';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from '@globals/ts/main/setupLogging';
 const log = createScopedLog(log_renderer, 'translation');
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
-import { listenForAnotherWindowIsReady } from '@globals/ts/renderer/helpers';
+import { addHideUIListener, listenForAnotherWindowIsReady, toastLayout } from '@globals/ts/renderer/helpers';
 import { TranslatedSentence } from './TranslatedSentence';
 import Loader from '@globals/components/Loader/Loader';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 
-import { Text } from '@geist-ui/core';
+import { Text, useToasts } from '@geist-ui/core';
 import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateButton';
 
 
@@ -75,6 +75,8 @@ const Message = (props: any) => {
 
 
 export const Translation = () => {
+    const [isUIShown, setUIShown] = useState(true);
+    const { setToast, removeAll } = useToasts(toastLayout);
     const [isDeepReady, setDeepReady] = useState(false);
     const [didDeepFail, setDeepFailed] = useState(false);
     const [translatedSentence, setTranslatedSentence] = useState('');
@@ -82,13 +84,17 @@ export const Translation = () => {
     const [centerText, setCenterText] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useState('');
 
+    const showToast = (text: string | ReactNode, delay: number) => setToast({
+        text: text, delay: delay
+    });
+
     const toggleCenterText = () => {
         setCenterText(!centerText);
     };
 
     const toggleShowJapaneseSentence = () => {
         setShowJapaneseSentence(!showJapaneseSentence);
-    }
+    };
 
     const settings = <>
         <ConfigurationDrawerCommonSettings
@@ -117,6 +123,8 @@ export const Translation = () => {
         listenForAnotherWindowIsReady(IPC_CHANNELS.DEEP,
             isDeepReady, setDeepReady);
 
+        addHideUIListener(IPC_CHANNELS.TRANSLATION, setUIShown, removeAll, showToast);
+
         ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, translatedSentence: string, japaneseSentence: string) => {
             setTranslatedSentence(translatedSentence);
             setJapaneseSentence(japaneseSentence);
@@ -139,6 +147,7 @@ export const Translation = () => {
         });
 
         return () => {
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.TRANSLATION.SET.HIDE_UI);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT);
@@ -147,11 +156,11 @@ export const Translation = () => {
         };
     }, []);
 
-    const classes = ["translation-wrapper"]
-        .concat(!showJapaneseSentence ? 'hide-japanese-sentence' : [])
+    const classes = ['translation-wrapper']
+        .concat(!showJapaneseSentence ? 'hide-japanese-sentence' : []);
 
     return (<>
-        <DraggableBar />
+        {isUIShown && <DraggableBar />}
         <div style={{ textAlign: centerText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >
@@ -162,6 +171,8 @@ export const Translation = () => {
                 japaneseSentence={japaneseSentence}
             />
         </div>
-        <ConfigurationDrawer settings={settings} />
+        {isUIShown && <ConfigurationDrawer
+            settings={settings}
+        />}
     </>);
 };

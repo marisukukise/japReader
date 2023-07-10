@@ -6,8 +6,11 @@ const log = createScopedLog(log_renderer, 'settings');
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
-import { Button, Checkbox, Input } from '@geist-ui/core';
+import { Button, Checkbox, Input, useToasts } from '@geist-ui/core';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { ReactNode, useEffect, useState } from 'react';
+import { addHideUIListener, toastLayout } from '@globals/ts/renderer/helpers';
+import { ipcRenderer } from 'electron';
 
 
 
@@ -17,6 +20,21 @@ import { IPC_CHANNELS } from '@globals/ts/main/objects';
 // TODO: Add error checking option
 
 export const Settings = () => {
+    const [isUIShown, setUIShown] = useState(true);
+    const { setToast, removeAll } = useToasts(toastLayout);
+
+    const showToast = (text: string | ReactNode, delay: number) => setToast({
+        text: text, delay: delay
+    });
+
+    useEffect(() => {
+        addHideUIListener(IPC_CHANNELS.SETTINGS, setUIShown, removeAll, showToast);
+
+        return () => {
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.SETTINGS.SET.HIDE_UI);
+        };
+    }, []);
+
     const settings = <>
         <ConfigurationDrawerCommonSettings
             windowName="settings"
@@ -24,10 +42,10 @@ export const Settings = () => {
         />
     </>;
 
-    const classes = ["settings-wrapper"]
+    const classes = ['settings-wrapper'];
 
     return (<>
-        <DraggableBar />
+        {isUIShown && <DraggableBar />}
         <div
             className={classes.join(' ')}
         >
@@ -67,6 +85,8 @@ export const Settings = () => {
                 </div>
             </section>
         </div>
-        <ConfigurationDrawer settings={settings} />
+        {isUIShown && <ConfigurationDrawer
+            settings={settings}
+        />}
     </>);
 };

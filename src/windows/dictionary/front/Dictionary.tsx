@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import BritainFlag from '@img/symbols/britain.png';
 import JapanFlag from '@img/symbols/japan.png';
 import PictureSymbol from '@img/symbols/image.png';
@@ -20,16 +20,18 @@ import { IPC_CHANNELS, WORD_DATA_STATUSES } from '@globals/ts/main/objects';
 import { getStatusDataStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
 
-import { FuriganaJSX, listenForAnotherWindowIsReady, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, addHideUIListener, listenForAnotherWindowIsReady, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 
-import { Grid, Button, ButtonGroup } from '@geist-ui/core';
+import { Grid, Button, ButtonGroup, useToasts } from '@geist-ui/core';
 
 
 
 export const Dictionary = () => {
+    const [isUIShown, setUIShown] = useState(true);
+    const { setToast, removeAll } = useToasts(toastLayout);
     const [isReaderReady, setReaderReady] = useState(false);
     const [status, setStatus] = useState('');
     const [dictForm, setDictForm] = useState('');
@@ -43,6 +45,10 @@ export const Dictionary = () => {
         statusDataStore.has(`status_data.${WORD_DATA_STATUSES.SEEN}`) ?
             statusDataStore.get(`status_data.${WORD_DATA_STATUSES.SEEN}`).length : 0
     );
+
+    const showToast = (text: string | ReactNode, delay: number) => setToast({
+        text: text, delay: delay
+    });
 
     const settings = <>
         <ConfigurationDrawerCommonSettings
@@ -78,8 +84,11 @@ export const Dictionary = () => {
         listenForAnotherWindowIsReady(IPC_CHANNELS.READER,
             isReaderReady, setReaderReady);
 
+        addHideUIListener(IPC_CHANNELS.DICTIONARY, setUIShown, removeAll, showToast);
+
         return () => {
             log.log('unmounted dictionary');
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.DICTIONARY.SET.HIDE_UI);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.IS_READY);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
@@ -109,10 +118,10 @@ export const Dictionary = () => {
         }
     };
 
-    const classes = ["dictionary-wrapper"]
+    const classes = ['dictionary-wrapper'];
 
     return (<>
-        <DraggableBar />
+        {isUIShown && <DraggableBar />}
         <div
             className={classes.join(' ')}
         >
@@ -183,6 +192,8 @@ export const Dictionary = () => {
             <h1 className={status}><FuriganaJSX kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
             <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
         </div>
-        <ConfigurationDrawer settings={settings} />
+        {isUIShown && <ConfigurationDrawer
+            settings={settings}
+        />}
     </>);
 };

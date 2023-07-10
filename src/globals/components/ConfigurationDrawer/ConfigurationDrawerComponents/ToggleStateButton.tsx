@@ -1,4 +1,4 @@
-import { Toggle } from "@geist-ui/core";
+import { Toggle } from '@geist-ui/core';
 
 type Props = {
     fn: () => void,
@@ -11,7 +11,7 @@ const ToggleStateSwitch = ({ fn, initialChecked, text }: Props): JSX.Element => 
         <Toggle
             initialChecked={initialChecked}
             onChange={fn}
-        /></div>
-}
+        /></div>;
+};
 
 export default ToggleStateSwitch;

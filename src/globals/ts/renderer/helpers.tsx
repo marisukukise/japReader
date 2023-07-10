@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import log from 'electron-log/renderer';
 import { getStatusDataStore, getWindowStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
@@ -7,6 +7,7 @@ const windowStore = getWindowStore();
 
 const { fit } = require('furigana');
 import { IPC_CHANNELS, WORD_DATA_STATUSES } from '@globals/ts/main/objects';
+import { ToastLayout } from '@geist-ui/core';
 
 const DIGIT_MAP = [
     ['０', '零'],
@@ -67,6 +68,33 @@ export const FuriganaJSX = ({ kanaOrKanji, kana }: FuriganaJSXProps): JSX.Elemen
     const furiganaList = getFuriganaObject(kanaOrKanji, kana);
     log.log(furiganaList);
     return <FuriganaJSXFromFuriganaObject furiganaList={furiganaList} />;
+};
+
+export const toastLayout: ToastLayout = {
+    maxHeight: '3.5rem',
+    width: '16rem',
+    placement: 'bottomLeft',
+};
+
+export const addHideUIListener = (
+    ipcBase: any,
+    setUIShown: React.Dispatch<React.SetStateAction<boolean>>,
+    removeAll: () => void,
+    showToast: (text: string | ReactNode, delay: number) => void
+) => {
+    ipcRenderer.on(ipcBase.SET.HIDE_UI, () => {
+        setUIShown((wasShown: boolean) => {
+            if (!wasShown) {
+                document.body.classList.remove('hide-border-markings');
+                removeAll();
+            } else {
+                document.body.classList.add('hide-border-markings');
+                showToast(<span>UI has been hidden. <br />Press H to bring it back.</span>, 1000);
+            }
+
+            return !wasShown;
+        });
+    });
 };
 
 export const listenForAnotherWindowIsReady = (
@@ -151,17 +179,17 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-            case KEYBOARD_KEYS.PLUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_ADD:
-                zoom(windowName, true);
-                break;
-            case KEYBOARD_KEYS.MINUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-                zoom(windowName, false);
-                break;
-            case KEYBOARD_KEYS.KEY_H:
-                ipcRenderer.send(ipcBase.SET.HIDE_UI)
-                break;
+        case KEYBOARD_KEYS.PLUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_ADD:
+            zoom(windowName, true);
+            break;
+        case KEYBOARD_KEYS.MINUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+            zoom(windowName, false);
+            break;
+        case KEYBOARD_KEYS.KEY_H:
+            ipcRenderer.send(ipcBase.SET.HIDE_UI);
+            break;
         }
     }, true);
 };
@@ -186,8 +214,8 @@ export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: a
 
 export const initializeWindowSettings = (windowName: string, ipcBase: any) => {
     initializeWindowSettingsFromStore(windowName, ipcBase);
-    initializeWindowListeners(windowName, ipcBase)
-}
+    initializeWindowListeners(windowName, ipcBase);
+};
 
 const NEW_STATUS = WORD_DATA_STATUSES.NEW;
 const KNOWN_STATUS = WORD_DATA_STATUSES.KNOWN;
