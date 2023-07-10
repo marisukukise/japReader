@@ -16,6 +16,7 @@
       "*": ["node_modules/*"],
       "@globals/*": ["src/globals/*"],
       "@src/*": ["src/*"],
+      "@img/*": ["src/img/*"],
       "@fonts/*": ["src/fonts/*"],
     }
   },

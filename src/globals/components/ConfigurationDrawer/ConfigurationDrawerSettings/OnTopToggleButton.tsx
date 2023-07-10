@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Anchor from '@geist-ui/icons/anchor'
 import Checkbox from '@geist-ui/core/esm/checkbox';
 
+// TODO: Change this button to something better
 export default function OnTopToggleButton({ ipcChannel }: any) {
   const [selected, setSelected] = useState(false);
 

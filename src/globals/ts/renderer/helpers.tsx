@@ -138,17 +138,24 @@ export const changeBackgroundColorVariable = (windowName: string, color: string)
   }
 }
 
+const KEYBOARD_KEYS = {
+  MINUS_KEY: 'Minus',
+  PLUS_KEY: 'Equal',
+}
+
 export const fontSizeEventListener = (windowName: string) => {
   window.addEventListener('wheel', (event) => {
     if (event.ctrlKey) zoom(windowName, event.deltaY < 0)
   }, { passive: false })
 
   window.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && (event.key == '=' || event.key == '+'))
-      zoom(windowName, true)
-    if (event.ctrlKey && (event.key == '-'))
-      zoom(windowName, false)
-  }, { passive: false })
+    switch (event.code) {
+      case KEYBOARD_KEYS.PLUS_KEY:
+        zoom(windowName, true)
+      case KEYBOARD_KEYS.MINUS_KEY:
+        zoom(windowName, false)
+    }
+  }, true)
 }
 
 export const initializeWindowSettingsFromStore = (windowName: string) => {

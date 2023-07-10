@@ -12,7 +12,13 @@ const settings = [
     ConfigurationDrawerSettings.settings_background_color_picker,
     ConfigurationDrawerSettings.settings_font_color_picker,
     ConfigurationDrawerSettings.settings_on_top_button,
+    ConfigurationDrawerSettings.settings_zoom_button_group,
 ]
+
+
+// TODO: Add transparent/opaque option to each window
+// TODO: Make settings work (to save to store and on launch)
+// TODO: Add error checking option
 
 export const Settings = () => {
     return (<>

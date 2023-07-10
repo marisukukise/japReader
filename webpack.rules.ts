@@ -19,6 +19,13 @@ export const rules: Required<ModuleOptions>['rules'] = [
     },
   },
   {
+    test: /\.(png|svg|jpe?g|gif|ico|jp2|webp)$/i,
+    loader: 'file-loader',
+    options: {
+      name: 'images/[name].[ext]'
+    }
+  },
+  {
     test: /\.tsx?$/,
     exclude: /(node_modules|\.webpack)/,
     use: {

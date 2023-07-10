@@ -20,6 +20,7 @@ const settings = [
     ConfigurationDrawerSettings.translation_background_color_picker,
     ConfigurationDrawerSettings.translation_on_top_button,
     ConfigurationDrawerSettings.translation_font_color_picker,
+    ConfigurationDrawerSettings.translation_zoom_button_group,
 ]
 
 

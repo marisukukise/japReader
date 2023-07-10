@@ -93,7 +93,7 @@ type SentenceProps = {
   words: japReader.IchiParsedWordData[]
 }
 export const Sentence = ({ words }: SentenceProps): JSX.Element => {
-  // TODO: Detect Words with the same dictionary form in the Sentence
+  // TODO: Detect Words with the same dictionary form in the Sentence (for example detect whether the sentence is i+1)
 
   return (<Text p className='sentence'>
     {words.map((wordData: japReader.IchiParsedWordData, index: number) =>

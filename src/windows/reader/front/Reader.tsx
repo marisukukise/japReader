@@ -24,6 +24,7 @@ const settings = [
     ConfigurationDrawerSettings.reader_background_color_picker,
     ConfigurationDrawerSettings.reader_font_color_picker,
     ConfigurationDrawerSettings.reader_on_top_button,
+    ConfigurationDrawerSettings.reader_zoom_button_group,
 ]
 
 
@@ -86,6 +87,7 @@ export const Reader = () => {
     const [isIchiReady, setIchiReady] = useState(false);
     const [didIchiFail, setIchiFailed] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useState('');
+    const [centerText, setCenterText] = useState(false);
     const currentWords = useRef({})
 
     log.log("%crendering reader", "color: red; font-size:1.5rem; font-weight: bold;")
@@ -100,8 +102,7 @@ export const Reader = () => {
             setIchiReady);
 
         ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
-            // TODO: Somehow add memoization to Japanese sentences, 
-            // so that common ones don't have to wait for ichi
+            // TODO: Somehow add memoization to Japanese sentences, so that common ones don't have to wait for ichi
             log.log("received from ichi:", words, japaneseSentence)
             currentWords.current = words;
             setJapaneseSentence(japaneseSentence);
@@ -138,9 +139,13 @@ export const Reader = () => {
         ipcRenderer.send(IPC_CHANNELS.READER.SET.FOCUS);
     }, [japaneseSentence])
 
+    const centerTextHandler = () => {
+        setCenterText(!centerText);
+    }
+
     return (<>
         <DraggableBar />
-        <div>
+        <div style={{ textAlign: centerText ? "center" : "left" }}>
             <Message
                 isIchiReady={isIchiReady}
                 didIchiFail={didIchiFail}
@@ -148,6 +153,8 @@ export const Reader = () => {
                 words={currentWords.current}
             />
         </div>
-        <ConfigurationDrawer settings={settings} />
+        <ConfigurationDrawer
+            settings={settings}
+        />
     </>)
 }

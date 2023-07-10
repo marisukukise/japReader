@@ -43,19 +43,25 @@ app.whenReady().then(() => {
     'CommandOrControl+Shift+0',
   ];
 
-  if (process.env.JAPREADER_ENV !== "dev") {
-    app.on('browser-window-focus', () => {
-      DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
-        globalShortcut.register(SHORTCUT, () => { });
-      })
-    });
-
-    app.on('browser-window-blur', () => {
-      DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
-        globalShortcut.unregister(SHORTCUT);
-      })
-    });
+  if (process.env.JAPREADER_ENV !== "dev") { 
+    DISABLED_SHORTCUTS.shift()
+    DISABLED_SHORTCUTS.shift()
+    DISABLED_SHORTCUTS.shift()
   }
+
+  // TODO: Add a global keyboard shortcut to bring all windows up
+
+  app.on('browser-window-focus', () => {
+    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+      globalShortcut.register(SHORTCUT, () => { });
+    })
+  });
+
+  app.on('browser-window-blur', () => {
+    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+      globalShortcut.unregister(SHORTCUT);
+    })
+  });
 })
 
 app.on('activate', () => {

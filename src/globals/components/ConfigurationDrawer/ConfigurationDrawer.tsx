@@ -7,7 +7,7 @@ import { ChevronDown } from "@geist-ui/icons"
 
 
 type ConfigurationDrawerProps = {
-  settings: any[]
+  settings: JSX.Element[]
 }
 const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Element => {
   const [state, setState] = useState(false)
@@ -37,8 +37,11 @@ const ConfigurationDrawer = ({ settings }: ConfigurationDrawerProps): JSX.Elemen
         <Drawer.Subtitle>These options will be applied to the current window</Drawer.Subtitle>
         <Drawer.Content style={{ marginLeft: 10 }}>
           <div className="settings">
-            {settings.map((setting: any, index: number) =>
-              <div className="setting" key={index}>{setting}</div>)}
+            {settings.map((Setting: JSX.Element, index: number) => 
+              <div className="setting" key={index}>
+                {Setting}
+              </div>
+            )}
           </div>
         </Drawer.Content>
       </Drawer>

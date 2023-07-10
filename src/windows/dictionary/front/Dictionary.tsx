@@ -1,5 +1,16 @@
 import { ipcRenderer } from "electron";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import BritainFlag from '@img/symbols/britain.png';
+import JapanFlag from '@img/symbols/japan.png';
+import PictureSymbol from '@img/symbols/image.png';
+import DuckDuckGoIcon from '@img/favicons/duckduckgo.ico';
+import GoogleIcon from '@img/favicons/google.ico';
+import JishoIcon from '@img/favicons/jisho.ico';
+import WeblioENIcon from '@img/favicons/weblio-en.png';
+import WeblioJPIcon from '@img/favicons/weblio-jp.png';
+import WikipediaIcon from '@img/favicons/wikipedia.ico';
+import WiktionaryENIcon from '@img/favicons/wiktionary-en.ico';
+import WiktionaryJPIcon from '@img/favicons/wiktionary-jp.ico';
 
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from "@globals/ts/main/setupLogging";
@@ -21,6 +32,7 @@ const settings = [
     ConfigurationDrawerSettings.dictionary_background_color_picker,
     ConfigurationDrawerSettings.dictionary_font_color_picker,
     ConfigurationDrawerSettings.dictionary_on_top_button,
+    ConfigurationDrawerSettings.dictionary_zoom_button_group,
 ]
 
 export const Dictionary = () => {
@@ -99,14 +111,56 @@ export const Dictionary = () => {
     return (<>
         <DraggableBar />
         <div>
-            <Grid.Container gap={2} justify="space-between">
+            <Grid.Container gap={2} justify="space-between" className="status-data-stats">
                 <Grid xs={12} justify="flex-start">Seen: {seen}</Grid>
                 <Grid xs={12} justify="flex-end">Known: {known}</Grid>
             </Grid.Container>
-            <Grid.Container gap={2} justify="center">
-                <Grid xs={8} justify="flex-end">gr1</Grid>
-                <Grid xs={8} justify="center">gr2</Grid>
-                <Grid xs={8} justify="flex-start">gr3</Grid>
+            <Grid.Container gap={2} justify="center" className="search-engines">
+                <Grid xs={8} justify="flex-end">
+                    <fieldset className="search-images">
+                        <legend>
+                            <img className="symbol" src={PictureSymbol} />
+                        </legend>
+                        <span id="google" className="search">
+                            <img className="icon" title="Google Images" src={GoogleIcon} />
+                        </span>
+                        <span id="duckduckgo" className="search">
+                            <img className="icon" title="DuckDuckGo Images" src={DuckDuckGoIcon} />
+                        </span>
+                    </fieldset>
+                </Grid>
+                <Grid xs={8} justify="center">
+                    <fieldset className="search-english">
+                        <legend>
+                            <img className="symbol" src={BritainFlag} />
+                        </legend>
+                        <span id="jisho" className="search">
+                            <img className="icon" title="Jisho.org (Japanese-English dictionary)" src={JishoIcon} />
+                        </span>
+                        <span id="weblio-en" className="search">
+                            <img className="icon" title="Weblio (Japanese-English thesaurus)" src={WeblioENIcon} />
+                        </span>
+                        <span id="wiktionary-en" className="search">
+                            <img className="icon" title="Wiktionary (English)" src={WiktionaryENIcon} />
+                        </span>
+                    </fieldset>
+                </Grid>
+                <Grid xs={8} justify="flex-start">
+                    <fieldset className="search-japanese">
+                        <legend>
+                            <img className="symbol" src={JapanFlag} />
+                        </legend>
+                        <span id="weblio-jp" className="search">
+                            <img className="icon" title="Weblio (Japanese dictionary)" src={WeblioJPIcon} />
+                        </span>
+                        <span id="wiktionary-jp" className="search">
+                            <img className="icon" title="Wiktionary (Japanese)" src={WiktionaryJPIcon} />
+                        </span>
+                        <span id="wikipedia" className="search">
+                            <img className="icon" title="Wikipedia (Japanese)" src={WikipediaIcon} />
+                        </span>
+                    </fieldset>
+                </Grid>
             </Grid.Container>
 
             <div>

@@ -1,7 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from "@globals/ts/main/helpers";
-import log from 'electron-log';
 import { IPC_CHANNELS } from "@globals/ts/main/objects";
 
 

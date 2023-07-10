@@ -51,8 +51,10 @@ export function startMainListeners() {
 
         const list = historyStore.get('history');
 
-        // TODO: maybe change concat to push, not sure if it's faster
-        if (list) historyStore.set('history', list.concat(entry));
+        if (list) {
+            list.push(entry)
+            historyStore.set('history', list);
+        }
         else historyStore.set('history', [entry]);
     })
 

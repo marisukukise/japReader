@@ -18,6 +18,7 @@ export const mainConfig: Configuration = {
     alias: {
       '@globals': path.resolve(__dirname, 'src/globals'),
       '@src': path.resolve(__dirname, 'src'),
+      '@img': path.resolve(__dirname, 'src/img'),
       '@fonts': path.resolve(__dirname, 'src/fonts'),
     }
   },
