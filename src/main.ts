@@ -20,68 +20,68 @@ startMainListeners();
 
 import { initializeApp } from '@globals/ts/main/initializeApp';
 app.whenReady().then(() => {
-  // Creates all windows and their listeners
-  initializeApp();
+    // Creates all windows and their listeners
+    initializeApp();
 
-  const DISABLED_SHORTCUTS = [
+    const DISABLED_SHORTCUTS = [
     // Reloading can lead to some bugs
-    'CommandOrControl+R',
-    'CommandOrControl+Shift+R',
-    'F5',
-    // Quitting should only be through Alt+F4 and buttons
-    'CommandOrControl+W',
-    // Zooming should be implemented in each Window renderer
-    'CommandOrControl+numadd',
-    'CommandOrControl+Shift+numadd',
-    'CommandOrControl+numsub',
-    'CommandOrControl+Shift+numsub',
-    'CommandOrControl+Plus',
-    'CommandOrControl+Shift+Plus',
-    'CommandOrControl+-',
-    'CommandOrControl+Shift+-',
-    'CommandOrControl+0',
-    'CommandOrControl+Shift+0',
-  ];
+        'CommandOrControl+R',
+        'CommandOrControl+Shift+R',
+        'F5',
+        // Quitting should only be through Alt+F4 and buttons
+        'CommandOrControl+W',
+        // Zooming should be implemented in each Window renderer
+        'CommandOrControl+numadd',
+        'CommandOrControl+Shift+numadd',
+        'CommandOrControl+numsub',
+        'CommandOrControl+Shift+numsub',
+        'CommandOrControl+Plus',
+        'CommandOrControl+Shift+Plus',
+        'CommandOrControl+-',
+        'CommandOrControl+Shift+-',
+        'CommandOrControl+0',
+        'CommandOrControl+Shift+0',
+    ];
 
-  if (process.env.JAPREADER_ENV !== "dev") { 
-    DISABLED_SHORTCUTS.shift()
-    DISABLED_SHORTCUTS.shift()
-    DISABLED_SHORTCUTS.shift()
-  }
+    if (process.env.JAPREADER_ENV !== 'dev') { 
+        DISABLED_SHORTCUTS.shift();
+        DISABLED_SHORTCUTS.shift();
+        DISABLED_SHORTCUTS.shift();
+    }
 
-  // TODO: Add a global keyboard shortcut to bring all windows up
+    // TODO: Add a global keyboard shortcut to bring all windows up
 
-  app.on('browser-window-focus', () => {
-    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
-      globalShortcut.register(SHORTCUT, () => { });
-    })
-  });
+    app.on('browser-window-focus', () => {
+        DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+            globalShortcut.register(SHORTCUT, () => { });
+        });
+    });
 
-  app.on('browser-window-blur', () => {
-    DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
-      globalShortcut.unregister(SHORTCUT);
-    })
-  });
-})
+    app.on('browser-window-blur', () => {
+        DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
+            globalShortcut.unregister(SHORTCUT);
+        });
+    });
+});
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) initializeApp();
+    if (BrowserWindow.getAllWindows().length === 0) initializeApp();
 });
 
 app.on('will-quit', () => {
-  // Unregister all shortcuts.
-  globalShortcut.unregisterAll()
-})
+    // Unregister all shortcuts.
+    globalShortcut.unregisterAll();
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
 });
 
 if (require('electron-squirrel-startup')) {
-  app.quit();
+    app.quit();
 }

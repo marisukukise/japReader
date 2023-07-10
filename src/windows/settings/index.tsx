@@ -3,12 +3,12 @@
 
 import { fontSizeEventListener, initializeWindowSettingsFromStore } from '@globals/ts/renderer/helpers';
 fontSizeEventListener('settings');
-initializeWindowSettingsFromStore('settings')
+initializeWindowSettingsFromStore('settings');
 
 import './local.scss';
 
 import { Settings } from './front/Settings';
-import { GeistProvider, CssBaseline } from '@geist-ui/core'
+import { GeistProvider, CssBaseline } from '@geist-ui/core';
 
 import { createRoot } from 'react-dom/client';
 const container = document.getElementById('settings');

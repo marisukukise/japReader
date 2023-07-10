@@ -11,10 +11,6 @@ declare namespace japReader {
         status: string;
     }
 
-    interface ConfigurationDrawerSetting {
-        [key: string]: JSX.Element
-    }
-
     interface FuriganaObject {
         w: string;
         r: string;

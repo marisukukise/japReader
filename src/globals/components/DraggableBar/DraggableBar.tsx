@@ -1,5 +1,5 @@
 import './DraggableBar.scss';
 
-export const DraggableBar = () => {
-    return <div className="draggable-bar"/>
-}
+export const DraggableBar = (): JSX.Element => {
+    return <div className="draggable-bar"/>;
+};

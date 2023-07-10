@@ -1,4 +1,4 @@
-import { Text } from '@geist-ui/core'
+import { Text } from '@geist-ui/core';
 
 export const TranslatedSentence = (
     { translatedSentence, japaneseSentence }: {
@@ -7,7 +7,7 @@ export const TranslatedSentence = (
     }
 ): JSX.Element => {
     return <>
-    <Text p className='translatedSentence'>{translatedSentence}</Text>
-    <Text p className='japaneseSentence'>{japaneseSentence}</Text>
-    </>
-}
+        <Text p className='translatedSentence'>{translatedSentence}</Text>
+        <Text p className='japaneseSentence'>{japaneseSentence}</Text>
+    </>;
+};

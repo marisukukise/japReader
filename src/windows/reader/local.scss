@@ -5,6 +5,24 @@
 
 #reader {
 
+    .reader-wrapper {
+        &.hide-furigana-new .word.new ruby rt {
+            visibility: hidden;
+        }
+
+        &.hide-furigana-seen .word.seen ruby rt {
+            visibility: hidden;
+        }
+
+        &.hide-furigana-known .word.known ruby rt {
+            visibility: hidden;
+        }
+
+        &.hide-furigana-ignored .word.ignored ruby rt {
+            visibility: hidden;
+        }
+    }
+
     .word,
     .junk {
         display: inline-block;
@@ -58,11 +76,6 @@
 
         &.ignored:after {
             background-color: var(--statusIgnored);
-        }
-
-        .new:hover,
-        .seen:hover {
-            background-color: transparent;
         }
 
     }

@@ -3,12 +3,12 @@
 
 import { fontSizeEventListener, initializeWindowSettingsFromStore } from '@globals/ts/renderer/helpers';
 fontSizeEventListener('translation');
-initializeWindowSettingsFromStore('translation')
+initializeWindowSettingsFromStore('translation');
 
 import './local.scss';
 
 import { Translation } from './front/Translation';
-import { GeistProvider, CssBaseline } from '@geist-ui/core'
+import { GeistProvider, CssBaseline } from '@geist-ui/core';
 
 import { createRoot } from 'react-dom/client';
 const container = document.getElementById('translation');

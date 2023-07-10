@@ -1,19 +1,15 @@
 
 import log_renderer from 'electron-log/renderer';
-import { createScopedLog } from "@globals/ts/main/setupLogging";
-const log = createScopedLog(log_renderer, 'settings')
+import { createScopedLog } from '@globals/ts/main/setupLogging';
+const log = createScopedLog(log_renderer, 'settings');
 
-import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
+import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
-import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
-import { Button, Checkbox, Input } from "@geist-ui/core";
+import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
+import { Button, Checkbox, Input } from '@geist-ui/core';
+import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
-const settings = [
-    ConfigurationDrawerSettings.settings_background_color_picker,
-    ConfigurationDrawerSettings.settings_font_color_picker,
-    ConfigurationDrawerSettings.settings_on_top_button,
-    ConfigurationDrawerSettings.settings_zoom_button_group,
-]
+
 
 
 // TODO: Add transparent/opaque option to each window
@@ -21,9 +17,20 @@ const settings = [
 // TODO: Add error checking option
 
 export const Settings = () => {
+    const settings = <>
+        <ConfigurationDrawerCommonSettings
+            windowName="settings"
+            ipcBase={IPC_CHANNELS.SETTINGS}
+        />
+    </>;
+
+    const classes = ["settings-wrapper"]
+
     return (<>
         <DraggableBar />
-        <div>
+        <div
+            className={classes.join(' ')}
+        >
             <h1>Options Menu</h1>
             <h3>Hover on the option for more information.</h3>
             <h3>Press Apply down below to save options.</h3>
@@ -61,5 +68,5 @@ export const Settings = () => {
             </section>
         </div>
         <ConfigurationDrawer settings={settings} />
-    </>)
-}
+    </>);
+};

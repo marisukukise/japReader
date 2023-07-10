@@ -1,10 +1,10 @@
-import GeistLoader from '@geist-ui/icons/loader'
-import "./Loader.scss";
+import GeistLoader from '@geist-ui/icons/loader';
+import './Loader.scss';
 
-const Loader = () => {
+const Loader = (): JSX.Element => {
     return (<span className="loader-icon">
         <GeistLoader />
-    </span>)
-}
+    </span>);
+};
 
 export default Loader;

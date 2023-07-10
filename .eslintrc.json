@@ -21,6 +21,9 @@
     "unused-imports"
   ],
   "rules": {
+    "indent": [2,4],
+    "quotes": [2, "single"],
+    "semi": [2, "always"],
     "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [

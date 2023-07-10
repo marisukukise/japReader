@@ -3,12 +3,12 @@
 
 import { fontSizeEventListener, initializeWindowSettingsFromStore } from '@globals/ts/renderer/helpers';
 fontSizeEventListener('dictionary');
-initializeWindowSettingsFromStore('dictionary')
+initializeWindowSettingsFromStore('dictionary');
 
 import './local.scss';
 
 import { Dictionary } from './front/Dictionary';
-import { GeistProvider, CssBaseline } from '@geist-ui/core'
+import { GeistProvider, CssBaseline } from '@geist-ui/core';
 
 import { createRoot } from 'react-dom/client';
 const container = document.getElementById('dictionary');

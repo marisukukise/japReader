@@ -1,5 +1,5 @@
-import { ipcRenderer } from "electron";
-import { useEffect, useState } from "react";
+import { ipcRenderer } from 'electron';
+import { useEffect, useState } from 'react';
 import BritainFlag from '@img/symbols/britain.png';
 import JapanFlag from '@img/symbols/japan.png';
 import PictureSymbol from '@img/symbols/image.png';
@@ -13,54 +13,55 @@ import WiktionaryENIcon from '@img/favicons/wiktionary-en.ico';
 import WiktionaryJPIcon from '@img/favicons/wiktionary-jp.ico';
 
 import log_renderer from 'electron-log/renderer';
-import { createScopedLog } from "@globals/ts/main/setupLogging";
-const log = createScopedLog(log_renderer, 'dictionary')
-import { IPC_CHANNELS, WORD_DATA_STATUSES } from "@globals/ts/main/objects";
+import { createScopedLog } from '@globals/ts/main/setupLogging';
+const log = createScopedLog(log_renderer, 'dictionary');
+import { IPC_CHANNELS, WORD_DATA_STATUSES } from '@globals/ts/main/objects';
 
-import { getStatusDataStore } from "@globals/ts/main/initializeStore";
+import { getStatusDataStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
 
-import { FuriganaJSX, listenForAnotherWindowIsReady, updateWordStatusStore } from "@globals/ts/renderer/helpers";
-import { DraggableBar } from "@globals/components/DraggableBar/DraggableBar";
+import { FuriganaJSX, listenForAnotherWindowIsReady, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
-import { ConfigurationDrawerSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerSettings/ConfigurationDrawerSettings';
+import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 
-import { Grid, Button, ButtonGroup } from '@geist-ui/core'
+import { Grid, Button, ButtonGroup } from '@geist-ui/core';
 
-const settings = [
-    ConfigurationDrawerSettings.open_settings,
-    ConfigurationDrawerSettings.dictionary_background_color_picker,
-    ConfigurationDrawerSettings.dictionary_font_color_picker,
-    ConfigurationDrawerSettings.dictionary_on_top_button,
-    ConfigurationDrawerSettings.dictionary_zoom_button_group,
-]
+
 
 export const Dictionary = () => {
     const [isReaderReady, setReaderReady] = useState(false);
-    const [status, setStatus] = useState("")
-    const [dictForm, setDictForm] = useState("")
-    const [dictFormReading, setDictFormReading] = useState("")
-    const [definitions, setDefinitions] = useState("")
+    const [status, setStatus] = useState('');
+    const [dictForm, setDictForm] = useState('');
+    const [dictFormReading, setDictFormReading] = useState('');
+    const [definitions, setDefinitions] = useState('');
     const [known, setKnown] = useState(
         statusDataStore.has(`status_data.${WORD_DATA_STATUSES.KNOWN}`) ?
             statusDataStore.get(`status_data.${WORD_DATA_STATUSES.KNOWN}`).length : 0
-    )
+    );
     const [seen, setSeen] = useState(
         statusDataStore.has(`status_data.${WORD_DATA_STATUSES.SEEN}`) ?
             statusDataStore.get(`status_data.${WORD_DATA_STATUSES.SEEN}`).length : 0
-    )
+    );
+
+    const settings = <>
+        <ConfigurationDrawerCommonSettings
+            windowName="dictionary"
+            ipcBase={IPC_CHANNELS.DICTIONARY}
+        />
+    </>;
 
     useEffect(() => {
-        log.log("mounted dictionary")
+        log.log('mounted dictionary');
 
-        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.ANNOUNCE.IS_READY)
+        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.ANNOUNCE.IS_READY);
 
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, (event, extendedWordData: japReader.ExtendedWordData) => {
             setStatus(extendedWordData.status);
             setDictForm(extendedWordData.dictForm);
             setDictFormReading(extendedWordData.dictFormReading);
             setDefinitions(extendedWordData.definitions);
-        })
+        });
 
 
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
@@ -69,48 +70,52 @@ export const Dictionary = () => {
             if (newStatus == WORD_DATA_STATUSES.KNOWN)
                 setKnown((known: number) => known + 1);
             if (prevStatus == WORD_DATA_STATUSES.SEEN)
-                setSeen((seen: number) => seen - 1)
+                setSeen((seen: number) => seen - 1);
             if (prevStatus == WORD_DATA_STATUSES.KNOWN)
-                setKnown((known: number) => known - 1)
+                setKnown((known: number) => known - 1);
         });
 
         listenForAnotherWindowIsReady(IPC_CHANNELS.READER,
             isReaderReady, setReaderReady);
 
         return () => {
-            log.log("unmounted dictionary")
+            log.log('unmounted dictionary');
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.IS_READY);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA);
-            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED)
-        }
-    }, [])
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
+        };
+    }, []);
 
     const getHTMLObject = (html_code: string) => {
-        return { __html: html_code }
-    }
+        return { __html: html_code };
+    };
 
     const setSeenStatus = () => {
         if (dictForm) {
-            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.SEEN)
-            setStatus(WORD_DATA_STATUSES.SEEN)
+            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.SEEN);
+            setStatus(WORD_DATA_STATUSES.SEEN);
         }
-    }
+    };
     const setKnownStatus = () => {
         if (dictForm) {
-            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.KNOWN)
-            setStatus(WORD_DATA_STATUSES.KNOWN)
+            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.KNOWN);
+            setStatus(WORD_DATA_STATUSES.KNOWN);
         }
-    }
+    };
     const setIgnoredStatus = () => {
         if (dictForm) {
-            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.IGNORED)
-            setStatus(WORD_DATA_STATUSES.IGNORED)
+            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.IGNORED);
+            setStatus(WORD_DATA_STATUSES.IGNORED);
         }
-    }
+    };
+
+    const classes = ["dictionary-wrapper"]
 
     return (<>
         <DraggableBar />
-        <div>
+        <div
+            className={classes.join(' ')}
+        >
             <Grid.Container gap={2} justify="space-between" className="status-data-stats">
                 <Grid xs={12} justify="flex-start">Seen: {seen}</Grid>
                 <Grid xs={12} justify="flex-end">Known: {known}</Grid>
@@ -179,5 +184,5 @@ export const Dictionary = () => {
             <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
         </div>
         <ConfigurationDrawer settings={settings} />
-    </>)
-}
+    </>);
+};
