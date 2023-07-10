@@ -7,7 +7,7 @@ export const TranslatedSentence = (
     }
 ): JSX.Element => {
     return <>
-        <Text p className='translatedSentence'>{translatedSentence}</Text>
-        <Text p className='japaneseSentence'>{japaneseSentence}</Text>
+        <Text p className='translated-sentence'>{translatedSentence}</Text>
+        <Text p className='japanese-sentence'>{japaneseSentence}</Text>
     </>;
 };

@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from '@globals/ts/main/setupLogging';
@@ -17,9 +17,10 @@ import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 
-import { Text } from '@geist-ui/core';
+import { Text, useToasts } from '@geist-ui/core';
 import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateButton';
 import FuriganaController from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/FuriganaController';
+import useToast, { ToastLayout } from '@geist-ui/core/esm/use-toasts/use-toast';
 
 
 
@@ -79,6 +80,13 @@ const Message = (props: any) => {
 
 
 export const Reader = () => {
+    const [isUIShown, setUIShown] = useState(true);
+    const toastLayout: ToastLayout = {
+        maxHeight: '3.5rem',
+        width: '16rem',
+        placement: 'bottomLeft',
+    } 
+    const { setToast, removeAll } = useToasts(toastLayout)
     const [isIchiReady, setIchiReady] = useState(false);
     const [didIchiFail, setIchiFailed] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useState('');
@@ -88,6 +96,11 @@ export const Reader = () => {
     const [hasKnownStatusFurigana, setKnownStatusFurigana] = useState(false);
     const [hasIgnoredStatusFurigana, setIgnoredStatusFurigana] = useState(false);
     const currentWords = useRef({});
+
+
+    const showToast = (text: string | ReactNode, delay: number) => setToast({
+        text: text, delay: delay
+    })
 
     const toggleCenteredText = () => {
         setCenteredText(!isCenteredText);
@@ -141,6 +154,20 @@ export const Reader = () => {
             if (!useDeepL) ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, japaneseSentence, null);
         });
 
+        ipcRenderer.on(IPC_CHANNELS.READER.SET.HIDE_UI, () => {
+            setUIShown((wasShown: boolean) => {
+                if (!wasShown) {
+                    document.body.classList.remove('hide-border-markings')
+                    removeAll();
+                } else {
+                    document.body.classList.add('hide-border-markings')
+                    showToast(<span>UI has been hidden. <br/>Press H to bring it back.</span>, 1000);
+                }
+
+                return !wasShown
+            });
+        })
+
         ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR, () => {
             log.log('ichi failed');
             setIchiFailed(true);
@@ -159,6 +186,7 @@ export const Reader = () => {
 
         return () => {
             log.log('unmounted reader');
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.SET.HIDE_UI);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.IS_READY);
@@ -179,7 +207,7 @@ export const Reader = () => {
         .concat(!hasIgnoredStatusFurigana ? 'hide-furigana-ignored' : [])
 
     return (<>
-        <DraggableBar />
+        {isUIShown && <DraggableBar />}
         <div style={{ textAlign: isCenteredText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >
@@ -190,8 +218,8 @@ export const Reader = () => {
                 words={currentWords.current}
             />
         </div>
-        <ConfigurationDrawer
+        {isUIShown && <ConfigurationDrawer
             settings={settings}
-        />
+        />}
     </>);
 };

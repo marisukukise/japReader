@@ -6,6 +6,8 @@ const windowStore = getWindowStore();
 export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowName: string, ipcBase: any): void => {
     if (process.env.JAPREADER_ENV === 'dev') window.webContents.openDevTools();
 
+    passMessageToRenderer(window, ipcBase.SET.HIDE_UI);
+
     ipcMain.on(ipcBase.SET.BACKGROUND_COLOR, (event, value) => {
         windowStore.set(`${windowName}.backgroundColor`, value);
         window.setBackgroundColor(value);

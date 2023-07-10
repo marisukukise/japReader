@@ -78,12 +78,17 @@ export const Translation = () => {
     const [isDeepReady, setDeepReady] = useState(false);
     const [didDeepFail, setDeepFailed] = useState(false);
     const [translatedSentence, setTranslatedSentence] = useState('');
+    const [showJapaneseSentence, setShowJapaneseSentence] = useState(true);
     const [centerText, setCenterText] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useState('');
 
     const toggleCenterText = () => {
         setCenterText(!centerText);
     };
+
+    const toggleShowJapaneseSentence = () => {
+        setShowJapaneseSentence(!showJapaneseSentence);
+    }
 
     const settings = <>
         <ConfigurationDrawerCommonSettings
@@ -94,6 +99,10 @@ export const Translation = () => {
             fn={toggleCenterText}
             initialChecked={centerText}
             text="Center text" />
+        <ToggleStateSwitch
+            fn={toggleShowJapaneseSentence}
+            initialChecked={showJapaneseSentence}
+            text="Show original Japanese sentence" />
     </>;
 
 
@@ -139,6 +148,7 @@ export const Translation = () => {
     }, []);
 
     const classes = ["translation-wrapper"]
+        .concat(!showJapaneseSentence ? 'hide-japanese-sentence' : [])
 
     return (<>
         <DraggableBar />

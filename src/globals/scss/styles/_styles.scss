@@ -31,8 +31,12 @@
       z-index: 3;
 
       color: var(--primary-font) !important;
+
+      &.hide-border-markings {
+          background: none;
+      }
   }
 
-.url {
-    text-decoration-line: underline;
-}
+  .url {
+      text-decoration-line: underline;
+  }

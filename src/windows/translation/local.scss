@@ -4,5 +4,10 @@
 @use "@globals/scss/global" as global;
 
 #translation {
+    .translation-wrapper {
+        &.hide-japanese-sentence p.japanese-sentence {
+            display: none;
+        }
+    }
 
 }

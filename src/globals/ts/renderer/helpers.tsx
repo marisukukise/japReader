@@ -26,7 +26,6 @@ const getFuriganaObject = (w: string, r: string): japReader.FuriganaObject[] => 
         if (/[０-９]/.test(w)) {
             const original_w = w;
             DIGIT_MAP.forEach((digit_entry: string[]) => {
-                console.log(w);
                 w = w.replace(digit_entry[0], digit_entry[1]);
             });
             const furigana = fit(w, r, { type: 'object' });
@@ -41,12 +40,11 @@ const getFuriganaObject = (w: string, r: string): japReader.FuriganaObject[] => 
 };
 
 type FuriganaJSXFromFuriganaObjectProps = {
-  furiganaList: japReader.FuriganaObject[]
+    furiganaList: japReader.FuriganaObject[]
 }
 const FuriganaJSXFromFuriganaObject = ({ furiganaList }: FuriganaJSXFromFuriganaObjectProps): JSX.Element => {
     return (<>{
         furiganaList.map((furiganaEntry: japReader.FuriganaObject, index: number) => {
-            console.log(furiganaEntry);
             return <ruby key={index}>
                 {
                     furiganaEntry.w.match(/\p{Script=Han}/u) ?
@@ -59,8 +57,8 @@ const FuriganaJSXFromFuriganaObject = ({ furiganaList }: FuriganaJSXFromFurigana
 };
 
 type FuriganaJSXProps = {
-  kanaOrKanji: string,
-  kana: string
+    kanaOrKanji: string,
+    kana: string
 }
 
 export const FuriganaJSX = ({ kanaOrKanji, kana }: FuriganaJSXProps): JSX.Element => {
@@ -72,20 +70,18 @@ export const FuriganaJSX = ({ kanaOrKanji, kana }: FuriganaJSXProps): JSX.Elemen
 };
 
 export const listenForAnotherWindowIsReady = (
-    windowIpcCollection: any,
+    ipcBase: any,
     isReady: boolean,
     setReady: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
-
-
     // Case #1: Target window loaded before Awaited window
-    ipcRenderer.on(windowIpcCollection.ANNOUNCE.IS_READY, (event: any) => {
+    ipcRenderer.on(ipcBase.ANNOUNCE.IS_READY, (event: any) => {
         setReady(true);
     });
 
     // Case #2: Awaited window loaded before Target window
     if (!isReady) {
-        ipcRenderer.invoke(windowIpcCollection.REQUEST.IS_READY)
+        ipcRenderer.invoke(ipcBase.REQUEST.IS_READY)
             .then((result: boolean) => { setReady(result); })
             .catch((error: any) => { log.log(error); });
     }
@@ -141,24 +137,36 @@ export const changeBackgroundColorVariable = (windowName: string, color: string)
 const KEYBOARD_KEYS = {
     MINUS_KEY: 'Minus',
     PLUS_KEY: 'Equal',
+    NUMPAD_ADD: 'NumpadAdd',
+    NUMPAD_SUBTRACT: 'NumpadSubtract',
+    KEY_H: 'KeyH',
 };
 
-export const fontSizeEventListener = (windowName: string) => {
+export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
     window.addEventListener('wheel', (event) => {
-        if (event.ctrlKey) zoom(windowName, event.deltaY < 0);
+        if (event.ctrlKey) {
+            zoom(windowName, event.deltaY < 0);
+        }
     }, { passive: false });
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-        case KEYBOARD_KEYS.PLUS_KEY:
-            zoom(windowName, true);
-        case KEYBOARD_KEYS.MINUS_KEY:
-            zoom(windowName, false);
+            case KEYBOARD_KEYS.PLUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_ADD:
+                zoom(windowName, true);
+                break;
+            case KEYBOARD_KEYS.MINUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+                zoom(windowName, false);
+                break;
+            case KEYBOARD_KEYS.KEY_H:
+                ipcRenderer.send(ipcBase.SET.HIDE_UI)
+                break;
         }
     }, true);
 };
 
-export const initializeWindowSettingsFromStore = (windowName: string) => {
+export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
     const root = document.querySelector(':root') as HTMLElement;
     const fontSizeRootPropertry = '--main-font-size';
     const fontColorRootProperty = '--primary-font';
@@ -174,23 +182,27 @@ export const initializeWindowSettingsFromStore = (windowName: string) => {
             windowStore.get(`${windowName}.additional.fontColor`)
         );
     }
-
 };
 
-const newStatus = WORD_DATA_STATUSES.NEW;
-const knownStatus = WORD_DATA_STATUSES.KNOWN;
-const seenStatus = WORD_DATA_STATUSES.SEEN;
-const ignoredStatus = WORD_DATA_STATUSES.IGNORED;
+export const initializeWindowSettings = (windowName: string, ipcBase: any) => {
+    initializeWindowSettingsFromStore(windowName, ipcBase);
+    initializeWindowListeners(windowName, ipcBase)
+}
+
+const NEW_STATUS = WORD_DATA_STATUSES.NEW;
+const KNOWN_STATUS = WORD_DATA_STATUSES.KNOWN;
+const SEEN_STATUS = WORD_DATA_STATUSES.SEEN;
+const IGNORED_STATUS = WORD_DATA_STATUSES.IGNORED;
 
 export const getWordStatusData = (dictionaryForm: string): string => {
-    if (!dictionaryForm) return newStatus;
+    if (!dictionaryForm) return NEW_STATUS;
 
     const statusDataList = statusDataStore.get('status_data');
 
-    let status = newStatus;
-    if (statusDataList.known.includes(dictionaryForm)) status = knownStatus;
-    if (statusDataList.seen.includes(dictionaryForm)) status = seenStatus;
-    if (statusDataList.ignored.includes(dictionaryForm)) status = ignoredStatus;
+    let status = NEW_STATUS;
+    if (statusDataList.known.includes(dictionaryForm)) status = KNOWN_STATUS;
+    if (statusDataList.seen.includes(dictionaryForm)) status = SEEN_STATUS;
+    if (statusDataList.ignored.includes(dictionaryForm)) status = IGNORED_STATUS;
 
     return status;
 };
@@ -200,7 +212,7 @@ export const updateWordStatusStore = (dictionaryForm: string, desiredStatus: str
         return;
     }
 
-    if (![seenStatus, knownStatus, ignoredStatus].includes(desiredStatus)) {
+    if (![SEEN_STATUS, KNOWN_STATUS, IGNORED_STATUS].includes(desiredStatus)) {
         throw new Error(`Status ${desiredStatus} is not defined.`);
     }
 
@@ -208,8 +220,8 @@ export const updateWordStatusStore = (dictionaryForm: string, desiredStatus: str
     const statusDataList = statusDataStore.get('status_data');
 
     // Check what is the current status
-    let prevStatus: string = newStatus;
-    [seenStatus, knownStatus, ignoredStatus].forEach((status: string) => {
+    let prevStatus: string = NEW_STATUS;
+    [SEEN_STATUS, KNOWN_STATUS, IGNORED_STATUS].forEach((status: string) => {
         if (statusDataList[`${status}`].includes(dictionaryForm)) {
             prevStatus = status; return;
         }
@@ -217,7 +229,7 @@ export const updateWordStatusStore = (dictionaryForm: string, desiredStatus: str
     if (desiredStatus == prevStatus) return;
 
     // Filter out the word from all statuses
-    [seenStatus, knownStatus, ignoredStatus].forEach((status: string) => {
+    [SEEN_STATUS, KNOWN_STATUS, IGNORED_STATUS].forEach((status: string) => {
         statusDataList[`${status}`] = statusDataList[`${status}`]
             .filter((elem: string) => elem !== dictionaryForm);
     });

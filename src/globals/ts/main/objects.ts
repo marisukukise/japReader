@@ -31,6 +31,7 @@ export const IPC_CHANNELS = {
             FOCUS: 'set/reader/focus',
             BACKGROUND_COLOR: 'set/reader/windowBackgroundColor',
             ALWAYS_ON_TOP: 'set/reader/onTop',
+            HIDE_UI: 'set/reader/hideUI',
         },
         ANNOUNCE: {
             IS_READY: 'announce/reader/isReady',
@@ -59,6 +60,7 @@ export const IPC_CHANNELS = {
             HIDE: 'set/translation/hide',
             BACKGROUND_COLOR: 'set/translation/windowBackgroundColor',
             ALWAYS_ON_TOP: 'set/translation/onTop',
+            HIDE_UI: 'set/translation/hideUI',
         },
         ANNOUNCE: {
             IS_READY: 'announce/translation/isReady',
@@ -85,6 +87,7 @@ export const IPC_CHANNELS = {
             HIDE: 'set/dictionary/hide',
             BACKGROUND_COLOR: 'set/dictionary/windowBackgroundColor',
             ALWAYS_ON_TOP: 'set/dictionary/onTop',
+            HIDE_UI: 'set/dictionary/hideUI',
         },
         ANNOUNCE: {
             IS_READY: 'announce/dictionary/isReady',
@@ -101,6 +104,7 @@ export const IPC_CHANNELS = {
             HIDE: 'set/settings/hide',
             BACKGROUND_COLOR: 'set/settings/windowBackgroundColor',
             ALWAYS_ON_TOP: 'set/settings/onTop',
+            HIDE_UI: 'set/settings/hideUI',
         },
         ANNOUNCE: {
             IS_READY: 'announce/settings/isReady',

@@ -1,9 +1,9 @@
 // This is the React file of the reader window.
 // It is responsible for inserting DOM structure into the main element in the index.html file.
 
-import { fontSizeEventListener, initializeWindowSettingsFromStore } from '@globals/ts/renderer/helpers';
-fontSizeEventListener('reader');
-initializeWindowSettingsFromStore('reader');
+import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { initializeWindowSettings } from '@globals/ts/renderer/helpers';
+initializeWindowSettings('reader', IPC_CHANNELS.READER);
 
 import './local.scss';
 
