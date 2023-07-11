@@ -1,4 +1,4 @@
-export const WORD_DATA_STATUSES = {
+export const STATUS = {
     NEW: 'new',
     SEEN: 'seen',
     KNOWN: 'known',
@@ -36,7 +36,7 @@ export const IPC_CHANNELS = {
         ANNOUNCE: {
             IS_READY: 'announce/reader/isReady',
             WORD_STATUS_CHANGE_DETECTED: 'announce/word/changeStatus',
-            EXTENDED_WORDS_DATA: 'set/reader/extendedWordData',
+            PARSED_WORDS_DATA: 'set/reader/IchiParsedWordData',
         },
         REQUEST: {
             SHOW_DIALOG: 'request/reader/showDialog',

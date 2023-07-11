@@ -15,7 +15,7 @@ import WiktionaryJPIcon from '@img/favicons/wiktionary-jp.ico';
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from '@globals/ts/main/setupLogging';
 const log = createScopedLog(log_renderer, 'dictionary');
-import { IPC_CHANNELS, WORD_DATA_STATUSES } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 
 import { getStatusDataStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
@@ -37,14 +37,8 @@ export const Dictionary = () => {
     const [dictForm, setDictForm] = useState('');
     const [dictFormReading, setDictFormReading] = useState('');
     const [definitions, setDefinitions] = useState('');
-    const [known, setKnown] = useState(
-        statusDataStore.has(`status_data.${WORD_DATA_STATUSES.KNOWN}`) ?
-            statusDataStore.get(`status_data.${WORD_DATA_STATUSES.KNOWN}`).length : 0
-    );
-    const [seen, setSeen] = useState(
-        statusDataStore.has(`status_data.${WORD_DATA_STATUSES.SEEN}`) ?
-            statusDataStore.get(`status_data.${WORD_DATA_STATUSES.SEEN}`).length : 0
-    );
+    const [known, setKnown] = useState(statusDataStore.get(`status_data.${STATUS.KNOWN}`, 0));
+    const [seen, setSeen] = useState(statusDataStore.get(`status_data.${STATUS.SEEN}`, 0));
 
     const showToast = (text: string | ReactNode, delay: number) => setToast({
         text: text, delay: delay
@@ -62,22 +56,22 @@ export const Dictionary = () => {
 
         ipcRenderer.send(IPC_CHANNELS.DICTIONARY.ANNOUNCE.IS_READY);
 
-        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, (event, extendedWordData: japReader.ExtendedWordData) => {
-            setStatus(extendedWordData.status);
-            setDictForm(extendedWordData.dictForm);
-            setDictFormReading(extendedWordData.dictFormReading);
-            setDefinitions(extendedWordData.definitions);
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, (event, IchiParsedWordData: japReader.IchiParsedWordData) => {
+            setStatus(IchiParsedWordData.status);
+            setDictForm(IchiParsedWordData.dictForm);
+            setDictFormReading(IchiParsedWordData.dictFormReading);
+            setDefinitions(IchiParsedWordData.definitions);
         });
 
 
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
-            if (newStatus == WORD_DATA_STATUSES.SEEN)
+            if (newStatus == STATUS.SEEN)
                 setSeen((seen: number) => seen + 1);
-            if (newStatus == WORD_DATA_STATUSES.KNOWN)
+            if (newStatus == STATUS.KNOWN)
                 setKnown((known: number) => known + 1);
-            if (prevStatus == WORD_DATA_STATUSES.SEEN)
+            if (prevStatus == STATUS.SEEN)
                 setSeen((seen: number) => seen - 1);
-            if (prevStatus == WORD_DATA_STATUSES.KNOWN)
+            if (prevStatus == STATUS.KNOWN)
                 setKnown((known: number) => known - 1);
         });
 
@@ -90,7 +84,7 @@ export const Dictionary = () => {
             log.log('unmounted dictionary');
             ipcRenderer.removeAllListeners(IPC_CHANNELS.DICTIONARY.SET.HIDE_UI);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.IS_READY);
-            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA);
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
         };
     }, []);
@@ -101,20 +95,20 @@ export const Dictionary = () => {
 
     const setSeenStatus = () => {
         if (dictForm) {
-            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.SEEN);
-            setStatus(WORD_DATA_STATUSES.SEEN);
+            updateWordStatusStore(dictForm, STATUS.SEEN);
+            setStatus(STATUS.SEEN);
         }
     };
     const setKnownStatus = () => {
         if (dictForm) {
-            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.KNOWN);
-            setStatus(WORD_DATA_STATUSES.KNOWN);
+            updateWordStatusStore(dictForm, STATUS.KNOWN);
+            setStatus(STATUS.KNOWN);
         }
     };
     const setIgnoredStatus = () => {
         if (dictForm) {
-            updateWordStatusStore(dictForm, WORD_DATA_STATUSES.IGNORED);
-            setStatus(WORD_DATA_STATUSES.IGNORED);
+            updateWordStatusStore(dictForm, STATUS.IGNORED);
+            setStatus(STATUS.IGNORED);
         }
     };
 

@@ -4,9 +4,9 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import log_renderer from 'electron-log/renderer';
 import { createScopedLog } from '@globals/ts/main/setupLogging';
 const log = createScopedLog(log_renderer, 'reader');
-import { IPC_CHANNELS, WORD_DATA_STATUSES } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore , getWindowStore } from '@globals/ts/main/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepL } = settingsStore.get('options');
 
@@ -18,10 +18,11 @@ import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/Configu
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 
 import { Text, useToasts } from '@geist-ui/core';
-import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateButton';
+import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateSwitch';
 import FuriganaController from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/FuriganaController';
 
 
+const windowStore = getWindowStore();
 
 const IchiFailedMessage = () => {
     return (<Text p className='ichi-state-msg failed'>
@@ -77,6 +78,11 @@ const Message = (props: any) => {
     return (<Sentence words={words} />);
 };
 
+const getFuriganaSetting = (status: string): boolean => {
+    const furiganaSettings = windowStore.get('reader.additional.furigana', false);
+    if (!furiganaSettings) return false;
+    return furiganaSettings.includes(status);
+};
 
 export const Reader = () => {
     const [isUIShown, setUIShown] = useState(true);
@@ -84,11 +90,11 @@ export const Reader = () => {
     const [isIchiReady, setIchiReady] = useState(false);
     const [didIchiFail, setIchiFailed] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useState('');
-    const [isCenteredText, setCenteredText] = useState(false);
-    const [hasNewStatusFurigana, setNewStatusFurigana] = useState(true);
-    const [hasSeenStatusFurigana, setSeenStatusFurigana] = useState(true);
-    const [hasKnownStatusFurigana, setKnownStatusFurigana] = useState(false);
-    const [hasIgnoredStatusFurigana, setIgnoredStatusFurigana] = useState(false);
+    const [isCenteredText, setCenteredText] = useState(windowStore.get('reader.additional.centeredText', false));
+    const [hasNewStatusFurigana, setNewStatusFurigana] = useState(getFuriganaSetting(STATUS.NEW));
+    const [hasSeenStatusFurigana, setSeenStatusFurigana] = useState(getFuriganaSetting(STATUS.SEEN));
+    const [hasKnownStatusFurigana, setKnownStatusFurigana] = useState(getFuriganaSetting(STATUS.KNOWN));
+    const [hasIgnoredStatusFurigana, setIgnoredStatusFurigana] = useState(getFuriganaSetting(STATUS.IGNORED));
     const currentWords = useRef({});
 
     const showToast = (text: string | ReactNode, delay: number) => setToast({
@@ -97,20 +103,22 @@ export const Reader = () => {
 
     const toggleCenteredText = () => {
         setCenteredText(!isCenteredText);
+        windowStore.set('reader.additional.centeredText', !isCenteredText);
     };
 
     const updateFuriganaRules = (furiganaStatuses: string[]) => {
-        setNewStatusFurigana(furiganaStatuses.includes(WORD_DATA_STATUSES.NEW));
-        setSeenStatusFurigana(furiganaStatuses.includes(WORD_DATA_STATUSES.SEEN));
-        setKnownStatusFurigana(furiganaStatuses.includes(WORD_DATA_STATUSES.KNOWN));
-        setIgnoredStatusFurigana(furiganaStatuses.includes(WORD_DATA_STATUSES.IGNORED));
+        setNewStatusFurigana(furiganaStatuses.includes(STATUS.NEW));
+        setSeenStatusFurigana(furiganaStatuses.includes(STATUS.SEEN));
+        setKnownStatusFurigana(furiganaStatuses.includes(STATUS.KNOWN));
+        setIgnoredStatusFurigana(furiganaStatuses.includes(STATUS.IGNORED));
+        windowStore.set('reader.additional.furigana', furiganaStatuses);
     };
 
     const initialCheckedFurigana = [
-        hasNewStatusFurigana ? WORD_DATA_STATUSES.NEW : null,
-        hasSeenStatusFurigana ? WORD_DATA_STATUSES.SEEN : null,
-        hasKnownStatusFurigana ? WORD_DATA_STATUSES.KNOWN : null,
-        hasIgnoredStatusFurigana ? WORD_DATA_STATUSES.IGNORED : null,
+        hasNewStatusFurigana ? STATUS.NEW : null,
+        hasSeenStatusFurigana ? STATUS.SEEN : null,
+        hasKnownStatusFurigana ? STATUS.KNOWN : null,
+        hasIgnoredStatusFurigana ? STATUS.IGNORED : null,
     ].filter(e => e !== null);
 
     const settings = <>

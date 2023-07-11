@@ -4,6 +4,7 @@
 const { ipcRenderer } = require('electron');
 import log from 'electron-log/renderer';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { getWordStatusData } from '@globals/ts/renderer/helpers';
 
 
 const WORDS: japReader.IchiParsedWordData[] = [];
@@ -15,6 +16,7 @@ const EMPTY_WORD_DATA: japReader.IchiParsedWordData = {
     dictFormReading: '',
     rubyReading: '',
     definitions: '',
+    status: '',
 };
 
 
@@ -172,7 +174,12 @@ window.addEventListener('DOMContentLoaded', () => {
         FULL_TEXT += element.textContent;
     });
 
-    ipcRenderer.send(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, PARSED_WORDS, FULL_TEXT);
+    // Add status to words
+    const EXTENDED_WORDS: japReader.IchiParsedWordData[] = PARSED_WORDS.map((word: japReader.IchiParsedWordData) => {
+        word['status'] = getWordStatusData(word.dictForm);
+        return word;
+    });
+    ipcRenderer.send(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, EXTENDED_WORDS, FULL_TEXT);
 });
 
 setTimeout(() => {

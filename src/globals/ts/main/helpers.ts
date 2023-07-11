@@ -14,6 +14,7 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
     });
 
     ipcMain.on(ipcBase.SET.ALWAYS_ON_TOP, (event, value) => {
+        windowStore.set(`${windowName}.alwaysOnTop`, value);
         window.setAlwaysOnTop(value, 'pop-up-menu');
     });
 
@@ -112,7 +113,7 @@ function filterObjectKeys(unfilteredObj: any, allowedKeys: string[]) {
 export const createWindowAndStorePositionData = (windowName: string, windowConfig: any) => {
     log.debug(`Creating ${windowName} BrowserWindow...`);
 
-    const allowed = ['width', 'height', 'isMaximized', 'x', 'y', 'backgroundColor'];
+    const allowed = ['width', 'height', 'isMaximized', 'x', 'y', 'alwaysOnTop', 'backgroundColor'];
 
     if (windowStore.has(windowName)) {
         let additional = {};

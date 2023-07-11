@@ -5,9 +5,6 @@ declare namespace japReader {
         dictFormReading: string;
         rubyReading: string;
         definitions: string;
-    }
-
-    interface ExtendedWordData extends IchiParsedWordData {
         status: string;
     }
 

@@ -14,7 +14,7 @@ import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/Configu
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 
 import { Text, useToasts } from '@geist-ui/core';
-import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateButton';
+import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateSwitch';
 
 
 

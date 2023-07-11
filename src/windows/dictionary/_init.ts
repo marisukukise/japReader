@@ -27,7 +27,7 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
         dictionaryWindow.hide();
     });
 
-    passMessageToRenderer(dictionaryWindow, IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA);
+    passMessageToRenderer(dictionaryWindow, IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA);
     passMessageToRenderer(dictionaryWindow, IPC_CHANNELS.READER.ANNOUNCE.IS_READY);
     passMessageToRenderer(dictionaryWindow, IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
 

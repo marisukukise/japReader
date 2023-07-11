@@ -6,6 +6,7 @@
     height: var(--draggable-bar-height);
     -webkit-app-region: drag;
     cursor: grab;
+    z-index: 1001;
     background-color: var(--primary-background);
     background-size: 5px 5px;
     background-image: repeating-linear-gradient(5deg, var(--primary-background) 0, var(--primary-background) 1px, black 0, var(--primary-background) 50%);

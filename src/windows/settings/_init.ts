@@ -11,7 +11,7 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
         height: 600,
         width: 800,
         backgroundColor: '#e7dee6',
-        show: false,
+        show: true,
         zoomFactor: 1.0,
         frame: false,
         transparent: true,

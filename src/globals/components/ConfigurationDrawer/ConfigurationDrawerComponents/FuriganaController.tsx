@@ -1,5 +1,5 @@
 import { Checkbox } from '@geist-ui/core';
-import { WORD_DATA_STATUSES } from '@globals/ts/main/objects';
+import { STATUS } from '@globals/ts/main/objects';
 
 type Props = {
     initialChecked: string[],
@@ -8,10 +8,10 @@ type Props = {
 const FuriganaController = ({initialChecked, fn}: Props): JSX.Element => {
 
     return <Checkbox.Group value={initialChecked} onChange={fn}>
-        <Checkbox value={WORD_DATA_STATUSES.NEW}>New</Checkbox>
-        <Checkbox value={WORD_DATA_STATUSES.SEEN}>Seen</Checkbox>
-        <Checkbox value={WORD_DATA_STATUSES.KNOWN}>Known</Checkbox>
-        <Checkbox value={WORD_DATA_STATUSES.IGNORED}>Ignored</Checkbox>
+        <Checkbox value={STATUS.NEW}>New</Checkbox>
+        <Checkbox value={STATUS.SEEN}>Seen</Checkbox>
+        <Checkbox value={STATUS.KNOWN}>Known</Checkbox>
+        <Checkbox value={STATUS.IGNORED}>Ignored</Checkbox>
     </Checkbox.Group>;
 };
 

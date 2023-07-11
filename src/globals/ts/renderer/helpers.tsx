@@ -6,7 +6,7 @@ const statusDataStore = getStatusDataStore();
 const windowStore = getWindowStore();
 
 const { fit } = require('furigana');
-import { IPC_CHANNELS, WORD_DATA_STATUSES } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 import { ToastLayout } from '@geist-ui/core';
 
 const DIGIT_MAP = [
@@ -129,7 +129,7 @@ export const changeFontColor = (windowName: string, color: string) => {
     }
 };
 
-export const zoom = (windowName: string, conditionForZoomIn: boolean) => {
+export const zoom = (windowName: string, conditionForZoomIn: boolean): string => {
     // if conditionForZoomIn true:  then zoom in
     // if conditionForZoomIn false: then zoom out
     const root = document.querySelector(':root') as HTMLElement;
@@ -147,6 +147,7 @@ export const zoom = (windowName: string, conditionForZoomIn: boolean) => {
         newFontSize
     );
     windowStore.set(`${windowName}.additional.fontSize`, newFontSize);
+    return newFontSize;
 };
 
 export const changeBackgroundColorVariable = (windowName: string, color: string) => {
@@ -217,10 +218,10 @@ export const initializeWindowSettings = (windowName: string, ipcBase: any) => {
     initializeWindowListeners(windowName, ipcBase);
 };
 
-const NEW_STATUS = WORD_DATA_STATUSES.NEW;
-const KNOWN_STATUS = WORD_DATA_STATUSES.KNOWN;
-const SEEN_STATUS = WORD_DATA_STATUSES.SEEN;
-const IGNORED_STATUS = WORD_DATA_STATUSES.IGNORED;
+const NEW_STATUS = STATUS.NEW;
+const KNOWN_STATUS = STATUS.KNOWN;
+const SEEN_STATUS = STATUS.SEEN;
+const IGNORED_STATUS = STATUS.IGNORED;
 
 export const getWordStatusData = (dictionaryForm: string): string => {
     if (!dictionaryForm) return NEW_STATUS;

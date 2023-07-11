@@ -1,9 +1,9 @@
-import { FuriganaJSX, updateWordStatusStore , getWordStatusData } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, updateWordStatusStore } from '@globals/ts/renderer/helpers';
 import { ipcRenderer } from 'electron';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Text } from '@geist-ui/core';
 
-import { IPC_CHANNELS, WORD_DATA_STATUSES } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 
 const MOUSE_BUTTONS = {
     'MAIN': 0, // Usually left button
@@ -14,15 +14,19 @@ const MOUSE_BUTTONS = {
 };
 
 type WordProps = {
-  wordData: japReader.IchiParsedWordData
+    wordData: japReader.IchiParsedWordData
 }
 const Word = ({ wordData }: WordProps): JSX.Element => {
-    const [wordStatus, setWordStatus] = useState(getWordStatusData(wordData.dictForm));
+    const [wordOriginal, setWordOriginal] = useState(wordData.word);
+    const [wordOriginalReading, setWordOriginalReading] = useState(wordData.rubyReading);
+    const [wordDict, setWordDict] = useState(wordData.dictForm);
+    const [definitions, setDefinitions] = useState(wordData.definitions);
+    const [status, setStatus] = useState(wordData.status);
 
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
-            if (wordData.dictForm == dictionaryForm) {
-                setWordStatus(newStatus);
+            if (wordDict == dictionaryForm) {
+                setStatus(newStatus);
             }
         });
         return () => {
@@ -31,71 +35,90 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
     }, []);
 
     const handleMouseDown = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>): boolean => {
-    // Only continue when pressed main or secondary button
+        // Only continue when pressed main or secondary button
         if (![MOUSE_BUTTONS.MAIN, MOUSE_BUTTONS.SECONDARY].includes(event.button))
             return;
 
-        let nextWordStatus = wordStatus;
+        let nextWordStatus = status;
 
         switch (event.button) {
-
         // Left mouse button
         case MOUSE_BUTTONS.MAIN:
-        // + CTRL
+            // + CTRL
             if (event.ctrlKey)
-                nextWordStatus = WORD_DATA_STATUSES.IGNORED;
+                nextWordStatus = STATUS.IGNORED;
 
-            else if (wordStatus == WORD_DATA_STATUSES.NEW)
-                nextWordStatus = WORD_DATA_STATUSES.SEEN;
+            else if (status == STATUS.NEW)
+                nextWordStatus = STATUS.SEEN;
 
             break;
 
             // Right mouse button
         case MOUSE_BUTTONS.SECONDARY:
-            nextWordStatus = WORD_DATA_STATUSES.KNOWN;
+            nextWordStatus = STATUS.KNOWN;
             break;
-
-        default:
-            console.log('unknown mouse code');
-
         }
 
-        setWordStatus(nextWordStatus);
-
-        // Create word data object for ditionary
-        const extendedWordData: japReader.ExtendedWordData = {
-            ...wordData,
-            status: nextWordStatus
-        };
+        setStatus(nextWordStatus);
 
         // Send messages to dictionary
-        console.log(extendedWordData);
-        ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.EXTENDED_WORDS_DATA, extendedWordData);
+        console.log(wordData);
+        ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, wordData);
         ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.SHOW);
 
-        if(wordData.dictForm)
-            updateWordStatusStore(wordData.dictForm, nextWordStatus);
+        if (wordDict)
+            updateWordStatusStore(wordDict, nextWordStatus);
 
         return true;
     };
 
-  
-    return wordData.definitions
+
+    return definitions
         ? <span
             onMouseDown={(event) => handleMouseDown(event)}
-            className={wordStatus + ' word'}>
-            <FuriganaJSX kanaOrKanji={wordData.word} kana={wordData.rubyReading} />
+            className={status + ' word'}>
+            <FuriganaJSX kanaOrKanji={wordOriginal} kana={wordOriginalReading} />
         </span>
-        : <span className='junk'>{wordData.word}</span>;
+        : <span className='junk'>{wordOriginal}</span>;
+};
+
+const getUniqueWordLength = (words: japReader.IchiParsedWordData[], status: string) => {
+    return [... new Set(words
+        .filter(e => e.status === status)
+        .map(e => e.dictForm))].length;
 };
 
 type SentenceProps = {
-  words: japReader.IchiParsedWordData[]
+    words: japReader.IchiParsedWordData[]
 }
 export const Sentence = ({ words }: SentenceProps): JSX.Element => {
-    // TODO: Detect Words with the same dictionary form in the Sentence (for example detect whether the sentence is i+1)
+    const uniqueNewWordsCount = useRef(getUniqueWordLength(words, STATUS.NEW));
+    const uniqueSeenWordsCount = useRef(getUniqueWordLength(words, STATUS.SEEN));
+    const [isPlusOneSentence, setPlusOneSentence] = useState((uniqueNewWordsCount.current + uniqueSeenWordsCount.current) == 1);
 
-    return (<Text p className='sentence'>
+    useEffect(() => {
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
+            if (newStatus == STATUS.NEW)
+                uniqueNewWordsCount.current += 1;
+            if (newStatus == STATUS.SEEN)
+                uniqueSeenWordsCount.current += 1;
+            if (prevStatus == STATUS.NEW)
+                uniqueNewWordsCount.current -= 1;
+            if (prevStatus == STATUS.SEEN)
+                uniqueSeenWordsCount.current -= 1;
+            console.log(uniqueNewWordsCount, uniqueSeenWordsCount);
+            setPlusOneSentence((uniqueNewWordsCount.current + uniqueSeenWordsCount.current) == 1);
+            console.log(isPlusOneSentence);
+        });
+        return () => {
+            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
+        };
+    }, []);
+
+    const classes = ['sentence-wrapper']
+        .concat(isPlusOneSentence ? 'plus-one-sentence' : []);
+
+    return (<Text p className={classes.join(' ')}>
         {words.map((wordData: japReader.IchiParsedWordData, index: number) =>
             <Word key={index} wordData={wordData} />
         )}

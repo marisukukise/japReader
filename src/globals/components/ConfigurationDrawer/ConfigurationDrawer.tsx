@@ -9,10 +9,13 @@ import { ChevronDown } from '@geist-ui/icons';
 type Props = {
   settings: JSX.Element
 }
+
+// TODO: Add scrolling option to the drawer
+
 const ConfigurationDrawer = ({ settings }: Props): JSX.Element => {
-    const [state, setState] = useState(false);
-    const open = () => { setState(true); };
-    const close = () => { setState(false); };
+    const [isOpen, setOpen] = useState(false);
+    const open = () => { setOpen(true); };
+    const close = () => { setOpen(false); };
 
     useEffect(() => {
         ipcRenderer.on('blur', (event: any) => {
@@ -23,16 +26,13 @@ const ConfigurationDrawer = ({ settings }: Props): JSX.Element => {
     return (
         <div className="drawer-component">
             <Button ghost auto scale={2 / 3} px={0.6}
-                style={{ zIndex: 99, position: 'fixed', bottom: 10, left: 10 }}
-                onClick={open}
-                iconRight={<ChevronUp />}
+                style={{ zIndex: 1001, position: 'fixed', bottom: 10, left: 10 }}
+                onClick={isOpen ? close : open}
+                iconRight={isOpen ? <ChevronDown/> : <ChevronUp />}
             />
-            <Drawer wrapClassName="drawer-wrapper" visible={state} onClose={close} placement='bottom'>
-                <Button ghost auto scale={2 / 3} px={0.6}
-                    style={{ zIndex: 99, position: 'fixed', bottom: 10, left: 10 }}
-                    onClick={close}
-                    iconRight={<ChevronDown />}
-                />
+            <Drawer wrapClassName="drawer-wrapper" visible={isOpen} onClose={close} placement='bottom'
+                style={{ position: 'static', borderRadius: '6px' }}
+            >
                 <Drawer.Title>Window-specific settings</Drawer.Title>
                 <Drawer.Subtitle>These options will be applied to the current window</Drawer.Subtitle>
                 <Drawer.Content style={{ marginLeft: 10 }}>

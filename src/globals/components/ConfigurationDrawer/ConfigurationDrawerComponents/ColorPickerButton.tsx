@@ -6,13 +6,15 @@ type Props = {
     title: string,
     subtitle: string,
     buttonText: string,
+    storeProperty: string
 }
-const ColorPickerButton = ({ callback, title, subtitle, buttonText }: Props): JSX.Element => {
+const ColorPickerButton = ({ callback, title, subtitle, buttonText, storeProperty }: Props): JSX.Element => {
     return <Modal
         buttonText={buttonText}
         title={title}
         subtitle={subtitle}>
         <WindowColorPicker
+            storeProperty={storeProperty}
             callback={callback} />
     </Modal>;
 };
