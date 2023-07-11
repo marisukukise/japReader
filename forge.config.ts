@@ -11,13 +11,31 @@ import { rendererConfig } from './webpack.renderer.config';
 
 const config: ForgeConfig = {
     packagerConfig: {
+        icon: './images/logo/icon',
         asar: true,
         'extraResource': [
             './src/lib/',
         ]
     },
     rebuildConfig: {},
-    makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+    makers: [
+        new MakerSquirrel({
+            iconUrl: 'https://raw.githubusercontent.com/marisukukise/japReader/main/images/logo/icon.ico',
+            setupIcon: './images/logo/icon.ico',
+            authors: 'marisukukise',
+            description: 'japReader is an app for breaking down Japanese sentences and tracking vocabulary progress',
+        }),
+        new MakerZIP({}),
+        new MakerRpm({ options: {
+            homepage: 'https://github.com/marisukukise/japReader',
+            icon: './images/logo/icon.png',
+        }}),
+        new MakerDeb({ options: {
+            maintainer: 'marisukukise',
+            homepage: 'https://github.com/marisukukise/japReader',
+            icon: './images/logo/icon.png',
+        }})
+    ],
     plugins: [
         new AutoUnpackNativesPlugin({}),
         new WebpackPlugin({

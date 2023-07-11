@@ -4,6 +4,7 @@ import { showWindowWhenReady, createWindowAndStorePositionData } from '@globals/
 
 export const createClipboardWindow = (webpack_entry: string): BrowserWindow => {
     const clipboardWindow = createWindowAndStorePositionData('clipboard', {
+        icon: 'images/logo/icon.png',
         height: 600,
         width: 800,
         show: false,

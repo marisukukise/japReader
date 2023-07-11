@@ -37,8 +37,8 @@ export const Dictionary = () => {
     const [dictForm, setDictForm] = useState('');
     const [dictFormReading, setDictFormReading] = useState('');
     const [definitions, setDefinitions] = useState('');
-    const [known, setKnown] = useState(statusDataStore.get(`status_data.${STATUS.KNOWN}`, 0));
-    const [seen, setSeen] = useState(statusDataStore.get(`status_data.${STATUS.SEEN}`, 0));
+    const [known, setKnown] = useState(statusDataStore.get(`status_data.${STATUS.KNOWN}.length`, 0));
+    const [seen, setSeen] = useState(statusDataStore.get(`status_data.${STATUS.SEEN}.length`, 0));
 
     const showToast = (text: string | ReactNode, delay: number) => setToast({
         text: text, delay: delay

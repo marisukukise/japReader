@@ -8,6 +8,7 @@ const windowStore = getWindowStore();
 
 export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
     const settingsWindow = createWindowAndStorePositionData('settings', {
+        icon: 'images/logo/icon.png',
         height: 600,
         width: 800,
         backgroundColor: '#e7dee6',

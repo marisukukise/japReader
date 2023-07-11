@@ -5,6 +5,7 @@ import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
 export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => {
     const dictionaryWindow = createWindowAndStorePositionData('dictionary', {
+        icon: 'images/logo/icon.png',
         height: 600,
         width: 800,
         backgroundColor: '#e7dee6',

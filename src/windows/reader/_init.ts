@@ -6,6 +6,7 @@ import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
 export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     const readerWindow = createWindowAndStorePositionData('reader', {
+        icon: 'images/logo/icon.png',
         height: 600,
         width: 800,
         backgroundColor: '#e7dee6',

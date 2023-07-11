@@ -1,12 +1,11 @@
 {
-  "name": "japreader-react",
-  "productName": "japreader-react",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "japreader",
+  "productName": "japreader",
+  "version": "2.0.0-alpha.1",
+  "description": "japReader is an app for breaking down Japanese sentences and tracking vocabulary progress",
   "main": ".webpack/main",
   "scripts": {
-    "start": "electron-forge start --inspect-electron",
-    "log": "electron-forge start --enable-logging",
+    "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -61,5 +60,13 @@
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0"
-  }
+  },
+   "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marisukukise/japReader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marisukukise/japReader/issues"
+  },
+  "homepage": "https://github.com/marisukukise/japReader#readme"
 }

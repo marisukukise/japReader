@@ -8,6 +8,10 @@
 
 import { app, BrowserWindow, globalShortcut } from 'electron';
 
+if (require('electron-squirrel-startup')) {
+    app.quit();
+}
+
 import { setupLogging } from '@globals/ts/main/setupLogging';
 // Setups the logging mechanism
 setupLogging();
@@ -24,7 +28,7 @@ app.whenReady().then(() => {
     initializeApp();
 
     const DISABLED_SHORTCUTS = [
-    // Reloading can lead to some bugs
+        // Reloading can lead to some bugs
         'CommandOrControl+R',
         'CommandOrControl+Shift+R',
         'F5',
@@ -43,7 +47,7 @@ app.whenReady().then(() => {
         'CommandOrControl+Shift+0',
     ];
 
-    if (process.env.JAPREADER_ENV !== 'dev') { 
+    if (process.env.JAPREADER_ENV !== 'dev') {
         DISABLED_SHORTCUTS.shift();
         DISABLED_SHORTCUTS.shift();
         DISABLED_SHORTCUTS.shift();
@@ -82,6 +86,3 @@ app.on('window-all-closed', () => {
     }
 });
 
-if (require('electron-squirrel-startup')) {
-    app.quit();
-}

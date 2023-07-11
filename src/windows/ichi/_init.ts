@@ -5,6 +5,7 @@ import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
 export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow => {
     const ichiWindow = createWindowAndStorePositionData('ichi', {
+        icon: 'images/logo/icon.png',
         height: 600,
         width: 800,
         show: false,

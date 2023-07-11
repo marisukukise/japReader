@@ -12,6 +12,7 @@ const { useReader } = settingsStore.get('options');
 
 export const createTranslationWindow = (webpack_entry: string): BrowserWindow => {
     const translationWindow = createWindowAndStorePositionData('translation', {
+        icon: 'images/logo/icon.png',
         height: 600,
         width: 800,
         backgroundColor: '#e7dee6',
