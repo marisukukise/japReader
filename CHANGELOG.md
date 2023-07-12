@@ -1,3 +1,6 @@
+# 2.0.1.alpha1
+- Moved a lot of settings from the Options window to real-time settings
+
 # 1.9.1
 - Made clipboard reading more robust (clipboard reads rarely randomly return corrupt strings, which resulted in lost copy operations) by making 3 reads at a time instead comparing results instead of just 1 read.
 - Improved support for digits, which sometimes bugged out before.

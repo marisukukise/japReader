@@ -7,36 +7,34 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 ![Example screenshot #1](images/examples/options_menu.png)
 
 
-
-<!-- TOC -->
 # [![](images/logo/logo_32.png)](#-table-of-contents) Table of Contents
-- [japReader](#-japreader)
-- [Preview](#-preview)
-- [Table of Contents](#-table-of-contents)
-- [Features](#-features)
-- [Installation](#-installation)
-    - [Windows](#windows)
-    - [Linux/MacOS](#linuxmacos)
-- [Build](#-build)
-- [Technical information](#-technical-information)
-    - [Configuration files](#configuration-files)
-    - [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
-- [Controls](#-controls)
-    - [Keybindings](#keybindings)
-    - [Mouse buttons](#mouse-buttons)
-- [FAQ](#-faq)
-    - [How does this work?](#how-does-this-work)
-    - [How do I read VNs with this?](#how-do-i-read-vns-with-this)
-    - [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
-    - [How do I read manga with this?](#how-do-i-read-manga-with-this)
-    - [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
-    - [How do I get Anki note creation to work?](#how-do-i-get-anki-note-creation-to-work)
-    - [I can't press a button / something doesn't work](#i-cant-press-a-button--something-doesnt-work)
-    - [Whoes the text \"i+1\" keep showing?  ](#why-does-the-text-i1-keep-showing--)
-    - [Why does the translation text dim sometimes?  ](#why-does-the-translation-text-dim-sometimes--)
-    - [I don\'t like a feature, is there any way I can turn it off?  ](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off--)
-<!-- /TOC -->
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+- [![](#-japreader) japReader](#-japreader)
+- [![](#-preview) Preview](#-preview)
+- [![](#-features) Features](#-features)
+- [![](#-installation) Installation](#-installation)
+    + [Windows](#windows)
+    + [Linux/MacOS](#linuxmacos)
+- [![](#-build) Build](#-build)
+- [![](#-technical-information) Technical information](#-technical-information)
+    + [Configuration files](#configuration-files)
+    + [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
+- [![](#-controls) Controls](#-controls)
+    + [Keybindings](#keybindings)
+    + [Mouse buttons](#mouse-buttons)
+- [![](#-faq) FAQ](#-faq)
+    + [How does this work?](#how-does-this-work)
+    + [How do I read VNs with this?](#how-do-i-read-vns-with-this)
+    + [How do I read LNs/Ebooks with this?](#how-do-i-read-lnsebooks-with-this)
+    + [How do I read manga with this?](#how-do-i-read-manga-with-this)
+    + [How do I watch Drama/Movies/Anime with this?](#how-do-i-watch-dramamoviesanime-with-this)
+    + [How do I get Anki note creation to work?](#how-do-i-get-anki-note-creation-to-work)
+    + [I can't press a button / something doesn't work](#i-cant-press-a-button--something-doesnt-work)
+    + [Why does the text \"i+1\" keep showing?  ](#why-does-the-text-i1-keep-showing)
+    + [Why does the translation text dim sometimes?  ](#why-does-the-translation-text-dim-sometimes)
+    + [I don\'t like a feature, is there any way I can turn it off?  ](#i-dont-like-a-feature-is-there-any-way-i-can-turn-it-off)
 
+<!-- TOC end -->
 
 
 # [![](images/logo/logo_32.png)](#-features) Features
@@ -116,11 +114,7 @@ you can do everything that was intended through GUI in the options menu
 
 # [![](images/logo/logo_32.png)](#-controls) Controls
 ### <ins>Keybindings</ins>
-- `O` Open Options Menu 
-- `S` Toggle Stay On Top  
-- `H` (in Translation Window) Toggle Transparent Translation Window
-- `A` (in Dictionary) Play Audio  
-- `Q` (in Dictionary) Add to Anki  
+- `H` Hide UI
 
 ### <ins>Mouse buttons</ins>
 In the Reader window you can quickly change the status of a word with mouse buttons:
