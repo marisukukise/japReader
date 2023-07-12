@@ -12,6 +12,45 @@ on:
         required: true
 
 jobs:
+
+  build-macos:
+    name: Build the repository on macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.2.0
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+
+      - name: Install node packages
+        run: yarn install
+
+      - name: Provide 777 execution rights to clipboard handler script
+        run: |
+          sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac
+
+      - name: Set JAPREADER_ENV to 'production'
+        run: export JAPREADER_ENV=production
+
+      - name: Make
+        run: yarn make
+
+      - name: Install tree command
+        run: brew install tree
+
+      - run: tree out/
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: japReader-artifacts macos-latest
+          path: out/make/
+          retention-days: 1
+
   build-ubuntu:
     name: Build the repository on Ubuntu
     runs-on: ubuntu-latest
@@ -36,14 +75,13 @@ jobs:
       - name: Provide 777 execution rights to clipboard handler script
         run: |
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux
-          sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac
       - name: Set JAPREADER_ENV to 'production'
         run: export JAPREADER_ENV=production
         
       - name: Make
         run: yarn make
         
-      - run: sudo tree . -I 'node_modules|japreader-linux-x64'
+      - run: tree out/
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
@@ -74,7 +112,7 @@ jobs:
       - name: Make
         run: yarn make
         
-      - run: tree .
+      - run: tree out/
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
@@ -88,10 +126,15 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    needs: [build-ubuntu, build-windows]
+    needs: [build-ubuntu, build-windows, build-macos]
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
+      - name: Download MacOS Build Artifacts
+        uses: actions/download-artifact@v3.0.1
+        with:
+          name: japReader-artifacts macos-latest
+          path: make/
       - name: Download Linux Build Artifacts
         uses: actions/download-artifact@v3.0.1
         with:
@@ -110,9 +153,11 @@ jobs:
         with:
           body_path: CHANGELOG-${{ inputs.tag }}.md
           files: |
+            make/squirrel.windows/x64/*.exe
+            make/zip/win32/x64/*.zip
             make/deb/x64/*.deb
             make/rpm/x64/*.rpm
             make/zip/linux/x64/*.zip
-            make/zip/win32/x64/*.zip
-            make/squirrel.windows/x64/*.exe
+            make/*.dmg
+            make/zip/darwin/x64/*.zip
           tag_name: ${{ inputs.tag }}
