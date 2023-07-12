@@ -80,16 +80,11 @@ Alternatively, if you don't want to install, you can download the .zip package:
   <li>
     Install dependencies <code>npm i</code>
   </li>
-  <li> 
-    Add execution permissions to the file reading the clipboard: <br>
-    <i>For Windows</i>: Ignore this point, it already has permissions <br>
-    <i>For Linux</i>: <code>sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux</code><br>
-    <i>For MacOS</i>: (I don't know the command) Grant necessary permissions to the file <code>node_modules/clipboard-event/platform/clipboard-event-handler-mac</code></li>
   <li> Build files <code>npm run make</code></li>
   <li> The built files will be output in <code>out/make/&lt;your_platform&gt;/x64</code> folder</li>
 </ol>
 
-If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
+If you want to run this without installing, in point 5. of [Build](#Build) you can instead run the program using `npm start`
 
 
 
