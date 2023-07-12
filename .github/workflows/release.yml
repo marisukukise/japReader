@@ -18,62 +18,71 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
-      - name: Use Node.js 18
+        
+      - name: Use Node.js 20
         uses: actions/setup-node@v3.5.1
         with:
-          cache: 'npm'
-          node-version: 18
-      - name: Update npm
-        run: sudo npm install -g npm
-      - name: Install electron
-        run: sudo npm install -g electron --unsafe-perm=true --allow-root
-      - name: Install npm packages
-        run: sudo npm ci
+          node-version: 20.x
+          cache: 'yarn'
+          
+      - name: Install node packages
+        run: yarn install
+          
       - name: Install dpkg, fakeroot and rpm
         run: |
           sudo apt-get update -y
           sudo apt-get install -y dpkg fakeroot rpm
+          
       - name: Provide 777 execution rights to clipboard handler script
         run: |
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac
-      - name: Set NODE_ENV to 'production'
-        run: export NODE_ENV=production
+      - name: Set JAPREADER_ENV to 'production'
+        run: export JAPREADER_ENV=production
+        
       - name: Make
-        run: sudo npm run make --if-present
+        run: yarn make
+        
       - run: sudo tree . -I 'node_modules|japreader-linux-x64'
+      
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
           name: japReader-artifacts ubuntu-latest
           path: out/make/
           retention-days: 1
+          
   build-windows:
     name: Build the repository on Windows
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
-      - name: Use Node.js 18
+        
+      - name: Use Node.js 20
         uses: actions/setup-node@v3.5.1
         with:
-          cache: 'npm'
-          node-version: 18
-      - name: Update npm
-        run: npm install -g npm
-      - name: Install npm packages
-        run: npm ci
-      - name: Set NODE_ENV to 'production'
-        run: SET NODE_ENV=production
+          node-version: 20
+          cache: 'yarn'
+          
+      - name: Install node packages
+        run: yarn install
+        
+      - name: Set JAPREADER_ENV to 'production'
+        run: SET JAPREADER_ENV=production
+        
       - name: Make
-        run: npm run make --if-present
+        run: yarn make
+        
       - run: tree .
+      
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
           name: japReader-artifacts windows-latest
           path: out/make/
           retention-days: 1
+          
   release:
     name: Create a new github release ${{ inputs.tag }}
     permissions:
@@ -106,5 +115,4 @@ jobs:
             make/zip/linux/x64/*.zip
             make/zip/win32/x64/*.zip
             make/squirrel.windows/x64/*.exe
-            Anki_japReader.apkg
           tag_name: ${{ inputs.tag }}

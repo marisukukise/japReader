@@ -3,6 +3,7 @@ import { MakerSquirrel } from '@electron-forge/maker-squirrel';
 import { MakerZIP } from '@electron-forge/maker-zip';
 import { MakerDeb } from '@electron-forge/maker-deb';
 import { MakerRpm } from '@electron-forge/maker-rpm';
+import { MakerDMG } from '@electron-forge/maker-dmg';
 import { AutoUnpackNativesPlugin } from '@electron-forge/plugin-auto-unpack-natives';
 import { WebpackPlugin } from '@electron-forge/plugin-webpack';
 
@@ -19,13 +20,17 @@ const config: ForgeConfig = {
     },
     rebuildConfig: {},
     makers: [
+        new MakerZIP({}),
         new MakerSquirrel({
             iconUrl: 'https://raw.githubusercontent.com/marisukukise/japReader/main/images/logo/icon.ico',
             setupIcon: './images/logo/icon.ico',
             authors: 'marisukukise',
             description: 'japReader is an app for breaking down Japanese sentences and tracking vocabulary progress',
         }),
-        new MakerZIP({}),
+        new MakerDMG({
+            background: './images/logo/icon.icns',
+            format: 'ULFO'
+        }),
         new MakerRpm({ options: {
             homepage: 'https://github.com/marisukukise/japReader',
             icon: './images/logo/icon.png',
@@ -39,6 +44,7 @@ const config: ForgeConfig = {
     plugins: [
         new AutoUnpackNativesPlugin({}),
         new WebpackPlugin({
+            // TODO: change securitypolicy
             devContentSecurityPolicy: 'default-src \'self\' \'unsafe-inline\' data:; script-src \'self\' \'unsafe-eval\' \'unsafe-inline\' data:',
             mainConfig,
             //devContentSecurityPolicy: "connect-src 'self'; default-src 'self'; script-src 'self'",

@@ -1,5 +1,4 @@
 import { app, dialog } from 'electron';
-import 'dotenv/config';
 import log from 'electron-log';
 
 

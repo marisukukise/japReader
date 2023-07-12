@@ -12,6 +12,8 @@ if (require('electron-squirrel-startup')) {
     app.quit();
 }
 
+import 'dotenv/config';
+
 import { setupLogging } from '@globals/ts/main/setupLogging';
 // Setups the logging mechanism
 setupLogging();
