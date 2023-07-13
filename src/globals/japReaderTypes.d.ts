@@ -29,6 +29,8 @@ declare namespace japReader {
         rubyReading: string;
         definitions: string;
         status: string;
+        japaneseSentence?: string;
+        englishSentence?: string;
     }
 
     interface FuriganaObject {

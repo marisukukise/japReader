@@ -16,8 +16,9 @@ import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('dictionary');
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 
-import { getStatusDataStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getStatusDataStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
+const settingsStore = getSettingsStore();
 
 import { FuriganaJSX, addHideUIListener, listenForAnotherWindowIsReady, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
@@ -25,17 +26,29 @@ import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/Configu
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 
 import { Grid, Button, ButtonGroup, useToasts } from '@geist-ui/core';
+import { AnkiButton } from './AnkiButton';
 
+const {
+    useDeep, ankiIntegration, ankiDeckName, ankiModelName,
+    ankiDictForm, ankiDictFormReading, ankiDictFormFurigana,
+    ankiWord, ankiWordReading, ankiWordFurigana, ankiJapanese,
+    ankiEnglish } = settingsStore.get('global_settings')
 
 
 export const Dictionary = () => {
     const [isUIShown, setUIShown] = useState(true);
     const { setToast, removeAll } = useToasts(toastLayout);
     const [isReaderReady, setReaderReady] = useState(false);
+    const [isDeepReady, setDeepReady] = useState(false);
+    const [didDeepFail, setDeepFailed] = useState(false);
     const [status, setStatus] = useState('');
+    const [wordOriginal, setWordOriginal] = useState('');
+    const [wordOriginalReading, setWordOriginalReading] = useState('');
     const [dictForm, setDictForm] = useState('');
     const [dictFormReading, setDictFormReading] = useState('');
     const [definitions, setDefinitions] = useState('');
+    const [japaneseSentence, setJapaneseSentence] = useState('');
+    const [translatedSentence, setTranslatedSentence] = useState('');
     const [known, setKnown] = useState(statusDataStore.get(`status_data.${STATUS.KNOWN}.length`, 0));
     const [seen, setSeen] = useState(statusDataStore.get(`status_data.${STATUS.SEEN}.length`, 0));
 
@@ -80,11 +93,32 @@ export const Dictionary = () => {
                 setKnown((known: number) => known - 1);
         });
 
+        if (useDeep) {
+            listenForAnotherWindowIsReady(IPC_CHANNELS.DICTIONARY, isDeepReady, setDeepReady)
+
+            ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR, () => {
+                setDeepFailed(true);
+            });
+
+            ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, translatedSentence: string, japaneseSentence: string) => {
+                setTranslatedSentence(translatedSentence);
+                setJapaneseSentence(japaneseSentence);
+            });
+        }
+
         return () => {
+
+            if (useDeep) {
+                ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY)
+                ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR)
+                ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT)
+            }
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
         };
     }, []);
+
+
 
     const getHTMLObject = (html_code: string) => {
         return { __html: html_code };
@@ -171,9 +205,21 @@ export const Dictionary = () => {
             <div>
                 <Button>Play audio</Button>
             </div>
-            <div>
-                <Button>Add to Anki</Button>
-            </div>
+
+            {ankiIntegration &&
+                <div>
+                    <AnkiButton
+                        word={wordOriginal}
+                        dictForm={dictForm}
+                        dictFormReading={dictFormReading}
+                        rubyReading={wordOriginalReading}
+                        definitions={definitions}
+                        status={status}
+                        japaneseSentence={japaneseSentence}
+                        englishSentence={translatedSentence}
+                    />
+                </div>
+            }
 
             <ButtonGroup>
                 <Button onClick={setSeenStatus}>Seen</Button>
@@ -182,9 +228,10 @@ export const Dictionary = () => {
             </ButtonGroup>
             <h1 className={status}><FuriganaJSX kanaOrKanji={dictForm} kana={dictFormReading} /></h1>
             <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
-        </div>
+        </div >
         {isUIShown && <ConfigurationDrawer
             settings={settings}
-        />}
+        />
+        }
     </>);
 };

@@ -151,7 +151,9 @@ export const Settings = () => {
                 <Checkbox settingName='useDeepLApi' formData={formData} setFormData={setFormData}
                     disabled={!formData.useDeepL}>Use DeepL API</Checkbox>
                 <Input placeholder="DeepL API Key" settingName='deepLApiKey' formData={formData} setFormData={setFormData}
-                    disabled={!formData.useDeepLApi || !formData.useDeepL} />
+                    disabled={!formData.useDeepLApi || !formData.useDeepL} >
+                        DeepL API Key
+                    </Input>
             </fieldset>
             <fieldset id="reader">
                 <legend>Reader</legend>
@@ -162,6 +164,27 @@ export const Settings = () => {
                 <legend>Anki</legend>
                 <Checkbox settingName='ankiIntegration' formData={formData} setFormData={setFormData}
                     disabled={!formData.useReader}>Enable Anki integration</Checkbox>
+                {[
+                    ["DeckName", "japReader"],
+                    ["ModelName", "japReader"],
+                    ["DictForm", null],
+                    ["DictFormReading", null],
+                    ["DictFormFurigana", null],
+                    ["Word", null],
+                    ["WordReading", null],
+                    ["WordFurigana", null],
+                    ["Definitions", null],
+                    ["Japanese", null],
+                    ["English", null]
+                ].map((element: Array<string | null>) => {
+                    return <Input placeholder={element[1] != null ? element[1] : element[0]}
+                        settingName={'anki' + element[0]}
+                        formData={formData}
+                        setFormData={setFormData}
+                        disabled={!formData.ankiIntegration || !formData.useReader} >
+                        {element[0]}
+                    </Input>
+                })}
             </fieldset>
         </div >
         <div id="buttons">
