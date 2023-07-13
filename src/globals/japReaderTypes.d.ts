@@ -1,4 +1,27 @@
 declare namespace japReader {
+    interface GlobalSettingsStore {
+        useDeepL: boolean;
+        useDeepLApi: boolean;
+        deepLApiKey: string;
+        useReader: boolean;
+        ankiIntegration: boolean;
+        ankiDeckName: string;
+        ankiModelName: string;
+        ankiDictForm: string;
+        ankiDictFormReading: string;
+        ankiDictFormFurigana: string;
+        ankiWord: string;
+        ankiWordReading: string;
+        ankiWordFurigana: string;
+        ankiDefinitions: string;
+        ankiJapanese: string;
+        ankiEnglish: string;
+    }
+    interface StatusDataStore {
+        seen: string[];
+        known: string[];
+        ignored: string[];
+    }
     interface IchiParsedWordData {
         word: string;
         dictForm: string;

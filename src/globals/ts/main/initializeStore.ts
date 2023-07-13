@@ -1,28 +1,13 @@
 const Store = require('electron-store');
 
-const schemaOptions = {
-    options: {
+const schemaSettings = {
+    global_settings: {
         type: 'object',
         properties: {
-            fontFamily: { default: 'NotoSansJP', type: 'string' },
-            darkMode: { default: false, type: 'boolean' },
             useDeepL: { default: true, type: 'boolean' },
             useDeepLApi: { default: false, type: 'boolean' },
             deepLApiKey: { default: '', type: 'string' },
-            deepLDual: { default: false, type: 'boolean' },
-            fadeText: { default: false, type: 'boolean' },
-            translationTransparent: { default: true, type: 'boolean' },
-            translationFontSize: { default: 12, type: 'number', minimum: 1 },
             useReader: { default: true, type: 'boolean' },
-            leftClickDisregardStatus: { default: false, type: 'boolean' },
-            addFuriganaNew: { default: true, type: 'boolean' },
-            addFuriganaSeen: { default: true, type: 'boolean' },
-            addFuriganaKnown: { default: false, type: 'boolean' },
-            addFuriganaIgnored: { default: false, type: 'boolean' },
-            tvMode: { default: false, type: 'boolean' },
-            readerFontSize: { default: 18, type: 'number', minimum: 1 },
-            dictFontSize: { default: 12, type: 'number', minimum: 1 },
-            optionsFontSize: { default: 12, type: 'number', minimum: 1 },
             ankiIntegration: { default: false, type: 'boolean' },
             ankiDeckName: { default: 'japReader', type: 'string' },
             ankiModelName: { default: 'japReader', type: 'string' },
@@ -40,11 +25,7 @@ const schemaOptions = {
     }
 };
 
-interface StatusData {
-    seen: string[];
-    known: string[];
-    ignored: string[];
-}
+
 
 interface SchemaStatusData {
     status_data: {
@@ -54,7 +35,7 @@ interface SchemaStatusData {
             known: { default: string[]; type: 'array' };
             ignored: { default: string[]; type: 'array' };
         };
-        default: StatusData;
+        default: japReader.StatusDataStore;
     };
 }
 
@@ -77,8 +58,7 @@ const schemaAllowedProperties = {
     'y': { type: 'number'},
     'isMaximized': { type: 'boolean'},
     'backgroundColor': { type: 'string'},
-    'fontColor': { type: 'string'},
-    'fontSize': { type: 'string'},
+    'alwaysOnTop': { type: 'boolean'},
 };
 
 const schemaWindow = {
@@ -131,10 +111,9 @@ const windowStoreOptions = {
     cwd: 'config',
 };
 
-// TODO: change filename of settingsStore to settings.json from options.json
 const settingsStoreOptions = {
-    schema: schemaOptions,
-    name: 'options',
+    schema: schemaSettings,
+    name: 'settings',
     clearInvalidConfig: true,
     cwd: 'config',
 };

@@ -2,7 +2,7 @@ import log from 'electron-log';
 
 import { getSettingsStore } from '@globals/ts/main/initializeStore';
 const settingsStore = getSettingsStore();
-const { useDeepL, useReader } = settingsStore.get('options');
+const { useDeepL, useReader } = settingsStore.get('global_settings');
 
 
 // Modules that create BrowserWindows and their
@@ -31,8 +31,6 @@ declare const SETTINGS_WEBPACK_ENTRY: string;
 
 
 export const initializeApp = (): void => {
-    log.debug('Initializing japReader windows...');
-
     const clipboardWindow = createClipboardWindow(CLIPBOARD_WEBPACK_ENTRY);
     const settingsWindow = createSettingsWindow(SETTINGS_WEBPACK_ENTRY);
 

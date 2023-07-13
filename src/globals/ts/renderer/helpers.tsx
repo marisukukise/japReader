@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import log from 'electron-log/renderer';
 import { getStatusDataStore, getWindowStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
@@ -7,7 +7,8 @@ const windowStore = getWindowStore();
 
 const { fit } = require('furigana');
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
-import { ToastLayout } from '@geist-ui/core';
+import { ScalePropKeys, ToastLayout } from '@geist-ui/core';
+import Logger from 'electron-log';
 
 const DIGIT_MAP = [
     ['０', '零'],
@@ -63,10 +64,7 @@ type FuriganaJSXProps = {
 }
 
 export const FuriganaJSX = ({ kanaOrKanji, kana }: FuriganaJSXProps): JSX.Element => {
-    log.log('kanji_or_kana', kanaOrKanji);
-    log.log('kana', kana);
     const furiganaList = getFuriganaObject(kanaOrKanji, kana);
-    log.log(furiganaList);
     return <FuriganaJSXFromFuriganaObject furiganaList={furiganaList} />;
 };
 
@@ -97,6 +95,63 @@ export const addHideUIListener = (
     });
 };
 
+export const mountLog = (scopedLog: Logger.LogFunctions, ...params: any[]) => {
+    scopedLog.silly(...params)
+}
+
+export const addMountLogs = (scopedLog: Logger.LogFunctions) => {
+    useEffect(() => {
+        mountLog(scopedLog, '🔺 Mounted')
+        return () => {
+            mountLog(scopedLog, '🔻 Unmounted')
+        }
+    }, [])
+}
+
+export const setupEffect = (
+    ipcBase: any,
+    setUIShown: React.Dispatch<React.SetStateAction<boolean>>,
+    removeAll: () => void,
+    showToast: (text: string | ReactNode, delay: number) => void,
+    scopedLog: Logger.LogFunctions,
+    awaitedWindowIpcBase?: any,
+    isAwaitedWindowReady?: boolean,
+    setAwaitedWindowReady?: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+    addMountLogs(scopedLog)
+
+    useEffect(() => {
+        ipcRenderer.send(ipcBase.ANNOUNCE.IS_READY)
+
+        if (
+            awaitedWindowIpcBase !== undefined &&
+            isAwaitedWindowReady !== undefined &&
+            setAwaitedWindowReady !== undefined
+        ) {
+            listenForAnotherWindowIsReady(
+                awaitedWindowIpcBase,
+                isAwaitedWindowReady,
+                setAwaitedWindowReady
+            );
+        }
+
+        addHideUIListener(
+            ipcBase,
+            setUIShown,
+            removeAll,
+            showToast
+        );
+
+        return () => {
+            ipcRenderer.removeAllListeners(ipcBase.SET.HIDE_UI);
+
+            if (awaitedWindowIpcBase && isAwaitedWindowReady && setAwaitedWindowReady) {
+                ipcRenderer.removeAllListeners(awaitedWindowIpcBase.ANNOUNCE.IS_READY);
+            }
+        }
+    }, [])
+}
+
 export const listenForAnotherWindowIsReady = (
     ipcBase: any,
     isReady: boolean,
@@ -111,7 +166,7 @@ export const listenForAnotherWindowIsReady = (
     if (!isReady) {
         ipcRenderer.invoke(ipcBase.REQUEST.IS_READY)
             .then((result: boolean) => { setReady(result); })
-            .catch((error: any) => { log.log(error); });
+            .catch((err: any) => { log.error(err); });
     }
 };
 
@@ -180,17 +235,17 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-        case KEYBOARD_KEYS.PLUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_ADD:
-            zoom(windowName, true);
-            break;
-        case KEYBOARD_KEYS.MINUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-            zoom(windowName, false);
-            break;
-        case KEYBOARD_KEYS.KEY_H:
-            ipcRenderer.send(ipcBase.SET.HIDE_UI);
-            break;
+            case KEYBOARD_KEYS.PLUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_ADD:
+                zoom(windowName, true);
+                break;
+            case KEYBOARD_KEYS.MINUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+                zoom(windowName, false);
+                break;
+            case KEYBOARD_KEYS.KEY_H:
+                ipcRenderer.send(ipcBase.SET.HIDE_UI);
+                break;
         }
     }, true);
 };
@@ -268,6 +323,6 @@ export const updateWordStatusStore = (dictionaryForm: string, desiredStatus: str
 
     // Update the store
     statusDataStore.set('status_data', statusDataList);
-    log.log(`Changed status of ${dictionaryForm} from ${prevStatus} to ${desiredStatus} in status data store`);
+    log.verbose(`Changed status of ${dictionaryForm} from ${prevStatus} to ${desiredStatus} in status data store`);
     ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, dictionaryForm, desiredStatus, prevStatus);
 };

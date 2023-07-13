@@ -13,14 +13,13 @@ import WiktionaryENIcon from '@img/favicons/wiktionary-en.ico';
 import WiktionaryJPIcon from '@img/favicons/wiktionary-jp.ico';
 
 import log_renderer from 'electron-log/renderer';
-import { createScopedLog } from '@globals/ts/main/setupLogging';
-const log = createScopedLog(log_renderer, 'dictionary');
+const log = log_renderer.scope('dictionary');
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 
 import { getStatusDataStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
 
-import { FuriganaJSX, addHideUIListener, listenForAnotherWindowIsReady, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, addHideUIListener, listenForAnotherWindowIsReady, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
@@ -51,18 +50,24 @@ export const Dictionary = () => {
         />
     </>;
 
+    setupEffect(
+        IPC_CHANNELS.DICTIONARY,
+        setUIShown,
+        removeAll,
+        showToast,
+        log,
+        IPC_CHANNELS.READER,
+        isReaderReady,
+        setReaderReady,
+    );
+
     useEffect(() => {
-        log.log('mounted dictionary');
-
-        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.ANNOUNCE.IS_READY);
-
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, (event, IchiParsedWordData: japReader.IchiParsedWordData) => {
             setStatus(IchiParsedWordData.status);
             setDictForm(IchiParsedWordData.dictForm);
             setDictFormReading(IchiParsedWordData.dictFormReading);
             setDefinitions(IchiParsedWordData.definitions);
         });
-
 
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
             if (newStatus == STATUS.SEEN)
@@ -75,15 +80,7 @@ export const Dictionary = () => {
                 setKnown((known: number) => known - 1);
         });
 
-        listenForAnotherWindowIsReady(IPC_CHANNELS.READER,
-            isReaderReady, setReaderReady);
-
-        addHideUIListener(IPC_CHANNELS.DICTIONARY, setUIShown, removeAll, showToast);
-
         return () => {
-            log.log('unmounted dictionary');
-            ipcRenderer.removeAllListeners(IPC_CHANNELS.DICTIONARY.SET.HIDE_UI);
-            ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.IS_READY);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED);
         };

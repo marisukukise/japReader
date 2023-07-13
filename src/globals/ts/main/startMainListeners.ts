@@ -1,7 +1,8 @@
 import path from 'path';
-import log from 'electron-log';
+import mainLog from 'electron-log';
+const log = mainLog.scope('main')
 import { app, ipcMain } from 'electron';
-import { getHistoryStore } from '@globals/ts/main/initializeStore';
+import { getHistoryStore, getSettingsStore } from '@globals/ts/main/initializeStore';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 const historyStore = getHistoryStore();
 
@@ -14,28 +15,28 @@ let isDictionaryWindowReady = false;
 let isSettingsWindowReady = false;
 
 export function startMainListeners() {
-    log.debug('Starting ipcMain listeners...');
+    log.info("⏳ Setting up main listeners...")
 
-    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, (event) => { isClipboardWindowReady = true; log.log('clipboard is ready'); });
-    ipcMain.on(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY, (event) => { isDeepWindowReady = true; log.log('deep is ready'); });
-    ipcMain.on(IPC_CHANNELS.ICHI.ANNOUNCE.IS_READY, (event) => { isIchiWindowReady = true; log.log('ichi is ready'); });
-    ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.IS_READY, (event) => { isReaderWindowReady = true; log.log('reader is ready'); });
-    ipcMain.on(IPC_CHANNELS.TRANSLATION.ANNOUNCE.IS_READY, (event) => { isTranslationWindowReady = true; log.log('translation is ready'); });
-    ipcMain.on(IPC_CHANNELS.DICTIONARY.ANNOUNCE.IS_READY, (event) => { isDictionaryWindowReady = true; log.log('dictionary is ready'); });
-    ipcMain.on(IPC_CHANNELS.SETTINGS.ANNOUNCE.IS_READY, (event) => { isSettingsWindowReady = true; log.log('settings is ready'); });
+    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY,              () => { isClipboardWindowReady = true; });
+    ipcMain.on(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY,                   () => { isDeepWindowReady = true; });
+    ipcMain.on(IPC_CHANNELS.ICHI.ANNOUNCE.IS_READY,                   () => { isIchiWindowReady = true; });
+    ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.IS_READY,                 () => { isReaderWindowReady = true; });
+    ipcMain.on(IPC_CHANNELS.TRANSLATION.ANNOUNCE.IS_READY,            () => { isTranslationWindowReady = true; });
+    ipcMain.on(IPC_CHANNELS.DICTIONARY.ANNOUNCE.IS_READY,             () => { isDictionaryWindowReady = true; });
+    ipcMain.on(IPC_CHANNELS.SETTINGS.ANNOUNCE.IS_READY,               () => { isSettingsWindowReady = true; });
 
 
-    ipcMain.handle(IPC_CHANNELS.CLIPBOARD.REQUEST.IS_READY, async (event) => { return isClipboardWindowReady; });
-    ipcMain.handle(IPC_CHANNELS.DEEP.REQUEST.IS_READY, async (event) => { return isDeepWindowReady; });
-    ipcMain.handle(IPC_CHANNELS.ICHI.REQUEST.IS_READY, async (event) => { return isIchiWindowReady; });
-    ipcMain.handle(IPC_CHANNELS.READER.REQUEST.IS_READY, async (event) => { return isReaderWindowReady; });
-    ipcMain.handle(IPC_CHANNELS.TRANSLATION.REQUEST.IS_READY, async (event) => { return isTranslationWindowReady; });
-    ipcMain.handle(IPC_CHANNELS.DICTIONARY.REQUEST.IS_READY, async (event) => { return isDictionaryWindowReady; });
-    ipcMain.handle(IPC_CHANNELS.SETTINGS.REQUEST.IS_READY, async (event) => { return isSettingsWindowReady; });
+    ipcMain.handle(IPC_CHANNELS.CLIPBOARD.REQUEST.IS_READY,     async () => { return isClipboardWindowReady; });
+    ipcMain.handle(IPC_CHANNELS.DEEP.REQUEST.IS_READY,          async () => { return isDeepWindowReady; });
+    ipcMain.handle(IPC_CHANNELS.ICHI.REQUEST.IS_READY,          async () => { return isIchiWindowReady; });
+    ipcMain.handle(IPC_CHANNELS.READER.REQUEST.IS_READY,        async () => { return isReaderWindowReady; });
+    ipcMain.handle(IPC_CHANNELS.TRANSLATION.REQUEST.IS_READY,   async () => { return isTranslationWindowReady; });
+    ipcMain.handle(IPC_CHANNELS.DICTIONARY.REQUEST.IS_READY,    async () => { return isDictionaryWindowReady; });
+    ipcMain.handle(IPC_CHANNELS.SETTINGS.REQUEST.IS_READY,      async () => { return isSettingsWindowReady; });
 
 
     ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.RESTART_PROGRAM, () => {
-        log.silly('Restarting japReader...');
+        log.info('🔄 Restarting japReader...');
         app.relaunch();
         app.exit();
     });
@@ -65,4 +66,6 @@ export function startMainListeners() {
         // So use this function whenever you use a module from the src/lib path
         return app.isPackaged ? path.join(process.resourcesPath, 'lib') : path.join(process.cwd(), 'src', 'lib');
     });
+
+    log.info("✔️ Set up main listeners")
 }

@@ -1,5 +1,6 @@
 import { BrowserWindow, app, dialog, ipcMain } from 'electron';
-import log from 'electron-log';
+import mainLog from 'electron-log';
+const log = mainLog.scope('main')
 import { getWindowStore } from '@globals/ts/main/initializeStore';
 const windowStore = getWindowStore();
 
@@ -33,7 +34,6 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
     window.on('blur', () => {
         window.webContents.send('blur');
     });
-
 
     ipcMain.handle(ipcBase.REQUEST.SHOW_DIALOG, async (e, message) => {
         const result = dialog.showMessageBox(window, {
@@ -84,8 +84,8 @@ export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProductio
     // Set the environment variable JAPREADER_ENV to "dev" to show all windows
     if (shouldShowInProduction) {
         window.once('ready-to-show', () => {
+            log.info(`⌛ Showing ${window.getTitle()}`)
             window.show();
-            log.silly('Showing ', window.getTitle());
         });
         return;
     }
@@ -93,8 +93,8 @@ export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProductio
     // Added for debugging convenience
     if (process.env.JAPREADER_ENV === 'dev') {
         window.once('ready-to-show', () => {
+            log.info(`⌛ Showing ${window.getTitle()}`)
             window.show();
-            log.silly('Showing ', window.getTitle());
         });
         return;
     }
@@ -111,8 +111,7 @@ function filterObjectKeys(unfilteredObj: any, allowedKeys: string[]) {
 }
 
 export const createWindowAndStorePositionData = (windowName: string, windowConfig: any) => {
-    log.debug(`Creating ${windowName} BrowserWindow...`);
-
+    log.info(`⏳ Creating ${windowName} BrowserWindow...`)
     const allowed = ['width', 'height', 'isMaximized', 'x', 'y', 'alwaysOnTop', 'backgroundColor'];
 
     if (windowStore.has(windowName)) {
@@ -153,5 +152,6 @@ export const createWindowAndStorePositionData = (windowName: string, windowConfi
         windowStore.set(windowName + '.y', normalBounds.y);
     });
 
+    log.info(`✔️ Created ${windowName} BrowserWindow`)
     return window;
 };

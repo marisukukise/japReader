@@ -6,7 +6,7 @@ import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
 import { getSettingsStore } from '@globals/ts/main/initializeStore';
 const settingsStore = getSettingsStore();
-const { useDeepLApi } = settingsStore.get('options');
+const { useDeepLApi } = settingsStore.get('global_settings');
 
 export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: string): BrowserWindow => {
     const deepWindow = createWindowAndStorePositionData('deep', {

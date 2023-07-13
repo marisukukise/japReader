@@ -2,9 +2,10 @@
 // Better left alone as long as it works
 
 const { ipcRenderer } = require('electron');
-import log from 'electron-log/renderer';
+import log_renderer from 'electron-log/renderer';
+const log = log_renderer.scope('ichi')
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
-import { getWordStatusData } from '@globals/ts/renderer/helpers';
+import { getWordStatusData, mountLog } from '@globals/ts/renderer/helpers';
 
 
 const WORDS: japReader.IchiParsedWordData[] = [];
@@ -58,7 +59,6 @@ const getDictForm = (text: string): string => {
 };
 
 const getReading = (text: string): string => {
-    log.log('getReading before:', text);
     let readingText = text
         .replace(/.+【/g, '')
         .replace(/】/g, '')
@@ -67,7 +67,6 @@ const getReading = (text: string): string => {
     readingText = Array.from(readingText)
         .filter((char) => /[\p{Script=Hiragana}\p{Script=Katakana}|ー]/u.test(char))
         .join('');
-    log.log('getReading after:', readingText);
     return readingText;
 };
 
@@ -78,7 +77,7 @@ const getWord = (text: string): string => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-    log.debug('DOMContentLoaded in ichi');
+    mountLog(log, '🔺 Mounted')
     // eslint-disable-next-line global-require
     const $ = require('jquery');
 

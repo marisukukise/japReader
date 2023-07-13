@@ -1,67 +1,30 @@
 import { app, dialog } from 'electron';
-import log from 'electron-log';
-
-
-const addColorToLog = (
-    message: log.LogMessage,
-    color: 'red' | 'green' | 'blue' | 'cyan' | 'magenta' | 'yellow' | 'black' | 'white',
-    otherCSS = ''):
-    log.LogMessage => {
-
-    const hasCustomStyles = message.data[0].includes('%c');
-    message.data[0] = '%c' + message.data[0];
-    if (hasCustomStyles)
-        message.data[1] = `color: ${color};${otherCSS};` + message.data[1];
-    else
-        message.data.splice(1, 0, `color: ${color};${otherCSS};`);
-    return message;
-};
-
-export const createScopedLog = (log: any, scopeName: string): any => {
-    log.hooks.push((message: any, transport: any) => {
-        if (message) {
-            if (transport !== log.transports.console)
-                return message;
-
-            switch (message.level) {
-            case 'error':
-                return addColorToLog(message, 'red', 'font-size: 2rem; font-weight: bold;');
-            case 'warn':
-                return addColorToLog(message, 'yellow', 'font-size: 1rem; font-weight: bold;');
-            case 'info':
-                return addColorToLog(message, 'white');
-            case 'debug':
-                return addColorToLog(message, 'green');
-            case 'verbose':
-                return addColorToLog(message, 'cyan', 'font-size: 0.75rem;');
-            case 'silly':
-                return addColorToLog(message, 'black', 'font-size: 0.75rem;');
-            default:
-                return message;
-            }
-        }
-        else return message;
-    });
-    const newLog = log.scope(scopeName);
-    return newLog;
-};
-
+import mainLog from 'electron-log';
 
 export function setupLogging() {
-    log.initialize({ preload: true });
+    mainLog.initialize({ preload: true });
 
+    // LOG LEVELS:
+    // .error: on error
+    // .warn: on something important that's not an error
+    // .info: on things that occur only once, i.e. creating an object
+    // .verbose: on things that occur repeatedly, i.e. sending a message
+    // .debug: temporarily added for debugging
+    // .silly: permanently added for debugging
+
+    mainLog.info('⏳ Starting log initialization...')
     // Reading the log level from the environment variable, and if not applicable, then set default (in else)
     if (['error', 'warn', 'info', 'verbose', 'debug', 'silly'].includes(process.env.JAPREADER_LOGS)) {
         // @ts-expect-error Possible values are all valid
-        log.transports.file.level = process.env.JAPREADER_LOGS;
+        mainLog.transports.file.level = process.env.JAPREADER_LOGS;
         // @ts-expect-error Possible values are all valid
-        log.transports.console.level = process.env.JAPREADER_LOGS;
+        mainLog.transports.console.level = process.env.JAPREADER_LOGS;
     } else {
-        log.transports.file.level = 'info';
-        log.transports.console.level = 'warn';
+        mainLog.transports.file.level = 'info';
+        mainLog.transports.console.level = 'warn';
     }
 
-    log.errorHandler.startCatching({
+    mainLog.errorHandler.startCatching({
         showDialog: false,
         onError({ createIssue, error, processType, versions }) {
             if (processType === 'renderer') {
@@ -88,8 +51,8 @@ export function setupLogging() {
         }
     });
 
-    log.transports.file.format = '[{y}/{m}/{d} {h}:{i}:{s}.{ms}] [{level}] {scope} {text}';
-    const mainLog = createScopedLog(log, 'main');
+    mainLog.transports.file.format = '[{y}/{m}/{d} {h}:{i}:{s}.{ms}] [{level}] {scope} {text}';
+    const log = mainLog.scope('main')
 
-    mainLog.info('Logging initialized');
+    log.info('✔️ Logging initialized');
 }

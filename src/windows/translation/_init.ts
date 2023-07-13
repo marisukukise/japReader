@@ -8,7 +8,7 @@ import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
 
 const settingsStore = getSettingsStore();
-const { useReader } = settingsStore.get('options');
+const { useReader } = settingsStore.get('global_settings');
 
 export const createTranslationWindow = (webpack_entry: string): BrowserWindow => {
     const translationWindow = createWindowAndStorePositionData('translation', {

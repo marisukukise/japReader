@@ -26,6 +26,7 @@ startMainListeners();
 
 import { initializeApp } from '@globals/ts/main/initializeApp';
 app.whenReady().then(() => {
+
     // Creates all windows and their listeners
     initializeApp();
 

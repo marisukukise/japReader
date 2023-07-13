@@ -1,6 +1,7 @@
 const { dialog, ipcRenderer, clipboard } = require('electron');
 const clipboardListener = require('clipboard-event');
-import log from 'electron-log/renderer';
+import log_renderer from 'electron-log/renderer';
+const log = log_renderer.scope('clipboard')
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
 const charLimit = 90;
@@ -29,7 +30,7 @@ const handleChange = () => {
     // because sometimes randomly at low frequency (exact reason unknown)
     // clipboard.readText() return empty strings.
     if (text == '' || text != clipboard.readText() || text != clipboard.readText()) {
-        log.debug('Detected a misreading in clipboard');
+        log.verbose('Detected a misreading in clipboard');
         // If detected a misreading in the sample of 3 reads (rare case),
         // read clipboard many times in a row and get majority value from the array
     
@@ -53,7 +54,7 @@ const handleChange = () => {
             log.warn('Too many characters copied');
             ipcRenderer.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS);
         } else {
-            log.info('Detected japanese text in clipboard: ', clipboardText);
+            log.verbose('Detected japanese text in clipboard: ', clipboardText);
             ipcRenderer.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, clipboardText);
         }
     }
