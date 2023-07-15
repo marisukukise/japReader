@@ -201,7 +201,7 @@ export const Dictionary = () => {
                 </Grid.Container>
 
                 <div>
-                    <Button>Play audio</Button>
+                        <AudioButton />
                 </div>
 
                 {ankiIntegration &&

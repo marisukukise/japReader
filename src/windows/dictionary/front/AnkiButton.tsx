@@ -2,7 +2,7 @@
 import { Button } from '@geist-ui/core';
 import { getSettingsStore, getStatusDataStore } from '@globals/ts/main/initializeStore';
 import { FuriganaJSX } from '@globals/ts/renderer/helpers';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import log_renderer from 'electron-log/renderer';
 import { ipcRenderer } from 'electron';
@@ -11,7 +11,6 @@ import { useAtomValue } from 'jotai';
 import { definitionsAtom, translatedSentenceAtom, infinitiveAtom, infinitiveKanaAtom, japaneseSentenceAtom, wordAtom, wordKanaAtom } from './Dictionary';
 const log = log_renderer.scope('dictionary/AnkiButton');
 
-const statusDataStore = getStatusDataStore();
 const settingsStore = getSettingsStore();
 
 const {
@@ -27,7 +26,7 @@ const _anki_PopulateFieldsIfNonEmpty = (fieldsObj: any, key: string, value: any)
 }
 
 const _anki_GuiEditNote = async (noteId: number) => {
-    return ipcRenderer.invoke(IPC_CHANNELS.MAIN.REQUEST.ANKI_CONNECT, 'guiEditNote', {
+    return ipcRenderer.invoke(IPC_CHANNELS.ANKI_CONNECT.INVOKE, 'guiEditNote', {
         note: noteId
     });
 }
@@ -48,7 +47,7 @@ const _anki_AddNote = async (
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiWordFurigana}`,
         renderToStaticMarkup(<FuriganaJSX kanaOrKanji={wordData.word} kana={wordData.wordKana} />));
 
-    return ipcRenderer.invoke(IPC_CHANNELS.MAIN.REQUEST.ANKI_CONNECT, 'addNote', {
+    return ipcRenderer.invoke(IPC_CHANNELS.ANKI_CONNECT.INVOKE, 'addNote', {
         note: {
             deckName: `${ankiDeckName}`,
             modelName: `${ankiModelName}`,
@@ -67,16 +66,27 @@ const _anki_AddNote = async (
     });
 }
 
-const _anki_CanAddNotes = (infinitive: string) => {
-    const fields: any = {};
-    fields[`${ankiInfinitive}`] = infinitive;
-    return ipcRenderer.invoke(IPC_CHANNELS.MAIN.REQUEST.ANKI_CONNECT, 'canAddNotes', {
-        notes: [{
-            deckName: `${ankiDeckName}`,
-            modelName: `${ankiModelName}`,
-            fields: fields
-        }]
+const _anki_FindNotes = async (query: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.ANKI_CONNECT.INVOKE, 'findNotes', {
+        query: query
     })
+}
+
+const _anki_GetNoteIdFromInfinitive = async (infinitive: string) => {
+    return _anki_FindNotes(`deck:${ankiDeckName} ${ankiInfinitive}:${infinitive}`)
+        .then((result: number[]) => {
+            if (result.length == 0) return 0
+            if (result.length > 1)
+                throw `There should only be 1 word ${infinitive} in ${ankiDeckName} but detected ${result.length}.`
+            return result[0]
+        })
+}
+
+const ANKI_MESSAGES = {
+    "ADD": "Add to Anki",
+    "PREVIEW": "Preview in Anki",
+    "ERROR": "AnkiConnect Error",
+    "LOADING": "Loading..."
 }
 
 export const AnkiButton = () => {
@@ -88,22 +98,61 @@ export const AnkiButton = () => {
     const japaneseSentence = useAtomValue(japaneseSentenceAtom);
     const translatedSentence = useAtomValue(translatedSentenceAtom);
 
-    const [canAddWord, setCanAddWord] = useState(false);
-    const [noteId, setNoteId] = useState(0)
+    const canAddWord = useRef(false);
+    const noteId = useRef(0)
     const [disabled, setDisabled] = useState(false);
     const [buttonText, setButtonText] = useState('Loading...')
 
 
-    log.debug("word", word)
-    log.debug("wordKana", wordKana)
-    log.debug("infinitive", infinitive)
-    log.debug("infinitiveKana", infinitiveKana)
-    log.debug("definitions", definitions)
-    log.debug("japaneseSentence", japaneseSentence)
-    log.debug("translatedSentence", translatedSentence)
+    /* @BEGIN Callback functions */
+
+    const error_Callback = (error: any) => {
+        setButtonText(ANKI_MESSAGES.ERROR)
+        log.error(error);
+    }
+
+    const success_AddedToAnkiCallback = (addedNoteId: number) => {
+        noteId.current = addedNoteId;
+        canAddWord.current = false;
+        setLoading(false, ANKI_MESSAGES.PREVIEW);
+    }
+
+    const error_AddedToAnkiCallback = (error: any) => {
+        error_Callback(error)
+    }
+
+    const success_PreviewedNoteGUICallback = (result: any) => {
+        setLoading(false, ANKI_MESSAGES.PREVIEW)
+    }
+
+    const error_PreviewedNoteGUICallback = (error: any) => {
+        error_Callback(error)
+    }
+
+    /* @END Callback functions */
+
+
+    const setLoading = (state: boolean, buttonText: string = '') => {
+        setDisabled(state)
+        setButtonText(state ? ANKI_MESSAGES.LOADING : buttonText)
+    }
+
+    useEffect(() => {
+        canAddWord.current = false;
+        setLoading(true);
+        _anki_GetNoteIdFromInfinitive(infinitive)
+            .then((result: number) => {
+                noteId.current = result;
+                canAddWord.current = noteId.current === 0
+                setLoading(false, canAddWord.current ? ANKI_MESSAGES.ADD : ANKI_MESSAGES.PREVIEW)
+            })
+            .catch((error: any) => {
+                error_Callback(error)
+            })
+    }, [infinitive])
 
     const addWordToAnki = () => {
-        setDisabled(true);
+        setLoading(true);
         _anki_AddNote({
             word: word,
             wordKana: wordKana,
@@ -112,51 +161,26 @@ export const AnkiButton = () => {
             definitions: definitions,
             japaneseSentence: japaneseSentence,
             translatedSentence: translatedSentence
-        }).then((result: any) => {
-            log.debug("Add Note result:", result)
-            setNoteId(result);
-            setDisabled(false);
-            setCanAddWord(false);
-        }).catch((err: any) => {
-            setDisabled(false);
-            log.error(err)
+        }).then((result: number) => {
+            success_AddedToAnkiCallback(result)
+        }).catch((error: any) => {
+            error_AddedToAnkiCallback(error)
         })
     }
 
-    useEffect(() => {
-        setButtonText("Loading...")
-        setDisabled(true);
-        _anki_CanAddNotes(word)
-            .then((result: boolean[]) => {
-                console.debug("Can Add Notes result:",result)
-                setCanAddWord(result[0]);
-                setDisabled(false);
+    const guiEditNote = () => {
+        setLoading(true);
+        if (noteId.current === 0) return;
+        _anki_GuiEditNote(noteId.current)
+            .then((result: any) => {
+                success_PreviewedNoteGUICallback(result)
             })
             .catch((error: any) => {
-                log.error(error)
-                setDisabled(false);
-            })
-    }, [infinitive])
-
-    useEffect(() => {
-        setButtonText(canAddWord ? "Add to Anki" : "Preview in Anki")
-    }, [canAddWord])
-
-    const guiEditNote = () => {
-        console.log(noteId)
-        setDisabled(true);
-        _anki_GuiEditNote(noteId)
-            .then((result: any) => {
-                log.debug("Preview Note result:", result)
-                setDisabled(false);
-            })
-            .catch((err: any) => {
-                setDisabled(false);
-                log.error(err)
+                error_PreviewedNoteGUICallback(error)
             })
     }
 
-    return <Button disabled={disabled} onClick={canAddWord ? addWordToAnki : guiEditNote}>
-        {buttonText}
-    </Button>
+    return <Button disabled={disabled}
+        onClick={canAddWord.current ? addWordToAnki : guiEditNote}
+    >{buttonText}</Button>
 }

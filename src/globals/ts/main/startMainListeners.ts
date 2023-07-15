@@ -74,7 +74,7 @@ export function startMainListeners() {
     });
 
 
-    ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.ANKI_CONNECT, async (event, action: any, params: any = {}) => {
+    ipcMain.handle(IPC_CHANNELS.ANKI_CONNECT.INVOKE, async (event, action: any, params: any = {}) => {
         return axios.post(
             'http://127.0.0.1:8765',
             JSON.stringify({ action, version: 6, params })
