@@ -5,7 +5,7 @@ import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('reader');
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 
-import { getSettingsStore , getWindowStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getWindowStore } from '@globals/ts/main/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepL } = settingsStore.get('global_settings');
 
@@ -19,7 +19,13 @@ import { ConfigurationDrawerCommonSettings } from '@globals/components/Configura
 import { Text, useToasts } from '@geist-ui/core';
 import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateSwitch';
 import FuriganaController from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/FuriganaController';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 
+export const isIchiReadyAtom = atom<boolean>(false)
+export const didIchiFailAtom = atom<boolean>(false)
+export const japaneseSentenceAtom = atom<string>('')
+export const translatedSentenceAtom = atom<string>('')
+export const wordListAtom = atom<japReader.IchiParsedWordData[]>([])
 
 const windowStore = getWindowStore();
 
@@ -63,18 +69,17 @@ const ParseNotificationMessage = () => {
     </Text>);
 };
 
-const Message = (props: any) => {
-    const isIchiReady = props.isIchiReady;
-    const didIchiFail = props.didIchiFail;
-    const japaneseSentence = props.japaneseSentence;
-    const words = props.words;
+const Message = () => {
+    const isIchiReady = useAtomValue(isIchiReadyAtom);
+    const didIchiFail = useAtomValue(didIchiFailAtom);
+    const japaneseSentence = useAtomValue(japaneseSentenceAtom)
 
     if (didIchiFail) return (<IchiFailedMessage />);
     if (!isIchiReady) return (<ConnectingToIchiMessage />);
     if (japaneseSentence == '') return (<ConnectedToIchiMessage />);
     if (japaneseSentence == '/tooManyCharacters/') return (<TooManyCharactersCopiedMessage />);
     if (japaneseSentence == '/parsing/') return (<ParseNotificationMessage />);
-    return (<Sentence words={words} />);
+    return (<Sentence />);
 };
 
 const getFuriganaSetting = (status: string): boolean => {
@@ -86,15 +91,19 @@ const getFuriganaSetting = (status: string): boolean => {
 export const Reader = () => {
     const [isUIShown, setUIShown] = useState(true);
     const { setToast, removeAll } = useToasts(toastLayout);
-    const [isIchiReady, setIchiReady] = useState(false);
-    const [didIchiFail, setIchiFailed] = useState(false);
-    const [japaneseSentence, setJapaneseSentence] = useState('');
+
+    const [isIchiReady, setIchiReady] = useAtom(isIchiReadyAtom);
+    const setIchiFailed = useSetAtom(didIchiFailAtom);
+    const [didDeepFail, setDeepFailed] = useState(false);
+    const [japaneseSentence, setJapaneseSentence] = useAtom(japaneseSentenceAtom);
+    const [translatedSentence, setTranslatedSentence] = useAtom(translatedSentenceAtom);
+    const setCurrentWords = useSetAtom(wordListAtom);
+
     const [isCenteredText, setCenteredText] = useState(windowStore.get('reader.additional.centeredText', false));
     const [hasNewStatusFurigana, setNewStatusFurigana] = useState(getFuriganaSetting(STATUS.NEW));
     const [hasSeenStatusFurigana, setSeenStatusFurigana] = useState(getFuriganaSetting(STATUS.SEEN));
     const [hasKnownStatusFurigana, setKnownStatusFurigana] = useState(getFuriganaSetting(STATUS.KNOWN));
     const [hasIgnoredStatusFurigana, setIgnoredStatusFurigana] = useState(getFuriganaSetting(STATUS.IGNORED));
-    const currentWords = useRef({});
 
     const showToast = (text: string | ReactNode, delay: number) => setToast({
         text: text, delay: delay
@@ -150,7 +159,7 @@ export const Reader = () => {
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
             // TODO: Somehow add memoization to Japanese sentences, so that common ones don't have to wait for ichi
-            currentWords.current = words;
+            setCurrentWords(words);
             setJapaneseSentence(japaneseSentence);
             if (!useDeepL) ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, japaneseSentence, null);
         });
@@ -167,8 +176,21 @@ export const Reader = () => {
             setJapaneseSentence('/tooManyCharacters/');
         });
 
+        if (useDeepL) {
+            ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, translatedSentence: string) => {
+                setTranslatedSentence(translatedSentence);
+            });
+
+            ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR, () => {
+                setDeepFailed(true);
+            });
+        }
 
         return () => {
+            if (useDeepL) {
+                ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT);
+                ipcRenderer.removeAllListeners(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
+            }
             ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR);
             ipcRenderer.removeAllListeners(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED);
@@ -192,12 +214,7 @@ export const Reader = () => {
         <div style={{ textAlign: isCenteredText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >
-            <Message
-                isIchiReady={isIchiReady}
-                didIchiFail={didIchiFail}
-                japaneseSentence={japaneseSentence}
-                words={currentWords.current}
-            />
+            <Message />
         </div>
         {isUIShown && <ConfigurationDrawer
             settings={settings}

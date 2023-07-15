@@ -145,7 +145,11 @@ export const setupEffect = (
         return () => {
             ipcRenderer.removeAllListeners(ipcBase.SET.HIDE_UI);
 
-            if (awaitedWindowIpcBase && isAwaitedWindowReady && setAwaitedWindowReady) {
+            if (
+                awaitedWindowIpcBase !== undefined &&
+                isAwaitedWindowReady !== undefined &&
+                setAwaitedWindowReady !== undefined
+            ) {
                 ipcRenderer.removeAllListeners(awaitedWindowIpcBase.ANNOUNCE.IS_READY);
             }
         }

@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Text } from '@geist-ui/core';
 
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
+import { useAtomValue } from 'jotai';
+import { japaneseSentenceAtom, translatedSentenceAtom, wordListAtom } from './Reader';
 
 const MOUSE_BUTTONS = {
     'MAIN': 0, // Usually left button
@@ -17,15 +19,17 @@ type WordProps = {
     wordData: japReader.IchiParsedWordData
 }
 const Word = ({ wordData }: WordProps): JSX.Element => {
-    const [wordOriginal, setWordOriginal] = useState(wordData.word);
-    const [wordOriginalReading, setWordOriginalReading] = useState(wordData.rubyReading);
-    const [wordDict, setWordDict] = useState(wordData.dictForm);
+    const japaneseSentence = useAtomValue(japaneseSentenceAtom)
+    const translatedSentence = useAtomValue(translatedSentenceAtom)
+    const [word, setWord] = useState(wordData.word);
+    const [wordKana, setWordKana] = useState(wordData.wordKana);
+    const [infinitive, setInfinitive] = useState(wordData.infinitive);
     const [definitions, setDefinitions] = useState(wordData.definitions);
     const [status, setStatus] = useState(wordData.status);
 
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
-            if (wordDict == dictionaryForm) {
+            if (infinitive == dictionaryForm) {
                 setStatus(newStatus);
             }
         });
@@ -42,32 +46,36 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
         let nextWordStatus = status;
 
         switch (event.button) {
-        // Left mouse button
-        case MOUSE_BUTTONS.MAIN:
-            // + CTRL
-            if (event.ctrlKey)
-                nextWordStatus = STATUS.IGNORED;
+            // Left mouse button
+            case MOUSE_BUTTONS.MAIN:
+                // + CTRL
+                if (event.ctrlKey)
+                    nextWordStatus = STATUS.IGNORED;
 
-            else if (status == STATUS.NEW)
-                nextWordStatus = STATUS.SEEN;
+                else if (status == STATUS.NEW)
+                    nextWordStatus = STATUS.SEEN;
 
-            break;
+                break;
 
             // Right mouse button
-        case MOUSE_BUTTONS.SECONDARY:
-            nextWordStatus = STATUS.KNOWN;
-            break;
+            case MOUSE_BUTTONS.SECONDARY:
+                nextWordStatus = STATUS.KNOWN;
+                break;
         }
 
         setStatus(nextWordStatus);
 
         // Send messages to dictionary
         console.log(wordData);
-        ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, wordData);
+        ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, {
+            ...wordData,
+            japaneseSentence: japaneseSentence,
+            translatedSentence: translatedSentence
+        });
         ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.SHOW);
 
-        if (wordDict)
-            updateWordStatusStore(wordDict, nextWordStatus);
+        if (infinitive)
+            updateWordStatusStore(infinitive, nextWordStatus);
 
         return true;
     };
@@ -77,23 +85,22 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
         ? <span
             onMouseDown={(event) => handleMouseDown(event)}
             className={status + ' word'}>
-            <FuriganaJSX kanaOrKanji={wordOriginal} kana={wordOriginalReading} />
+            <FuriganaJSX kanaOrKanji={word} kana={wordKana} />
         </span>
-        : <span className='junk'>{wordOriginal}</span>;
+        : <span className='junk'>{word}</span>;
 };
 
 const getUniqueWordLength = (words: japReader.IchiParsedWordData[], status: string) => {
     return [... new Set(words
         .filter(e => e.status === status)
-        .map(e => e.dictForm))].length;
+        .map(e => e.infinitive))].length;
 };
 
-type SentenceProps = {
-    words: japReader.IchiParsedWordData[]
-}
-export const Sentence = ({ words }: SentenceProps): JSX.Element => {
-    const uniqueNewWordsCount = useRef(getUniqueWordLength(words, STATUS.NEW));
-    const uniqueSeenWordsCount = useRef(getUniqueWordLength(words, STATUS.SEEN));
+
+export const Sentence = (): JSX.Element => {
+    const wordList = useAtomValue(wordListAtom)
+    const uniqueNewWordsCount = useRef(getUniqueWordLength(wordList, STATUS.NEW));
+    const uniqueSeenWordsCount = useRef(getUniqueWordLength(wordList, STATUS.SEEN));
     const [isPlusOneSentence, setPlusOneSentence] = useState((uniqueNewWordsCount.current + uniqueSeenWordsCount.current) == 1);
 
     useEffect(() => {
@@ -119,7 +126,7 @@ export const Sentence = ({ words }: SentenceProps): JSX.Element => {
         .concat(isPlusOneSentence ? 'plus-one-sentence' : []);
 
     return (<Text p className={classes.join(' ')}>
-        {words.map((wordData: japReader.IchiParsedWordData, index: number) =>
+        {wordList.map((wordData: japReader.IchiParsedWordData, index: number) =>
             <Word key={index} wordData={wordData} />
         )}
     </Text>);

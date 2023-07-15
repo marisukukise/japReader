@@ -13,9 +13,9 @@ const PARSED_WORDS: japReader.IchiParsedWordData[] = [];
 let FULL_TEXT = '';
 const EMPTY_WORD_DATA: japReader.IchiParsedWordData = {
     word: '',
-    dictForm: '',
-    dictFormReading: '',
-    rubyReading: '',
+    infinitive: '',
+    infinitiveKana: '',
+    wordKana: '',
     definitions: '',
     status: '',
 };
@@ -51,7 +51,7 @@ const addMissingCharacters = (wordData: japReader.IchiParsedWordData, index: any
 };
 
 
-const getDictForm = (text: string): string => {
+const getInfinitive = (text: string): string => {
     return text
         .replace(/ 【.+/g, '')
         .replace(/[0-9]+\. /g, '')
@@ -121,25 +121,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (compounds) {
             if (conjugations_dt.length > 0) {
-                wordData.dictForm = getDictForm(conjugations_dt[0].textContent);
-                wordData.dictFormReading = getReading(conjugations_dt[0].textContent);
+                wordData.infinitive = getInfinitive(conjugations_dt[0].textContent);
+                wordData.infinitiveKana = getReading(conjugations_dt[0].textContent);
             }
             else {
-                wordData.dictForm = getDictForm(first_dt[0].textContent);
-                wordData.dictFormReading = getReading(first_dt[0].textContent);
+                wordData.infinitive = getInfinitive(first_dt[0].textContent);
+                wordData.infinitiveKana = getReading(first_dt[0].textContent);
             }
 
-            wordData.rubyReading = getReading(dt.textContent);
+            wordData.wordKana = getReading(dt.textContent);
         }
         else if (conj_gloss_dt) {
-            wordData.dictForm = getDictForm(conj_gloss_dt.textContent);
-            wordData.dictFormReading = getReading(conj_gloss_dt.textContent);
-            wordData.rubyReading = getReading(dt.textContent);
+            wordData.infinitive = getInfinitive(conj_gloss_dt.textContent);
+            wordData.infinitiveKana = getReading(conj_gloss_dt.textContent);
+            wordData.wordKana = getReading(dt.textContent);
         }
         else {
-            wordData.dictForm = getDictForm(dt.textContent);
-            wordData.dictFormReading = getReading(dt.textContent);
-            wordData.rubyReading = getReading(dt.textContent);
+            wordData.infinitive = getInfinitive(dt.textContent);
+            wordData.infinitiveKana = getReading(dt.textContent);
+            wordData.wordKana = getReading(dt.textContent);
         }
 
         if (current_word.innerHTML.includes('[')) {
@@ -175,7 +175,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Add status to words
     const EXTENDED_WORDS: japReader.IchiParsedWordData[] = PARSED_WORDS.map((word: japReader.IchiParsedWordData) => {
-        word['status'] = getWordStatusData(word.dictForm);
+        word['status'] = getWordStatusData(word.infinitive);
         return word;
     });
     ipcRenderer.send(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, EXTENDED_WORDS, FULL_TEXT);

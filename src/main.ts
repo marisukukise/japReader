@@ -51,9 +51,10 @@ app.whenReady().then(() => {
     ];
 
     if (process.env.JAPREADER_ENV !== 'dev') {
-        DISABLED_SHORTCUTS.shift();
-        DISABLED_SHORTCUTS.shift();
-        DISABLED_SHORTCUTS.shift();
+        const orig_len = DISABLED_SHORTCUTS.length;
+        for (var i = 0; i < orig_len ; i++) {
+            DISABLED_SHORTCUTS.shift()
+        }
     }
 
     // TODO: Add a global keyboard shortcut to bring all windows up

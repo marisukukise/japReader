@@ -7,15 +7,15 @@ declare namespace japReader {
         ankiIntegration: boolean;
         ankiDeckName: string;
         ankiModelName: string;
-        ankiDictForm: string;
-        ankiDictFormReading: string;
-        ankiDictFormFurigana: string;
+        ankiInfinitive: string;
+        ankiInfinitiveKana: string;
+        ankiInfinitiveFurigana: string;
         ankiWord: string;
-        ankiWordReading: string;
+        ankiWordKana: string;
         ankiWordFurigana: string;
         ankiDefinitions: string;
-        ankiJapanese: string;
-        ankiEnglish: string;
+        ankiJapaneseSentence: string;
+        ankiEnglishSentence: string;
     }
     interface StatusDataStore {
         seen: string[];
@@ -24,13 +24,11 @@ declare namespace japReader {
     }
     interface IchiParsedWordData {
         word: string;
-        dictForm: string;
-        dictFormReading: string;
-        rubyReading: string;
+        wordKana: string;
+        infinitive: string;
+        infinitiveKana: string;
         definitions: string;
         status: string;
-        japaneseSentence?: string;
-        englishSentence?: string;
     }
 
     interface FuriganaObject {

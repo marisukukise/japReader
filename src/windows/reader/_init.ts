@@ -4,6 +4,10 @@ import { BrowserWindow } from 'electron';
 import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from '@globals/ts/main/helpers';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
+import { getSettingsStore } from '@globals/ts/main/initializeStore';
+const settingsStore = getSettingsStore();
+const { useDeepL } = settingsStore.get('global_settings');
+
 export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     const readerWindow = createWindowAndStorePositionData('reader', {
         icon: 'images/logo/icon.png',
@@ -28,6 +32,11 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.on('close', (event: any) => {
         showExitDialog(readerWindow, event);
     });
+
+    if (useDeepL) {
+        passMessageToRenderer(readerWindow, IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
+        passMessageToRenderer(readerWindow, IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT);
+    }
 
     passMessageToRenderer(readerWindow, IPC_CHANNELS.CLIPBOARD.ANNOUNCE.TOO_MANY_CHARACTERS);
     passMessageToRenderer(readerWindow, IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED);
