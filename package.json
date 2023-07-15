@@ -50,6 +50,7 @@
   "dependencies": {
     "@geist-ui/core": "^2.3.8",
     "@geist-ui/icons": "^1.0.2",
+    "axios": "^1.4.0",
     "clipboard-event": "file:./src/lib/clipboard-event",
     "deepl-node": "^1.10.2",
     "dotenv": "^16.3.1",

@@ -11,6 +11,7 @@ export const IPC_CHANNELS = {
             RESTART_PROGRAM: 'restartProgram'
         },
         REQUEST: {
+            ANKI_CONNECT: 'post/anki',
             LIB_PATH: 'get/libpath'
         }
     },

@@ -45,7 +45,11 @@ const config: ForgeConfig = {
         new AutoUnpackNativesPlugin({}),
         new WebpackPlugin({
             // TODO: change securitypolicy
-            devContentSecurityPolicy: 'default-src \'self\' \'unsafe-inline\' data:; script-src \'self\' \'unsafe-eval\' \'unsafe-inline\' data:',
+            devContentSecurityPolicy: "\
+            default-src 'self' 'unsafe-inline' data:;\
+            script-src 'self' 'unsafe-eval' 'unsafe-inline' data:;\
+            connect-src * 'unsafe-eval' 'unsafe-inline';\
+            ",
             mainConfig,
             //devContentSecurityPolicy: "connect-src 'self'; default-src 'self'; script-src 'self'",
             renderer: {

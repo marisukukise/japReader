@@ -77,6 +77,8 @@ export const Dictionary = () => {
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, (event, IchiParsedWordData: japReader.IchiParsedWordData) => {
             setStatus(IchiParsedWordData.status);
+            setWordOriginal(IchiParsedWordData.word);
+            setWordOriginalReading(IchiParsedWordData.rubyReading);
             setDictForm(IchiParsedWordData.dictForm);
             setDictFormReading(IchiParsedWordData.dictFormReading);
             setDefinitions(IchiParsedWordData.definitions);

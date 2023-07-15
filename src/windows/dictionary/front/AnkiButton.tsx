@@ -4,6 +4,11 @@ import { getSettingsStore, getStatusDataStore } from '@globals/ts/main/initializ
 import { FuriganaJSX } from '@globals/ts/renderer/helpers';
 import { useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import log_renderer from 'electron-log/renderer';
+import { ipcRenderer } from 'electron';
+import { IPC_CHANNELS } from '@globals/ts/main/objects';
+const log = log_renderer.scope('dictionary/AnkiButton');
+
 const statusDataStore = getStatusDataStore();
 const settingsStore = getSettingsStore();
 
@@ -13,35 +18,6 @@ const {
     ankiWord, ankiWordReading, ankiWordFurigana,
     ankiJapanese, ankiDefinitions, ankiEnglish } = settingsStore.get('global_settings')
 
-function invoke(action: any, version: any, params: any = {}) {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.addEventListener('error', () => reject('AnkiConnect: Failed to issue request'));
-        xhr.addEventListener('load', () => {
-            try {
-                const response = JSON.parse(xhr.responseText);
-                if (Object.getOwnPropertyNames(response).length != 2) {
-                    throw 'AnkiConnect: Response has an unexpected number of fields';
-                }
-                if (!response.hasOwnProperty('error')) {
-                    throw 'AnkiConnect: Response is missing required error field';
-                }
-                if (!response.hasOwnProperty('result')) {
-                    throw 'AnkiConnect: Response is missing required result field';
-                }
-                if (response.error) {
-                    throw response.error;
-                }
-                resolve(response.result);
-            } catch (e) {
-                reject(e);
-            }
-        });
-
-        xhr.open('POST', 'http://localhost:8765');
-        xhr.send(JSON.stringify({ action, version, params }));
-    });
-}
 const _anki_PopulateFieldsIfNonEmpty = (fieldsObj: any, key: string, value: any) => {
     if (key) {
         fieldsObj[key] = value;
@@ -58,10 +34,11 @@ const _anki_AddNote = async (wordData: japReader.IchiParsedWordData) => {
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiJapanese}`, wordData.japaneseSentence);
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiEnglish}`, wordData.englishSentence);
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiDictFormFurigana}`,
-        renderToStaticMarkup(<FuriganaJSX kana={wordData.dictForm} kanaOrKanji={wordData.dictFormReading} />));
+        renderToStaticMarkup(<FuriganaJSX kanaOrKanji={wordData.dictForm} kana={wordData.dictFormReading} />));
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiWordFurigana}`,
-        renderToStaticMarkup(<FuriganaJSX kana={wordData.word} kanaOrKanji={wordData.rubyReading} />));
-    const res: any = await invoke('addNote', 6, {
+        renderToStaticMarkup(<FuriganaJSX kanaOrKanji={wordData.word} kana={wordData.rubyReading} />));
+
+    return ipcRenderer.invoke(IPC_CHANNELS.MAIN.REQUEST.ANKI_CONNECT, 'addNote', {
         note: {
             deckName: `${ankiDeckName}`,
             modelName: `${ankiModelName}`,
@@ -78,7 +55,6 @@ const _anki_AddNote = async (wordData: japReader.IchiParsedWordData) => {
             tags: ["japReader"],
         }
     });
-    return res;
 }
 
 export const AnkiButton = ({ word, dictForm, dictFormReading, rubyReading, definitions, status, japaneseSentence, englishSentence }: japReader.IchiParsedWordData) => {
@@ -96,9 +72,11 @@ export const AnkiButton = ({ word, dictForm, dictFormReading, rubyReading, defin
             status: status,
             japaneseSentence: japaneseSentence,
             englishSentence: englishSentence
-        }).then(() => { 
+        }).then(() => {
             setDisabled(false);
             setButtonText('Preview the card');
+        }).catch((err: any) => {
+            log.error(err)
         })
     }
 
