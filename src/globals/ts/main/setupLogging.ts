@@ -12,7 +12,7 @@ export function setupLogging() {
     // .debug: temporarily added for debugging
     // .silly: permanently added for debugging
 
-    mainLog.info('⏳ Starting log initialization...')
+    mainLog.info('⏳ Starting log initialization...');
     // Reading the log level from the environment variable, and if not applicable, then set default (in else)
     if (['error', 'warn', 'info', 'verbose', 'debug', 'silly'].includes(process.env.JAPREADER_LOGS)) {
         // @ts-expect-error Possible values are all valid
@@ -52,7 +52,7 @@ export function setupLogging() {
     });
 
     mainLog.transports.file.format = '[{y}/{m}/{d} {h}:{i}:{s}.{ms}] [{level}] {scope} {text}';
-    const log = mainLog.scope('main')
+    const log = mainLog.scope('main');
 
     log.info('✔️ Logging initialized');
 }

@@ -13,8 +13,8 @@ import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/Configu
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 import { Button, Checkbox as GeistCheckbox, Input as GeistInput, useToasts } from '@geist-ui/core';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import { addHideUIListener, setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
+import { ReactNode, useEffect, useState } from 'react';
+import { setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
 import { ipcRenderer } from 'electron';
 
 
@@ -45,8 +45,8 @@ const Input = ({ formData, disabled, setFormData, settingName, placeholder, chil
             }));
         }} >
         {children}
-    </GeistInput>
-}
+    </GeistInput>;
+};
 
 const Checkbox = ({ formData, disabled, setFormData, settingName, children }: InputProps) => {
     return <GeistCheckbox
@@ -60,8 +60,8 @@ const Checkbox = ({ formData, disabled, setFormData, settingName, children }: In
             }));
         }}>
         {children}
-    </GeistCheckbox>
-}
+    </GeistCheckbox>;
+};
 
 export const Settings = () => {
     const [isUIShown, setUIShown] = useState<boolean>(true);
@@ -153,7 +153,7 @@ export const Settings = () => {
                 <Input placeholder="DeepL API Key" settingName='deepLApiKey' formData={formData} setFormData={setFormData}
                     disabled={!formData.useDeepLApi || !formData.useDeepL} >
                         DeepL API Key
-                    </Input>
+                </Input>
             </fieldset>
             <fieldset id="reader">
                 <legend>Reader</legend>
@@ -165,17 +165,17 @@ export const Settings = () => {
                 <Checkbox settingName='ankiIntegration' formData={formData} setFormData={setFormData}
                     disabled={!formData.useReader}>Enable Anki integration</Checkbox>
                 {[
-                    ["DeckName", "japReader"],
-                    ["ModelName", "japReader"],
-                    ["Infinitive", null],
-                    ["InfinitiveKana", null],
-                    ["InfinitiveFurigana", null],
-                    ["Word", null],
-                    ["WordKana", null],
-                    ["WordFurigana", null],
-                    ["Definitions", null],
-                    ["Japanese", null],
-                    ["English", null]
+                    ['DeckName', 'japReader'],
+                    ['ModelName', 'japReader'],
+                    ['Infinitive', null],
+                    ['InfinitiveKana', null],
+                    ['InfinitiveFurigana', null],
+                    ['Word', null],
+                    ['WordKana', null],
+                    ['WordFurigana', null],
+                    ['Definitions', null],
+                    ['Japanese', null],
+                    ['English', null]
                 ].map((element: Array<string | null>) => {
                     return <Input placeholder={element[1] != null ? element[1] : element[0]}
                         settingName={'anki' + element[0]}
@@ -183,7 +183,7 @@ export const Settings = () => {
                         setFormData={setFormData}
                         disabled={!formData.ankiIntegration || !formData.useReader} >
                         {element[0]}
-                    </Input>
+                    </Input>;
                 })}
             </fieldset>
         </div >

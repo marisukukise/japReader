@@ -1,4 +1,3 @@
-import log from 'electron-log';
 
 import { getSettingsStore } from '@globals/ts/main/initializeStore';
 const settingsStore = getSettingsStore();

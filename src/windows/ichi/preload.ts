@@ -3,7 +3,7 @@
 
 const { ipcRenderer } = require('electron');
 import log_renderer from 'electron-log/renderer';
-const log = log_renderer.scope('ichi')
+const log = log_renderer.scope('ichi');
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 import { getWordStatusData, mountLog } from '@globals/ts/renderer/helpers';
 
@@ -77,7 +77,7 @@ const getWord = (text: string): string => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-    mountLog(log, '🔺 Mounted')
+    mountLog(log, '🔺 Mounted');
     // eslint-disable-next-line global-require
     const $ = require('jquery');
 

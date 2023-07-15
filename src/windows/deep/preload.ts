@@ -10,7 +10,7 @@ const settingsStore = getSettingsStore();
 const { useDeepLApi, deepLApiKey } = settingsStore.get('global_settings');
 
 import log_renderer from 'electron-log/renderer';
-const log = log_renderer.scope('deep')
+const log = log_renderer.scope('deep');
 import { mountLog } from '@globals/ts/renderer/helpers';
 
 if (useDeepLApi) {
@@ -23,7 +23,7 @@ if (useDeepLApi) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    mountLog(log, '🔺 Mounted')
+    mountLog(log, '🔺 Mounted');
     ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
         const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
 

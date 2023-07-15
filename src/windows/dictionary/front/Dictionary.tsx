@@ -20,7 +20,7 @@ import { getSettingsStore, getStatusDataStore } from '@globals/ts/main/initializ
 const statusDataStore = getStatusDataStore();
 const settingsStore = getSettingsStore();
 
-import { FuriganaJSX, addHideUIListener, listenForAnotherWindowIsReady, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
@@ -33,7 +33,7 @@ const {
     useDeep, ankiIntegration, ankiDeckName, ankiModelName,
     ankiInfinitive, ankiInfinitiveKana, ankiInfinitiveFurigana,
     ankiWord, ankiWordKana, ankiWordFurigana, ankiJapaneseSentence,
-    ankiEnglishSentence } = settingsStore.get('global_settings')
+    ankiEnglishSentence } = settingsStore.get('global_settings');
 
 
 export const wordAtom = atom<string>('');
@@ -87,7 +87,7 @@ export const Dictionary = () => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, (
             event, 
             SelectedWord: japReader.IchiParsedWordData & {japaneseSentence: string, translatedSentence: string}
-            ) => {
+        ) => {
             setStatus(SelectedWord.status);
             setWord(SelectedWord.word);
             setWordKana(SelectedWord.wordKana);
@@ -201,7 +201,7 @@ export const Dictionary = () => {
                 </Grid.Container>
 
                 <div>
-                        <AudioButton />
+                    <AudioButton />
                 </div>
 
                 {ankiIntegration &&

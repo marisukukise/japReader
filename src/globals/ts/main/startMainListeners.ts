@@ -1,9 +1,9 @@
 import path from 'path';
 import mainLog from 'electron-log';
 import axios from 'axios';
-const log = mainLog.scope('main')
+const log = mainLog.scope('main');
 import { app, clipboard, ipcMain } from 'electron';
-import { getHistoryStore, getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getHistoryStore } from '@globals/ts/main/initializeStore';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 const historyStore = getHistoryStore();
 
@@ -16,7 +16,7 @@ let isDictionaryWindowReady = false;
 let isSettingsWindowReady = false;
 
 export function startMainListeners() {
-    log.info("⏳ Setting up main listeners...")
+    log.info('⏳ Setting up main listeners...');
 
     ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, () => { isClipboardWindowReady = true; });
     ipcMain.on(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY, () => { isDeepWindowReady = true; });
@@ -62,8 +62,8 @@ export function startMainListeners() {
 
     if (process.env.JAPREADER_ENV == 'dev') {
         ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.IS_READY, () => {
-            clipboard.writeText('昨日の大雨による被害は出ていないようで何よりだ。')
-        })
+            clipboard.writeText('昨日の大雨による被害は出ていないようで何よりだ。');
+        });
     }
 
     ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.LIB_PATH, async (event) => {
@@ -79,7 +79,7 @@ export function startMainListeners() {
             'http://127.0.0.1:8765',
             JSON.stringify({ action, version: 6, params })
         ).then((response: any) => {
-            let data = response.data
+            const data = response.data;
             if (Object.getOwnPropertyNames(data).length != 2) {
                 throw 'AnkiConnect: response has an unexpected number of fields';
             }
@@ -92,9 +92,9 @@ export function startMainListeners() {
             if (data.error) {
                 throw 'AnkiConnect: ' + data.error;
             }
-            return data.result
-        })
+            return data.result;
+        });
     });
 
-    log.info("✔️ Set up main listeners")
+    log.info('✔️ Set up main listeners');
 }

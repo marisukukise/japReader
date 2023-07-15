@@ -1,9 +1,9 @@
-import { Button } from "@geist-ui/core"
+import { Button } from '@geist-ui/core';
 
 export const AudioButton = () => {
     const playAudio = () => {
 
-    }
+    };
 
-    return <Button onClick={playAudio}>Play Audio :D</Button>
-}
+    return <Button onClick={playAudio}>Play Audio :D</Button>;
+};

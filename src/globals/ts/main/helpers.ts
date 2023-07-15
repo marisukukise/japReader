@@ -1,6 +1,6 @@
 import { BrowserWindow, app, dialog, ipcMain } from 'electron';
 import mainLog from 'electron-log';
-const log = mainLog.scope('main')
+const log = mainLog.scope('main');
 import { getWindowStore } from '@globals/ts/main/initializeStore';
 const windowStore = getWindowStore();
 
@@ -84,7 +84,7 @@ export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProductio
     // Set the environment variable JAPREADER_ENV to "dev" to show all windows
     if (shouldShowInProduction) {
         window.once('ready-to-show', () => {
-            log.info(`⌛ Showing ${window.getTitle()}`)
+            log.info(`⌛ Showing ${window.getTitle()}`);
             window.show();
         });
         return;
@@ -93,7 +93,7 @@ export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProductio
     // Added for debugging convenience
     if (process.env.JAPREADER_ENV === 'dev') {
         window.once('ready-to-show', () => {
-            log.info(`⌛ Showing ${window.getTitle()}`)
+            log.info(`⌛ Showing ${window.getTitle()}`);
             window.show();
         });
         return;
@@ -111,7 +111,7 @@ function filterObjectKeys(unfilteredObj: any, allowedKeys: string[]) {
 }
 
 export const createWindowAndStorePositionData = (windowName: string, windowConfig: any) => {
-    log.info(`⏳ Creating ${windowName} BrowserWindow...`)
+    log.info(`⏳ Creating ${windowName} BrowserWindow...`);
     const allowed = ['width', 'height', 'isMaximized', 'x', 'y', 'alwaysOnTop', 'backgroundColor'];
 
     if (windowStore.has(windowName)) {
@@ -152,6 +152,6 @@ export const createWindowAndStorePositionData = (windowName: string, windowConfi
         windowStore.set(windowName + '.y', normalBounds.y);
     });
 
-    log.info(`✔️ Created ${windowName} BrowserWindow`)
+    log.info(`✔️ Created ${windowName} BrowserWindow`);
     return window;
 };

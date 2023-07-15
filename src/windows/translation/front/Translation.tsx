@@ -5,7 +5,7 @@ import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('translation');
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
-import { addHideUIListener, listenForAnotherWindowIsReady, setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
+import { setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
 import { TranslatedSentence } from './TranslatedSentence';
 import Loader from '@globals/components/Loader/Loader';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';

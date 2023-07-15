@@ -19,8 +19,8 @@ type WordProps = {
     wordData: japReader.IchiParsedWordData
 }
 const Word = ({ wordData }: WordProps): JSX.Element => {
-    const japaneseSentence = useAtomValue(japaneseSentenceAtom)
-    const translatedSentence = useAtomValue(translatedSentenceAtom)
+    const japaneseSentence = useAtomValue(japaneseSentenceAtom);
+    const translatedSentence = useAtomValue(translatedSentenceAtom);
     const [word, setWord] = useState(wordData.word);
     const [wordKana, setWordKana] = useState(wordData.wordKana);
     const [infinitive, setInfinitive] = useState(wordData.infinitive);
@@ -46,21 +46,21 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
         let nextWordStatus = status;
 
         switch (event.button) {
-            // Left mouse button
-            case MOUSE_BUTTONS.MAIN:
-                // + CTRL
-                if (event.ctrlKey)
-                    nextWordStatus = STATUS.IGNORED;
+        // Left mouse button
+        case MOUSE_BUTTONS.MAIN:
+            // + CTRL
+            if (event.ctrlKey)
+                nextWordStatus = STATUS.IGNORED;
 
-                else if (status == STATUS.NEW)
-                    nextWordStatus = STATUS.SEEN;
+            else if (status == STATUS.NEW)
+                nextWordStatus = STATUS.SEEN;
 
-                break;
+            break;
 
             // Right mouse button
-            case MOUSE_BUTTONS.SECONDARY:
-                nextWordStatus = STATUS.KNOWN;
-                break;
+        case MOUSE_BUTTONS.SECONDARY:
+            nextWordStatus = STATUS.KNOWN;
+            break;
         }
 
         setStatus(nextWordStatus);
@@ -98,7 +98,7 @@ const getUniqueWordLength = (words: japReader.IchiParsedWordData[], status: stri
 
 
 export const Sentence = (): JSX.Element => {
-    const wordList = useAtomValue(wordListAtom)
+    const wordList = useAtomValue(wordListAtom);
     const uniqueNewWordsCount = useRef(getUniqueWordLength(wordList, STATUS.NEW));
     const uniqueSeenWordsCount = useRef(getUniqueWordLength(wordList, STATUS.SEEN));
     const [isPlusOneSentence, setPlusOneSentence] = useState((uniqueNewWordsCount.current + uniqueSeenWordsCount.current) == 1);

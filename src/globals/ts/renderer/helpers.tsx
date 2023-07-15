@@ -7,7 +7,7 @@ const windowStore = getWindowStore();
 
 const { fit } = require('furigana');
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
-import { ScalePropKeys, ToastLayout } from '@geist-ui/core';
+import { ToastLayout } from '@geist-ui/core';
 import Logger from 'electron-log';
 
 const DIGIT_MAP = [
@@ -96,17 +96,17 @@ export const addHideUIListener = (
 };
 
 export const mountLog = (scopedLog: Logger.LogFunctions, ...params: any[]) => {
-    scopedLog.silly(...params)
-}
+    scopedLog.silly(...params);
+};
 
 export const addMountLogs = (scopedLog: Logger.LogFunctions) => {
     useEffect(() => {
-        mountLog(scopedLog, '🔺 Mounted')
+        mountLog(scopedLog, '🔺 Mounted');
         return () => {
-            mountLog(scopedLog, '🔻 Unmounted')
-        }
-    }, [])
-}
+            mountLog(scopedLog, '🔻 Unmounted');
+        };
+    }, []);
+};
 
 export const setupEffect = (
     ipcBase: any,
@@ -118,10 +118,10 @@ export const setupEffect = (
     isAwaitedWindowReady?: boolean,
     setAwaitedWindowReady?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-    addMountLogs(scopedLog)
+    addMountLogs(scopedLog);
 
     useEffect(() => {
-        ipcRenderer.send(ipcBase.ANNOUNCE.IS_READY)
+        ipcRenderer.send(ipcBase.ANNOUNCE.IS_READY);
 
         if (
             awaitedWindowIpcBase !== undefined &&
@@ -152,9 +152,9 @@ export const setupEffect = (
             ) {
                 ipcRenderer.removeAllListeners(awaitedWindowIpcBase.ANNOUNCE.IS_READY);
             }
-        }
-    }, [])
-}
+        };
+    }, []);
+};
 
 export const listenForAnotherWindowIsReady = (
     ipcBase: any,
@@ -239,17 +239,17 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-            case KEYBOARD_KEYS.PLUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_ADD:
-                zoom(windowName, true);
-                break;
-            case KEYBOARD_KEYS.MINUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-                zoom(windowName, false);
-                break;
-            case KEYBOARD_KEYS.KEY_H:
-                ipcRenderer.send(ipcBase.SET.HIDE_UI);
-                break;
+        case KEYBOARD_KEYS.PLUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_ADD:
+            zoom(windowName, true);
+            break;
+        case KEYBOARD_KEYS.MINUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+            zoom(windowName, false);
+            break;
+        case KEYBOARD_KEYS.KEY_H:
+            ipcRenderer.send(ipcBase.SET.HIDE_UI);
+            break;
         }
     }, true);
 };

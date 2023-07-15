@@ -1,7 +1,7 @@
 const { dialog, ipcRenderer, clipboard } = require('electron');
 const clipboardListener = require('clipboard-event');
 import log_renderer from 'electron-log/renderer';
-const log = log_renderer.scope('clipboard')
+const log = log_renderer.scope('clipboard');
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 
 const charLimit = 90;

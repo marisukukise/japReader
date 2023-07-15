@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('reader');
@@ -9,7 +9,7 @@ import { getSettingsStore, getWindowStore } from '@globals/ts/main/initializeSto
 const settingsStore = getSettingsStore();
 const { useDeepL } = settingsStore.get('global_settings');
 
-import { addHideUIListener, listenForAnotherWindowIsReady, setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
+import { setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
 import { Sentence } from './Sentence';
 import Loader from '@globals/components/Loader/Loader';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
@@ -21,11 +21,11 @@ import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/Configura
 import FuriganaController from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/FuriganaController';
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 
-export const isIchiReadyAtom = atom<boolean>(false)
-export const didIchiFailAtom = atom<boolean>(false)
-export const japaneseSentenceAtom = atom<string>('')
-export const translatedSentenceAtom = atom<string>('')
-export const wordListAtom = atom<japReader.IchiParsedWordData[]>([])
+export const isIchiReadyAtom = atom<boolean>(false);
+export const didIchiFailAtom = atom<boolean>(false);
+export const japaneseSentenceAtom = atom<string>('');
+export const translatedSentenceAtom = atom<string>('');
+export const wordListAtom = atom<japReader.IchiParsedWordData[]>([]);
 
 const windowStore = getWindowStore();
 
@@ -72,7 +72,7 @@ const ParseNotificationMessage = () => {
 const Message = () => {
     const isIchiReady = useAtomValue(isIchiReadyAtom);
     const didIchiFail = useAtomValue(didIchiFailAtom);
-    const japaneseSentence = useAtomValue(japaneseSentenceAtom)
+    const japaneseSentence = useAtomValue(japaneseSentenceAtom);
 
     if (didIchiFail) return (<IchiFailedMessage />);
     if (!isIchiReady) return (<ConnectingToIchiMessage />);

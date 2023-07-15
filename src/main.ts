@@ -52,8 +52,8 @@ app.whenReady().then(() => {
 
     if (process.env.JAPREADER_ENV !== 'dev') {
         const orig_len = DISABLED_SHORTCUTS.length;
-        for (var i = 0; i < orig_len ; i++) {
-            DISABLED_SHORTCUTS.shift()
+        for (let i = 0; i < orig_len ; i++) {
+            DISABLED_SHORTCUTS.shift();
         }
     }
 
