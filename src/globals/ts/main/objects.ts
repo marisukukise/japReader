@@ -9,15 +9,6 @@ export const IPC_CHANNELS = {
     ANKI_CONNECT: {
         INVOKE: 'invoke/anki'
     },
-    JAPANESE_POD: {
-        GET: {
-            AUDIO_DURATION: 'get/japanesePod/audioDuration',
-            CAN_PLAY_AUDIO: 'get/japanesePod/canPlayAudio'
-        },
-        INVOKE: {
-            PLAY_AUDIO: 'invoke/japanesePod/play'
-        }
-    },
     MAIN: {
         HANDLE: {
             RESTART_PROGRAM: 'main/handle/restartProgram'

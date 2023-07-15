@@ -82,7 +82,7 @@ const _anki_GetNoteIdFromInfinitive = async (infinitive: string) => {
         });
 };
 
-const ANKI_MESSAGES = {
+const BUTTON_MESSAGES = {
     'ADD': 'Add to Anki',
     'PREVIEW': 'Preview in Anki',
     'ERROR': 'AnkiConnect Error',
@@ -101,20 +101,20 @@ export const AnkiButton = () => {
     const canAddWord = useRef(false);
     const noteId = useRef(0);
     const [disabled, setDisabled] = useState(false);
-    const [buttonText, setButtonText] = useState('Loading...');
+    const [buttonText, setButtonText] = useState(BUTTON_MESSAGES.LOADING);
 
 
     /* @BEGIN Callback functions */
 
     const error_Callback = (error: any) => {
-        setButtonText(ANKI_MESSAGES.ERROR);
+        setButtonText(BUTTON_MESSAGES.ERROR);
         log.error(error);
     };
 
     const success_AddedToAnkiCallback = (addedNoteId: number) => {
         noteId.current = addedNoteId;
         canAddWord.current = false;
-        setLoading(false, ANKI_MESSAGES.PREVIEW);
+        setLoading(false, BUTTON_MESSAGES.PREVIEW);
     };
 
     const error_AddedToAnkiCallback = (error: any) => {
@@ -122,7 +122,7 @@ export const AnkiButton = () => {
     };
 
     const success_PreviewedNoteGUICallback = (result: any) => {
-        setLoading(false, ANKI_MESSAGES.PREVIEW);
+        setLoading(false, BUTTON_MESSAGES.PREVIEW);
     };
 
     const error_PreviewedNoteGUICallback = (error: any) => {
@@ -134,7 +134,7 @@ export const AnkiButton = () => {
 
     const setLoading = (state: boolean, buttonText = '') => {
         setDisabled(state);
-        setButtonText(state ? ANKI_MESSAGES.LOADING : buttonText);
+        setButtonText(state ? BUTTON_MESSAGES.LOADING : buttonText);
     };
 
     useEffect(() => {
@@ -144,7 +144,7 @@ export const AnkiButton = () => {
             .then((result: number) => {
                 noteId.current = result;
                 canAddWord.current = noteId.current === 0;
-                setLoading(false, canAddWord.current ? ANKI_MESSAGES.ADD : ANKI_MESSAGES.PREVIEW);
+                setLoading(false, canAddWord.current ? BUTTON_MESSAGES.ADD : BUTTON_MESSAGES.PREVIEW);
             })
             .catch((error: any) => {
                 error_Callback(error);

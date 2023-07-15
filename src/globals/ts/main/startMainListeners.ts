@@ -2,7 +2,7 @@ import path from 'path';
 import mainLog from 'electron-log';
 import axios from 'axios';
 const log = mainLog.scope('main');
-import { app, clipboard, ipcMain } from 'electron';
+import { app, clipboard, ipcMain, net, protocol } from 'electron';
 import { getHistoryStore } from '@globals/ts/main/initializeStore';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 const historyStore = getHistoryStore();

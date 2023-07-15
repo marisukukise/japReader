@@ -142,8 +142,9 @@ window.addEventListener('DOMContentLoaded', () => {
             wordData.wordKana = getReading(dt.textContent);
         }
 
+        const alternatives = document.querySelector('.current-word dl.alternatives');
         if (current_word.innerHTML.includes('[')) {
-            wordData.definitions = current_word.innerHTML;
+            wordData.definitions = alternatives.innerHTML;
         }
 
         WORDS.push(wordData);

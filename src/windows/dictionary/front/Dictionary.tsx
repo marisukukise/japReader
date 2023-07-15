@@ -28,6 +28,7 @@ import { atom, useAtom, useSetAtom } from 'jotai';
 
 import { Grid, Button, ButtonGroup, useToasts } from '@geist-ui/core';
 import { AnkiButton } from './AnkiButton';
+import { AudioButton } from './AudioButton';
 
 const {
     useDeep, ankiIntegration, ankiDeckName, ankiModelName,
@@ -85,8 +86,8 @@ export const Dictionary = () => {
 
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, (
-            event, 
-            SelectedWord: japReader.IchiParsedWordData & {japaneseSentence: string, translatedSentence: string}
+            event,
+            SelectedWord: japReader.IchiParsedWordData & { japaneseSentence: string, translatedSentence: string }
         ) => {
             setStatus(SelectedWord.status);
             setWord(SelectedWord.word);
@@ -200,21 +201,15 @@ export const Dictionary = () => {
                     </Grid>
                 </Grid.Container>
 
-                <div>
+                <div id="main-buttons">
                     <AudioButton />
+                    {ankiIntegration && <AnkiButton /> }
+                    <ButtonGroup>
+                        <Button onClick={setSeenStatus}>Seen</Button>
+                        <Button onClick={setKnownStatus}>Known</Button>
+                        <Button onClick={setIgnoredStatus}>Ignored</Button>
+                    </ButtonGroup>
                 </div>
-
-                {ankiIntegration &&
-                    <div>
-                        <AnkiButton />
-                    </div>
-                }
-
-                <ButtonGroup>
-                    <Button onClick={setSeenStatus}>Seen</Button>
-                    <Button onClick={setKnownStatus}>Known</Button>
-                    <Button onClick={setIgnoredStatus}>Ignored</Button>
-                </ButtonGroup>
                 <h1 className={status}><FuriganaJSX kanaOrKanji={infinitive} kana={infinitiveKana} /></h1>
                 <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
             </div >

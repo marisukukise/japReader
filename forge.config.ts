@@ -48,6 +48,7 @@ const config: ForgeConfig = {
             devContentSecurityPolicy: '\
             default-src \'self\' \'unsafe-inline\' data:;\
             script-src \'self\' \'unsafe-eval\' \'unsafe-inline\' data:;\
+            media-src \'self\' \'unsafe-eval\' \'unsafe-inline\' data: http: https:;\
             connect-src * \'unsafe-eval\' \'unsafe-inline\';\
             ',
             mainConfig,
