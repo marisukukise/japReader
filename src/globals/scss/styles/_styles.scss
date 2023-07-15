@@ -29,7 +29,8 @@
       background-repeat: no-repeat;
       background-size: 10px 10px;
 
-      color: var(--primary-font) !important;
+      color: var(--font-color) !important;
+      text-shadow: 0px 0px var(--font-glow-strength) var(--font-glow-color);
 
       &.hide-border-markings {
           background: none;

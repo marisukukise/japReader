@@ -7,9 +7,9 @@
     -webkit-app-region: drag;
     cursor: grab;
     z-index: 1001;
-    background-color: var(--primary-background);
+    background-color: var(--background-color);
     background-size: 5px 5px;
-    background-image: repeating-linear-gradient(5deg, var(--primary-background) 0, var(--primary-background) 1px, black 0, var(--primary-background) 50%);
+    background-image: repeating-linear-gradient(5deg, var(--background-color) 0, var(--background-color) 1px, black 0, var(--background-color) 50%);
 }
 
 .draggable-bar:hover {

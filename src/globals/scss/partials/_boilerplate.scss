@@ -8,13 +8,13 @@ main {
 
 html {
     box-sizing: border-box;
-    font-size: var(--main-font-size) !important;
+    font-size: var(--font-size) !important;
     user-select: none;
 }
 
 body {
     margin: 0;
-    padding: calc(1rem + var(--draggable-bar-height)) 1rem 1rem 1rem !important;
+    padding: calc(var(--body-padding) + var(--draggable-bar-height)) var(--body-padding) var(--body-padding) var(--body-padding) !important;
 }
 
 body {

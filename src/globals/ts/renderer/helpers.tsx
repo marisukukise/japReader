@@ -174,52 +174,102 @@ export const listenForAnotherWindowIsReady = (
     }
 };
 
-export const changeFontColor = (windowName: string, color: string) => {
+const changeDOMLength = (
+    DOMProperty: string,
+    min: number,
+    max: number,
+    step: number,
+    unit: string,
+    windowName: string,
+    storeProperty: string,
+    conditionForIncrement: boolean
+) => {
+    // if conditionForIncrement true: then increment
+    // if conditionForIncrement false: then decrement
     const root = document.querySelector(':root') as HTMLElement;
-    const fontColorRootProperty = '--primary-font';
-    try {
-        windowStore.set(`${windowName}.additional.fontColor`, color);
-        root.style.setProperty(
-            fontColorRootProperty,
-            color
-        );
-    } catch {
-        throw new Error('Wrong color format');
-    }
-};
 
-export const zoom = (windowName: string, conditionForZoomIn: boolean): string => {
-    // if conditionForZoomIn true:  then zoom in
-    // if conditionForZoomIn false: then zoom out
-    const root = document.querySelector(':root') as HTMLElement;
-    const fontSizeRootPropertry = '--main-font-size';
-    const minFontSize = 6;
-
-    const currentFontSize = parseInt(
+    const currentLength = +parseFloat(
         getComputedStyle(root)
-            .getPropertyValue(fontSizeRootPropertry)
-            .slice(0, -2)
-    );
-    const newFontSize = (currentFontSize + (conditionForZoomIn ? 1 : (currentFontSize > minFontSize ? -1 : 0))).toString() + 'px';
-    root.style.setProperty(
-        fontSizeRootPropertry,
-        newFontSize
-    );
-    windowStore.set(`${windowName}.additional.fontSize`, newFontSize);
-    return newFontSize;
-};
+            .getPropertyValue(DOMProperty)
+            .slice(0, -unit.length)).toFixed(2);
 
-export const changeBackgroundColorVariable = (windowName: string, color: string) => {
+    log.debug("current", currentLength)
+    const newLength = currentLength + (conditionForIncrement ? 1 : -1) * step;
+    log.debug("new", newLength)
+    const finalLength = ((newLength < min || newLength > max) ? currentLength : newLength).toFixed(2) + unit;
+    log.debug("final", finalLength)
+
+    if (storeProperty) {
+        windowStore.set(`${windowName}.${storeProperty}`, finalLength);
+    }
+    root.style.setProperty(
+        DOMProperty,
+        finalLength
+    );
+    return finalLength;
+}
+
+const changeDOMColor = (
+    DOMProperty: string,
+    windowName: string,
+    storeProperty: string,
+    color: string,
+) => {
     const root = document.querySelector(':root') as HTMLElement;
-    const backgroundColorRootProperty = '--primary-background';
+
     try {
+        if (storeProperty) {
+            windowStore.set(`${windowName}.${storeProperty}`, color);
+        }
         root.style.setProperty(
-            backgroundColorRootProperty,
+            DOMProperty,
             color
         );
     } catch {
         throw new Error('Wrong color format');
     }
+}
+
+
+
+
+export const changeFontGlowColor = (windowName: string, color: string) => {
+    changeDOMColor('--font-glow-color', windowName, 'additional.fontGlowColor', color)
+};
+
+export const changeFontColor = (windowName: string, color: string) => {
+    changeDOMColor('--font-color', windowName, 'additional.fontColor', color)
+};
+
+export const changeFontSizeDOM = (windowName: string, conditionForZoomIn: boolean): string => {
+    return changeDOMLength(
+        '--font-size',
+        6, 999, 1, "px",
+        windowName, 'additional.fontSize',
+        conditionForZoomIn
+    )
+};
+
+export const changeBodyPaddingDOM = (windowName: string, conditionForZoomIn: boolean): string => {
+    return changeDOMLength(
+        '--body-padding',
+        0, 10, 0.1, "rem",
+        windowName, 'additional.bodyPadding',
+        conditionForZoomIn
+    )
+};
+
+export const changeFontGlowStrengthDOM = (windowName: string, conditionForIncrement: boolean): string => {
+    return changeDOMLength(
+        '--font-glow-strength',
+        0, 0.25, 0.01, "em",
+        windowName, 'additional.fontGlowStrength',
+        conditionForIncrement
+    )
+}
+
+export const changeBackgroundColorDOM = (windowName: string, color: string) => {
+    changeDOMColor('--background-color', windowName, '', color);
 };
 
 const KEYBOARD_KEYS = {
@@ -233,43 +283,51 @@ const KEYBOARD_KEYS = {
 export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
     window.addEventListener('wheel', (event) => {
         if (event.ctrlKey) {
-            zoom(windowName, event.deltaY < 0);
+            changeFontSizeDOM(windowName, event.deltaY < 0);
         }
     }, { passive: false });
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-        case KEYBOARD_KEYS.PLUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_ADD:
-            zoom(windowName, true);
-            break;
-        case KEYBOARD_KEYS.MINUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-            zoom(windowName, false);
-            break;
-        case KEYBOARD_KEYS.KEY_H:
-            ipcRenderer.send(ipcBase.SET.HIDE_UI);
-            break;
+            case KEYBOARD_KEYS.PLUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_ADD:
+                changeFontSizeDOM(windowName, true);
+                break;
+            case KEYBOARD_KEYS.MINUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+                changeFontSizeDOM(windowName, false);
+                break;
+            case KEYBOARD_KEYS.KEY_H:
+                ipcRenderer.send(ipcBase.SET.HIDE_UI);
+                break;
         }
     }, true);
 };
 
-export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
+const setRootPropertyIfExists = (DOMProperty: string, storeProperty: string, additionalCondition: boolean = true) => {
     const root = document.querySelector(':root') as HTMLElement;
-    const fontSizeRootPropertry = '--main-font-size';
-    const fontColorRootProperty = '--primary-font';
-    if (windowStore.has(`${windowName}.additional.fontSize`) && /^\d+px$/.test(windowStore.get(`${windowName}.additional.fontSize`))) {
+    if (windowStore.has(storeProperty) && additionalCondition) {
         root.style.setProperty(
-            fontSizeRootPropertry,
-            windowStore.get(`${windowName}.additional.fontSize`)
+            DOMProperty,
+            windowStore.get(storeProperty)
         );
     }
-    if (windowStore.has(`${windowName}.additional.fontColor`)) {
-        root.style.setProperty(
-            fontColorRootProperty,
-            windowStore.get(`${windowName}.additional.fontColor`)
-        );
-    }
+}
+
+const numberRegexTest = (unit: string) => {
+    return new RegExp('\^\\d+\\.\\d{2}' + unit + '\$')
+}
+
+export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
+    setRootPropertyIfExists('--font-size', `${windowName}.additional.fontSize`,
+        numberRegexTest('px').test(windowStore.get(`${windowName}.additional.fontSize`)))
+    setRootPropertyIfExists('--font-glow-strength', `${windowName}.additional.fontGlowStrength`,
+        numberRegexTest('em').test(windowStore.get(`${windowName}.additional.fontGlowStrength`)))
+    setRootPropertyIfExists('--body-padding', `${windowName}.additional.bodyPadding`,
+        numberRegexTest('rem').test(windowStore.get(`${windowName}.additional.bodyPadding`)))
+    setRootPropertyIfExists('--font-color', `${windowName}.additional.fontColor`)
+    setRootPropertyIfExists('--font-glow-color', `${windowName}.additional.fontGlowColor`)
+
 };
 
 export const initializeWindowSettings = (windowName: string, ipcBase: any) => {

@@ -1,15 +1,22 @@
 import { Button, ButtonGroup } from '@geist-ui/core';
-import { zoom } from '@globals/ts/renderer/helpers';
+import { getWindowStore } from '@globals/ts/main/initializeStore';
+import { changeFontSizeDOM } from '@globals/ts/renderer/helpers';
+import { useState } from 'react';
+const windowStore = getWindowStore()
 
 type Props = {
-    windowName: string
+    windowName: string,
+    label: string,
+    storeProperty: string,
+    callback: (windowName: string, conditionForZoomIn: boolean) => string
 }
-const ZoomButtonGroup = ({windowName}: Props): JSX.Element => {
+const ZoomButtonGroup = ({ windowName, label, storeProperty, callback }: Props): JSX.Element => {
+    const [length, setLength] = useState(windowStore.get(storeProperty, 0));
     return <div className="zoom-button-group-wrapper">
-        Font size: 
+        {label} {length}
         <ButtonGroup>
-            <Button onClick={() => zoom(windowName, false)}>-</Button>
-            <Button onClick={() => zoom(windowName, true)}>+</Button>
+            <Button onClick={() => setLength(callback(windowName, false))}>-</Button>
+            <Button onClick={() => setLength(callback(windowName, true))}>+</Button>
         </ButtonGroup>
     </div>;
 };
