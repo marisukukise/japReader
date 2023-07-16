@@ -97,7 +97,7 @@ export const addUIListeners = (
                 showToast(<span style={{ fontSize: '0.6rem' }}>
                     UI has been hidden. <br />
                     Press H to bring it back. <br />
-                    Press Ctrl+H to show all windows.
+                    Press Alt+H to show all windows.
                 </span>, 1000);
             }
 

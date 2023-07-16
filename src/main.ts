@@ -72,9 +72,9 @@ app.whenReady().then(() => {
         });
     });
 
-    globalShortcut.register('CommandOrControl+H', () => {
+    globalShortcut.register('Alt+H', () => {
         for (const [key, window] of Object.entries(windows)) {
-            if (['reader', 'translation', 'settings', 'dictionary'].includes(key)) {
+            if (['reader', 'translation', 'dictionary'].includes(key)) {
                 window.show();
 
                 // @ts-expect-error The keys are limited to the ones that exist

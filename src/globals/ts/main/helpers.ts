@@ -27,6 +27,9 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
 
     ipcMain.on(ipcBase.SET.SHOW, () => {
         window.show();
+        if(windowStore.get(`${windowName}.alwaysOnTop`, false) != window.isAlwaysOnTop()) {
+            window.setAlwaysOnTop(windowStore.get(`${windowName}.alwaysOnTop`, false), "pop-up-menu")
+        }
     });
 
     ipcMain.on(ipcBase.SET.MOVE_TOP, () => {

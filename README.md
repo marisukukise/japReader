@@ -110,6 +110,8 @@ you can do everything that was intended through GUI in the options menu
 # [![](images/logo/logo_32.png)](#-controls) Controls
 ### <ins>Keybindings</ins>
 - `H` Hide UI
+- `Alt+H` Show all windows
+- `Ctrl+Scroll`/`+/-` Increase/Decrease font size
 
 ### <ins>Mouse buttons</ins>
 In the Reader window you can quickly change the status of a word with mouse buttons:

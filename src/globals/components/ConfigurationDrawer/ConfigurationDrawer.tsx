@@ -25,12 +25,13 @@ const ConfigurationDrawer = ({ settings }: Props): JSX.Element => {
     }, []);
 
     const PROTIPS = 'Protips:\n\
-    1. Press H to hide the window borders and make it click-through;\n\
-    2. Press Ctrl+H to bring all the windows up;\n\
-    3. Zoom font with +/- buttons or Ctrl+Scroll;\n\
-    4. You can set the window to transparent;\n\
-    5. For better text visibility you can increase "font glow\n\
-    6. Set the window to "always on top" for apps on fullscreen;\n\
+    1. You can change the status of words with left/right mouse clicks;\n\
+    2. Press H to hide the window borders;\n\
+    3. Press Alt+H to bring all the windows up;\n\
+    4. Zoom font with +/- buttons or Ctrl+Scroll;\n\
+    5. You can change the window color to transparent;\n\
+    6. For better text visibility you can increase "font glow"\n\
+    7. Set the window to "always on top" for apps on fullscreen;\n\
     \n\
     This is the alpha version of the program so it may be bugged, but it should be mostly usable.\n\
     If you encounter bugs you can open an issue on japReader github.\n\

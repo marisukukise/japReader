@@ -124,8 +124,6 @@ export const Translation = () => {
     );
 
     useEffect(() => {
-        // TODO: Only move translation window and reader window to top on
-        // japaneseSentence change if their window.isAlwaysOnTop() is true
         ipcRenderer.send(IPC_CHANNELS.TRANSLATION.SET.SHOW);
     }, [japaneseSentence]);
 
