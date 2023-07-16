@@ -39,6 +39,9 @@ jobs:
 
       - name: Set JAPREADER_ENV to 'production'
         run: export JAPREADER_ENV=production
+        
+      - name: Set NODE_ENV to 'production'
+        run: export NODE_ENV=production
 
       - name: Make
         run: yarn make
@@ -82,6 +85,9 @@ jobs:
       - name: Set JAPREADER_ENV to 'production'
         run: export JAPREADER_ENV=production
         
+      - name: Set NODE_ENV to 'production'
+        run: export NODE_ENV=production
+        
       - name: Make
         run: yarn make
         
@@ -112,6 +118,9 @@ jobs:
         
       - name: Set JAPREADER_ENV to 'production'
         run: SET JAPREADER_ENV=production
+        
+      - name: Set NODE_ENV to 'production'
+        run: SET NODE_ENV=production
         
       - name: Make
         run: yarn make
