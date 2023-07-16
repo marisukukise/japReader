@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ChromePicker } from 'react-color';
+import { ChromePicker, ColorResult, RGBColor } from 'react-color';
 
 import { getWindowStore } from '@globals/ts/main/initializeStore';
 const windowStore = getWindowStore();
 
-const getPickerColor = (property: string): { r: number, g: number, b: number, a: number } => {
+
+const getPickerColor = (property: string): RGBColor => {
     if (windowStore.has(property)) {
         const rgba_string = windowStore.get(property);
         const rgb_arr = rgba_string
@@ -23,14 +24,14 @@ const getPickerColor = (property: string): { r: number, g: number, b: number, a:
 
 type Props = {
     callback: (color: string) => void,
-storeProperty: string,
+    storeProperty: string,
 }
-const WindowColorPicker = ({callback, storeProperty}: Props): JSX.Element => {
+const WindowColorPicker = ({ callback, storeProperty }: Props): JSX.Element => {
     const [color, setColor] = useState(getPickerColor(storeProperty));
-    const onChange = (color: any) => {
+    const onChange = (color: ColorResult) => {
         setColor(color.rgb);
     };
-    const onChangeComplete = (color: any) => {
+    const onChangeComplete = (color: ColorResult) => {
         const r = color.rgb.r;
         const g = color.rgb.g;
         const b = color.rgb.b;
@@ -41,7 +42,7 @@ const WindowColorPicker = ({callback, storeProperty}: Props): JSX.Element => {
     };
 
     return (<>
-        <ChromePicker color={color} onChange={onChange} onChangeComplete={onChangeComplete}/>
+        <ChromePicker color={color} onChange={onChange} onChangeComplete={onChangeComplete} />
     </>);
 };
 

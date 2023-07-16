@@ -19,7 +19,7 @@ const ConfigurationDrawer = ({ settings }: Props): JSX.Element => {
     const close = () => { setOpen(false); };
 
     useEffect(() => {
-        ipcRenderer.on('blur', (event: any) => {
+        ipcRenderer.on('blur', () => {
             close();
         });
     }, []);
@@ -33,7 +33,7 @@ const ConfigurationDrawer = ({ settings }: Props): JSX.Element => {
     6. For better text visibility you can increase "font glow"\n\
     7. Set the window to "always on top" for apps on fullscreen;\n\
     \n\
-    This is the alpha version of the program so it may be bugged, but it should be mostly usable.\n\
+    This is the beta version of the program so it may be bugged, but it should be mostly usable.\n\
     If you encounter bugs you can open an issue on japReader github.\n\
     Have fun!';
 

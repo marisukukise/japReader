@@ -123,10 +123,10 @@ export function startMainListeners() {
             if (Object.getOwnPropertyNames(data).length != 2) {
                 throw 'AnkiConnect: response has an unexpected number of fields';
             }
-            if (!data.hasOwnProperty('error')) {
+            if (!Object.prototype.hasOwnProperty.call(data, 'error')) {
                 throw 'AnkiConnect: response is missing required error field';
             }
-            if (!data.hasOwnProperty('result')) {
+            if (!Object.prototype.hasOwnProperty.call(data, 'result')) {
                 throw 'AnkiConnect: response is missing required result field';
             }
             if (data.error) {

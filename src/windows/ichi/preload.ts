@@ -1,7 +1,7 @@
 // Some black magic is going on in this file
 // Better left alone as long as it works
 
-const { ipcRenderer } = require('electron');
+import { ipcRenderer } from 'electron';
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('ichi');
 import { IPC_CHANNELS } from '@globals/ts/main/objects';

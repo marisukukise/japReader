@@ -62,7 +62,7 @@ app.whenReady().then(() => {
 
     app.on('browser-window-focus', () => {
         DISABLED_SHORTCUTS.forEach((SHORTCUT: string) => {
-            globalShortcut.register(SHORTCUT, () => { });
+            globalShortcut.register(SHORTCUT, () => { /* Register undefined to the bind not work */ });
         });
     });
 

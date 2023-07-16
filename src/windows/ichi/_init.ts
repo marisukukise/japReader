@@ -32,7 +32,7 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
     });
 
 
-    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, (event) => {
+    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, () => {
         ichiWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY);
     });
 

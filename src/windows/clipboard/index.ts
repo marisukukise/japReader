@@ -1,4 +1,4 @@
-const { dialog, ipcRenderer, clipboard } = require('electron');
+import { ipcRenderer, clipboard } from 'electron';
 const clipboardListener = require('clipboard-event');
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('clipboard');

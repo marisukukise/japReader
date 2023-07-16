@@ -31,11 +31,7 @@ import { AnkiButton } from './AnkiButton';
 import { AudioButton } from './AudioButton';
 import { OpenSettingsButton } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/OpenSettingsButton';
 
-const {
-    useDeep, ankiIntegration, ankiDeckName, ankiModelName,
-    ankiInfinitive, ankiInfinitiveKana, ankiInfinitiveFurigana,
-    ankiWord, ankiWordKana, ankiWordFurigana, ankiJapaneseSentence,
-     } = settingsStore.get('global_settings');
+const { ankiIntegration } = settingsStore.get('global_settings');
 
 
 export const wordAtom = atom<string>('');
@@ -114,7 +110,7 @@ export const Dictionary = () => {
             event,
             SelectedWord: japReader.IchiParsedWordData & { japaneseSentence: string, translatedSentence: string }
         ) => {
-            console.log(SelectedWord.translatedSentence, SelectedWord.japaneseSentence)
+            console.log(SelectedWord.translatedSentence, SelectedWord.japaneseSentence);
             setStatus(SelectedWord.status);
             setWord(SelectedWord.word);
             setWordKana(SelectedWord.wordKana);

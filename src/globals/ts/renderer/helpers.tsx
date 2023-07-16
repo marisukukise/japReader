@@ -369,7 +369,7 @@ export const setIgnoreMouseEvents = (state: boolean, isUIShown: boolean) => {
 
 
 const numberRegexTest = (unit: string) => {
-    return new RegExp('\^\\d+\\.\\d{2}' + unit + '\$');
+    return new RegExp('^\\d+\\.\\d{2}' + unit + '$');
 };
 
 export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {

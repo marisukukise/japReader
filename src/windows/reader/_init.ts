@@ -30,7 +30,7 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     showWindowWhenReady(readerWindow, 'reader', IPC_CHANNELS.READER, true);
 
     readerWindow.on('close', (event: any) => {
-        showExitDialog(readerWindow, event);
+        showExitDialog(event, readerWindow);
     });
 
     if (useDeepL) {

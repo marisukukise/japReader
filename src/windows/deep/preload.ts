@@ -59,7 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const connectionCheck = setTimeout(() => {
             translator
                 .getUsage()
-                .then((e: any) => {
+                .then(() => {
                     ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY);
                     clearInterval(connectionCheck);
                 });

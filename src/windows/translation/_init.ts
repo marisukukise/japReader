@@ -1,7 +1,6 @@
 import { BrowserWindow } from 'electron';
 
-import { getWindowStore, getSettingsStore } from '@globals/ts/main/initializeStore';
-const windowStore = getWindowStore();
+import { getSettingsStore } from '@globals/ts/main/initializeStore';
 import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from '@globals/ts/main/helpers';
 
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
@@ -33,7 +32,7 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
 
     if (!useReader) {
         translationWindow.on('close', (event: any) => {
-            showExitDialog(translationWindow, event);
+            showExitDialog(event, translationWindow);
         });
     }
     else {

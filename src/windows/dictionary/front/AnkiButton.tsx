@@ -34,10 +34,10 @@ const _anki_GuiEditNote = async (noteId: number) => {
 const _anki_AddNote = async (
     wordData: Omit<japReader.IchiParsedWordData, 'status'> & { japaneseSentence: string, translatedSentence: string }
 ) => {
-    console.log("jp", wordData.japaneseSentence)
-    console.log("en", wordData.translatedSentence)
-    console.log("jp fl", ankiJapaneseSentence)
-    console.log("en fl", ankiTranslatedSentence)
+    console.log('jp', wordData.japaneseSentence);
+    console.log('en', wordData.translatedSentence);
+    console.log('jp fl', ankiJapaneseSentence);
+    console.log('en fl', ankiTranslatedSentence);
     const fields = {};
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiInfinitive}`, wordData.infinitive);
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiInfinitiveKana}`, wordData.infinitiveKana);
@@ -156,7 +156,7 @@ export const AnkiButton = () => {
     }, [infinitive]);
 
     const addWordToAnki = () => {
-        console.log(translatedSentence)
+        console.log(translatedSentence);
         setLoading(true);
         _anki_AddNote({
             word: word,

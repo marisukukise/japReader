@@ -66,15 +66,15 @@ const schemaAllowedProperties = {
 };
 
 const defaultAdditionalWindowProperties = {
-    "fontSize": "16.00pt",
-    "fontGlowStrength": "1",
-    "bodyPadding": "1.00rem"
-}
+    'fontSize': '16.00pt',
+    'fontGlowStrength': '1',
+    'bodyPadding': '1.00rem'
+};
 
 const defaultMainWindowProperties = {
-    "alwaysOnTop": false,
-    "backgroundColor": "rgba(231, 222, 230, 0.925)",
-}
+    'alwaysOnTop': false,
+    'backgroundColor': 'rgba(231, 222, 230, 0.925)',
+};
 
 const schemaWindow = {
     settings: {
@@ -104,8 +104,8 @@ const schemaWindow = {
             ...defaultMainWindowProperties,
             additional: {
                 ...defaultAdditionalWindowProperties,
-                "furigana": [
-                    "new", "seen"
+                'furigana': [
+                    'new', 'seen'
                 ]
             }
         }

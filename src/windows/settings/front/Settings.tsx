@@ -13,7 +13,7 @@ import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/Configu
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 import { Button, Checkbox as GeistCheckbox, Input as GeistInput, useToasts } from '@geist-ui/core';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
 import { ipcRenderer } from 'electron';
 
@@ -30,22 +30,40 @@ interface InputProps {
     settingName: string;
     disabled?: boolean;
     children?: ReactNode;
+    password?: boolean
 }
 
-const Input = ({ formData, disabled, setFormData, settingName, placeholder, children }: InputProps & { placeholder: string }) => {
-    return <GeistInput
-        disabled={disabled}
-        name={settingName}
-        id={settingName}
-        value={formData[settingName]}
-        placeholder={placeholder}
-        onChange={(e: any) => {
-            setFormData((prevFormData: any) => ({
-                ...prevFormData, [settingName]: e.target.value
-            }));
-        }} >
-        {children}
-    </GeistInput>;
+const Input = ({ formData, disabled, setFormData, settingName, placeholder, password, children }: InputProps & { placeholder: string }) => {
+
+    return <>{password ?
+        <GeistInput.Password
+            disabled={disabled}
+            name={settingName}
+            id={settingName}
+            value={formData[settingName]}
+            placeholder={placeholder}
+            onChange={(e: any) => {
+                setFormData((prevFormData: any) => ({
+                    ...prevFormData, [settingName]: e.target.value
+                }));
+            }} >
+            {children}
+        </GeistInput.Password>
+        :
+        <GeistInput
+            disabled={disabled}
+            name={settingName}
+            id={settingName}
+            value={formData[settingName]}
+            placeholder={placeholder}
+            onChange={(e: any) => {
+                setFormData((prevFormData: any) => ({
+                    ...prevFormData, [settingName]: e.target.value
+                }));
+            }} >
+            {children}
+        </GeistInput>
+    }</>;
 };
 
 const Checkbox = ({ formData, disabled, setFormData, settingName, children }: InputProps) => {
@@ -117,13 +135,6 @@ export const Settings = () => {
         log
     );
 
-    useEffect(() => {
-
-        return () => {
-
-        };
-    }, []);
-
     const settings = <>
         <ConfigurationDrawerCommonSettings
             windowName="settings"
@@ -146,12 +157,12 @@ export const Settings = () => {
             <fieldset id="global">
                 <legend>Global (all windows)</legend>
                 <Checkbox settingName='clickThroughWindows' formData={formData} setFormData={setFormData}
-                    disabled={false}> (Only for Windows and MacOS) Make windows click-through when the UI is hidden.* 
+                    disabled={false}> (Only for Windows and MacOS) Make windows click-through when the UI is hidden.*
                 </Checkbox>
-                <br/>
-                    *It's a good option for full screen apps combined with "Always on Top". 
-                    When you press H, the window background will become unclickable.
-                    If you're using this option don't stack windows on top of each other, because it bugs out. 
+                <br />
+                *It's a good option for full screen apps combined with "Always on Top".
+                When you press H, the window background will become unclickable.
+                If you're using this option don't stack windows on top of each other, because it bugs out.
             </fieldset>
             <fieldset id="deep">
                 <legend>Translation</legend>
@@ -160,7 +171,7 @@ export const Settings = () => {
                 <Checkbox settingName='useDeepLApi' formData={formData} setFormData={setFormData}
                     disabled={!formData.useDeepL}>Use DeepL API</Checkbox>
                 <Input placeholder="DeepL API Key" settingName='deepLApiKey' formData={formData} setFormData={setFormData}
-                    disabled={!formData.useDeepLApi || !formData.useDeepL} >
+                    disabled={!formData.useDeepLApi || !formData.useDeepL} password>
                     DeepL API Key
                 </Input>
             </fieldset>

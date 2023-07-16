@@ -4,9 +4,7 @@ import { ipcRenderer } from 'electron';
 import { useEffect, useState } from 'react';
 
 
-type Props = {
-    callback: (fontPath: string) => void,
-}
+
 export const FontFamilySelector = () => {
     const handler = (filename: string) => {
         if (filename === 'default') return;

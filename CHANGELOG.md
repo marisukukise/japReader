@@ -1,4 +1,4 @@
-# 2.0.1.alpha1
+# 2.0.0-beta.1
 - Rewritten most of the japReader's code in React+TypeScript
 - Added window transparency support
 - Made windows click-through when the UI is hidden (so that the clicking on the background won't focus the window)

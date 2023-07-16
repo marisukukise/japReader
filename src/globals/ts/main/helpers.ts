@@ -15,7 +15,7 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
         window.setBackgroundColor(value);
     });
 
-    ipcMain.on(ipcBase.TOGGLE.ALWAYS_ON_TOP, (event) => {
+    ipcMain.on(ipcBase.TOGGLE.ALWAYS_ON_TOP, () => {
         const value = window.isAlwaysOnTop();
         windowStore.set(`${windowName}.alwaysOnTop`, !value);
         window.setAlwaysOnTop(!value, 'pop-up-menu');
@@ -28,7 +28,7 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
     ipcMain.on(ipcBase.SET.SHOW, () => {
         window.show();
         if(windowStore.get(`${windowName}.alwaysOnTop`, false) != window.isAlwaysOnTop()) {
-            window.setAlwaysOnTop(windowStore.get(`${windowName}.alwaysOnTop`, false), "pop-up-menu")
+            window.setAlwaysOnTop(windowStore.get(`${windowName}.alwaysOnTop`, false), 'pop-up-menu');
         }
     });
 
@@ -68,7 +68,7 @@ export const passMessageToRenderer = (window: BrowserWindow, ipcChannel: string)
     });
 };
 
-export const showExitDialog = (window: BrowserWindow, event: any): void => {
+export const showExitDialog = (event: any, window: BrowserWindow): void => {
     const choice = dialog.showMessageBoxSync(window,
         {
             type: 'question',

@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import { ReactNode, useEffect, useState } from 'react';
 
+
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('translation');
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
@@ -15,34 +16,45 @@ import { ConfigurationDrawerCommonSettings } from '@globals/components/Configura
 import { Text, useToasts } from '@geist-ui/core';
 import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateSwitch';
 import { OpenSettingsButton } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/OpenSettingsButton';
+import { getSettingsStore } from '@root/src/globals/ts/main/initializeStore';
 
 
+const settingsStore = getSettingsStore();
+
+const { useDeepLApi } = settingsStore.get('global_settings')
+
+const connectionTarget = <>{
+    useDeepLApi ?
+        <>DeepL API</> :
+        <span className="url">https://deepl.com/</span>
+}</>
 
 const DeepFailedMessage = () => {
     return (<Text p className='deep-state-msg failed'>
-        Failed to connect to <span className="url">https://deepl.com/</span>.<br />
-        Check your internet connection and restart japReader.
-    </Text>);
+        Failed to connect to {connectionTarget}.<br />
+        Check your internet connection {useDeepLApi && <>and API key </>}and restart japReader.
+    </Text >);
 };
 
 const ConnectingToDeepMessage = () => {
     return (<Text p className='deep-state-msg connecting'>
-        <Loader /> Connecting to <span className="url">https://deepl.com/</span>...<br />
+        <Loader /> Connecting to {connectionTarget}...<br />
         Please wait patiently.
     </Text>);
 };
 
 const ConnectedToDeepMessage = () => {
     return (<Text p className='deep-state-msg connected'>
-        Successfully connected to <span className="url">https://deepl.com/</span>!
+        Successfully connected to {connectionTarget}!
     </Text>);
 };
 
 const TooManyCharactersCopiedMessage = () => {
     return (<Text p className='deep-state-msg too-many-characters'>
         Too many characters copied to clipboard. <br />
-        No request has been made to <span className="url">https://deepl.com/</span>. <br />
-        This has been implemented to prevent you from getting banned.
+        No request has been made to {connectionTarget}. <br />
+        This has been implemented to prevent you from
+        {useDeepLApi ? <>getting banned</> : <>running out of your quota</>}.
     </Text>);
 };
 
@@ -97,7 +109,7 @@ export const Translation = () => {
     };
 
     const settings = <>
-        <OpenSettingsButton/>
+        <OpenSettingsButton />
         <ConfigurationDrawerCommonSettings
             windowName="translation"
             ipcBase={IPC_CHANNELS.TRANSLATION}
@@ -157,7 +169,7 @@ export const Translation = () => {
         .concat(!showJapaneseSentence ? 'hide-japanese-sentence' : []);
 
     return (<>
-        {isUIShown && <DraggableBar title='japReader - Translation'/>}
+        {isUIShown && <DraggableBar title='japReader - Translation' />}
         <div style={{ textAlign: centerText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >
