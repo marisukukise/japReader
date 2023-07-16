@@ -17,7 +17,7 @@ const {
     ankiDeckName, ankiModelName,
     ankiInfinitive, ankiInfinitiveKana, ankiInfinitiveFurigana,
     ankiWord, ankiWordKana, ankiWordFurigana,
-    ankiJapaneseSentence, ankiDefinitions, ankiEnglishSentence } = settingsStore.get('global_settings');
+    ankiJapaneseSentence, ankiDefinitions, ankiTranslatedSentence } = settingsStore.get('global_settings');
 
 const _anki_PopulateFieldsIfNonEmpty = (fieldsObj: any, key: string, value: any) => {
     if (key) {
@@ -34,6 +34,10 @@ const _anki_GuiEditNote = async (noteId: number) => {
 const _anki_AddNote = async (
     wordData: Omit<japReader.IchiParsedWordData, 'status'> & { japaneseSentence: string, translatedSentence: string }
 ) => {
+    console.log("jp", wordData.japaneseSentence)
+    console.log("en", wordData.translatedSentence)
+    console.log("jp fl", ankiJapaneseSentence)
+    console.log("en fl", ankiTranslatedSentence)
     const fields = {};
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiInfinitive}`, wordData.infinitive);
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiInfinitiveKana}`, wordData.infinitiveKana);
@@ -41,7 +45,7 @@ const _anki_AddNote = async (
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiWordKana}`, wordData.wordKana);
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiDefinitions}`, wordData.definitions);
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiJapaneseSentence}`, wordData.japaneseSentence);
-    _anki_PopulateFieldsIfNonEmpty(fields, `${ankiEnglishSentence}`, wordData.translatedSentence);
+    _anki_PopulateFieldsIfNonEmpty(fields, `${ankiTranslatedSentence}`, wordData.translatedSentence);
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiInfinitiveFurigana}`,
         renderToStaticMarkup(<FuriganaJSX kanaOrKanji={wordData.infinitive} kana={wordData.infinitiveKana} />));
     _anki_PopulateFieldsIfNonEmpty(fields, `${ankiWordFurigana}`,
@@ -152,6 +156,7 @@ export const AnkiButton = () => {
     }, [infinitive]);
 
     const addWordToAnki = () => {
+        console.log(translatedSentence)
         setLoading(true);
         _anki_AddNote({
             word: word,

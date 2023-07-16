@@ -35,7 +35,7 @@ const {
     useDeep, ankiIntegration, ankiDeckName, ankiModelName,
     ankiInfinitive, ankiInfinitiveKana, ankiInfinitiveFurigana,
     ankiWord, ankiWordKana, ankiWordFurigana, ankiJapaneseSentence,
-    ankiEnglishSentence } = settingsStore.get('global_settings');
+     } = settingsStore.get('global_settings');
 
 
 export const wordAtom = atom<string>('');
@@ -114,6 +114,7 @@ export const Dictionary = () => {
             event,
             SelectedWord: japReader.IchiParsedWordData & { japaneseSentence: string, translatedSentence: string }
         ) => {
+            console.log(SelectedWord.translatedSentence, SelectedWord.japaneseSentence)
             setStatus(SelectedWord.status);
             setWord(SelectedWord.word);
             setWordKana(SelectedWord.wordKana);

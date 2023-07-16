@@ -213,7 +213,7 @@ export const Reader = () => {
         .concat(!hasIgnoredStatusFurigana ? 'hide-furigana-ignored' : []);
 
     return (<>
-        {isUIShown && <DraggableBar title='japRe' />}
+        {isUIShown && <DraggableBar title='japReader' />}
         <div style={{ textAlign: isCenteredText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >

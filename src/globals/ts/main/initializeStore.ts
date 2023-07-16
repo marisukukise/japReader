@@ -20,7 +20,7 @@ const schemaSettings = {
             ankiWordFurigana: { default: 'WordFurigana', type: 'string' },
             ankiDefinitions: { default: 'Definitions', type: 'string' },
             ankiJapaneseSentence: { default: 'JapaneseSentence', type: 'string' },
-            ankiEnglishSentence: { default: 'EnglishSentence', type: 'string' },
+            ankiTranslatedSentence: { default: 'TranslatedSentence', type: 'string' },
         },
         default: {}
     }

@@ -66,8 +66,8 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
 
         setStatus(nextWordStatus);
 
+
         // Send messages to dictionary
-        console.log(wordData);
         ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, {
             ...wordData,
             japaneseSentence: japaneseSentence,

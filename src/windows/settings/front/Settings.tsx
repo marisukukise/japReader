@@ -183,8 +183,8 @@ export const Settings = () => {
                     ['WordKana', null],
                     ['WordFurigana', null],
                     ['Definitions', null],
-                    ['Japanese', null],
-                    ['English', null]
+                    ['JapaneseSentence', null],
+                    ['TranslatedSentence', null]
                 ].map((element: Array<string | null>) => {
                     return <Input placeholder={element[1] != null ? element[1] : element[0]}
                         settingName={'anki' + element[0]}
