@@ -25,6 +25,19 @@
         border-radius: 15px;
     }
 
+    img {
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Safari */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        pointer-events: none;
+    }
+
     div.search-engines {
         display: flex;
         justify-content: center;
@@ -44,16 +57,16 @@
         }
 
         .search {
-            filter: invert(0.1) saturate(0.4);
+            filter: brightness(0.8) saturate(0.8);
             max-height: 1em;
             height: 1em;
             width: auto;
-            border-bottom: 1px solid var(--mainFont);
+            border-bottom: 1px solid var(--font-color);
             cursor: pointer;
         }
 
         .search:hover {
-            filter: saturate(1);
+            filter: saturate(1.5);
         }
 
         .search>img {
@@ -74,6 +87,7 @@
         text-align: center;
         color: white;
         text-shadow: 0px 0px 5px black;
+        -webkit-app-region: drag;
 
         .word {
             align-self: center;
@@ -84,19 +98,19 @@
         }
 
         &.new {
-            background-color: color-mix(in srgb, var(--statusNew) 75%, var(--background-color));
+            background-color: color-mix(in srgb, var(--statusNew) 60%, var(--background-color));
         }
 
         &.seen {
-            background-color: color-mix(in srgb, var(--statusSeen) 75%, var(--background-color));
+            background-color: color-mix(in srgb, var(--statusSeen) 60%, var(--background-color));
         }
 
         &.known {
-            background-color: color-mix(in srgb, var(--statusKnown) 75%, var(--background-color));
+            background-color: color-mix(in srgb, var(--statusKnown) 60%, var(--background-color));
         }
 
         &.ignored {
-            background-color: color-mix(in srgb, var(--statusIgnored) 75%, var(--background-color));
+            background-color: color-mix(in srgb, var(--statusIgnored) 60%, var(--background-color));
         }
 
         background-blend-mode: multiply;

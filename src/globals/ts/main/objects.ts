@@ -15,7 +15,8 @@ export const IPC_CHANNELS = {
         },
         HANDLE: {
             IGNORE_MOUSE_EVENTS: 'main/handle/ignoreMouseEvents',
-            RESTART_PROGRAM: 'main/handle/restartProgram'
+            RESTART_PROGRAM: 'main/handle/restartProgram',
+            OPEN_EXTERNAL: 'main/handle/openExternal'
         },
         REQUEST: {
             CUSTOM_FONT_PATH: 'main/request/customFontPath',
@@ -39,6 +40,7 @@ export const IPC_CHANNELS = {
         },
         SET: {
             SHOW: 'reader/set/show',
+            MOVE_TOP: 'reader/set/moveTop',
             HIDE: 'reader/set/hide',
             FOCUS: 'reader/set/focus',
             BACKGROUND_COLOR: 'reader/set/windowBackgroundColor',
@@ -72,6 +74,7 @@ export const IPC_CHANNELS = {
         SET: {
             FOCUS: 'translation/set/focus',
             SHOW: 'translation/set/show',
+            MOVE_TOP: 'translation/set/moveTop',
             HIDE: 'translation/set/hide',
             BACKGROUND_COLOR: 'translation/set/windowBackgroundColor',
             TOGGLE_UI: 'translation/set/toggleUI',
@@ -102,6 +105,7 @@ export const IPC_CHANNELS = {
         SET: {
             FOCUS: 'dictionary/set/focus',
             SHOW: 'dictionary/set/show',
+            MOVE_TOP: 'dictionary/set/moveTop',
             HIDE: 'dictionary/set/hide',
             BACKGROUND_COLOR: 'dictionary/set/windowBackgroundColor',
             TOGGLE_UI: 'dictionary/set/toggleUI',
@@ -122,6 +126,7 @@ export const IPC_CHANNELS = {
         SET: {
             FOCUS: 'settings/set/focus',
             SHOW: 'settings/set/show',
+            MOVE_TOP: 'settings/set/moveTop',
             HIDE: 'settings/set/hide',
             BACKGROUND_COLOR: 'settings/set/windowBackgroundColor',
             TOGGLE_UI: 'settings/set/toggleUI',

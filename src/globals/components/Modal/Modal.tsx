@@ -14,7 +14,7 @@ export const Modal = ({ title, subtitle, buttonText, children }: Props): JSX.Ele
         setState(false);
     };
     return (
-        <div className="modal-component">
+        <div className="modal-component" >
             <Button auto onClick={handler}>{buttonText}</Button>
             <ModalGeist wrapClassName="modal-wrapper" visible={state} onClose={closeHandler}>
                 <ModalGeist.Title>{title}</ModalGeist.Title>

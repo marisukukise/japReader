@@ -2,7 +2,7 @@ import path from 'path';
 import mainLog from 'electron-log';
 import axios from 'axios';
 const log = mainLog.scope('main');
-import { BrowserWindow, app, clipboard, ipcMain, net, protocol } from 'electron';
+import { BrowserWindow, app, clipboard, ipcMain, net, protocol, shell } from 'electron';
 import { promises as fsPromises } from 'fs';
 import { getHistoryStore } from '@globals/ts/main/initializeStore';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
@@ -97,12 +97,18 @@ export function startMainListeners() {
         }
     })
 
-    ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
+    ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, (event, state) => {
         if (process.platform == 'win32' || process.platform == 'darwin') {
             const win = BrowserWindow.fromWebContents(event.sender)
-            win.setIgnoreMouseEvents(ignore, options)
+            const options = state ? { forward: true } : undefined
+            win.setIgnoreMouseEvents(state, options)
         }
     })
+
+    ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.OPEN_EXTERNAL, (event, url) => {
+        console.log("in ipcmain")
+        shell.openExternal(url);
+    });
 
 
     ipcMain.handle(IPC_CHANNELS.ANKI_CONNECT.INVOKE, async (event, action: any, params: any = {}) => {

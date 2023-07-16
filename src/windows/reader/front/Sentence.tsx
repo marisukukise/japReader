@@ -1,11 +1,11 @@
-import { FuriganaJSX, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, setIgnoreMouseEvents, updateWordStatusStore } from '@globals/ts/renderer/helpers';
 import { ipcRenderer } from 'electron';
 import { useEffect, useRef, useState } from 'react';
 import { Text } from '@geist-ui/core';
 
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 import { useAtomValue } from 'jotai';
-import { japaneseSentenceAtom, translatedSentenceAtom, wordListAtom } from './Reader';
+import { isUIShownAtom, japaneseSentenceAtom, translatedSentenceAtom, wordListAtom } from './Reader';
 
 const MOUSE_BUTTONS = {
     'MAIN': 0, // Usually left button
@@ -26,6 +26,7 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
     const [infinitive, setInfinitive] = useState(wordData.infinitive);
     const [definitions, setDefinitions] = useState(wordData.definitions);
     const [status, setStatus] = useState(wordData.status);
+    const isUIShown = useAtomValue(isUIShownAtom)
 
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
@@ -46,21 +47,21 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
         let nextWordStatus = status;
 
         switch (event.button) {
-        // Left mouse button
-        case MOUSE_BUTTONS.MAIN:
-            // + CTRL
-            if (event.ctrlKey)
-                nextWordStatus = STATUS.IGNORED;
+            // Left mouse button
+            case MOUSE_BUTTONS.MAIN:
+                // + CTRL
+                if (event.ctrlKey)
+                    nextWordStatus = STATUS.IGNORED;
 
-            else if (status == STATUS.NEW)
-                nextWordStatus = STATUS.SEEN;
+                else if (status == STATUS.NEW)
+                    nextWordStatus = STATUS.SEEN;
 
-            break;
+                break;
 
             // Right mouse button
-        case MOUSE_BUTTONS.SECONDARY:
-            nextWordStatus = STATUS.KNOWN;
-            break;
+            case MOUSE_BUTTONS.SECONDARY:
+                nextWordStatus = STATUS.KNOWN;
+                break;
         }
 
         setStatus(nextWordStatus);
@@ -72,7 +73,7 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
             japaneseSentence: japaneseSentence,
             translatedSentence: translatedSentence
         });
-        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.SHOW);
+        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.MOVE_TOP);
 
         if (infinitive)
             updateWordStatusStore(infinitive, nextWordStatus);
@@ -83,6 +84,8 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
 
     return definitions
         ? <span
+            onMouseEnter={() => setIgnoreMouseEvents(false, isUIShown)}
+            onMouseLeave={() => setIgnoreMouseEvents(true, isUIShown)}
             onMouseDown={(event) => handleMouseDown(event)}
             className={status + ' word'}>
             <FuriganaJSX kanaOrKanji={word} kana={wordKana} />

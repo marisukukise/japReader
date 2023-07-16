@@ -29,6 +29,10 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
         window.show();
     });
 
+    ipcMain.on(ipcBase.SET.MOVE_TOP, () => {
+        window.moveTop();
+    });
+
     ipcMain.on(ipcBase.SET.HIDE, () => {
         window.hide();
     });

@@ -14,6 +14,7 @@ import { ConfigurationDrawerCommonSettings } from '@globals/components/Configura
 
 import { Text, useToasts } from '@geist-ui/core';
 import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateSwitch';
+import { OpenSettingsButton } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/OpenSettingsButton';
 
 
 
@@ -96,6 +97,7 @@ export const Translation = () => {
     };
 
     const settings = <>
+        <OpenSettingsButton/>
         <ConfigurationDrawerCommonSettings
             windowName="translation"
             ipcBase={IPC_CHANNELS.TRANSLATION}
@@ -122,8 +124,9 @@ export const Translation = () => {
     );
 
     useEffect(() => {
-        // TODO: Add condition to settings
-        ipcRenderer.send(IPC_CHANNELS.TRANSLATION.SET.FOCUS);
+        // TODO: Only move translation window and reader window to top on
+        // japaneseSentence change if their window.isAlwaysOnTop() is true
+        ipcRenderer.send(IPC_CHANNELS.TRANSLATION.SET.MOVE_TOP);
     }, [japaneseSentence]);
 
     useEffect(() => {

@@ -47,6 +47,9 @@ body {
     background-repeat: no-repeat;
     background-size: 10px 10px;
 
+    .drawer-wrapper, .toast, .modal-wrapper{
+        text-shadow: none;
+    }
 
     color: var(--font-color) !important;
 

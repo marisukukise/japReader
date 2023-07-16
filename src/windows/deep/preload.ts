@@ -46,6 +46,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 );
         }
         else {
+            // TODO: Add support of languages other than English (ichi dictionary is English-only, 
+            // some people probably only want to use the DeepL translation). 
+            // Also remember about API in translator.translateText function
             document.location.href = 'https://www.deepl.com/translator#ja/en/';
             document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
         }

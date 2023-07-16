@@ -20,15 +20,16 @@ import { getSettingsStore, getStatusDataStore } from '@globals/ts/main/initializ
 const statusDataStore = getStatusDataStore();
 const settingsStore = getSettingsStore();
 
-import { FuriganaJSX, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, setIgnoreMouseEvents, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
-import { atom, useAtom, useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 import { Grid, Button, ButtonGroup, useToasts } from '@geist-ui/core';
 import { AnkiButton } from './AnkiButton';
 import { AudioButton } from './AudioButton';
+import { OpenSettingsButton } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/OpenSettingsButton';
 
 const {
     useDeep, ankiIntegration, ankiDeckName, ankiModelName,
@@ -45,8 +46,31 @@ export const definitionsAtom = atom<string>('');
 export const japaneseSentenceAtom = atom<string>('');
 export const translatedSentenceAtom = atom<string>('');
 
+const isUIShownAtom = atom<boolean>(true);
+
+
+type UrlImageProps = {
+    icon: any,
+    title: string,
+    url: string,
+    id: string
+}
+const UrlImage = ({ icon, title, url, id }: UrlImageProps) => {
+    const isUIShown = useAtomValue(isUIShownAtom);
+
+    const openUrl = () => {
+        console.log("in dictionary")
+        ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.OPEN_EXTERNAL, url);
+    }
+
+    return <span id={id} onClick={openUrl} className="search"
+        onMouseEnter={() => setIgnoreMouseEvents(false, isUIShown)}
+        onMouseLeave={() => setIgnoreMouseEvents(true, isUIShown)}
+    ><img className="icon" title={title} src={icon} /></span>
+}
+
 export const Dictionary = () => {
-    const [isUIShown, setUIShown] = useState(true);
+    const [isUIShown, setUIShown] = useAtom(isUIShownAtom);
     const { setToast, removeAll } = useToasts(toastLayout);
     const [isReaderReady, setReaderReady] = useState(false);
     const [status, setStatus] = useState('');
@@ -67,6 +91,7 @@ export const Dictionary = () => {
     });
 
     const settings = <>
+        <OpenSettingsButton/>
         <ConfigurationDrawerCommonSettings
             windowName="dictionary"
             ipcBase={IPC_CHANNELS.DICTIONARY}
@@ -159,44 +184,31 @@ export const Dictionary = () => {
                         <legend>
                             <img className="symbol" src={PictureSymbol} />
                         </legend>
-                        <span id="google" className="search">
-                            <img className="icon" title="Google Images" src={GoogleIcon} />
-                        </span>
-                        <span id="duckduckgo" className="search">
-                            <img className="icon" title="DuckDuckGo Images" src={DuckDuckGoIcon} />
-                        </span>
+                            <UrlImage id="google" icon={GoogleIcon} title="Google Images" url={`https://www.google.co.jp/search?q=${infinitive}&tbm=isch`} />
+                            <UrlImage id="duckduckgo" icon={DuckDuckGoIcon} title="DuckDuckGo Images" url={`https://duckduckgo.com/?q=${infinitive}&kp=-1&kl=jp-jp&iax=images&ia=images`} />
                     </fieldset>
                     <fieldset className="search-english">
                         <legend>
                             <img className="symbol" src={BritainFlag} />
                         </legend>
-                        <span id="jisho" className="search">
-                            <img className="icon" title="Jisho.org (Japanese-English dictionary)" src={JishoIcon} />
-                        </span>
-                        <span id="weblio-en" className="search">
-                            <img className="icon" title="Weblio (Japanese-English thesaurus)" src={WeblioENIcon} />
-                        </span>
-                        <span id="wiktionary-en" className="search">
-                            <img className="icon" title="Wiktionary (English)" src={WiktionaryENIcon} />
-                        </span>
+                            <UrlImage id="jisho" icon={JishoIcon} title='Jisho.org' url={`https://jisho.org/search/${infinitive}`} />
+                            <UrlImage id="weblio-en" icon={WeblioENIcon} title="Weblio EN" url={`https://ejje.weblio.jp/english-thesaurus/content/${infinitive}`} />
+                            <UrlImage id="wiktionary-en" icon={WiktionaryENIcon} title="Wiktionary EN" url={`https://en.wiktionary.org/wiki/${infinitive}#Japanese`} />
                     </fieldset>
                     <fieldset className="search-japanese">
                         <legend>
                             <img className="symbol" src={JapanFlag} />
                         </legend>
-                        <span id="weblio-jp" className="search">
-                            <img className="icon" title="Weblio (Japanese dictionary)" src={WeblioJPIcon} />
-                        </span>
-                        <span id="wiktionary-jp" className="search">
-                            <img className="icon" title="Wiktionary (Japanese)" src={WiktionaryJPIcon} />
-                        </span>
-                        <span id="wikipedia" className="search">
-                            <img className="icon" title="Wikipedia (Japanese)" src={WikipediaIcon} />
-                        </span>
+                            <UrlImage id="weblio-jp" icon={WeblioJPIcon} title='Weblio JP' url={`https://www.weblio.jp/content/${infinitive}`} />
+                            <UrlImage id="wiktionary-jp" icon={WiktionaryJPIcon} title='Wiktionary JP' url={`https://ja.wiktionary.org/wiki/${infinitive}#日本語`} />
+                            <UrlImage id="wikipedia" icon={WikipediaIcon} title='Wiipedia JP' url={`https://ja.wikipedia.org/wiki/${infinitive}`} />
                     </fieldset>
                 </div>
 
-                <div id="main-buttons">
+                <div id="main-buttons"
+                    onMouseEnter={() => setIgnoreMouseEvents(false, isUIShown)}
+                    onMouseLeave={() => setIgnoreMouseEvents(true, isUIShown)}
+                >
                     <AudioButton />
                     {ankiIntegration && <AnkiButton />}
                     <ButtonGroup>
@@ -205,14 +217,20 @@ export const Dictionary = () => {
                         <Button onClick={setIgnoredStatus}>Ignored</Button>
                     </ButtonGroup>
                 </div>
-                <div className={status + " infinitive-display"}>
+                <div className={status + " infinitive-display"}
+                    onMouseEnter={() => setIgnoreMouseEvents(false, isUIShown)}
+                    onMouseLeave={() => setIgnoreMouseEvents(true, isUIShown)}
+                >
                     <div className='word'>
                         <FuriganaJSX kanaOrKanji={infinitive} kana={infinitiveKana} />
                     </div>
                 </div>
                 <p className="definitions" dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
-            </div >
-            : <></>}
+            </div>
+            : <div>
+                <h1>Dictionary</h1>
+                Copy some Japanese text and press on a word in the reader window to browse the dictionary.
+            </div>}
         {isUIShown && <ConfigurationDrawer
             settings={settings}
         />

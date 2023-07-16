@@ -1,5 +1,9 @@
 # 2.0.1.alpha1
-- Moved a lot of settings from the Options window to real-time settings
+- Rewritten most of the japReader's code in React+TypeScript
+- Added window transparency support
+- Made windows click-through when the UI is hidden (so that the clicking on the background won't focus the window)
+- Added custom font and background colors
+- Moved most settings to individual windows, so that restarting the app is not necessary
 
 # 1.9.1
 - Made clipboard reading more robust (clipboard reads rarely randomly return corrupt strings, which resulted in lost copy operations) by making 3 reads at a time instead comparing results instead of just 1 read.

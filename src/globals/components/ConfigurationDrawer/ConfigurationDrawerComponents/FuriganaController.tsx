@@ -7,12 +7,12 @@ type Props = {
 }
 const FuriganaController = ({initialChecked, fn}: Props): JSX.Element => {
 
-    return <Checkbox.Group value={initialChecked} onChange={fn}>
+    return <div>Show furigana in: <Checkbox.Group value={initialChecked} onChange={fn}>
         <Checkbox value={STATUS.NEW}>New</Checkbox>
         <Checkbox value={STATUS.SEEN}>Seen</Checkbox>
         <Checkbox value={STATUS.KNOWN}>Known</Checkbox>
         <Checkbox value={STATUS.IGNORED}>Ignored</Checkbox>
-    </Checkbox.Group>;
+    </Checkbox.Group></div>;
 };
 
 export default FuriganaController;

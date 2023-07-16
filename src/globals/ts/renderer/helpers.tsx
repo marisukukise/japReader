@@ -69,7 +69,7 @@ export const FuriganaJSX = ({ kanaOrKanji, kana }: FuriganaJSXProps): JSX.Elemen
 };
 
 export const toastLayout: ToastLayout = {
-    maxHeight: '3.5rem',
+    maxHeight: '5rem',
     width: '16rem',
     placement: 'bottomLeft',
 };
@@ -84,10 +84,16 @@ export const addUIListeners = (
         setUIShown((wasShown: boolean) => {
             if (!wasShown) {
                 document.body.classList.remove('hide-border-markings');
+                ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
                 removeAll();
             } else {
                 document.body.classList.add('hide-border-markings');
-                showToast(<span>UI has been hidden. <br />Press H to bring it back.</span>, 1000);
+                ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, true)
+                showToast(<span style={{ fontSize: "0.6rem" }}>
+                    UI has been hidden. <br />
+                    Press H to bring it back. <br />
+                    Press Ctrl+H to show all windows.
+                </span>, 1000);
             }
 
             return !wasShown;
@@ -95,6 +101,7 @@ export const addUIListeners = (
     });
     ipcRenderer.on(ipcBase.SET.SHOW_UI, () => {
         setUIShown(() => {
+            ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
             document.body.classList.remove('hide-border-markings');
             removeAll();
             return true;
@@ -347,13 +354,19 @@ const setRootIfPropertyExists = (DOMProperty: string, storeProperty: string, add
     }
 }
 
+export const setIgnoreMouseEvents = (state: boolean, isUIShown: boolean) => {
+    if (!isUIShown) {
+        ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, state)
+    }
+}
+
 
 const numberRegexTest = (unit: string) => {
     return new RegExp('\^\\d+\\.\\d{2}' + unit + '\$')
 }
 
 export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
-    
+
     // Body classes, for things like pre-generated SCSS classes
     const body = document.querySelector('body') as HTMLElement;
     body.classList.add(`font-glow-strength-${windowStore.get(windowName + ".additional.fontGlowStrength", "0")}`)

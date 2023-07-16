@@ -20,12 +20,14 @@ import { Text, useToasts } from '@geist-ui/core';
 import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateSwitch';
 import FuriganaController from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/FuriganaController';
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { OpenSettingsButton } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/OpenSettingsButton';
 
 export const isIchiReadyAtom = atom<boolean>(false);
 export const didIchiFailAtom = atom<boolean>(false);
 export const japaneseSentenceAtom = atom<string>('');
 export const translatedSentenceAtom = atom<string>('');
 export const wordListAtom = atom<japReader.IchiParsedWordData[]>([]);
+export const isUIShownAtom = atom<boolean>(true);
 
 const windowStore = getWindowStore();
 
@@ -89,7 +91,7 @@ const getFuriganaSetting = (status: string): boolean => {
 };
 
 export const Reader = () => {
-    const [isUIShown, setUIShown] = useState(true);
+    const [isUIShown, setUIShown] = useAtom(isUIShownAtom);
     const { setToast, removeAll } = useToasts(toastLayout);
 
     const [isIchiReady, setIchiReady] = useAtom(isIchiReadyAtom);
@@ -130,6 +132,7 @@ export const Reader = () => {
     ].filter(e => e !== null);
 
     const settings = <>
+        <OpenSettingsButton/>
         <ConfigurationDrawerCommonSettings
             windowName="reader"
             ipcBase={IPC_CHANNELS.READER}
@@ -199,7 +202,7 @@ export const Reader = () => {
     }, []);
 
     useEffect(() => {
-        ipcRenderer.send(IPC_CHANNELS.READER.SET.FOCUS);
+        ipcRenderer.send(IPC_CHANNELS.READER.SET.MOVE_TOP);
     }, [japaneseSentence]);
 
 
