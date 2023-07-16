@@ -98,7 +98,7 @@ export const Reader = () => {
     const setIchiFailed = useSetAtom(didIchiFailAtom);
     const [didDeepFail, setDeepFailed] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useAtom(japaneseSentenceAtom);
-    const [translatedSentence, setTranslatedSentence] = useAtom(translatedSentenceAtom);
+    const setTranslatedSentence = useSetAtom(translatedSentenceAtom);
     const setCurrentWords = useSetAtom(wordListAtom);
 
     const [isCenteredText, setCenteredText] = useState(windowStore.get('reader.additional.centeredText', false));
@@ -213,7 +213,7 @@ export const Reader = () => {
         .concat(!hasIgnoredStatusFurigana ? 'hide-furigana-ignored' : []);
 
     return (<>
-        {isUIShown && <DraggableBar title='japReader' />}
+        {isUIShown && <DraggableBar title='japRe' />}
         <div style={{ textAlign: isCenteredText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >
