@@ -60,28 +60,65 @@ const schemaAllowedProperties = {
     'isMaximized': { type: 'boolean' },
     'backgroundColor': { type: 'string' },
     'alwaysOnTop': { type: 'boolean' },
+    'additional': {
+        type: 'object',
+    },
 };
+
+const defaultAdditionalWindowProperties = {
+    "fontSize": "16.00pt",
+    "fontGlowStrength": "1",
+    "bodyPadding": "1.00rem"
+}
+
+const defaultMainWindowProperties = {
+    "alwaysOnTop": false,
+    "backgroundColor": "rgba(231, 222, 230, 0.925)",
+}
 
 const schemaWindow = {
     settings: {
         type: 'object',
         properties: schemaAllowedProperties,
-        default: {}
+        default: {
+            ...defaultMainWindowProperties,
+            additional: {
+                ...defaultAdditionalWindowProperties
+            }
+        }
     },
     translation: {
         type: 'object',
         properties: schemaAllowedProperties,
-        default: {}
+        default: {
+            ...defaultMainWindowProperties,
+            additional: {
+                ...defaultAdditionalWindowProperties
+            }
+        }
     },
     reader: {
         type: 'object',
         properties: schemaAllowedProperties,
-        default: {}
+        default: {
+            ...defaultMainWindowProperties,
+            additional: {
+                ...defaultAdditionalWindowProperties,
+                "furigana": [
+                    "new", "seen"
+                ]
+            }
+        }
     },
-    dict: {
+    dictionary: {
         type: 'object',
         properties: schemaAllowedProperties,
-        default: {}
+        default: {
+            ...defaultMainWindowProperties,
+            additional: {
+                ...defaultAdditionalWindowProperties,
+            }
+        }
     }
 };
 
