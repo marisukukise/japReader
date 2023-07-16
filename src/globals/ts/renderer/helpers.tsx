@@ -74,13 +74,13 @@ export const toastLayout: ToastLayout = {
     placement: 'bottomLeft',
 };
 
-export const addHideUIListener = (
+export const addUIListeners = (
     ipcBase: any,
     setUIShown: React.Dispatch<React.SetStateAction<boolean>>,
     removeAll: () => void,
     showToast: (text: string | ReactNode, delay: number) => void
 ) => {
-    ipcRenderer.on(ipcBase.SET.HIDE_UI, () => {
+    ipcRenderer.on(ipcBase.SET.TOGGLE_UI, () => {
         setUIShown((wasShown: boolean) => {
             if (!wasShown) {
                 document.body.classList.remove('hide-border-markings');
@@ -91,6 +91,13 @@ export const addHideUIListener = (
             }
 
             return !wasShown;
+        });
+    });
+    ipcRenderer.on(ipcBase.SET.SHOW_UI, () => {
+        setUIShown(() => {
+            document.body.classList.remove('hide-border-markings');
+            removeAll();
+            return true;
         });
     });
 };
@@ -135,7 +142,7 @@ export const setupEffect = (
             );
         }
 
-        addHideUIListener(
+        addUIListeners(
             ipcBase,
             setUIShown,
             removeAll,
@@ -143,7 +150,7 @@ export const setupEffect = (
         );
 
         return () => {
-            ipcRenderer.removeAllListeners(ipcBase.SET.HIDE_UI);
+            ipcRenderer.removeAllListeners(ipcBase.SET.TOGGLE_UI);
 
             if (
                 awaitedWindowIpcBase !== undefined &&
@@ -193,11 +200,16 @@ const changeDOMLength = (
             .getPropertyValue(DOMProperty)
             .slice(0, -unit.length)).toFixed(2);
 
-    log.debug("current", currentLength)
     const newLength = currentLength + (conditionForIncrement ? 1 : -1) * step;
-    log.debug("new", newLength)
-    const finalLength = ((newLength < min || newLength > max) ? currentLength : newLength).toFixed(2) + unit;
-    log.debug("final", finalLength)
+
+    let finalLength = "";
+    if (newLength < min)
+        finalLength = min.toFixed(2);
+    else if (newLength > max)
+        finalLength = max.toFixed(2);
+    else
+        finalLength = newLength.toFixed(2);
+    finalLength = finalLength + unit;
 
     if (storeProperty) {
         windowStore.set(`${windowName}.${storeProperty}`, finalLength);
@@ -244,7 +256,7 @@ export const changeFontColor = (windowName: string, color: string) => {
 export const changeFontSizeDOM = (windowName: string, conditionForZoomIn: boolean): string => {
     return changeDOMLength(
         '--font-size',
-        6, 999, 1, "px",
+        6, 999, 1, "pt",
         windowName, 'additional.fontSize',
         conditionForZoomIn
     )
@@ -260,12 +272,33 @@ export const changeBodyPaddingDOM = (windowName: string, conditionForZoomIn: boo
 };
 
 export const changeFontGlowStrengthDOM = (windowName: string, conditionForIncrement: boolean): string => {
-    return changeDOMLength(
-        '--font-glow-strength',
-        0, 0.25, 0.01, "em",
-        windowName, 'additional.fontGlowStrength',
-        conditionForIncrement
-    )
+    const min = 0;
+    const max = 20;
+
+    const body = document.querySelector('body') as HTMLElement;
+    const currentClasses = [...body.classList].filter(e => e.startsWith('font-glow-strength-'));
+    const currentClass = currentClasses.length > 0 ?
+        currentClasses[0] : 'font-glow-strength-0'
+
+    const currentStrength = parseInt(currentClass.slice(currentClass.lastIndexOf('-') + 1))
+    const newStrength = currentStrength + (conditionForIncrement ? 1 : -1);
+
+    let finalStrength = newStrength;
+    if (newStrength > max) {
+        finalStrength = max
+    }
+    if (newStrength < min) {
+        finalStrength = min
+    }
+
+    currentClasses.forEach((cls: string) => {
+        body.classList.remove(cls)
+    })
+
+    windowStore.set(`${windowName}.additional.fontGlowStrength`, finalStrength.toString());
+    body.classList.add(`font-glow-strength-${finalStrength.toString()}`)
+
+    return finalStrength.toString();
 }
 
 export const changeBackgroundColorDOM = (windowName: string, color: string) => {
@@ -298,13 +331,13 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
                 changeFontSizeDOM(windowName, false);
                 break;
             case KEYBOARD_KEYS.KEY_H:
-                ipcRenderer.send(ipcBase.SET.HIDE_UI);
+                ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
                 break;
         }
     }, true);
 };
 
-const setRootPropertyIfExists = (DOMProperty: string, storeProperty: string, additionalCondition: boolean = true) => {
+const setRootIfPropertyExists = (DOMProperty: string, storeProperty: string, additionalCondition: boolean = true) => {
     const root = document.querySelector(':root') as HTMLElement;
     if (windowStore.has(storeProperty) && additionalCondition) {
         root.style.setProperty(
@@ -314,19 +347,25 @@ const setRootPropertyIfExists = (DOMProperty: string, storeProperty: string, add
     }
 }
 
+
 const numberRegexTest = (unit: string) => {
     return new RegExp('\^\\d+\\.\\d{2}' + unit + '\$')
 }
 
 export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
-    setRootPropertyIfExists('--font-size', `${windowName}.additional.fontSize`,
-        numberRegexTest('px').test(windowStore.get(`${windowName}.additional.fontSize`)))
-    setRootPropertyIfExists('--font-glow-strength', `${windowName}.additional.fontGlowStrength`,
-        numberRegexTest('em').test(windowStore.get(`${windowName}.additional.fontGlowStrength`)))
-    setRootPropertyIfExists('--body-padding', `${windowName}.additional.bodyPadding`,
+    
+    // Body classes, for things like pre-generated SCSS classes
+    const body = document.querySelector('body') as HTMLElement;
+    body.classList.add(`font-glow-strength-${windowStore.get(windowName + ".additional.fontGlowStrength", "0")}`)
+
+
+    // :root element CSS variables for things like real-time changing of values like font size, color etc.
+    setRootIfPropertyExists('--font-size', `${windowName}.additional.fontSize`,
+        numberRegexTest('pt').test(windowStore.get(`${windowName}.additional.fontSize`)))
+    setRootIfPropertyExists('--body-padding', `${windowName}.additional.bodyPadding`,
         numberRegexTest('rem').test(windowStore.get(`${windowName}.additional.bodyPadding`)))
-    setRootPropertyIfExists('--font-color', `${windowName}.additional.fontColor`)
-    setRootPropertyIfExists('--font-glow-color', `${windowName}.additional.fontGlowColor`)
+    setRootIfPropertyExists('--font-color', `${windowName}.additional.fontColor`)
+    setRootIfPropertyExists('--font-glow-color', `${windowName}.additional.fontGlowColor`)
 
 };
 

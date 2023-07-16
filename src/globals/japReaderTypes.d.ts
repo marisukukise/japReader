@@ -35,6 +35,16 @@ declare namespace japReader {
         w: string;
         r: string;
     }
+
+    interface Windows {
+        clipboard: BrowserWindow;
+        settings: BrowserWindow;
+        ichi?: BrowserWindow;
+        reader?: BrowserWindow;
+        dictionary?: BrowserWindow;
+        deep?: BrowserWindow;
+        translation?: BrowserWindow;
+    }
 }
 
 

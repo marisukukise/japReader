@@ -100,6 +100,7 @@ export const Dictionary = () => {
         });
 
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
+            setStatus(newStatus);
             if (newStatus == STATUS.SEEN)
                 setSeenCount((seen: number) => seen + 1);
             if (newStatus == STATUS.KNOWN)
@@ -153,65 +154,63 @@ export const Dictionary = () => {
                     <Grid xs={12} justify="flex-start">Seen: {seenCount}</Grid>
                     <Grid xs={12} justify="flex-end">Known: {knownCount}</Grid>
                 </Grid.Container>
-                <Grid.Container gap={2} justify="center" className="search-engines">
-                    <Grid xs={8} justify="flex-end">
-                        <fieldset className="search-images">
-                            <legend>
-                                <img className="symbol" src={PictureSymbol} />
-                            </legend>
-                            <span id="google" className="search">
-                                <img className="icon" title="Google Images" src={GoogleIcon} />
-                            </span>
-                            <span id="duckduckgo" className="search">
-                                <img className="icon" title="DuckDuckGo Images" src={DuckDuckGoIcon} />
-                            </span>
-                        </fieldset>
-                    </Grid>
-                    <Grid xs={8} justify="center">
-                        <fieldset className="search-english">
-                            <legend>
-                                <img className="symbol" src={BritainFlag} />
-                            </legend>
-                            <span id="jisho" className="search">
-                                <img className="icon" title="Jisho.org (Japanese-English dictionary)" src={JishoIcon} />
-                            </span>
-                            <span id="weblio-en" className="search">
-                                <img className="icon" title="Weblio (Japanese-English thesaurus)" src={WeblioENIcon} />
-                            </span>
-                            <span id="wiktionary-en" className="search">
-                                <img className="icon" title="Wiktionary (English)" src={WiktionaryENIcon} />
-                            </span>
-                        </fieldset>
-                    </Grid>
-                    <Grid xs={8} justify="flex-start">
-                        <fieldset className="search-japanese">
-                            <legend>
-                                <img className="symbol" src={JapanFlag} />
-                            </legend>
-                            <span id="weblio-jp" className="search">
-                                <img className="icon" title="Weblio (Japanese dictionary)" src={WeblioJPIcon} />
-                            </span>
-                            <span id="wiktionary-jp" className="search">
-                                <img className="icon" title="Wiktionary (Japanese)" src={WiktionaryJPIcon} />
-                            </span>
-                            <span id="wikipedia" className="search">
-                                <img className="icon" title="Wikipedia (Japanese)" src={WikipediaIcon} />
-                            </span>
-                        </fieldset>
-                    </Grid>
-                </Grid.Container>
+                <div className="search-engines">
+                    <fieldset className="search-images">
+                        <legend>
+                            <img className="symbol" src={PictureSymbol} />
+                        </legend>
+                        <span id="google" className="search">
+                            <img className="icon" title="Google Images" src={GoogleIcon} />
+                        </span>
+                        <span id="duckduckgo" className="search">
+                            <img className="icon" title="DuckDuckGo Images" src={DuckDuckGoIcon} />
+                        </span>
+                    </fieldset>
+                    <fieldset className="search-english">
+                        <legend>
+                            <img className="symbol" src={BritainFlag} />
+                        </legend>
+                        <span id="jisho" className="search">
+                            <img className="icon" title="Jisho.org (Japanese-English dictionary)" src={JishoIcon} />
+                        </span>
+                        <span id="weblio-en" className="search">
+                            <img className="icon" title="Weblio (Japanese-English thesaurus)" src={WeblioENIcon} />
+                        </span>
+                        <span id="wiktionary-en" className="search">
+                            <img className="icon" title="Wiktionary (English)" src={WiktionaryENIcon} />
+                        </span>
+                    </fieldset>
+                    <fieldset className="search-japanese">
+                        <legend>
+                            <img className="symbol" src={JapanFlag} />
+                        </legend>
+                        <span id="weblio-jp" className="search">
+                            <img className="icon" title="Weblio (Japanese dictionary)" src={WeblioJPIcon} />
+                        </span>
+                        <span id="wiktionary-jp" className="search">
+                            <img className="icon" title="Wiktionary (Japanese)" src={WiktionaryJPIcon} />
+                        </span>
+                        <span id="wikipedia" className="search">
+                            <img className="icon" title="Wikipedia (Japanese)" src={WikipediaIcon} />
+                        </span>
+                    </fieldset>
+                </div>
 
                 <div id="main-buttons">
                     <AudioButton />
-                    {ankiIntegration && <AnkiButton /> }
+                    {ankiIntegration && <AnkiButton />}
                     <ButtonGroup>
                         <Button onClick={setSeenStatus}>Seen</Button>
                         <Button onClick={setKnownStatus}>Known</Button>
                         <Button onClick={setIgnoredStatus}>Ignored</Button>
                     </ButtonGroup>
                 </div>
-                <h1 className={status}><FuriganaJSX kanaOrKanji={infinitive} kana={infinitiveKana} /></h1>
-                <p dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
+                <div className={status + " infinitive-display"}>
+                    <div className='word'>
+                        <FuriganaJSX kanaOrKanji={infinitive} kana={infinitiveKana} />
+                    </div>
+                </div>
+                <p className="definitions" dangerouslySetInnerHTML={getHTMLObject(definitions)}></p>
             </div >
             : <></>}
         {isUIShown && <ConfigurationDrawer

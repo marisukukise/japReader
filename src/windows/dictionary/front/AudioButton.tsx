@@ -4,6 +4,7 @@ import { infinitiveAtom, infinitiveKanaAtom } from './Dictionary';
 import { useEffect, useRef, useState } from 'react';
 import log_renderer from 'electron-log/renderer';
 import { getSettingsStore, getWindowStore } from '@globals/ts/main/initializeStore';
+import { PlayFill, PauseFill} from '@geist-ui/icons'
 const log = log_renderer.scope('dictionary/AudioButton');
 
 const windowStore = getWindowStore()
@@ -70,9 +71,12 @@ export const AudioButton = () => {
     }
 
     return <>
-        <div style={{display: "flex", flexDirection: "column"}}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
             <input type="range" min={0} max={20} value={volume} onChange={onVolumeChange} />
-            <Button disabled={disabled} onClick={playSnippet}>
+            <Button 
+                disabled={disabled}
+                loading={buttonText == BUTTON_MESSAGES.LOADING}
+                onClick={playSnippet}>
                 {buttonText}
             </Button>
         </div>

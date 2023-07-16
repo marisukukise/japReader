@@ -6,7 +6,7 @@
   - JAPREADER_ENV ("dev" for a lot of windows etc., otherwise normal mode)
 */
 
-import { app, BrowserWindow, globalShortcut } from 'electron';
+import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 
 if (require('electron-squirrel-startup')) {
     app.quit();
@@ -25,10 +25,11 @@ startMainListeners();
 
 
 import { initializeApp } from '@globals/ts/main/initializeApp';
+import { IPC_CHANNELS } from '@globals/ts/main/objects';
 app.whenReady().then(() => {
 
     // Creates all windows and their listeners
-    initializeApp();
+    const windows: japReader.Windows = initializeApp();
 
     const DISABLED_SHORTCUTS = [
         // Reloading can lead to some bugs
@@ -52,7 +53,7 @@ app.whenReady().then(() => {
 
     if (process.env.JAPREADER_ENV !== 'dev') {
         const orig_len = DISABLED_SHORTCUTS.length;
-        for (let i = 0; i < orig_len ; i++) {
+        for (let i = 0; i < orig_len; i++) {
             DISABLED_SHORTCUTS.shift();
         }
     }
@@ -70,6 +71,19 @@ app.whenReady().then(() => {
             globalShortcut.unregister(SHORTCUT);
         });
     });
+
+    globalShortcut.register('CommandOrControl+H', () => {
+        for (let [key, window] of Object.entries(windows)) {
+            if (['reader', 'translation', 'settings', 'dictionary'].includes(key)) {
+                window.show();
+
+                // @ts-expect-error The keys are limited to the ones that exist
+                window.webContents.send(IPC_CHANNELS[`${key.toUpperCase()}`].SET.SHOW_UI)
+            }
+        }
+
+    })
+
 });
 
 app.on('activate', () => {

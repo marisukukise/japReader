@@ -34,7 +34,8 @@ export const IPC_CHANNELS = {
             FOCUS: 'reader/set/focus',
             BACKGROUND_COLOR: 'reader/set/windowBackgroundColor',
             ALWAYS_ON_TOP: 'reader/set/alwaysOnTop',
-            HIDE_UI: 'reader/set/hideUI',
+            TOGGLE_UI: 'reader/set/toggleUI',
+            SHOW_UI: 'reader/set/showUI',
         },
         ANNOUNCE: {
             IS_READY: 'reader/announce/isReady',
@@ -63,7 +64,8 @@ export const IPC_CHANNELS = {
             HIDE: 'translation/set/hide',
             BACKGROUND_COLOR: 'translation/set/windowBackgroundColor',
             ALWAYS_ON_TOP: 'translation/set/alwaysOnTop',
-            HIDE_UI: 'translation/set/hideUI',
+            TOGGLE_UI: 'translation/set/toggleUI',
+            SHOW_UI: 'translation/set/showUI',
         },
         ANNOUNCE: {
             IS_READY: 'translation/announce/isReady',
@@ -90,7 +92,8 @@ export const IPC_CHANNELS = {
             HIDE: 'dictionary/set/hide',
             BACKGROUND_COLOR: 'dictionary/set/windowBackgroundColor',
             ALWAYS_ON_TOP: 'dictionary/set/alwaysOnTop',
-            HIDE_UI: 'dictionary/set/hideUI',
+            TOGGLE_UI: 'dictionary/set/toggleUI',
+            SHOW_UI: 'dictionary/set/showUI',
         },
         ANNOUNCE: {
             IS_READY: 'dictionary/announce/isReady',
@@ -107,7 +110,8 @@ export const IPC_CHANNELS = {
             HIDE: 'settings/set/hide',
             BACKGROUND_COLOR: 'settings/set/windowBackgroundColor',
             ALWAYS_ON_TOP: 'settings/set/alwaysOnTop',
-            HIDE_UI: 'settings/set/hideUI',
+            TOGGLE_UI: 'settings/set/toggleUI',
+            SHOW_UI: 'settings/set/showUI',
         },
         ANNOUNCE: {
             IS_READY: 'settings/announce/isReady',

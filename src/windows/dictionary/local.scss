@@ -6,9 +6,113 @@
 
 
 #dictionary {
-    div.spacer-container > div {
+
+    fieldset {
+        word-wrap: break-word;
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        flex-wrap: wrap;
+        height: auto;
+        line-height: 1em;
+        margin: 0;
+        padding: 0;
+    }
+
+    div.spacer-container>div {
         background: var(--font-color);
         opacity: 0.5;
         border-radius: 15px;
+    }
+
+    div.search-engines {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        text-align: center;
+
+        fieldset img.symbol {
+            max-width: 3rem;
+            aspect-ratio: 1 / 1;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0px 0px 4px var(--font-color));
+        }
+
+        #search-engines fieldset {
+            border: 0px;
+        }
+
+        .search {
+            filter: invert(0.1) saturate(0.4);
+            max-height: 1em;
+            height: 1em;
+            width: auto;
+            border-bottom: 1px solid var(--mainFont);
+            cursor: pointer;
+        }
+
+        .search:hover {
+            filter: saturate(1);
+        }
+
+        .search>img {
+            display: inline-block;
+            height: 100%;
+            box-sizing: border-box;
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+        }
+    }
+
+    .infinitive-display {
+        display: flex;
+        justify-content: center;
+        min-height: 1.8em;
+        font-size: 2rem;
+        text-align: center;
+        color: white;
+        text-shadow: 0px 0px 5px black;
+
+        .word {
+            align-self: center;
+        }
+
+        rt {
+            padding-top: 0.25rem;
+        }
+
+        &.new {
+            background-color: color-mix(in srgb, var(--statusNew) 75%, var(--background-color));
+        }
+
+        &.seen {
+            background-color: color-mix(in srgb, var(--statusSeen) 75%, var(--background-color));
+        }
+
+        &.known {
+            background-color: color-mix(in srgb, var(--statusKnown) 75%, var(--background-color));
+        }
+
+        &.ignored {
+            background-color: color-mix(in srgb, var(--statusIgnored) 75%, var(--background-color));
+        }
+
+        background-blend-mode: multiply;
+    }
+
+    ul,
+    ol {
+        color: inherit !important;
+        padding-inline-start: 1.5rem;
+    }
+
+    dd {
+        margin-inline-start: 1.5rem;
+    }
+
+    li {
+        line-height: 1.0;
     }
 }
