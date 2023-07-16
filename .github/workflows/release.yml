@@ -10,6 +10,10 @@ on:
         type: string
         description: Release tag
         required: true
+      prerelease:
+        type: boolean
+        description: Is this a pre-release?
+        required: true
 
 jobs:
 
@@ -151,6 +155,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          prerelease: ${{ inputs.prerelease }}
           body_path: CHANGELOG-${{ inputs.tag }}.md
           files: |
             make/squirrel.windows/x64/*.exe
