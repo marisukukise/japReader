@@ -126,7 +126,7 @@ export const Translation = () => {
     useEffect(() => {
         // TODO: Only move translation window and reader window to top on
         // japaneseSentence change if their window.isAlwaysOnTop() is true
-        ipcRenderer.send(IPC_CHANNELS.TRANSLATION.SET.MOVE_TOP);
+        ipcRenderer.send(IPC_CHANNELS.TRANSLATION.SET.SHOW);
     }, [japaneseSentence]);
 
     useEffect(() => {
@@ -159,7 +159,7 @@ export const Translation = () => {
         .concat(!showJapaneseSentence ? 'hide-japanese-sentence' : []);
 
     return (<>
-        {isUIShown && <DraggableBar />}
+        {isUIShown && <DraggableBar title='japReader - Translation'/>}
         <div style={{ textAlign: centerText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >

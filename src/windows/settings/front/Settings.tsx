@@ -134,16 +134,24 @@ export const Settings = () => {
     const classes = ['settings-wrapper'];
 
     return (<>
-        {isUIShown && <DraggableBar />}
+        {isUIShown && <DraggableBar title='japReader - Settings' />}
         <div
             className={classes.join(' ')}
         >
-            <h1>Options Menu</h1>
-            <h3>Hover on the option for more information.</h3>
+            <h1>Global Settings Menu</h1>
             <h3>Press Apply down below to save options.</h3>
             <h3>The program will be restarted. All your progress will be saved.</h3>
         </div>
         <div id="settings-wrapper">
+            <fieldset id="global">
+                <legend>Global (all windows)</legend>
+                <Checkbox settingName='clickThroughWindows' formData={formData} setFormData={setFormData}
+                    disabled={false}> (Only for Windows and MacOS) Make windows click-through when the UI is hidden.* 
+                    </Checkbox>
+                    *It's a good option for full screen apps combined with "Always on Top". 
+                    When you press H, the window background will become unclickable.
+                    If you're using this option don't stack windows on top of each other, because it bugs out. 
+            </fieldset>
             <fieldset id="deep">
                 <legend>Translation</legend>
                 <Checkbox settingName='useDeepL' formData={formData} setFormData={setFormData}
@@ -152,7 +160,7 @@ export const Settings = () => {
                     disabled={!formData.useDeepL}>Use DeepL API</Checkbox>
                 <Input placeholder="DeepL API Key" settingName='deepLApiKey' formData={formData} setFormData={setFormData}
                     disabled={!formData.useDeepLApi || !formData.useDeepL} >
-                        DeepL API Key
+                    DeepL API Key
                 </Input>
             </fieldset>
             <fieldset id="reader">

@@ -202,7 +202,7 @@ export const Reader = () => {
     }, []);
 
     useEffect(() => {
-        ipcRenderer.send(IPC_CHANNELS.READER.SET.MOVE_TOP);
+        ipcRenderer.send(IPC_CHANNELS.READER.SET.SHOW);
     }, [japaneseSentence]);
 
 
@@ -213,7 +213,7 @@ export const Reader = () => {
         .concat(!hasIgnoredStatusFurigana ? 'hide-furigana-ignored' : []);
 
     return (<>
-        {isUIShown && <DraggableBar />}
+        {isUIShown && <DraggableBar title='japReader' />}
         <div style={{ textAlign: isCenteredText ? 'center' : 'left' }}
             className={classes.join(' ')}
         >

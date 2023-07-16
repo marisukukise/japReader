@@ -26,6 +26,7 @@ export const rendererConfig: Configuration = {
         alias: {
             '@globals': path.resolve(__dirname, 'src/globals'),
             '@src': path.resolve(__dirname, 'src'),
+            '@root': path.resolve(__dirname),
             '@img': path.resolve(__dirname, 'src/img'),
             '@fonts': path.resolve(__dirname, 'src/fonts'),
         }

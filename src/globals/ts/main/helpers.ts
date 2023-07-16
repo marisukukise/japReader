@@ -30,7 +30,12 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
     });
 
     ipcMain.on(ipcBase.SET.MOVE_TOP, () => {
-        window.moveTop();
+        // The window is moved to the top and stays there persistently,
+        // So don't use it unless you want this behavior. It doesn't just show it.
+        if(window.isVisible())
+            window.moveTop();
+        else
+            window.show()
     });
 
     ipcMain.on(ipcBase.SET.HIDE, () => {
@@ -95,7 +100,6 @@ export const showWindowWhenReady = (window: BrowserWindow, windowName: string, i
 
             if (windowStore.get(`${windowName}.alwaysOnTop`)) {
                 window.setAlwaysOnTop(true, 'pop-up-menu');
-                window.moveTop();
             }
 
         });

@@ -63,10 +63,10 @@ const UrlImage = ({ icon, title, url, id }: UrlImageProps) => {
         ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.OPEN_EXTERNAL, url);
     }
 
-    return <span id={id} onClick={openUrl} className="search"
+    return <span id={id} title={title} onClick={openUrl} className="search"
         onMouseEnter={() => setIgnoreMouseEvents(false, isUIShown)}
         onMouseLeave={() => setIgnoreMouseEvents(true, isUIShown)}
-    ><img className="icon" title={title} src={icon} /></span>
+    ><img className="icon" src={icon} /></span>
 }
 
 export const Dictionary = () => {
@@ -170,7 +170,7 @@ export const Dictionary = () => {
     const classes = ['dictionary-wrapper'];
 
     return (<>
-        {isUIShown && <DraggableBar />}
+        {isUIShown && <DraggableBar title='japReader - Dictionary' />}
         {infinitive ?
             <div
                 className={classes.join(' ')}

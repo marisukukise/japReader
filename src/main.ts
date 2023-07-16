@@ -75,7 +75,7 @@ app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+H', () => {
         for (let [key, window] of Object.entries(windows)) {
             if (['reader', 'translation', 'settings', 'dictionary'].includes(key)) {
-                window.moveTop();
+                window.show();
 
                 // @ts-expect-error The keys are limited to the ones that exist
                 window.webContents.send(IPC_CHANNELS[`${key.toUpperCase()}`].SET.SHOW_UI)

@@ -1,22 +1,4 @@
 declare namespace japReader {
-    interface GlobalSettingsStore {
-        useDeepL: boolean;
-        useDeepLApi: boolean;
-        deepLApiKey: string;
-        useReader: boolean;
-        ankiIntegration: boolean;
-        ankiDeckName: string;
-        ankiModelName: string;
-        ankiInfinitive: string;
-        ankiInfinitiveKana: string;
-        ankiInfinitiveFurigana: string;
-        ankiWord: string;
-        ankiWordKana: string;
-        ankiWordFurigana: string;
-        ankiDefinitions: string;
-        ankiJapaneseSentence: string;
-        ankiEnglishSentence: string;
-    }
     interface StatusDataStore {
         seen: string[];
         known: string[];

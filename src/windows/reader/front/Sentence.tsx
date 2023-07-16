@@ -73,7 +73,7 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
             japaneseSentence: japaneseSentence,
             translatedSentence: translatedSentence
         });
-        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.MOVE_TOP);
+        ipcRenderer.send(IPC_CHANNELS.DICTIONARY.SET.SHOW);
 
         if (infinitive)
             updateWordStatusStore(infinitive, nextWordStatus);

@@ -1,17 +1,29 @@
 .draggable-bar {
-    position:fixed;
-    top:0;
-    left:0;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: var(--draggable-bar-height);
     -webkit-app-region: drag;
-    cursor: grab;
     z-index: 1001;
-    background-color: var(--background-color);
+    font-size: 16px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     background-size: 5px 5px;
-    background-image: repeating-linear-gradient(5deg, var(--background-color) 0, var(--background-color) 1px, black 0, var(--background-color) 50%);
-}
+    border: 1px solid black;
+    background: hsla(0, 0%, 90%, 0.89);
 
-.draggable-bar:hover {
-    cursor: grab;
+    .bar-logo {
+        contain: paint;
+        object-fit: contain;
+        max-height: 20px;
+        aspect-ratio: 1 / 1;
+        margin: 0 8px;
+    }
+
+    .bar-title {
+        text-wrap: nowrap;
+        white-space: nowrap;
+    }
 }

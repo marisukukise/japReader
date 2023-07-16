@@ -8,7 +8,7 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
         icon: 'images/logo/icon.png',
         height: 600,
         width: 800,
-        backgroundColor: '#e7dee6',
+        backgroundColor: '#eee7dee6',
         show: false,
         zoomFactor: 1.0,
         frame: false,

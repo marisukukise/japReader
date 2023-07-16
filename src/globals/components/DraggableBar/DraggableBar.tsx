@@ -1,5 +1,12 @@
 import './DraggableBar.scss';
+import Logo from '@root/images/logo/logo.svg'
 
-export const DraggableBar = (): JSX.Element => {
-    return <div className="draggable-bar"/>;
+type Props = {
+    title: string
+}
+export const DraggableBar = ({ title }: Props): JSX.Element => {
+    return <div className="draggable-bar">
+        <img className='bar-logo' src={Logo} />
+        <div className='bar-title'>{title}</div>
+    </div>;
 };

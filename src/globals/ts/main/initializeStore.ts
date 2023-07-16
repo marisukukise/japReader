@@ -8,6 +8,7 @@ const schemaSettings = {
             useDeepLApi: { default: false, type: 'boolean' },
             deepLApiKey: { default: '', type: 'string' },
             useReader: { default: true, type: 'boolean' },
+            clickThroughWindows: { default: false, type: 'boolean' },
             ankiIntegration: { default: false, type: 'boolean' },
             ankiDeckName: { default: 'japReader', type: 'string' },
             ankiModelName: { default: 'japReader', type: 'string' },
@@ -52,13 +53,13 @@ const schemaStatusData: SchemaStatusData = {
 };
 
 const schemaAllowedProperties = {
-    'width': { type: 'number'},
-    'height': { type: 'number'},
-    'x': { type: 'number'},
-    'y': { type: 'number'},
-    'isMaximized': { type: 'boolean'},
-    'backgroundColor': { type: 'string'},
-    'alwaysOnTop': { type: 'boolean'},
+    'width': { type: 'number' },
+    'height': { type: 'number' },
+    'x': { type: 'number' },
+    'y': { type: 'number' },
+    'isMaximized': { type: 'boolean' },
+    'backgroundColor': { type: 'string' },
+    'alwaysOnTop': { type: 'boolean' },
 };
 
 const schemaWindow = {

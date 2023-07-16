@@ -1,14 +1,17 @@
 import { ipcRenderer } from 'electron';
 import React, { ReactNode, useEffect } from 'react';
 import log from 'electron-log/renderer';
-import { getStatusDataStore, getWindowStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getStatusDataStore, getWindowStore } from '@globals/ts/main/initializeStore';
 const statusDataStore = getStatusDataStore();
 const windowStore = getWindowStore();
+const settingsStore = getSettingsStore();
 
 const { fit } = require('furigana');
 import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 import { ToastLayout } from '@geist-ui/core';
 import Logger from 'electron-log';
+
+const { clickThroughWindows } = settingsStore.get('global_settings')
 
 const DIGIT_MAP = [
     ['０', '零'],
@@ -84,11 +87,13 @@ export const addUIListeners = (
         setUIShown((wasShown: boolean) => {
             if (!wasShown) {
                 document.body.classList.remove('hide-border-markings');
-                ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
+                if (clickThroughWindows)
+                    ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
                 removeAll();
             } else {
                 document.body.classList.add('hide-border-markings');
-                ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, true)
+                if (clickThroughWindows)
+                    ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, true)
                 showToast(<span style={{ fontSize: "0.6rem" }}>
                     UI has been hidden. <br />
                     Press H to bring it back. <br />
@@ -101,7 +106,8 @@ export const addUIListeners = (
     });
     ipcRenderer.on(ipcBase.SET.SHOW_UI, () => {
         setUIShown(() => {
-            ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
+            if (clickThroughWindows)
+                ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
             document.body.classList.remove('hide-border-markings');
             removeAll();
             return true;
@@ -354,8 +360,9 @@ const setRootIfPropertyExists = (DOMProperty: string, storeProperty: string, add
     }
 }
 
+
 export const setIgnoreMouseEvents = (state: boolean, isUIShown: boolean) => {
-    if (!isUIShown) {
+    if (!isUIShown && clickThroughWindows) {
         ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, state)
     }
 }

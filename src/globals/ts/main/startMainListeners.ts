@@ -4,9 +4,12 @@ import axios from 'axios';
 const log = mainLog.scope('main');
 import { BrowserWindow, app, clipboard, ipcMain, net, protocol, shell } from 'electron';
 import { promises as fsPromises } from 'fs';
-import { getHistoryStore } from '@globals/ts/main/initializeStore';
+import { getHistoryStore, getSettingsStore } from '@globals/ts/main/initializeStore';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 const historyStore = getHistoryStore();
+const settingsStore = getSettingsStore();
+
+const { clickThroughWindows } = settingsStore.get('global_settings')
 
 let isClipboardWindowReady = false;
 let isDeepWindowReady = false;
@@ -98,7 +101,7 @@ export function startMainListeners() {
     })
 
     ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, (event, state) => {
-        if (process.platform == 'win32' || process.platform == 'darwin') {
+        if (clickThroughWindows && (process.platform == 'win32' || process.platform == 'darwin')) {
             const win = BrowserWindow.fromWebContents(event.sender)
             const options = state ? { forward: true } : undefined
             win.setIgnoreMouseEvents(state, options)
