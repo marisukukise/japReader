@@ -1,8 +1,7 @@
 import { Button, ButtonGroup } from '@geist-ui/core';
 import { getWindowStore } from '@globals/ts/main/initializeStore';
-import { changeFontSizeDOM } from '@globals/ts/renderer/helpers';
 import { useState } from 'react';
-const windowStore = getWindowStore()
+const windowStore = getWindowStore();
 
 type Props = {
     windowName: string,

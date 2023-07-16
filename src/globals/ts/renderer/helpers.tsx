@@ -11,7 +11,7 @@ import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
 import { ToastLayout } from '@geist-ui/core';
 import Logger from 'electron-log';
 
-const { clickThroughWindows } = settingsStore.get('global_settings')
+const { clickThroughWindows } = settingsStore.get('global_settings');
 
 const DIGIT_MAP = [
     ['０', '零'],
@@ -88,13 +88,13 @@ export const addUIListeners = (
             if (!wasShown) {
                 document.body.classList.remove('hide-border-markings');
                 if (clickThroughWindows)
-                    ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
+                    ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false);
                 removeAll();
             } else {
                 document.body.classList.add('hide-border-markings');
                 if (clickThroughWindows)
-                    ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, true)
-                showToast(<span style={{ fontSize: "0.6rem" }}>
+                    ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, true);
+                showToast(<span style={{ fontSize: '0.6rem' }}>
                     UI has been hidden. <br />
                     Press H to bring it back. <br />
                     Press Ctrl+H to show all windows.
@@ -107,7 +107,7 @@ export const addUIListeners = (
     ipcRenderer.on(ipcBase.SET.SHOW_UI, () => {
         setUIShown(() => {
             if (clickThroughWindows)
-                ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false)
+                ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, false);
             document.body.classList.remove('hide-border-markings');
             removeAll();
             return true;
@@ -215,7 +215,7 @@ const changeDOMLength = (
 
     const newLength = currentLength + (conditionForIncrement ? 1 : -1) * step;
 
-    let finalLength = "";
+    let finalLength = '';
     if (newLength < min)
         finalLength = min.toFixed(2);
     else if (newLength > max)
@@ -232,7 +232,7 @@ const changeDOMLength = (
         finalLength
     );
     return finalLength;
-}
+};
 
 const changeDOMColor = (
     DOMProperty: string,
@@ -253,35 +253,35 @@ const changeDOMColor = (
     } catch {
         throw new Error('Wrong color format');
     }
-}
+};
 
 
 
 
 export const changeFontGlowColor = (windowName: string, color: string) => {
-    changeDOMColor('--font-glow-color', windowName, 'additional.fontGlowColor', color)
+    changeDOMColor('--font-glow-color', windowName, 'additional.fontGlowColor', color);
 };
 
 export const changeFontColor = (windowName: string, color: string) => {
-    changeDOMColor('--font-color', windowName, 'additional.fontColor', color)
+    changeDOMColor('--font-color', windowName, 'additional.fontColor', color);
 };
 
 export const changeFontSizeDOM = (windowName: string, conditionForZoomIn: boolean): string => {
     return changeDOMLength(
         '--font-size',
-        6, 999, 1, "pt",
+        6, 999, 1, 'pt',
         windowName, 'additional.fontSize',
         conditionForZoomIn
-    )
+    );
 };
 
 export const changeBodyPaddingDOM = (windowName: string, conditionForZoomIn: boolean): string => {
     return changeDOMLength(
         '--body-padding',
-        0, 10, 0.1, "rem",
+        0, 10, 0.1, 'rem',
         windowName, 'additional.bodyPadding',
         conditionForZoomIn
-    )
+    );
 };
 
 export const changeFontGlowStrengthDOM = (windowName: string, conditionForIncrement: boolean): string => {
@@ -291,28 +291,28 @@ export const changeFontGlowStrengthDOM = (windowName: string, conditionForIncrem
     const body = document.querySelector('body') as HTMLElement;
     const currentClasses = [...body.classList].filter(e => e.startsWith('font-glow-strength-'));
     const currentClass = currentClasses.length > 0 ?
-        currentClasses[0] : 'font-glow-strength-0'
+        currentClasses[0] : 'font-glow-strength-0';
 
-    const currentStrength = parseInt(currentClass.slice(currentClass.lastIndexOf('-') + 1))
+    const currentStrength = parseInt(currentClass.slice(currentClass.lastIndexOf('-') + 1));
     const newStrength = currentStrength + (conditionForIncrement ? 1 : -1);
 
     let finalStrength = newStrength;
     if (newStrength > max) {
-        finalStrength = max
+        finalStrength = max;
     }
     if (newStrength < min) {
-        finalStrength = min
+        finalStrength = min;
     }
 
     currentClasses.forEach((cls: string) => {
-        body.classList.remove(cls)
-    })
+        body.classList.remove(cls);
+    });
 
     windowStore.set(`${windowName}.additional.fontGlowStrength`, finalStrength.toString());
-    body.classList.add(`font-glow-strength-${finalStrength.toString()}`)
+    body.classList.add(`font-glow-strength-${finalStrength.toString()}`);
 
     return finalStrength.toString();
-}
+};
 
 export const changeBackgroundColorDOM = (windowName: string, color: string) => {
     changeDOMColor('--background-color', windowName, '', color);
@@ -335,22 +335,22 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-            case KEYBOARD_KEYS.PLUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_ADD:
-                changeFontSizeDOM(windowName, true);
-                break;
-            case KEYBOARD_KEYS.MINUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-                changeFontSizeDOM(windowName, false);
-                break;
-            case KEYBOARD_KEYS.KEY_H:
-                ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
-                break;
+        case KEYBOARD_KEYS.PLUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_ADD:
+            changeFontSizeDOM(windowName, true);
+            break;
+        case KEYBOARD_KEYS.MINUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+            changeFontSizeDOM(windowName, false);
+            break;
+        case KEYBOARD_KEYS.KEY_H:
+            ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
+            break;
         }
     }, true);
 };
 
-const setRootIfPropertyExists = (DOMProperty: string, storeProperty: string, additionalCondition: boolean = true) => {
+const setRootIfPropertyExists = (DOMProperty: string, storeProperty: string, additionalCondition = true) => {
     const root = document.querySelector(':root') as HTMLElement;
     if (windowStore.has(storeProperty) && additionalCondition) {
         root.style.setProperty(
@@ -358,34 +358,34 @@ const setRootIfPropertyExists = (DOMProperty: string, storeProperty: string, add
             windowStore.get(storeProperty)
         );
     }
-}
+};
 
 
 export const setIgnoreMouseEvents = (state: boolean, isUIShown: boolean) => {
     if (!isUIShown && clickThroughWindows) {
-        ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, state)
+        ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, state);
     }
-}
+};
 
 
 const numberRegexTest = (unit: string) => {
-    return new RegExp('\^\\d+\\.\\d{2}' + unit + '\$')
-}
+    return new RegExp('\^\\d+\\.\\d{2}' + unit + '\$');
+};
 
 export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
 
     // Body classes, for things like pre-generated SCSS classes
     const body = document.querySelector('body') as HTMLElement;
-    body.classList.add(`font-glow-strength-${windowStore.get(windowName + ".additional.fontGlowStrength", "0")}`)
+    body.classList.add(`font-glow-strength-${windowStore.get(windowName + '.additional.fontGlowStrength', '0')}`);
 
 
     // :root element CSS variables for things like real-time changing of values like font size, color etc.
     setRootIfPropertyExists('--font-size', `${windowName}.additional.fontSize`,
-        numberRegexTest('pt').test(windowStore.get(`${windowName}.additional.fontSize`)))
+        numberRegexTest('pt').test(windowStore.get(`${windowName}.additional.fontSize`)));
     setRootIfPropertyExists('--body-padding', `${windowName}.additional.bodyPadding`,
-        numberRegexTest('rem').test(windowStore.get(`${windowName}.additional.bodyPadding`)))
-    setRootIfPropertyExists('--font-color', `${windowName}.additional.fontColor`)
-    setRootIfPropertyExists('--font-glow-color', `${windowName}.additional.fontGlowColor`)
+        numberRegexTest('rem').test(windowStore.get(`${windowName}.additional.bodyPadding`)));
+    setRootIfPropertyExists('--font-color', `${windowName}.additional.fontColor`);
+    setRootIfPropertyExists('--font-glow-color', `${windowName}.additional.fontGlowColor`);
 
 };
 

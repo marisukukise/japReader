@@ -6,7 +6,7 @@
   - JAPREADER_ENV ("dev" for a lot of windows etc., otherwise normal mode)
 */
 
-import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron';
+import { app, BrowserWindow, globalShortcut } from 'electron';
 
 if (require('electron-squirrel-startup')) {
     app.quit();
@@ -73,16 +73,16 @@ app.whenReady().then(() => {
     });
 
     globalShortcut.register('CommandOrControl+H', () => {
-        for (let [key, window] of Object.entries(windows)) {
+        for (const [key, window] of Object.entries(windows)) {
             if (['reader', 'translation', 'settings', 'dictionary'].includes(key)) {
                 window.show();
 
                 // @ts-expect-error The keys are limited to the ones that exist
-                window.webContents.send(IPC_CHANNELS[`${key.toUpperCase()}`].SET.SHOW_UI)
+                window.webContents.send(IPC_CHANNELS[`${key.toUpperCase()}`].SET.SHOW_UI);
             }
         }
 
-    })
+    });
 
 });
 

@@ -1,5 +1,5 @@
 import './DraggableBar.scss';
-import Logo from '@root/images/logo/logo.svg'
+import Logo from '@root/images/logo/logo.svg';
 
 type Props = {
     title: string

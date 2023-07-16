@@ -59,15 +59,15 @@ const UrlImage = ({ icon, title, url, id }: UrlImageProps) => {
     const isUIShown = useAtomValue(isUIShownAtom);
 
     const openUrl = () => {
-        console.log("in dictionary")
+        console.log('in dictionary');
         ipcRenderer.send(IPC_CHANNELS.MAIN.HANDLE.OPEN_EXTERNAL, url);
-    }
+    };
 
     return <span id={id} title={title} onClick={openUrl} className="search"
         onMouseEnter={() => setIgnoreMouseEvents(false, isUIShown)}
         onMouseLeave={() => setIgnoreMouseEvents(true, isUIShown)}
-    ><img className="icon" src={icon} /></span>
-}
+    ><img className="icon" src={icon} /></span>;
+};
 
 export const Dictionary = () => {
     const [isUIShown, setUIShown] = useAtom(isUIShownAtom);
@@ -184,24 +184,24 @@ export const Dictionary = () => {
                         <legend>
                             <img className="symbol" src={PictureSymbol} />
                         </legend>
-                            <UrlImage id="google" icon={GoogleIcon} title="Google Images" url={`https://www.google.co.jp/search?q=${infinitive}&tbm=isch`} />
-                            <UrlImage id="duckduckgo" icon={DuckDuckGoIcon} title="DuckDuckGo Images" url={`https://duckduckgo.com/?q=${infinitive}&kp=-1&kl=jp-jp&iax=images&ia=images`} />
+                        <UrlImage id="google" icon={GoogleIcon} title="Google Images" url={`https://www.google.co.jp/search?q=${infinitive}&tbm=isch`} />
+                        <UrlImage id="duckduckgo" icon={DuckDuckGoIcon} title="DuckDuckGo Images" url={`https://duckduckgo.com/?q=${infinitive}&kp=-1&kl=jp-jp&iax=images&ia=images`} />
                     </fieldset>
                     <fieldset className="search-english">
                         <legend>
                             <img className="symbol" src={BritainFlag} />
                         </legend>
-                            <UrlImage id="jisho" icon={JishoIcon} title='Jisho.org' url={`https://jisho.org/search/${infinitive}`} />
-                            <UrlImage id="weblio-en" icon={WeblioENIcon} title="Weblio EN" url={`https://ejje.weblio.jp/english-thesaurus/content/${infinitive}`} />
-                            <UrlImage id="wiktionary-en" icon={WiktionaryENIcon} title="Wiktionary EN" url={`https://en.wiktionary.org/wiki/${infinitive}#Japanese`} />
+                        <UrlImage id="jisho" icon={JishoIcon} title='Jisho.org' url={`https://jisho.org/search/${infinitive}`} />
+                        <UrlImage id="weblio-en" icon={WeblioENIcon} title="Weblio EN" url={`https://ejje.weblio.jp/english-thesaurus/content/${infinitive}`} />
+                        <UrlImage id="wiktionary-en" icon={WiktionaryENIcon} title="Wiktionary EN" url={`https://en.wiktionary.org/wiki/${infinitive}#Japanese`} />
                     </fieldset>
                     <fieldset className="search-japanese">
                         <legend>
                             <img className="symbol" src={JapanFlag} />
                         </legend>
-                            <UrlImage id="weblio-jp" icon={WeblioJPIcon} title='Weblio JP' url={`https://www.weblio.jp/content/${infinitive}`} />
-                            <UrlImage id="wiktionary-jp" icon={WiktionaryJPIcon} title='Wiktionary JP' url={`https://ja.wiktionary.org/wiki/${infinitive}#日本語`} />
-                            <UrlImage id="wikipedia" icon={WikipediaIcon} title='Wiipedia JP' url={`https://ja.wikipedia.org/wiki/${infinitive}`} />
+                        <UrlImage id="weblio-jp" icon={WeblioJPIcon} title='Weblio JP' url={`https://www.weblio.jp/content/${infinitive}`} />
+                        <UrlImage id="wiktionary-jp" icon={WiktionaryJPIcon} title='Wiktionary JP' url={`https://ja.wiktionary.org/wiki/${infinitive}#日本語`} />
+                        <UrlImage id="wikipedia" icon={WikipediaIcon} title='Wiipedia JP' url={`https://ja.wikipedia.org/wiki/${infinitive}`} />
                     </fieldset>
                 </div>
 
@@ -217,7 +217,7 @@ export const Dictionary = () => {
                         <Button onClick={setIgnoredStatus}>Ignored</Button>
                     </ButtonGroup>
                 </div>
-                <div className={status + " infinitive-display"}
+                <div className={status + ' infinitive-display'}
                     onMouseEnter={() => setIgnoreMouseEvents(false, isUIShown)}
                     onMouseLeave={() => setIgnoreMouseEvents(true, isUIShown)}
                 >

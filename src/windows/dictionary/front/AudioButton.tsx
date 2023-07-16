@@ -1,13 +1,12 @@
-import { Button, Slider, useRect, useScale } from '@geist-ui/core';
+import { Button } from '@geist-ui/core';
 import { useAtomValue } from 'jotai';
 import { infinitiveAtom, infinitiveKanaAtom } from './Dictionary';
 import { useEffect, useRef, useState } from 'react';
 import log_renderer from 'electron-log/renderer';
-import { getSettingsStore, getWindowStore } from '@globals/ts/main/initializeStore';
-import { PlayFill, PauseFill} from '@geist-ui/icons'
+import { getWindowStore } from '@globals/ts/main/initializeStore';
 const log = log_renderer.scope('dictionary/AudioButton');
 
-const windowStore = getWindowStore()
+const windowStore = getWindowStore();
 
 const BUTTON_MESSAGES = {
     'PLAY': 'Play audio',
@@ -17,8 +16,8 @@ const BUTTON_MESSAGES = {
 };
 
 const getURL = (infinitive: string, infinitiveKana: string) => {
-    return `https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=${infinitive}&kana=${infinitiveKana}`
-}
+    return `https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=${infinitive}&kana=${infinitiveKana}`;
+};
 
 export const AudioButton = () => {
     const infinitive = useAtomValue(infinitiveAtom);
@@ -27,8 +26,8 @@ export const AudioButton = () => {
     const [source, setSource] = useState(getURL(infinitive, infinitiveKana));
     const audioRef = useRef<HTMLAudioElement>();
     const [disabled, setDisabled] = useState(false);
-    const [buttonText, setButtonText] = useState(BUTTON_MESSAGES.LOADING)
-    const [volume, setVolume] = useState(windowStore.get('dictionary.additional.audioVolume', 15))
+    const [buttonText, setButtonText] = useState(BUTTON_MESSAGES.LOADING);
+    const [volume, setVolume] = useState(windowStore.get('dictionary.additional.audioVolume', 15));
 
     const setLoading = (state: boolean, buttonText = '') => {
         setDisabled(state);
@@ -37,8 +36,8 @@ export const AudioButton = () => {
 
     useEffect(() => {
         canPlayAudio.current = false;
-        setLoading(true)
-        setSource(getURL(infinitive, infinitiveKana))
+        setLoading(true);
+        setSource(getURL(infinitive, infinitiveKana));
         if (audioRef.current) {
             audioRef.current.load();
         }
@@ -48,30 +47,30 @@ export const AudioButton = () => {
         if (audioRef.current) {
             audioRef.current.volume = volume / 20;
         }
-    }, [volume])
+    }, [volume]);
 
     const playSnippet = () => {
         if (audioRef.current) {
             audioRef.current.pause();
             audioRef.current.play();
         }
-    }
+    };
 
     const onLoadedMetadata = () => {
         if (audioRef.current && !isNaN(audioRef.current.duration) && audioRef.current.duration !== 5.694694) {
-            setLoading(false, BUTTON_MESSAGES.PLAY)
+            setLoading(false, BUTTON_MESSAGES.PLAY);
         } else {
             setButtonText(BUTTON_MESSAGES.NOT_AVAILABLE);
         }
-    }
+    };
 
     const onVolumeChange = (event: any) => {
-        setVolume(event.target.value)
-        windowStore.set('dictionary.additional.audioVolume', event.target.value)
-    }
+        setVolume(event.target.value);
+        windowStore.set('dictionary.additional.audioVolume', event.target.value);
+    };
 
     return <>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             <input type="range" min={0} max={20} value={volume} onChange={onVolumeChange} />
             <Button 
                 disabled={disabled}
@@ -80,7 +79,7 @@ export const AudioButton = () => {
                 {buttonText}
             </Button>
         </div>
-        <audio style={{ display: "none" }} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata}>
+        <audio style={{ display: 'none' }} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata}>
             <source src={source} type='audio/mpeg' />
         </audio>
     </>;

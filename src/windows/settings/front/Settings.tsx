@@ -147,7 +147,7 @@ export const Settings = () => {
                 <legend>Global (all windows)</legend>
                 <Checkbox settingName='clickThroughWindows' formData={formData} setFormData={setFormData}
                     disabled={false}> (Only for Windows and MacOS) Make windows click-through when the UI is hidden.* 
-                    </Checkbox>
+                </Checkbox>
                     *It's a good option for full screen apps combined with "Always on Top". 
                     When you press H, the window background will become unclickable.
                     If you're using this option don't stack windows on top of each other, because it bugs out. 

@@ -1,11 +1,9 @@
-import OnTopToggleButton from './ConfigurationDrawerComponents/OnTopToggleButton';
 
 import ColorPickerButton from './ConfigurationDrawerComponents/ColorPickerButton';
 import { ipcRenderer } from 'electron';
 import { changeBackgroundColorDOM, changeBodyPaddingDOM, changeFontColor, changeFontGlowColor, changeFontGlowStrengthDOM, changeFontSizeDOM } from '@globals/ts/renderer/helpers';
 import ZoomButtonGroup from './ConfigurationDrawerComponents/ZoomButtonGroup';
 import { getWindowStore } from '@globals/ts/main/initializeStore';
-import { FontFamilySelector } from './ConfigurationDrawerComponents/FontFamilySelector';
 import ToggleStateSwitch from './ConfigurationDrawerComponents/ToggleStateSwitch';
 
 const windowStore = getWindowStore();

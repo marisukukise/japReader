@@ -3,8 +3,8 @@ import ChevronUp from '@geist-ui/icons/chevronUp';
 import Drawer from '@geist-ui/core/esm/drawer';
 import { ipcRenderer } from 'electron';
 import { useEffect, useState } from 'react';
-import { ChevronDown } from '@geist-ui/icons';
-import { QuestionCircle } from '@geist-ui/icons'
+import { ChevronDown , QuestionCircle } from '@geist-ui/icons';
+
 
 
 type Props = {
@@ -24,17 +24,17 @@ const ConfigurationDrawer = ({ settings }: Props): JSX.Element => {
         });
     }, []);
 
-    const PROTIPS = "Protips:\n\
+    const PROTIPS = 'Protips:\n\
     1. Press H to hide the window borders and make it click-through;\n\
     2. Press Ctrl+H to bring all the windows up;\n\
     3. Zoom font with +/- buttons or Ctrl+Scroll;\n\
     4. You can set the window to transparent;\n\
-    5. For better text visibility you can increase \"font glow\n\
-    6. Set the window to \"always on top\" for apps on fullscreen;\n\
+    5. For better text visibility you can increase "font glow\n\
+    6. Set the window to "always on top" for apps on fullscreen;\n\
     \n\
     This is the alpha version of the program so it may be bugged, but it should be mostly usable.\n\
     If you encounter bugs you can open an issue on japReader github.\n\
-    Have fun!"
+    Have fun!';
 
     return (
         <div className="drawer-component">
@@ -46,7 +46,7 @@ const ConfigurationDrawer = ({ settings }: Props): JSX.Element => {
             <Drawer wrapClassName="drawer-wrapper" visible={isOpen} onClose={close} placement='bottom'
                 style={{ position: 'static', borderRadius: '6px'}}
             >
-                <div title={PROTIPS} className="protips" style={{ position: "absolute", top: 10, right: 10 }}>
+                <div title={PROTIPS} className="protips" style={{ position: 'absolute', top: 10, right: 10 }}>
                     <QuestionCircle size={30}/>
                 </div>
                 <Drawer.Title>Window-specific settings</Drawer.Title>

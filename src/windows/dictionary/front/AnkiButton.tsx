@@ -9,7 +9,6 @@ import { ipcRenderer } from 'electron';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 import { useAtomValue } from 'jotai';
 import { definitionsAtom, translatedSentenceAtom, infinitiveAtom, infinitiveKanaAtom, japaneseSentenceAtom, wordAtom, wordKanaAtom } from './Dictionary';
-import {AnkiIcon} from '@img/icons/anki.svg';
 const log = log_renderer.scope('dictionary/AnkiButton');
 
 const settingsStore = getSettingsStore();

@@ -1,4 +1,4 @@
-import { BrowserWindow, app, dialog, ipcMain, ipcRenderer } from 'electron';
+import { BrowserWindow, app, dialog, ipcMain } from 'electron';
 import mainLog from 'electron-log';
 const log = mainLog.scope('main');
 import { getWindowStore } from '@globals/ts/main/initializeStore';
@@ -16,7 +16,7 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
     });
 
     ipcMain.on(ipcBase.TOGGLE.ALWAYS_ON_TOP, (event) => {
-        const value = window.isAlwaysOnTop()
+        const value = window.isAlwaysOnTop();
         windowStore.set(`${windowName}.alwaysOnTop`, !value);
         window.setAlwaysOnTop(!value, 'pop-up-menu');
     });
@@ -35,7 +35,7 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
         if(window.isVisible())
             window.moveTop();
         else
-            window.show()
+            window.show();
     });
 
     ipcMain.on(ipcBase.SET.HIDE, () => {

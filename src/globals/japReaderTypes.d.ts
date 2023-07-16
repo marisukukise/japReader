@@ -29,8 +29,8 @@ declare namespace japReader {
     }
 
     interface FontInfo {
-        "filename": string;
-        "filepath": string;
+        'filename': string;
+        'filepath': string;
     }
 }
 

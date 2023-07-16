@@ -2,14 +2,14 @@ import path from 'path';
 import mainLog from 'electron-log';
 import axios from 'axios';
 const log = mainLog.scope('main');
-import { BrowserWindow, app, clipboard, ipcMain, net, protocol, shell } from 'electron';
+import { BrowserWindow, app, clipboard, ipcMain, shell } from 'electron';
 import { promises as fsPromises } from 'fs';
 import { getHistoryStore, getSettingsStore } from '@globals/ts/main/initializeStore';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 const historyStore = getHistoryStore();
 const settingsStore = getSettingsStore();
 
-const { clickThroughWindows } = settingsStore.get('global_settings')
+const { clickThroughWindows } = settingsStore.get('global_settings');
 
 let isClipboardWindowReady = false;
 let isDeepWindowReady = false;
@@ -80,36 +80,36 @@ export function startMainListeners() {
 
     ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.FONT_LIST, async (event: any): Promise<japReader.FontInfo[]> => {
         // Returns the list of .ttf filenames in useData/fonts directory
-        const userDataPath = app.getPath('userData')
-        const fontsPath = path.join(userDataPath, 'fonts')
+        const userDataPath = app.getPath('userData');
+        const fontsPath = path.join(userDataPath, 'fonts');
         try {
             await fsPromises.access(fontsPath);
             const files = await fsPromises.readdir(fontsPath);
             return files
-                .filter(e => e.endsWith(".ttf"))
+                .filter(e => e.endsWith('.ttf'))
                 .map((e: string) => {
                     return {
-                        "filename": e,
-                        "filepath": path.join(fontsPath, e)
-                    }
+                        'filename': e,
+                        'filepath': path.join(fontsPath, e)
+                    };
                 });
         }
         catch {
             console.warn(`Couldn't access the directory: ${fontsPath}. If you want to use custom fonts make sure that they're in this directory.`);
-            return []
+            return [];
         }
-    })
+    });
 
     ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.IGNORE_MOUSE_EVENTS, (event, state) => {
         if (clickThroughWindows && (process.platform == 'win32' || process.platform == 'darwin')) {
-            const win = BrowserWindow.fromWebContents(event.sender)
-            const options = state ? { forward: true } : undefined
-            win.setIgnoreMouseEvents(state, options)
+            const win = BrowserWindow.fromWebContents(event.sender);
+            const options = state ? { forward: true } : undefined;
+            win.setIgnoreMouseEvents(state, options);
         }
-    })
+    });
 
     ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.OPEN_EXTERNAL, (event, url) => {
-        console.log("in ipcmain")
+        console.log('in ipcmain');
         shell.openExternal(url);
     });
 
