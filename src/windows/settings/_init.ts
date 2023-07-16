@@ -24,7 +24,7 @@ export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
 
     settingsWindow.loadURL(webpack_entry);
     setDefaultVisibleWindowSettings(settingsWindow, 'settings', IPC_CHANNELS.SETTINGS);
-    showWindowWhenReady(settingsWindow, false);
+    showWindowWhenReady(settingsWindow, 'settings', IPC_CHANNELS.SETTINGS, false);
 
     settingsWindow.on('close', (event: any) => {
         event.preventDefault();

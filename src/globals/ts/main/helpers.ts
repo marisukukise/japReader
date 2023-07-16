@@ -1,4 +1,4 @@
-import { BrowserWindow, app, dialog, ipcMain } from 'electron';
+import { BrowserWindow, app, dialog, ipcMain, ipcRenderer } from 'electron';
 import mainLog from 'electron-log';
 const log = mainLog.scope('main');
 import { getWindowStore } from '@globals/ts/main/initializeStore';
@@ -15,9 +15,10 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
         window.setBackgroundColor(value);
     });
 
-    ipcMain.on(ipcBase.SET.ALWAYS_ON_TOP, (event, value) => {
-        windowStore.set(`${windowName}.alwaysOnTop`, value);
-        window.setAlwaysOnTop(value, 'pop-up-menu');
+    ipcMain.on(ipcBase.TOGGLE.ALWAYS_ON_TOP, (event) => {
+        const value = window.isAlwaysOnTop()
+        windowStore.set(`${windowName}.alwaysOnTop`, !value);
+        window.setAlwaysOnTop(!value, 'pop-up-menu');
     });
 
     ipcMain.on(ipcBase.SET.FOCUS, () => {
@@ -75,7 +76,7 @@ export const showExitDialog = (window: BrowserWindow, event: any): void => {
     }
 };
 
-export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProduction: boolean): void => {
+export const showWindowWhenReady = (window: BrowserWindow, windowName: string, ipcBase: any, shouldShowInProduction: boolean): void => {
     window.webContents.on('did-finish-load', () => {
         window.webContents.setZoomFactor(1);
         window.webContents.setZoomLevel(0);
@@ -87,6 +88,12 @@ export const showWindowWhenReady = (window: BrowserWindow, shouldShowInProductio
         window.once('ready-to-show', () => {
             log.info(`⌛ Showing ${window.getTitle()}`);
             window.show();
+
+            if (windowStore.get(`${windowName}.alwaysOnTop`)) {
+                window.setAlwaysOnTop(true, 'pop-up-menu');
+                window.moveTop();
+            }
+
         });
         return;
     }
@@ -127,12 +134,13 @@ export const createWindowAndStorePositionData = (windowName: string, windowConfi
         );
         // get rid of rubbish properties
         windowStore.delete(windowName);
-        windowStore.set(windowName, Object.keys(additional).length === 0 ? windowSettings : {...windowSettings, 'additional': additional});
+        windowStore.set(windowName, Object.keys(additional).length === 0 ? windowSettings : { ...windowSettings, 'additional': additional });
     }
 
     const window = new BrowserWindow(windowConfig);
-    if (windowConfig.isMaximized) window.maximize();
-
+    if (windowConfig.isMaximized) {
+        window.maximize();
+    }
     // Events that will update the window position
     window.on('maximize', () => {
         windowStore.set(windowName + '.isMaximized', true);
@@ -140,13 +148,13 @@ export const createWindowAndStorePositionData = (windowName: string, windowConfi
     window.on('unmaximize', () => {
         windowStore.set(windowName + '.isMaximized', false);
     });
-    // @ts-expect-error Not sure problem TypeScript sees, but everything is fine
+    // @ts-expect-error Not sure what problem TypeScript sees, but everything is fine
     window.on(process.platform == 'win32' ? 'resized' : 'resize', () => {
         const normalBounds = window.getNormalBounds();
         windowStore.set(windowName + '.width', normalBounds.width);
         windowStore.set(windowName + '.height', normalBounds.height);
     });
-    // @ts-expect-error Not sure problem TypeScript sees, but everything is fine
+    // @ts-expect-error Not sure what problem TypeScript sees, but everything is fine
     window.on(process.platform == 'win32' ? 'moved' : 'move', () => {
         const normalBounds = window.getNormalBounds();
         windowStore.set(windowName + '.x', normalBounds.x);

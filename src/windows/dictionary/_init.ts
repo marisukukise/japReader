@@ -21,7 +21,7 @@ export const createDictionaryWindow = (webpack_entry: string): BrowserWindow => 
 
     dictionaryWindow.loadURL(webpack_entry);
     setDefaultVisibleWindowSettings(dictionaryWindow, 'dictionary', IPC_CHANNELS.DICTIONARY);
-    showWindowWhenReady(dictionaryWindow, false);
+    showWindowWhenReady(dictionaryWindow, 'dictionary', IPC_CHANNELS.DICTIONARY, false);
 
     dictionaryWindow.on('close', (event: any) => {
         event.preventDefault();

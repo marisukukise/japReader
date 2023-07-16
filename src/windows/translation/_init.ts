@@ -1,6 +1,6 @@
 import { BrowserWindow } from 'electron';
 
-import { getWindowStore , getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getWindowStore, getSettingsStore } from '@globals/ts/main/initializeStore';
 const windowStore = getWindowStore();
 import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from '@globals/ts/main/helpers';
 
@@ -29,7 +29,7 @@ export const createTranslationWindow = (webpack_entry: string): BrowserWindow =>
     translationWindow.loadURL(webpack_entry);
 
     setDefaultVisibleWindowSettings(translationWindow, 'translation', IPC_CHANNELS.TRANSLATION);
-    showWindowWhenReady(translationWindow, true);
+    showWindowWhenReady(translationWindow, 'translation', IPC_CHANNELS.TRANSLATION, true);
 
     if (!useReader) {
         translationWindow.on('close', (event: any) => {

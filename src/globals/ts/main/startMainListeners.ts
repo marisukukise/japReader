@@ -2,7 +2,8 @@ import path from 'path';
 import mainLog from 'electron-log';
 import axios from 'axios';
 const log = mainLog.scope('main');
-import { app, clipboard, ipcMain, net, protocol } from 'electron';
+import { BrowserWindow, app, clipboard, ipcMain, net, protocol } from 'electron';
+import { promises as fsPromises } from 'fs';
 import { getHistoryStore } from '@globals/ts/main/initializeStore';
 import { IPC_CHANNELS } from '@globals/ts/main/objects';
 const historyStore = getHistoryStore();
@@ -61,6 +62,7 @@ export function startMainListeners() {
     });
 
     if (process.env.JAPREADER_ENV == 'dev') {
+        // Insert some text to clipboard when reader ready for easier testing
         ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.IS_READY, () => {
             clipboard.writeText('昨日の大雨による被害は出ていないようで何よりだ。');
         });
@@ -72,6 +74,35 @@ export function startMainListeners() {
         // So use this function whenever you use a module from the src/lib path
         return app.isPackaged ? path.join(process.resourcesPath, 'lib') : path.join(process.cwd(), 'src', 'lib');
     });
+
+    ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.FONT_LIST, async (event: any): Promise<japReader.FontInfo[]> => {
+        // Returns the list of .ttf filenames in useData/fonts directory
+        const userDataPath = app.getPath('userData')
+        const fontsPath = path.join(userDataPath, 'fonts')
+        try {
+            await fsPromises.access(fontsPath);
+            const files = await fsPromises.readdir(fontsPath);
+            return files
+                .filter(e => e.endsWith(".ttf"))
+                .map((e: string) => {
+                    return {
+                        "filename": e,
+                        "filepath": path.join(fontsPath, e)
+                    }
+                });
+        }
+        catch {
+            console.warn(`Couldn't access the directory: ${fontsPath}. If you want to use custom fonts make sure that they're in this directory.`);
+            return []
+        }
+    })
+
+    ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
+        if (process.platform == 'win32' || process.platform == 'darwin') {
+            const win = BrowserWindow.fromWebContents(event.sender)
+            win.setIgnoreMouseEvents(ignore, options)
+        }
+    })
 
 
     ipcMain.handle(IPC_CHANNELS.ANKI_CONNECT.INVOKE, async (event, action: any, params: any = {}) => {

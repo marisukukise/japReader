@@ -1,4 +1,4 @@
-@mixin create-classes {
+@mixin create-font-glow-strength-classes {
     &.font-glow-strength-0 {
         text-shadow: none;
     }
@@ -17,7 +17,7 @@
 }
 
 body {
-    @include create-classes;
+    @include create-font-glow-strength-classes;
     background: linear-gradient(to right, black 1px, transparent 1px) 0 0,
         linear-gradient(to right, black 1px, transparent 1px) 0 100%,
         linear-gradient(to left, black 1px, transparent 1px) 100% 0,

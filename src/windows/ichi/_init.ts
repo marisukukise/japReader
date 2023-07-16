@@ -20,7 +20,7 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
     ichiWindow.loadURL('https://ichi.moe/cl/qr/?q=&r=kana');
     if (process.env.JAPREADER_ENV === 'dev') ichiWindow.webContents.openDevTools();
 
-    showWindowWhenReady(ichiWindow, false);
+    showWindowWhenReady(ichiWindow, 'ichi', IPC_CHANNELS.ICHI, false);
 
     ichiWindow.on('close', (event: any) => {
         event.preventDefault();
@@ -32,7 +32,7 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
     });
 
 
-    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, (event) =>  { 
+    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, (event) => {
         ichiWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY);
     });
 

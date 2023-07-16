@@ -45,6 +45,11 @@ declare namespace japReader {
         deep?: BrowserWindow;
         translation?: BrowserWindow;
     }
+
+    interface FontInfo {
+        "filename": string;
+        "filepath": string;
+    }
 }
 
 

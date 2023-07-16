@@ -27,7 +27,7 @@ export const createReaderWindow = (webpack_entry: string): BrowserWindow => {
     readerWindow.loadURL(webpack_entry);
 
     setDefaultVisibleWindowSettings(readerWindow, 'reader', IPC_CHANNELS.READER);
-    showWindowWhenReady(readerWindow, true);
+    showWindowWhenReady(readerWindow, 'reader', IPC_CHANNELS.READER, true);
 
     readerWindow.on('close', (event: any) => {
         showExitDialog(readerWindow, event);

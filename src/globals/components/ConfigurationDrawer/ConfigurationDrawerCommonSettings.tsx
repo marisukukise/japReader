@@ -5,6 +5,8 @@ import { ipcRenderer } from 'electron';
 import { changeBackgroundColorDOM, changeBodyPaddingDOM, changeFontColor, changeFontGlowColor, changeFontGlowStrengthDOM, changeFontSizeDOM } from '@globals/ts/renderer/helpers';
 import ZoomButtonGroup from './ConfigurationDrawerComponents/ZoomButtonGroup';
 import { getWindowStore } from '@globals/ts/main/initializeStore';
+import { FontFamilySelector } from './ConfigurationDrawerComponents/FontFamilySelector';
+import ToggleStateSwitch from './ConfigurationDrawerComponents/ToggleStateSwitch';
 
 const windowStore = getWindowStore();
 
@@ -63,11 +65,12 @@ export const ConfigurationDrawerCommonSettings = ({ windowName, ipcBase }: Props
             storeProperty={`${windowName}.additional.bodyPadding`}
             windowName={windowName}
         />
-        <OnTopToggleButton
-            callback={(value: boolean) => {
-                ipcRenderer.send(ipcBase.SET.ALWAYS_ON_TOP, value);
+        <ToggleStateSwitch
+            fn={() => {
+                ipcRenderer.send(ipcBase.TOGGLE.ALWAYS_ON_TOP);
             }}
-            initialChecked={windowStore.get(`${windowName}.additional.alwaysOnTop`, false)}
+            initialChecked={windowStore.get(`${windowName}.alwaysOnTop`, false)}
+            text="Always on top"
         />
     </>;
 };

@@ -10,11 +10,17 @@ export const IPC_CHANNELS = {
         INVOKE: 'invoke/anki'
     },
     MAIN: {
+        SET: {
+            CUSTOM_FONT: 'main/set/customFont',
+        },
         HANDLE: {
+            IGNORE_MOUSE_EVENTS: 'main/handle/ignoreMouseEvents',
             RESTART_PROGRAM: 'main/handle/restartProgram'
         },
         REQUEST: {
-            LIB_PATH: 'main/request/libpath'
+            CUSTOM_FONT_PATH: 'main/request/customFontPath',
+            LIB_PATH: 'main/request/libPath',
+            FONT_LIST: 'main/request/fontList',
         }
     },
     ICHI: {
@@ -28,12 +34,14 @@ export const IPC_CHANNELS = {
         },
     },
     READER: {
+        TOGGLE: {
+            ALWAYS_ON_TOP: 'reader/toggle/alwaysOnTop',
+        },
         SET: {
             SHOW: 'reader/set/show',
             HIDE: 'reader/set/hide',
             FOCUS: 'reader/set/focus',
             BACKGROUND_COLOR: 'reader/set/windowBackgroundColor',
-            ALWAYS_ON_TOP: 'reader/set/alwaysOnTop',
             TOGGLE_UI: 'reader/set/toggleUI',
             SHOW_UI: 'reader/set/showUI',
         },
@@ -58,12 +66,14 @@ export const IPC_CHANNELS = {
         },
     },
     TRANSLATION: {
+        TOGGLE: {
+            ALWAYS_ON_TOP: 'translation/toggle/alwaysOnTop',
+        },
         SET: {
             FOCUS: 'translation/set/focus',
             SHOW: 'translation/set/show',
             HIDE: 'translation/set/hide',
             BACKGROUND_COLOR: 'translation/set/windowBackgroundColor',
-            ALWAYS_ON_TOP: 'translation/set/alwaysOnTop',
             TOGGLE_UI: 'translation/set/toggleUI',
             SHOW_UI: 'translation/set/showUI',
         },
@@ -86,12 +96,14 @@ export const IPC_CHANNELS = {
         },
     },
     DICTIONARY: {
+        TOGGLE: {
+            ALWAYS_ON_TOP: 'dictionary/toggle/alwaysOnTop',
+        },
         SET: {
             FOCUS: 'dictionary/set/focus',
             SHOW: 'dictionary/set/show',
             HIDE: 'dictionary/set/hide',
             BACKGROUND_COLOR: 'dictionary/set/windowBackgroundColor',
-            ALWAYS_ON_TOP: 'dictionary/set/alwaysOnTop',
             TOGGLE_UI: 'dictionary/set/toggleUI',
             SHOW_UI: 'dictionary/set/showUI',
         },
@@ -104,12 +116,14 @@ export const IPC_CHANNELS = {
         },
     },
     SETTINGS: {
+        TOGGLE: {
+            ALWAYS_ON_TOP: 'settings/toggle/alwaysOnTop',
+        },
         SET: {
             FOCUS: 'settings/set/focus',
             SHOW: 'settings/set/show',
             HIDE: 'settings/set/hide',
             BACKGROUND_COLOR: 'settings/set/windowBackgroundColor',
-            ALWAYS_ON_TOP: 'settings/set/alwaysOnTop',
             TOGGLE_UI: 'settings/set/toggleUI',
             SHOW_UI: 'settings/set/showUI',
         },
