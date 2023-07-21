@@ -14,18 +14,27 @@ export async function startApp(): Promise<StartAppResponse> {
     const appInfo = parseElectronApp(latestBuild);
 
     console.log("Creating electron app...")
-    electronApp = await electron.launch({
-        args: [appInfo.main],
-        executablePath: appInfo.executable,
-        recordVideo: {
-            dir: 'test-results/webm',
-            size: {
-                width: 800,
-                height: 600
+    console.log("appInfo.main", appInfo.main)
+    console.log("appInfo.executable", appInfo.executable)
+    try {
+        electronApp = await electron.launch({
+            args: [appInfo.main],
+            executablePath: appInfo.executable,
+            recordVideo: {
+                dir: 'test-results/webm',
+                size: {
+                    width: 800,
+                    height: 600
+                },
             },
-        },
-    });
+        });
+    }
+    catch (error) {
+        console.error(error)
+        throw new Error("Something went wrong when creating the Electron process")
+    }
 
+    console.log("Waiting for splash-screen to pass...")
     // wait for splash-screen to pass
     await electronApp.firstWindow();
 
