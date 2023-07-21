@@ -6,12 +6,14 @@ let electronApp: ElectronApplication;
 
 export async function startApp(): Promise<StartAppResponse> {
 
+    console.log("Starting app...")
     // find the latest build in the out directory
     const latestBuild = findLatestBuild();
 
     // parse the directory and find paths and other info
     const appInfo = parseElectronApp(latestBuild);
 
+    console.log("Creating electron app...")
     electronApp = await electron.launch({
         args: [appInfo.main],
         executablePath: appInfo.executable,
@@ -44,5 +46,6 @@ export async function startApp(): Promise<StartAppResponse> {
         }
     })
 
+    console.log("Returning windows...")
     return { visibleWindows: visiblePages, appInfo, electronApp };
 }
