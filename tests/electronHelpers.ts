@@ -16,7 +16,7 @@ export async function startApp(): Promise<StartAppResponse> {
         args: [appInfo.main],
         executablePath: appInfo.executable,
         recordVideo: {
-            dir: 'recordings',
+            dir: 'test-results/webm',
             size: {
                 width: 800,
                 height: 600
