@@ -48,7 +48,7 @@ test.afterAll(async () => {
         const page = visibleWindow.page;
         const windowName = visibleWindow.windowName;
 
-        await page.screenshot({path: `screenshots/final-${windowName}.png`});
+        await page.context().close();
 
     }
 
