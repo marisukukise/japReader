@@ -18,10 +18,16 @@ let settingsWindow: Page;
 
 test.beforeAll(async () => {
     console.log("Starting test...")
-    const startAppResponse = await startApp();
-    visibleWindows = startAppResponse.visibleWindows;
-    appInfo = startAppResponse.appInfo;
-    electronApp = startAppResponse.electronApp;
+    try {
+        const startAppResponse = await startApp();
+
+        visibleWindows = startAppResponse.visibleWindows;
+        appInfo = startAppResponse.appInfo;
+        electronApp = startAppResponse.electronApp;
+    }
+    catch (error) {
+        console.error(error)
+    }
 
     console.log("Creating window objects...")
     dictionaryWindow = visibleWindows.filter(e => e.windowName === 'dictionary')[0].page;
