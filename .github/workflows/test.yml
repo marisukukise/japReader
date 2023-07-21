@@ -43,8 +43,10 @@ jobs:
       - name: Package
         run: yarn package
       
-      - name: Test UI
-        run: yarn test:ui
+      - name: Run headless test
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: yarn test:ui
 
       - name: Upload a Test Artifact
         if: always()
