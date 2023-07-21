@@ -29,9 +29,10 @@ const DIGIT_MAP = [
 const getFuriganaObject = (w: string, r: string): japReader.FuriganaObject[] => {
     try {
         if (/[０-９]/.test(w)) {
+            // TODO: Replace the digit to kanji, and then afterwards back to the digit
             const original_w = w;
             DIGIT_MAP.forEach((digit_entry: string[]) => {
-                w = w.replace(digit_entry[0], digit_entry[1]);
+                w = w.replace(digit_entry[0]!, digit_entry[1]!);
             });
             const furigana = fit(w, r, { type: 'object' });
             furigana.w = original_w;
@@ -41,6 +42,9 @@ const getFuriganaObject = (w: string, r: string): japReader.FuriganaObject[] => 
         }
     } catch (err) {
         log.error(err);
+        log.error(`Unable to parse ${w} (${r}) into a FuriganaObject`)
+        // Return an empty object instead of throwing an error to not halt the program unnecessarily
+        return [{w: "", r: ""}] 
     }
 };
 
@@ -182,7 +186,7 @@ export const listenForAnotherWindowIsReady = (
     setReady: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
     // Case #1: Target window loaded before Awaited window
-    ipcRenderer.on(ipcBase.ANNOUNCE.IS_READY, (event: any) => {
+    ipcRenderer.on(ipcBase.ANNOUNCE.IS_READY, (_event: any) => {
         setReady(true);
     });
 
@@ -291,7 +295,7 @@ export const changeFontGlowStrengthDOM = (windowName: string, conditionForIncrem
     const body = document.querySelector('body') as HTMLElement;
     const currentClasses = [...body.classList].filter(e => e.startsWith('font-glow-strength-'));
     const currentClass = currentClasses.length > 0 ?
-        currentClasses[0] : 'font-glow-strength-0';
+        currentClasses[0]! : 'font-glow-strength-0';
 
     const currentStrength = parseInt(currentClass.slice(currentClass.lastIndexOf('-') + 1));
     const newStrength = currentStrength + (conditionForIncrement ? 1 : -1);
@@ -335,17 +339,17 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-        case KEYBOARD_KEYS.PLUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_ADD:
-            changeFontSizeDOM(windowName, true);
-            break;
-        case KEYBOARD_KEYS.MINUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-            changeFontSizeDOM(windowName, false);
-            break;
-        case KEYBOARD_KEYS.KEY_H:
-            ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
-            break;
+            case KEYBOARD_KEYS.PLUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_ADD:
+                changeFontSizeDOM(windowName, true);
+                break;
+            case KEYBOARD_KEYS.MINUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+                changeFontSizeDOM(windowName, false);
+                break;
+            case KEYBOARD_KEYS.KEY_H:
+                ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
+                break;
         }
     }, true);
 };
@@ -372,7 +376,7 @@ const numberRegexTest = (unit: string) => {
     return new RegExp('^\\d+\\.\\d{2}' + unit + '$');
 };
 
-export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
+export const initializeWindowSettingsFromStore = (windowName: string, _ipcBase: any) => {
 
     // Body classes, for things like pre-generated SCSS classes
     const body = document.querySelector('body') as HTMLElement;

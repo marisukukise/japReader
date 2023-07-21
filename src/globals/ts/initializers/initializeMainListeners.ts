@@ -1,11 +1,11 @@
-import path from 'path';
+import * as path from 'path';
 import mainLog from 'electron-log';
 import axios from 'axios';
 const log = mainLog.scope('main');
 import { BrowserWindow, app, clipboard, ipcMain, shell } from 'electron';
 import { promises as fsPromises } from 'fs';
-import { getHistoryStore, getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
-import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
+import { getHistoryStore, getSettingsStore } from '@globals/ts/initializers/initializeStore';
+import { IPC_CHANNELS, JAPREADER_ENV } from '@globals/ts/other/objects';
 const historyStore = getHistoryStore();
 const settingsStore = getSettingsStore();
 
@@ -46,7 +46,7 @@ export function initializeMainListeners() {
         app.exit();
     });
 
-    ipcMain.on(IPC_CHANNELS.STORES.HISTORY.APPEND, (event, originalText, translation) => {
+    ipcMain.on(IPC_CHANNELS.STORES.HISTORY.APPEND, (_event, originalText, translation) => {
         if (typeof translation !== 'string' || translation == '') translation = null;
 
         const entry = {
@@ -64,21 +64,21 @@ export function initializeMainListeners() {
         else historyStore.set('history', [entry]);
     });
 
-    if (process.env['JAPREADER_ENV'] == 'dev') {
+    if (JAPREADER_ENV == 'dev') {
         // Insert some text to clipboard when reader ready for easier testing
         ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.IS_READY, () => {
             clipboard.writeText('昨日の大雨による被害は出ていないようで何よりだ。');
         });
     }
 
-    ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.LIB_PATH, async (event) => {
+    ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.LIB_PATH, async () => {
         // Some libraries (like clipboard-event) can't get packaged in order to work (for example because they use executable files)
         // Those libraries are in the src/lib folder and this function returns its path for both unpackaged and packaged versions
         // So use this function whenever you use a module from the src/lib path
         return app.isPackaged ? path.join(process.resourcesPath, 'lib') : path.join(process.cwd(), 'src', 'lib');
     });
 
-    ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.FONT_LIST, async (event: any): Promise<japReader.FontInfo[]> => {
+    ipcMain.handle(IPC_CHANNELS.MAIN.REQUEST.FONT_LIST, async (): Promise<japReader.FontInfo[]> => {
         // Returns the list of .ttf filenames in useData/fonts directory
         const userDataPath = app.getPath('userData');
         const fontsPath = path.join(userDataPath, 'fonts');
@@ -104,17 +104,17 @@ export function initializeMainListeners() {
         if (clickThroughWindows && (process.platform == 'win32' || process.platform == 'darwin')) {
             const win = BrowserWindow.fromWebContents(event.sender);
             const options = state ? { forward: true } : undefined;
-            win.setIgnoreMouseEvents(state, options);
+            if (win !== null) win.setIgnoreMouseEvents(state, options);
         }
     });
 
-    ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.OPEN_EXTERNAL, (event, url) => {
+    ipcMain.on(IPC_CHANNELS.MAIN.HANDLE.OPEN_EXTERNAL, (_event, url) => {
         console.log('in ipcmain');
         shell.openExternal(url);
     });
 
 
-    ipcMain.handle(IPC_CHANNELS.ANKI_CONNECT.INVOKE, async (event, action: any, params: any = {}) => {
+    ipcMain.handle(IPC_CHANNELS.ANKI_CONNECT.INVOKE, async (_event, action: any, params: any = {}) => {
         return axios.post(
             'http://127.0.0.1:8765',
             JSON.stringify({ action, version: 6, params })

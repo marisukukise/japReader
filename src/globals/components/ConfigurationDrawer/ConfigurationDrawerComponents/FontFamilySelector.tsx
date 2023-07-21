@@ -6,14 +6,15 @@ import { useEffect, useState } from 'react';
 
 
 export const FontFamilySelector = () => {
-    const handler = (filename: string) => {
+    const [fontList, setFontList] = useState<japReader.FontInfo[]>([]);
+    const [disabled, setDisabled] = useState(false);
+
+    const handler = (filename: string | string[]) => {
+        if (Array.isArray(filename)) return;
         if (filename === 'default') return;
 
         // TODO: Load a custom font somehow
     };
-
-    const [fontList, setFontList] = useState<japReader.FontInfo[]>([]);
-    const [disabled, setDisabled] = useState(false);
 
     const defaultFont = 'NotoSansJP';
 

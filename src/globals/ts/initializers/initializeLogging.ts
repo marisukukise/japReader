@@ -1,5 +1,6 @@
 import { app, dialog } from 'electron';
 import mainLog from 'electron-log';
+import { JAPREADER_LOGS } from '../other/objects';
 
 export function initializeLogging() {
     mainLog.initialize({ preload: true });
@@ -14,11 +15,11 @@ export function initializeLogging() {
 
     mainLog.info('⏳ Starting log initialization...');
     // Reading the log level from the environment variable, and if not applicable, then set default (in else)
-    if (['error', 'warn', 'info', 'verbose', 'debug', 'silly'].includes(process.env.JAPREADER_LOGS)) {
+    if (['error', 'warn', 'info', 'verbose', 'debug', 'silly'].includes(JAPREADER_LOGS)) {
         // @ts-expect-error Possible values are all valid
-        mainLog.transports.file.level = process.env.JAPREADER_LOGS;
+        mainLog.transports.file.level = JAPREADER_LOGS;
         // @ts-expect-error Possible values are all valid
-        mainLog.transports.console.level = process.env.JAPREADER_LOGS;
+        mainLog.transports.console.level = JAPREADER_LOGS;
     } else {
         mainLog.transports.file.level = 'info';
         mainLog.transports.console.level = 'warn';
@@ -33,7 +34,7 @@ export function initializeLogging() {
             dialog.showMessageBox({
                 title: 'An error occurred',
                 message: error.message,
-                detail: error.stack,
+                detail: error.stack ? error.stack : '',
                 type: 'error',
                 buttons: ['Ignore', 'Report on github', 'Exit'],
             }).then((result) => {

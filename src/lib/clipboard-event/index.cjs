@@ -1,5 +1,5 @@
 const { EventEmitter } = require('events');
-const path = require('path');
+import * as path from 'path';
 const { execFile } = require('child_process');
 
 class ClipboardEventListener extends EventEmitter {

@@ -96,7 +96,7 @@ export const Reader = () => {
 
     const [isIchiReady, setIchiReady] = useAtom(isIchiReadyAtom);
     const setIchiFailed = useSetAtom(didIchiFailAtom);
-    const [didDeepFail, setDeepFailed] = useState(false);
+    const [, setDeepFailed] = useState(false);
     const [japaneseSentence, setJapaneseSentence] = useAtom(japaneseSentenceAtom);
     const setTranslatedSentence = useSetAtom(translatedSentenceAtom);
     const setCurrentWords = useSetAtom(wordListAtom);
@@ -124,15 +124,15 @@ export const Reader = () => {
         windowStore.set('reader.additional.furigana', furiganaStatuses);
     };
 
-    const initialCheckedFurigana = [
+    const initialCheckedFurigana: string[] = [
         hasNewStatusFurigana ? STATUS.NEW : null,
         hasSeenStatusFurigana ? STATUS.SEEN : null,
         hasKnownStatusFurigana ? STATUS.KNOWN : null,
         hasIgnoredStatusFurigana ? STATUS.IGNORED : null,
-    ].filter(e => e !== null);
+    ].filter(e => e !== null) as (string[]);
 
     const settings = <>
-        <OpenSettingsButton/>
+        <OpenSettingsButton />
         <ConfigurationDrawerCommonSettings
             windowName="reader"
             ipcBase={IPC_CHANNELS.READER}
@@ -160,7 +160,7 @@ export const Reader = () => {
     );
 
     useEffect(() => {
-        ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, (event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
+        ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.PARSED_WORDS_DATA, (_event, words: japReader.IchiParsedWordData[], japaneseSentence: string) => {
             // TODO: Somehow add memoization to Japanese sentences, so that common ones don't have to wait for ichi
             setCurrentWords(words);
             setJapaneseSentence(japaneseSentence);
@@ -180,7 +180,7 @@ export const Reader = () => {
         });
 
         if (useDeepL) {
-            ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, translatedSentence: string) => {
+            ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (_event, translatedSentence: string) => {
                 setTranslatedSentence(translatedSentence);
             });
 

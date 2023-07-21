@@ -1,7 +1,7 @@
 import type { Configuration } from 'webpack';
 
 import { rules } from './webpack.rules';
-import path from 'path';
+import * as path from 'path';
 
 export const mainConfig: Configuration = {
     /**
@@ -25,7 +25,4 @@ export const mainConfig: Configuration = {
     },
     mode: process.env['JAPREADER_ENV'] === 'dev' ? 'development' : 'production',
     devtool: process.env['JAPREADER_ENV'] === 'dev' ? 'eval-cheap-source-map' : 'source-map',
-    devServer: {
-        static: './dist'
-    }
 };

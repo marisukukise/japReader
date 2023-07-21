@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron';
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from '@root/src/globals/ts/helpers/mainHelpers';
-import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
+import { IPC_CHANNELS, JAPREADER_ENV } from '@root/src/globals/ts/other/objects';
 
 export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow => {
     const ichiWindow = createWindowAndStorePositionData('ichi', {
@@ -18,7 +18,7 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
     });
 
     ichiWindow.loadURL('https://ichi.moe/cl/qr/?q=&r=kana');
-    if (process.env['JAPREADER_ENV'] === 'dev') ichiWindow.webContents.openDevTools();
+    if (JAPREADER_ENV === 'dev') ichiWindow.webContents.openDevTools();
 
     showWindowWhenReady(ichiWindow, 'ichi', IPC_CHANNELS.ICHI, false);
 
@@ -27,7 +27,7 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
         ichiWindow.hide();
     });
 
-    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
+    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (_event, text) => {
         ichiWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, text);
     });
 

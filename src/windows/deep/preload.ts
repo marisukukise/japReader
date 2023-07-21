@@ -15,7 +15,7 @@ import { mountLog } from '@root/src/globals/ts/helpers/rendererHelpers';
 
 if (useDeepLApi) {
     try {
-        const translator = new deepl.Translator(deepLApiKey);
+        new deepl.Translator(deepLApiKey);
     } catch (err) {
         ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.CONNECTION_ERROR);
         log.error(err);
@@ -24,7 +24,7 @@ if (useDeepLApi) {
 
 window.addEventListener('DOMContentLoaded', () => {
     mountLog(log, '🔺 Mounted');
-    ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
+    ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (_event, text) => {
         const currentText = text.replace(/…+/, '…').replace(/・+/g, '…');
 
         if (useDeepLApi) {
@@ -80,8 +80,18 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 8000);
     }
     else {
+        const DOM_ERROR_MESSAGE = "Looks like the deepl.com changed the structure of their website.\
+            You can alternatively use DeepL API (select the option in global settings) until the japReader hotfix is released."
+
+        // Change the querySelector tags below to the new ones, if something broke on deepl.com website
         const targetNode = document.querySelector('div[aria-labelledby="translation-results-heading"]');
         const sourceNode = document.querySelector('div[aria-labelledby="translation-source-heading"]');
+        if (targetNode === null) {
+            throw new Error("DeepL translated text node was not found.\n" + DOM_ERROR_MESSAGE)
+        }
+        if (sourceNode === null) {
+            throw new Error("DeepL Japanese text node was not found.\n" + DOM_ERROR_MESSAGE)
+        }
         const config = { childList: true };
         const callback = () => {
             if (targetNode.textContent) {
@@ -96,7 +106,11 @@ window.addEventListener('DOMContentLoaded', () => {
         observer.observe(targetNode, config);
 
         const connectionCheck = setTimeout(() => {
-            if (document.querySelector('.dl_body').children.length !== 0) {
+            const dl_body = document.querySelector('.dl_body')
+            if (dl_body === null) {
+                throw new Error("DeepL body element was not found.\n" + DOM_ERROR_MESSAGE)
+            }
+            if (dl_body.children.length !== 0) {
                 ipcRenderer.send(IPC_CHANNELS.DEEP.ANNOUNCE.IS_READY);
                 clearInterval(connectionCheck);
             }

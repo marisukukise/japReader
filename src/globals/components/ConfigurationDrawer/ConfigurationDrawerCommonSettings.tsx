@@ -23,7 +23,7 @@ export const ConfigurationDrawerCommonSettings = ({ windowName, ipcBase }: Props
                 changeBackgroundColorDOM(windowName, color);
             }}
             storeProperty={`${windowName}.backgroundColor`}
-            title={windowName[0].toUpperCase() + windowName.slice(1)}
+            title={windowName[0]?.toUpperCase() + windowName.slice(1)}
             subtitle="Set background color"
             buttonText="Set background color"
         />
@@ -32,7 +32,7 @@ export const ConfigurationDrawerCommonSettings = ({ windowName, ipcBase }: Props
                 changeFontColor(windowName, color);
             }}
             storeProperty={`${windowName}.additional.fontColor`}
-            title={windowName[0].toUpperCase() + windowName.slice(1)}
+            title={windowName[0]?.toUpperCase() + windowName.slice(1)}
             subtitle="Set font color"
             buttonText="Set font color"
         />
@@ -41,7 +41,7 @@ export const ConfigurationDrawerCommonSettings = ({ windowName, ipcBase }: Props
                 changeFontGlowColor(windowName, color);
             }}
             storeProperty={`${windowName}.additional.fontGlowColor`}
-            title={windowName[0].toUpperCase() + windowName.slice(1)}
+            title={windowName[0]?.toUpperCase() + windowName.slice(1)}
             subtitle="Set font glow color"
             buttonText="Set font glow color"
         />
