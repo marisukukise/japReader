@@ -23,8 +23,8 @@ export const mainConfig: Configuration = {
             '@fonts': path.resolve(__dirname, 'src/fonts'),
         }
     },
-    mode: process.env.JAPREADER_ENV == 'dev' ? 'development' : 'production',
-    devtool: process.env.JAPREADER_ENV == 'dev' ? 'eval-cheap-source-map' : 'source-map',
+    mode: process.env['JAPREADER_ENV'] === 'dev' ? 'development' : 'production',
+    devtool: process.env['JAPREADER_ENV'] === 'dev' ? 'eval-cheap-source-map' : 'source-map',
     devServer: {
         static: './dist'
     }

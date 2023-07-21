@@ -28,12 +28,12 @@ interface InputProps {
     formData: any;
     setFormData: React.Dispatch<any>;
     settingName: string;
-    disabled?: boolean;
+    disabled: boolean;
     children?: ReactNode;
     password?: boolean
 }
 
-const Input = ({ formData, disabled, setFormData, settingName, placeholder, password, children }: InputProps & { placeholder: string }) => {
+const Input = ({ formData, disabled = false, setFormData, settingName, placeholder = '', password, children }: InputProps & { placeholder: string }) => {
 
     return <>{password ?
         <GeistInput.Password
@@ -197,7 +197,7 @@ export const Settings = () => {
                     ['JapaneseSentence', null],
                     ['TranslatedSentence', null]
                 ].map((element: Array<string | null>) => {
-                    return <Input placeholder={element[1] != null ? element[1] : element[0]}
+                    return <Input placeholder={(element[1] != null) ? element[1] : element[0]!}
                         settingName={'anki' + element[0]}
                         formData={formData}
                         setFormData={setFormData}
