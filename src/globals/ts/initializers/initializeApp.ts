@@ -1,5 +1,5 @@
 
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepL, useReader } = settingsStore.get('global_settings');
 

@@ -1,7 +1,7 @@
 import { BrowserWindow, app, dialog, ipcMain } from 'electron';
 import mainLog from 'electron-log';
 const log = mainLog.scope('main');
-import { getWindowStore } from '@globals/ts/main/initializeStore';
+import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 const windowStore = getWindowStore();
 
 export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowName: string, ipcBase: any): void => {

@@ -14,18 +14,18 @@ if (require('electron-squirrel-startup')) {
 
 import 'dotenv/config';
 
-import { setupLogging } from '@globals/ts/main/setupLogging';
+import { initializeLogging } from '@root/src/globals/ts/initializers/initializeLogging';
 // Setups the logging mechanism
-setupLogging();
+initializeLogging();
 
 
-import { startMainListeners } from '@globals/ts/main/startMainListeners';
+import { initializeMainListeners } from '@root/src/globals/ts/initializers/initializeMainListeners';
 // Activates all ipcMain listeners defined in the globals folder
-startMainListeners();
+initializeMainListeners();
 
 
-import { initializeApp } from '@globals/ts/main/initializeApp';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { initializeApp } from '@root/src/globals/ts/initializers/initializeApp';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 app.whenReady().then(() => {
 
     // Creates all windows and their listeners

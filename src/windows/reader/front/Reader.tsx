@@ -3,13 +3,13 @@ import { ReactNode, useEffect, useState } from 'react';
 
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('reader');
-import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@root/src/globals/ts/other/objects';
 
-import { getSettingsStore, getWindowStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepL } = settingsStore.get('global_settings');
 
-import { setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
+import { setupEffect, toastLayout } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { Sentence } from './Sentence';
 import Loader from '@globals/components/Loader/Loader';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';

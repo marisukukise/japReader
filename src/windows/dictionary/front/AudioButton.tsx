@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { infinitiveAtom, infinitiveKanaAtom } from './Dictionary';
 import { useEffect, useRef, useState } from 'react';
 import log_renderer from 'electron-log/renderer';
-import { getWindowStore } from '@globals/ts/main/initializeStore';
+import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 const log = log_renderer.scope('dictionary/AudioButton');
 
 const windowStore = getWindowStore();

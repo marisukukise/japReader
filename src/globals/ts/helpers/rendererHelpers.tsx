@@ -1,13 +1,13 @@
 import { ipcRenderer } from 'electron';
 import React, { ReactNode, useEffect } from 'react';
 import log from 'electron-log/renderer';
-import { getSettingsStore, getStatusDataStore, getWindowStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getStatusDataStore, getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 const statusDataStore = getStatusDataStore();
 const windowStore = getWindowStore();
 const settingsStore = getSettingsStore();
 
 const { fit } = require('furigana');
-import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@root/src/globals/ts/other/objects';
 import { ToastLayout } from '@geist-ui/core';
 import Logger from 'electron-log';
 

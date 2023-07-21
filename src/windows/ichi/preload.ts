@@ -4,8 +4,8 @@
 import { ipcRenderer } from 'electron';
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('ichi');
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
-import { getWordStatusData, mountLog } from '@globals/ts/renderer/helpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
+import { getWordStatusData, mountLog } from '@root/src/globals/ts/helpers/rendererHelpers';
 
 
 const WORDS: japReader.IchiParsedWordData[] = [];

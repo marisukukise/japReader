@@ -1,5 +1,5 @@
 import { Select } from '@geist-ui/core';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 import { ipcRenderer } from 'electron';
 import { useEffect, useState } from 'react';
 

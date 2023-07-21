@@ -1,6 +1,6 @@
 import { Button } from '@geist-ui/core';
 import Settings from '@geist-ui/icons/settings';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 import { ipcRenderer } from 'electron';
 
 export const OpenSettingsButton = () => {

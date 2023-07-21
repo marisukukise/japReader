@@ -4,8 +4,8 @@ import axios from 'axios';
 const log = mainLog.scope('main');
 import { BrowserWindow, app, clipboard, ipcMain, shell } from 'electron';
 import { promises as fsPromises } from 'fs';
-import { getHistoryStore, getSettingsStore } from '@globals/ts/main/initializeStore';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { getHistoryStore, getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 const historyStore = getHistoryStore();
 const settingsStore = getSettingsStore();
 
@@ -19,7 +19,7 @@ let isTranslationWindowReady = false;
 let isDictionaryWindowReady = false;
 let isSettingsWindowReady = false;
 
-export function startMainListeners() {
+export function initializeMainListeners() {
     log.info('⏳ Setting up main listeners...');
 
     ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.IS_READY, () => { isClipboardWindowReady = true; });

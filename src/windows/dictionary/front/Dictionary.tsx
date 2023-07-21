@@ -14,13 +14,13 @@ import WiktionaryJPIcon from '@img/favicons/wiktionary-jp.ico';
 
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('dictionary');
-import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@root/src/globals/ts/other/objects';
 
-import { getSettingsStore, getStatusDataStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getStatusDataStore } from '@root/src/globals/ts/initializers/initializeStore';
 const statusDataStore = getStatusDataStore();
 const settingsStore = getSettingsStore();
 
-import { FuriganaJSX, setIgnoreMouseEvents, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, setIgnoreMouseEvents, setupEffect, toastLayout, updateWordStatusStore } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';

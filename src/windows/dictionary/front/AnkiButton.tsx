@@ -1,12 +1,12 @@
 
 import { Button } from '@geist-ui/core';
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
-import { FuriganaJSX } from '@globals/ts/renderer/helpers';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
+import { FuriganaJSX } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { useEffect, useRef, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import log_renderer from 'electron-log/renderer';
 import { ipcRenderer } from 'electron';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 import { useAtomValue } from 'jotai';
 import { definitionsAtom, translatedSentenceAtom, infinitiveAtom, infinitiveKanaAtom, japaneseSentenceAtom, wordAtom, wordKanaAtom } from './Dictionary';
 const log = log_renderer.scope('dictionary/AnkiButton');
