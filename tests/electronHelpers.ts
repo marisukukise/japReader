@@ -1,13 +1,8 @@
-import { ElectronAppInfo, findLatestBuild, parseElectronApp } from 'electron-playwright-helpers'
+import { findLatestBuild, parseElectronApp } from 'electron-playwright-helpers'
 import { ElectronApplication, Page, _electron as electron } from 'playwright-core';
+import { StartAppResponse, VisibleWindow } from './types';
 
 let electronApp: ElectronApplication;
-
-interface StartAppResponse {
-    electronApp: ElectronApplication;
-    appWindow: Page;
-    appInfo: ElectronAppInfo;
-}
 
 export async function startApp(): Promise<StartAppResponse> {
 
@@ -32,14 +27,22 @@ export async function startApp(): Promise<StartAppResponse> {
     // wait for splash-screen to pass
     await electronApp.firstWindow();
 
-    const windows = electronApp.windows();
-    const appWindow: Page = windows[0];
-    appWindow.on('console', console.log);
+    const allPages = electronApp.windows();
+    const visiblePages: VisibleWindow[] = [];
 
-    // Capture a screenshot.
-    await appWindow.screenshot({
-        path: 'screenshots/initial-screen.png'
-    });
+    allPages.forEach((page: Page) => {
+        const url = page.mainFrame().url()
+        if (!url.startsWith('file:///')) return;
 
-    return { appWindow, appInfo, electronApp };
+        const split_url = url.split('/')
+        const windowName = split_url.at(-2)!
+        if (["dictionary", "reader", "translation", "settings"].includes(windowName)) {
+            visiblePages.push({
+                windowName: windowName,
+                page: page
+            })
+        }
+    })
+
+    return { visibleWindows: visiblePages, appInfo, electronApp };
 }
