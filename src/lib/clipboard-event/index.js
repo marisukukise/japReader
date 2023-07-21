@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import * as path from 'path';
+import path from 'path';
 import { execFile } from 'child_process';
 
 class ClipboardEventListener extends EventEmitter {
