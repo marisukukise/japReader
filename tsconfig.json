@@ -1,7 +1,23 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "alwaysStrict": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+
     "target": "ES6",
-    "allowJs": true,
     "jsx": "react-jsx",
     "module": "commonjs",
     "skipLibCheck": true,
@@ -12,6 +28,7 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+
     "paths": {
       "*": ["node_modules/*"],
       "@root/*": ["*"],

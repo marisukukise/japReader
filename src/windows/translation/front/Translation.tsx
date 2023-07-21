@@ -21,13 +21,13 @@ import { getSettingsStore } from '@root/src/globals/ts/main/initializeStore';
 
 const settingsStore = getSettingsStore();
 
-const { useDeepLApi } = settingsStore.get('global_settings')
+const { useDeepLApi } = settingsStore.get('global_settings');
 
 const connectionTarget = <>{
     useDeepLApi ?
         <>DeepL API</> :
         <span className="url">https://deepl.com/</span>
-}</>
+}</>;
 
 const DeepFailedMessage = () => {
     return (<Text p className='deep-state-msg failed'>
