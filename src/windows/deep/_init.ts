@@ -23,7 +23,7 @@ export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: s
     });
 
     deepWindow.loadURL(useDeepLApi ? webpack_entry : 'https://www.deepl.com/translator#ja/en/');
-    if (process.env.JAPREADER_ENV === 'dev') deepWindow.webContents.openDevTools();
+    if (process.env['JAPREADER_ENV'] === 'dev') deepWindow.webContents.openDevTools();
 
     showWindowWhenReady(deepWindow, 'deep', IPC_CHANNELS.DEEP, false);
 

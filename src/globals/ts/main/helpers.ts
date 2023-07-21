@@ -5,7 +5,7 @@ import { getWindowStore } from '@globals/ts/main/initializeStore';
 const windowStore = getWindowStore();
 
 export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowName: string, ipcBase: any): void => {
-    if (process.env.JAPREADER_ENV === 'dev') window.webContents.openDevTools();
+    if (process.env['JAPREADER_ENV'] === 'dev') window.webContents.openDevTools();
 
     passMessageToRenderer(window, ipcBase.SET.TOGGLE_UI);
     passMessageToRenderer(window, ipcBase.SET.SHOW_UI);
@@ -110,7 +110,7 @@ export const showWindowWhenReady = (window: BrowserWindow, windowName: string, i
     }
 
     // Added for debugging convenience
-    if (process.env.JAPREADER_ENV === 'dev') {
+    if (process.env['JAPREADER_ENV'] === 'dev') {
         window.once('ready-to-show', () => {
             log.info(`⌛ Showing ${window.getTitle()}`);
             window.show();

@@ -51,7 +51,7 @@ app.whenReady().then(() => {
         'CommandOrControl+Shift+0',
     ];
 
-    if (process.env.JAPREADER_ENV !== 'dev') {
+    if (process.env['JAPREADER_ENV'] !== 'dev') {
         const orig_len = DISABLED_SHORTCUTS.length;
         for (let i = 0; i < orig_len; i++) {
             DISABLED_SHORTCUTS.shift();

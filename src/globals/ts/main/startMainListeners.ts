@@ -64,7 +64,7 @@ export function startMainListeners() {
         else historyStore.set('history', [entry]);
     });
 
-    if (process.env.JAPREADER_ENV == 'dev') {
+    if (process.env['JAPREADER_ENV'] == 'dev') {
         // Insert some text to clipboard when reader ready for easier testing
         ipcMain.on(IPC_CHANNELS.READER.ANNOUNCE.IS_READY, () => {
             clipboard.writeText('昨日の大雨による被害は出ていないようで何よりだ。');

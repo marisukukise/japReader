@@ -18,7 +18,7 @@ export const createIchiWindow = (preload_webpack_entry: string): BrowserWindow =
     });
 
     ichiWindow.loadURL('https://ichi.moe/cl/qr/?q=&r=kana');
-    if (process.env.JAPREADER_ENV === 'dev') ichiWindow.webContents.openDevTools();
+    if (process.env['JAPREADER_ENV'] === 'dev') ichiWindow.webContents.openDevTools();
 
     showWindowWhenReady(ichiWindow, 'ichi', IPC_CHANNELS.ICHI, false);
 
