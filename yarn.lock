@@ -271,7 +271,7 @@
     xterm-addon-fit "^0.5.0"
     xterm-addon-search "^0.8.0"
 
-"@electron/asar@^3.2.1":
+"@electron/asar@^3.2.1", "@electron/asar@^3.2.4":
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/@electron/asar/-/asar-3.2.4.tgz#7e8635a3c4f6d8b3f8ae6efaf5ecb9fbf3bd9864"
   integrity sha512-lykfY3TJRRWFeTxccEKdf1I6BLl2Plw81H0bbp4Fc5iEc67foDCa5pjJQULVgo0wF+Dli75f3xVcdb/67FFZ/g==
@@ -549,6 +549,16 @@
     open "^9.1.0"
     picocolors "^1.0.0"
     tslib "^2.6.0"
+
+"@playwright/test@^1.36.1":
+  version "1.36.1"
+  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.36.1.tgz#0b1247d279f142ac0876ce25e7daf15439d5367b"
+  integrity sha512-YK7yGWK0N3C2QInPU6iaf/L3N95dlGdbsezLya4n0ZCh3IL7VgPGxC6Gnznh9ApWdOmkJeleT2kMTcWPRZvzqg==
+  dependencies:
+    "@types/node" "*"
+    playwright-core "1.36.1"
+  optionalDependencies:
+    fsevents "2.3.2"
 
 "@sindresorhus/is@^4.0.0":
   version "4.6.0"
@@ -1331,7 +1341,7 @@ array.prototype.flatmap@^1.3.1:
     es-abstract "^1.20.4"
     es-shim-unscopables "^1.0.0"
 
-asar@^3.0.0:
+asar@^3.0.0, asar@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/asar/-/asar-3.2.0.tgz#e6edb5edd6f627ebef04db62f771c61bea9c1221"
   integrity sha512-COdw2ZQvKdFGFxXwX3oYh2/sOsJWJegrdJCGxnN4MZ7IULgRBp9P6665aqj9z1v9VwP4oP1hRBojRDQ//IGgAg==
@@ -2354,6 +2364,13 @@ electron-packager@^17.1.1:
     semver "^7.1.3"
     yargs-parser "^21.1.1"
 
+electron-playwright-helpers@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/electron-playwright-helpers/-/electron-playwright-helpers-1.6.0.tgz#74d17d3e1a4f738afc51e93c0912d2e1e16d496a"
+  integrity sha512-0csyp77xRAi8m5g1ApcYdTMJ8n0+Geyb4huyMAsIYTInk4wsuUTHmIy2gMfgF3I130ogfpX6ZfEGeffS93FaUA==
+  dependencies:
+    "@electron/asar" "^3.2.4"
+
 electron-squirrel-startup@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/electron-squirrel-startup/-/electron-squirrel-startup-1.0.0.tgz#19b4e55933fa0ef8f556784b9c660f772546a0b8"
@@ -3152,7 +3169,7 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
-fsevents@~2.3.2:
+fsevents@2.3.2, fsevents@~2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
@@ -5168,6 +5185,11 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
+playwright-core@1.36.1, playwright-core@^1.36.1:
+  version "1.36.1"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.36.1.tgz#f5f275d70548768ca892583519c89b237a381c77"
+  integrity sha512-7+tmPuMcEW4xeCL9cp9KxmYpQYHKkyjwoXRnoeTowaeNat8PoBMk/HwCYhqkH2fRkshfKEOiVus/IhID2Pg8kg==
+
 plist@^3.0.0, plist@^3.0.4, plist@^3.0.5:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/plist/-/plist-3.1.0.tgz#797a516a93e62f5bde55e0b9cc9c967f860893c9"
@@ -6668,7 +6690,7 @@ which-typed-array@^1.1.9:
     has-tostringtag "^1.0.0"
     is-typed-array "^1.1.10"
 
-which@^1.2.14, which@^1.2.9:
+which@^1.2.14, which@^1.2.4, which@^1.2.9:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
   integrity sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==
@@ -6765,6 +6787,14 @@ xterm@^4.9.0:
   version "4.19.0"
   resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.19.0.tgz#c0f9d09cd61de1d658f43ca75f992197add9ef6d"
   integrity sha512-c3Cp4eOVsYY5Q839dR5IejghRPpxciGmLWWaP9g+ppfMeBChMeLa1DCA+pmX/jyDZ+zxFOmlJL/82qVdayVoGQ==
+
+xvfb-maybe@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/xvfb-maybe/-/xvfb-maybe-0.2.1.tgz#ed8cb132957b7848b439984c66f010ea7f24361b"
+  integrity sha512-9IyRz3l6Qyhl6LvnGRF5jMPB4oBEepQnuzvVAFTynP6ACLLSevqigICJ9d/+ofl29m2daeaVBChnPYUnaeJ7yA==
+  dependencies:
+    debug "^2.2.0"
+    which "^1.2.4"
 
 y18n@^4.0.0:
   version "4.0.3"
