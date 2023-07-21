@@ -2,7 +2,7 @@
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('settings');
 
-import { getSettingsStore, getHistoryStore, getStatusDataStore, getWindowStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getHistoryStore, getStatusDataStore, getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 const settingsStore = getSettingsStore();
 const historyStore = getHistoryStore();
 const statusDataStore = getStatusDataStore();
@@ -12,9 +12,9 @@ import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
 import { Button, Checkbox as GeistCheckbox, Input as GeistInput, useToasts } from '@geist-ui/core';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 import { ReactNode, useState } from 'react';
-import { setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
+import { setupEffect, toastLayout } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { ipcRenderer } from 'electron';
 
 

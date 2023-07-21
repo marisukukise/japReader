@@ -1,10 +1,10 @@
 
 import { BrowserWindow } from 'electron';
 
-import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from '@globals/ts/main/helpers';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from '@root/src/globals/ts/helpers/mainHelpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepL } = settingsStore.get('global_settings');
 

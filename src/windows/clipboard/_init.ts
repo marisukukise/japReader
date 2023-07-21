@@ -1,7 +1,7 @@
 import { BrowserWindow } from 'electron';
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from '@globals/ts/main/helpers';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { showWindowWhenReady, createWindowAndStorePositionData } from '@root/src/globals/ts/helpers/mainHelpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 export const createClipboardWindow = (webpack_entry: string): BrowserWindow => {
     const clipboardWindow = createWindowAndStorePositionData('clipboard', {

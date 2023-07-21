@@ -1,9 +1,9 @@
-import { FuriganaJSX, setIgnoreMouseEvents, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, setIgnoreMouseEvents, updateWordStatusStore } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { ipcRenderer } from 'electron';
 import { useEffect, useRef, useState } from 'react';
 import { Text } from '@geist-ui/core';
 
-import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@root/src/globals/ts/other/objects';
 import { useAtomValue } from 'jotai';
 import { isUIShownAtom, japaneseSentenceAtom, translatedSentenceAtom, wordListAtom } from './Reader';
 

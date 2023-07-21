@@ -1,8 +1,8 @@
 // This is the React file of the reader window.
 // It is responsible for inserting DOM structure into the main element in the index.html file.
 
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
-import { initializeWindowSettings } from '@globals/ts/renderer/helpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
+import { initializeWindowSettings } from '@root/src/globals/ts/helpers/rendererHelpers';
 initializeWindowSettings('translation', IPC_CHANNELS.TRANSLATION);
 
 import './local.scss';

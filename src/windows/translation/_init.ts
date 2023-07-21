@@ -1,9 +1,9 @@
 import { BrowserWindow } from 'electron';
 
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
-import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from '@globals/ts/main/helpers';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
+import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings, showExitDialog, passMessageToRenderer } from '@root/src/globals/ts/helpers/mainHelpers';
 
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 
 const settingsStore = getSettingsStore();

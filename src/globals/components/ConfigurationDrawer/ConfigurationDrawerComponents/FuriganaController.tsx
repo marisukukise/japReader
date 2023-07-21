@@ -1,5 +1,5 @@
 import { Checkbox } from '@geist-ui/core';
-import { STATUS } from '@globals/ts/main/objects';
+import { STATUS } from '@root/src/globals/ts/other/objects';
 
 type Props = {
     initialChecked: string[],

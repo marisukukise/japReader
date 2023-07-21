@@ -1,10 +1,10 @@
 import { BrowserWindow, ipcMain } from 'electron';
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from '@globals/ts/main/helpers';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { showWindowWhenReady, createWindowAndStorePositionData } from '@root/src/globals/ts/helpers/mainHelpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepLApi } = settingsStore.get('global_settings');
 

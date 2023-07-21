@@ -2,7 +2,7 @@ import { ipcRenderer, clipboard } from 'electron';
 const clipboardListener = require('clipboard-event');
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('clipboard');
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 const charLimit = 90;
 let clipboardText = '';

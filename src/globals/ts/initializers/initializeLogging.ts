@@ -1,7 +1,7 @@
 import { app, dialog } from 'electron';
 import mainLog from 'electron-log';
 
-export function setupLogging() {
+export function initializeLogging() {
     mainLog.initialize({ preload: true });
 
     // LOG LEVELS:

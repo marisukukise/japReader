@@ -1,9 +1,9 @@
 
 import ColorPickerButton from './ConfigurationDrawerComponents/ColorPickerButton';
 import { ipcRenderer } from 'electron';
-import { changeBackgroundColorDOM, changeBodyPaddingDOM, changeFontColor, changeFontGlowColor, changeFontGlowStrengthDOM, changeFontSizeDOM } from '@globals/ts/renderer/helpers';
+import { changeBackgroundColorDOM, changeBodyPaddingDOM, changeFontColor, changeFontGlowColor, changeFontGlowStrengthDOM, changeFontSizeDOM } from '@root/src/globals/ts/helpers/rendererHelpers';
 import ZoomButtonGroup from './ConfigurationDrawerComponents/ZoomButtonGroup';
-import { getWindowStore } from '@globals/ts/main/initializeStore';
+import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 import ToggleStateSwitch from './ConfigurationDrawerComponents/ToggleStateSwitch';
 
 const windowStore = getWindowStore();

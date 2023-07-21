@@ -1,17 +1,17 @@
 
 const { ipcRenderer } = require('electron');
 const deepl = require('deepl-node');
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 
 
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepLApi, deepLApiKey } = settingsStore.get('global_settings');
 
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('deep');
-import { mountLog } from '@globals/ts/renderer/helpers';
+import { mountLog } from '@root/src/globals/ts/helpers/rendererHelpers';
 
 if (useDeepLApi) {
     try {
