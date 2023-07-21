@@ -31,7 +31,7 @@ test.beforeAll(async () => {
         {
             method: 'showMessageBox',
             value: {
-               response: 0
+                response: 0
             }
         },
         {
@@ -54,12 +54,12 @@ test.afterAll(async () => {
 
 });
 
-test('Dictionary window should have h1 title with value "japReader - Dictionary" on startup', async () => {
-    await dictionaryWindow.waitForSelector('h1')
+test('Reader should get a successful message', async () => {
+    await readerWindow.waitForSelector('.ichi-state-msg.connected')
 
-    const text = await dictionaryWindow.$eval('h1', (el) => el.textContent)
-    expect(text).toBe('Dictionary')
+    const text = await readerWindow.$eval('.ichi-state-msg.connected', (el) => el.textContent)
+    expect(text?.split(" ")[0]).toBe('Successfully')
 
-    const title = await dictionaryWindow.title()
-    expect(title).toBe('japReader - Dictionary')
+    const title = await readerWindow.title()
+    expect(title).toBe('japReader')
 });
