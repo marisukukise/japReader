@@ -15,13 +15,13 @@ export async function startApp(): Promise<StartAppResponse> {
     electronApp = await electron.launch({
         args: [appInfo.main],
         executablePath: appInfo.executable,
-        // recordVideo: {
-        //     dir: 'recordings',
-        //     size: {
-        //         width: 1200,
-        //         height: 800
-        //     },
-        // },
+        recordVideo: {
+            dir: 'recordings',
+            size: {
+                width: 800,
+                height: 600
+            },
+        },
     });
 
     // wait for splash-screen to pass
