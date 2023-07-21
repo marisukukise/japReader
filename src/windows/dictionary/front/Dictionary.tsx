@@ -107,7 +107,7 @@ export const Dictionary = () => {
 
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, (
-            event,
+            _event,
             SelectedWord: japReader.IchiParsedWordData & { japaneseSentence: string, translatedSentence: string }
         ) => {
             console.log(SelectedWord.translatedSentence, SelectedWord.japaneseSentence);
@@ -121,7 +121,7 @@ export const Dictionary = () => {
             setTranslatedSentence(SelectedWord.translatedSentence);
         });
 
-        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (_event, _dictionaryForm: string, newStatus: string, prevStatus: string) => {
             setStatus(newStatus);
             if (newStatus == STATUS.SEEN)
                 setSeenCount((seen: number) => seen + 1);

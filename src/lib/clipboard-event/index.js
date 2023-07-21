@@ -1,8 +1,6 @@
 import { EventEmitter } from 'events';
-import path from 'path'
+import * as path from 'path';
 import { execFile } from 'child_process';
-import {fileURLToPath} from 'node:url';
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 class ClipboardEventListener extends EventEmitter {
   constructor() {

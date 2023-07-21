@@ -21,15 +21,15 @@ type WordProps = {
 const Word = ({ wordData }: WordProps): JSX.Element => {
     const japaneseSentence = useAtomValue(japaneseSentenceAtom);
     const translatedSentence = useAtomValue(translatedSentenceAtom);
-    const [word, setWord] = useState(wordData.word);
-    const [wordKana, setWordKana] = useState(wordData.wordKana);
-    const [infinitive, setInfinitive] = useState(wordData.infinitive);
-    const [definitions, setDefinitions] = useState(wordData.definitions);
+    const [word,] = useState(wordData.word);
+    const [wordKana,] = useState(wordData.wordKana);
+    const [infinitive,] = useState(wordData.infinitive);
+    const [definitions,] = useState(wordData.definitions);
     const [status, setStatus] = useState(wordData.status);
     const isUIShown = useAtomValue(isUIShownAtom);
 
     useEffect(() => {
-        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (_event, dictionaryForm, newStatus, _prevStatus) => {
             if (infinitive == dictionaryForm) {
                 setStatus(newStatus);
             }
@@ -39,15 +39,28 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
         };
     }, []);
 
+    /**
+     * Handle mousedown event for primary (0) and secondary (2) mouse buttons 
+     * (refer to https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button)
+     * 
+     * On primary press change word status to seen
+     * 
+     * On primary press + Ctrl press change word status to ignored
+     * 
+     * On secondary press change word status to known
+     * 
+     * @param event
+     * @returns True if function finished successfully 
+     */
     const handleMouseDown = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>): boolean => {
         // Only continue when pressed main or secondary button
         if (![MOUSE_BUTTONS.MAIN, MOUSE_BUTTONS.SECONDARY].includes(event.button))
-            return;
+            return false;
 
         let nextWordStatus = status;
 
         switch (event.button) {
-        // Left mouse button
+        // Primary mouse button
         case MOUSE_BUTTONS.MAIN:
             // + CTRL
             if (event.ctrlKey)
@@ -58,14 +71,13 @@ const Word = ({ wordData }: WordProps): JSX.Element => {
 
             break;
 
-            // Right mouse button
+            // Secondary mouse button
         case MOUSE_BUTTONS.SECONDARY:
             nextWordStatus = STATUS.KNOWN;
             break;
         }
 
         setStatus(nextWordStatus);
-
 
         // Send messages to dictionary
         ipcRenderer.send(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, {
@@ -107,7 +119,7 @@ export const Sentence = (): JSX.Element => {
     const [isPlusOneSentence, setPlusOneSentence] = useState((uniqueNewWordsCount.current + uniqueSeenWordsCount.current) == 1);
 
     useEffect(() => {
-        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (_event, _dictionaryForm, newStatus, prevStatus) => {
             if (newStatus == STATUS.NEW)
                 uniqueNewWordsCount.current += 1;
             if (newStatus == STATUS.SEEN)

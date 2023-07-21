@@ -140,7 +140,7 @@ export const Translation = () => {
     }, [japaneseSentence]);
 
     useEffect(() => {
-        ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, translatedSentence: string, japaneseSentence: string) => {
+        ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (_event, translatedSentence: string, japaneseSentence: string) => {
             setTranslatedSentence(translatedSentence);
             setJapaneseSentence(japaneseSentence);
         });

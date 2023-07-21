@@ -1,16 +1,17 @@
 import { BrowserWindow, app, dialog, ipcMain } from 'electron';
 import mainLog from 'electron-log';
 const log = mainLog.scope('main');
-import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
+import { getWindowStore } from '@globals/ts/initializers/initializeStore';
+import { JAPREADER_ENV } from '@globals/ts/other/objects';
 const windowStore = getWindowStore();
 
 export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowName: string, ipcBase: any): void => {
-    if (process.env['JAPREADER_ENV'] === 'dev') window.webContents.openDevTools();
+    if (JAPREADER_ENV === 'dev') window.webContents.openDevTools();
 
     passMessageToRenderer(window, ipcBase.SET.TOGGLE_UI);
     passMessageToRenderer(window, ipcBase.SET.SHOW_UI);
 
-    ipcMain.on(ipcBase.SET.BACKGROUND_COLOR, (event, value) => {
+    ipcMain.on(ipcBase.SET.BACKGROUND_COLOR, (_event, value: string) => {
         windowStore.set(`${windowName}.backgroundColor`, value);
         window.setBackgroundColor(value);
     });
@@ -49,7 +50,7 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
         window.webContents.send('blur');
     });
 
-    ipcMain.handle(ipcBase.REQUEST.SHOW_DIALOG, async (e, message) => {
+    ipcMain.handle(ipcBase.REQUEST.SHOW_DIALOG, async (_event, message: string) => {
         const result = dialog.showMessageBox(window, {
             type: 'question',
             buttons: ['Yes', 'No'],
@@ -63,7 +64,7 @@ export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowNam
 };
 
 export const passMessageToRenderer = (window: BrowserWindow, ipcChannel: string) => {
-    ipcMain.on(ipcChannel, (event, ...args: any[]) => {
+    ipcMain.on(ipcChannel, (_event, ...args: any[]) => {
         window.webContents.send(ipcChannel, ...args);
     });
 };
@@ -88,7 +89,7 @@ export const showExitDialog = (event: any, window: BrowserWindow): void => {
     }
 };
 
-export const showWindowWhenReady = (window: BrowserWindow, windowName: string, ipcBase: any, shouldShowInProduction: boolean): void => {
+export const showWindowWhenReady = (window: BrowserWindow, windowName: string, _ipcBase: any, shouldShowInProduction: boolean): void => {
     window.webContents.on('did-finish-load', () => {
         window.webContents.setZoomFactor(1);
         window.webContents.setZoomLevel(0);
@@ -110,7 +111,7 @@ export const showWindowWhenReady = (window: BrowserWindow, windowName: string, i
     }
 
     // Added for debugging convenience
-    if (process.env['JAPREADER_ENV'] === 'dev') {
+    if (JAPREADER_ENV === 'dev') {
         window.once('ready-to-show', () => {
             log.info(`⌛ Showing ${window.getTitle()}`);
             window.show();

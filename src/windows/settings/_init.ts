@@ -3,9 +3,6 @@ import { BrowserWindow } from 'electron';
 import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings } from '@root/src/globals/ts/helpers/mainHelpers';
 import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
-import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
-const windowStore = getWindowStore();
-
 export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
     const settingsWindow = createWindowAndStorePositionData('settings', {
         icon: 'images/logo/icon.png',
