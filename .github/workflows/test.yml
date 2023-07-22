@@ -29,7 +29,7 @@ jobs:
       - name: Install dpkg, fakeroot and rpm
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y dpkg fakeroot rpm
+          sudo apt-get install -y dpkg fakeroot rpm libatk-bridge2.0-0 libgtk-3.0 libasound2
 
       - name: Provide 777 execution rights to clipboard handler script
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
         with:
-          run: yarn test:ui
+          run: DEBUG=pw:browser* yarn test:ui
 
       - run: tree out/
 
