@@ -4,6 +4,26 @@ import { StartAppResponse, VisibleWindow } from './types';
 
 let electronApp: ElectronApplication;
 
+const didLaunchApp = async () => {
+  const isVisible: boolean = await electronApp.evaluate(
+    async ({ BrowserWindow }) => {
+      const mainWindow = BrowserWindow.getAllWindows()[0];
+      const getState = () => mainWindow.isVisible();
+
+      return new Promise((resolve) => {
+        if (mainWindow.isVisible()) {
+          resolve(getState());
+        } else {
+          mainWindow.once('ready-to-show', () => {
+            setTimeout(() => resolve(getState()), 0);
+          });
+        }
+      });
+    }
+  );
+  return isVisible;
+};
+
 export async function startApp(): Promise<StartAppResponse> {
 
     console.log("Starting app...")
@@ -36,7 +56,8 @@ export async function startApp(): Promise<StartAppResponse> {
 
     console.log("Waiting for splash-screen to pass...")
     // wait for splash-screen to pass
-    await electronApp.firstWindow();
+    await didLaunchApp()
+    console.log("launched")
 
     const allPages = electronApp.windows();
     const visiblePages: VisibleWindow[] = [];
