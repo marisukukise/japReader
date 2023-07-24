@@ -1,8 +1,10 @@
-import { ElectronApplication, Page, _electron as electron } from 'playwright-core';
+import { ElectronApplication, JSHandle } from 'playwright-core';
 import { test, expect } from '@playwright/test';
-import { ElectronAppInfo, findLatestBuild, parseElectronApp, stubMultipleDialogs } from 'electron-playwright-helpers';
+import { ElectronAppInfo } from 'electron-playwright-helpers';
 import { WindowInfo } from './types';
 import { startApp } from './startApp';
+import { BrowserWindow, clipboard } from 'electron';
+import { pause } from './utils';
 
 let appInfo: ElectronAppInfo;
 let electronApp: ElectronApplication;
@@ -48,13 +50,65 @@ test.afterAll(async () => {
     await electronApp.close();
 });
 
-test('Visible windows titles', async () => {
-    const readerTitle = await readerWindow.page.title();
-    expect(readerTitle).toBe('japReader');
-    const dictionaryTitle = await dictionaryWindow.page.title();
-    expect(dictionaryTitle).toBe('japReader - Dictionary');
-    const translationTitle = await translationWindow.page.title();
-    expect(translationTitle).toBe('japReader - Translation');
-    const settingsTitle = await settingsWindow.page.title();
-    expect(settingsTitle).toBe('japReader - Settings');
-});
+test.describe('Visible windows tests', () => {
+    test('Integrity test', async () => {
+        for (const windowInfo of visibleWindows) {
+            const window: JSHandle<BrowserWindow> = await electronApp.browserWindow(windowInfo.page);
+            const windowState = await window.evaluate(
+                (mainWindow): Promise<{ isVisible: boolean; isDevToolsOpened: boolean; isCrashed: boolean }> => {
+                    const getState = () => ({
+                        isVisible: mainWindow.isVisible(),
+                        isDevToolsOpened: mainWindow.webContents.isDevToolsOpened(),
+                        isCrashed: mainWindow.webContents.isCrashed(),
+                    });
+
+                    return new Promise(resolve => {
+                        if (mainWindow.isVisible()) {
+                            resolve(getState());
+                        } else mainWindow.once('ready-to-show', () => resolve(getState()));
+                    });
+                },
+            );
+
+            expect(windowState.isCrashed, 'The app has crashed').toBeFalsy();
+            expect(windowState.isVisible, `The ${windowInfo.name} window was not visible`).toBeTruthy();
+            expect(windowState.isDevToolsOpened, 'The DevTools panel was open').toBeFalsy();
+        }
+    })
+})
+
+test.describe('Reader tests', () => {
+    test('Reader displays an appropriate message when connecting to ichi.moe', async () => {
+        const paragraph = readerWindow.page.locator('.ichi-state-msg.connecting')
+        await paragraph.waitFor({ timeout: 5000 });
+        const message = await paragraph.evaluate(node => node.innerHTML)
+
+        expect(message.includes("Connecting")).toBe(true)
+    })
+
+    test('Reader displays an appropriate message when connected to ichi.moe', async () => {
+        const paragraph = readerWindow.page.locator('.ichi-state-msg.connected')
+        await paragraph.waitFor({ timeout: 5000 });
+        const message = await paragraph.evaluate(node => node.innerHTML)
+
+        expect(message.includes("Successfully")).toBe(true)
+    })
+
+    test('Read clipboard', async () => {
+        await pause(1000)
+
+        readerWindow.page.evaluate("navigator.clipboard.writeText('昨日すき焼きを食べました')")
+        const paragraph = readerWindow.page.locator('.parse-notification-msg')
+        await paragraph.waitFor({ timeout: 5000 });
+        const message = await paragraph.evaluate(node => node.innerHTML)
+        expect(message.includes("...")).toBe(true)
+
+        const paragraph2 = readerWindow.page.locator('.sentence-wrapper')
+        await paragraph2.waitFor({ timeout: 5000 });
+        const message2 = await paragraph2.evaluate((node: HTMLElement) => node.innerText)
+        expect(message2).toBe('昨日きのうすき焼やきを食たべました')
+
+        await pause(1000)
+    })
+})
+
