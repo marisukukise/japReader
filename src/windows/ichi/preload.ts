@@ -52,7 +52,7 @@ const addMissingCharacters = (wordData: japReader.IchiParsedWordData, index: any
 
 
 const getInfinitive = (text: string): string => {
-    if (!text) return text
+    if (!text) return text;
     return text
         .replace(/ 【.+/g, '')
         .replace(/[0-9]+\. /g, '')
@@ -60,7 +60,7 @@ const getInfinitive = (text: string): string => {
 };
 
 const getReading = (text: string): string => {
-    if (!text) return text
+    if (!text) return text;
     let readingText = text
         .replace(/.+【/g, '')
         .replace(/】/g, '')
@@ -73,7 +73,7 @@ const getReading = (text: string): string => {
 };
 
 const getWord = (text: string): string => {
-    if (!text) return text
+    if (!text) return text;
     return text
         .replace(/ 【.+/, '')
         .replace(/[0-9]+\. /, '');
@@ -113,7 +113,7 @@ window.addEventListener('DOMContentLoaded', () => {
         jsp_pane.classList.add('current-word');
 
         const first_child_dt = document.querySelector('.current-word dt:first-child');
-        wordData.word = getWord(first_child_dt?.textContent ?? "");
+        wordData.word = getWord(first_child_dt?.textContent ?? '');
 
         const dt = document.querySelector('.current-word dt');
         const compounds = document.querySelector('.current-word .compounds');
@@ -132,22 +132,22 @@ window.addEventListener('DOMContentLoaded', () => {
                 wordData.infinitiveKana = getReading(first_dt[0].textContent);
             }
 
-            wordData.wordKana = getReading(dt?.textContent ?? "");
+            wordData.wordKana = getReading(dt?.textContent ?? '');
         }
         else if (conj_gloss_dt) {
-            wordData.infinitive = getInfinitive(conj_gloss_dt.textContent ?? "");
-            wordData.infinitiveKana = getReading(conj_gloss_dt.textContent ?? "");
-            wordData.wordKana = getReading(dt?.textContent ?? "");
+            wordData.infinitive = getInfinitive(conj_gloss_dt.textContent ?? '');
+            wordData.infinitiveKana = getReading(conj_gloss_dt.textContent ?? '');
+            wordData.wordKana = getReading(dt?.textContent ?? '');
         }
         else {
-            wordData.infinitive = getInfinitive(dt?.textContent ?? "");
-            wordData.infinitiveKana = getReading(dt?.textContent ?? "");
-            wordData.wordKana = getReading(dt?.textContent ?? "");
+            wordData.infinitive = getInfinitive(dt?.textContent ?? '');
+            wordData.infinitiveKana = getReading(dt?.textContent ?? '');
+            wordData.wordKana = getReading(dt?.textContent ?? '');
         }
 
         const alternatives = document.querySelector('.current-word dl.alternatives');
         if (current_word.innerHTML.includes('[')) {
-            wordData.definitions = alternatives?.innerHTML ?? "";
+            wordData.definitions = alternatives?.innerHTML ?? '';
         }
 
         WORDS.push(wordData);

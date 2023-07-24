@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron';
 
 import { showWindowWhenReady, createWindowAndStorePositionData } from '@root/src/globals/ts/helpers/mainHelpers';
-import { IPC_CHANNELS, JAPREADER_ENV } from '@root/src/globals/ts/other/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 
 import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
@@ -23,7 +23,6 @@ export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: s
     });
 
     deepWindow.loadURL(useDeepLApi ? webpack_entry : 'https://www.deepl.com/translator#ja/en/');
-    if (JAPREADER_ENV === 'dev') deepWindow.webContents.openDevTools();
 
     showWindowWhenReady(deepWindow, 'deep', IPC_CHANNELS.DEEP, false);
 

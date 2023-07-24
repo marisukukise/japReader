@@ -1,6 +1,6 @@
-export const JAPREADER_LOGS = process.env['JAPREADER_LOGS'] ? process.env['JAPREADER_LOGS'] : ''
-export const JAPREADER_ENV = process.env['JAPREADER_ENV'] ? process.env['JAPREADER_ENV'] : ''
-export const NODE_ENV = process.env['NODE_ENV'] ? process.env['NODE_ENV'] : ''
+export const JAPREADER_LOGS = process.env['JAPREADER_LOGS'] ? process.env['JAPREADER_LOGS'] : '';
+export const JAPREADER_ENV = process.env['JAPREADER_ENV'] ? process.env['JAPREADER_ENV'] : '';
+export const NODE_ENV = process.env['NODE_ENV'] ? process.env['NODE_ENV'] : '';
 
 export const STATUS = {
     NEW: 'new',
