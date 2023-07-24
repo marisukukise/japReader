@@ -22,13 +22,13 @@ test.beforeAll(async () => {
     electronApp = await electron.launch({
         args: [appInfo.main],
         executablePath: appInfo.executable,
-        recordVideo: {
-            dir: 'webm',
-            size: {
-                width: 800,
-                height: 600
-            },
-        },
+        // recordVideo: {
+        //     dir: 'webm',
+        //     size: {
+        //         width: 800,
+        //         height: 600
+        //     },
+        // },
     });
 
     stubMultipleDialogs(electronApp, [
