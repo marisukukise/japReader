@@ -1,10 +1,13 @@
 import { ElectronApplication, Page, _electron as electron } from 'playwright-core';
 import { test, expect } from '@playwright/test';
-import { findLatestBuild, parseElectronApp, stubMultipleDialogs } from 'electron-playwright-helpers';
+import { ElectronAppInfo, findLatestBuild, parseElectronApp, stubMultipleDialogs } from 'electron-playwright-helpers';
 import { WindowInfo } from './types';
+import { startApp } from './startApp';
 
+let appInfo: ElectronAppInfo;
 let electronApp: ElectronApplication;
-
+let allWindows: WindowInfo[];
+let visibleWindows: WindowInfo[];
 
 let clipboardWindow: WindowInfo;
 let deepWindow: WindowInfo;
@@ -14,137 +17,31 @@ let dictionaryWindow: WindowInfo;
 let translationWindow: WindowInfo;
 let settingsWindow: WindowInfo;
 
-let allWindows: WindowInfo[];
-let visibleWindows: WindowInfo[];
+const assignWindow = (windowName: string): WindowInfo => {
+    if (allWindows.filter(e => e.name === windowName).length !== 1) {
+        throw new Error(`There are more than 1 windows with name ${windowName}`)
+    } else {
+        return allWindows.filter(e => e.name === windowName)[0]
+    }
+}
 
 test.beforeAll(async () => {
-    const appInfo = parseElectronApp(findLatestBuild());
-    electronApp = await electron.launch({
-        args: [appInfo.main],
-        executablePath: appInfo.executable,
-        recordVideo: {
-            dir: 'webm',
-            size: {
-                width: 800,
-                height: 600
-            },
-        },
-    });
+    const StartAppResponse = await startApp();
+    appInfo = StartAppResponse.appInfo;
+    electronApp = StartAppResponse.app;
+    allWindows = StartAppResponse.windows;
 
-    stubMultipleDialogs(electronApp, [
-        {
-            method: 'showMessageBox',
-            value: {
-                response: 0
-            }
-        },
-        {
-            method: 'showMessageBoxSync',
-            value: {
-                response: 0
-            }
-        }
-    ]);
-
-
-    const allPages = electronApp.windows();
-    const nonDevToolPages = allPages.filter(e =>
-        !e.mainFrame().url().startsWith("devtools://")
-    )
-
-    if (nonDevToolPages.length !== 7) {
-        throw new Error(
-            `Electron should have spawned 7 non-devtools windows,\
-            but spawned ${nonDevToolPages.length} non-devtools windows instead.\
-            There were ${allPages.length} windows spawned in total.`
-        );
-    }
-
-    allPages.forEach((page: Page) => {
-        const url = page.mainFrame().url();
-        let windowName = '';
-        if (url.startsWith('devtools://')) return;
-
-        if (url.startsWith('file:///')) {
-            const split_url = url.split('/');
-            windowName = split_url.at(-2)!;
-        }
-
-        if (url.startsWith('https://')) {
-            if (url.includes('ichi.moe'))
-                windowName = 'ichi';
-            if (url.includes('deepl.com'))
-                windowName = 'deep';
-        }
-
-        switch (windowName) {
-            case 'clipboard':
-                clipboardWindow = {
-                    page: page,
-                    name: windowName,
-                };
-                break;
-            case 'dictionary':
-                dictionaryWindow = {
-                    page: page,
-                    name: windowName,
-                };
-                break;
-            case 'ichi':
-                ichiWindow = {
-                    page: page,
-                    name: windowName,
-                };
-                break;
-            case 'deep':
-                deepWindow = {
-                    page: page,
-                    name: windowName,
-                };
-                break;
-            case 'reader':
-                readerWindow = {
-                    page: page,
-                    name: windowName,
-                };
-                break;
-            case 'translation':
-                translationWindow = {
-                    page: page,
-                    name: windowName,
-                };
-                break;
-            case 'settings':
-                settingsWindow = {
-                    page: page,
-                    name: windowName,
-                };
-                break;
-            default:
-        }
-    });
-
-    if (!dictionaryWindow) throw new Error('Dictionary page is not defined');
-    if (!readerWindow) throw new Error('Reader page is not defined');
-    if (!translationWindow) throw new Error('Translation page is not defined');
-    if (!settingsWindow) throw new Error('Settings page is not defined');
-    if (!clipboardWindow) throw new Error('Clipboard page is not defined');
-    if (!ichiWindow) throw new Error('ichi.moe page is not defined');
-    if (!deepWindow) throw new Error('deepl.com page is not defined');
+    clipboardWindow = assignWindow("clipboard")
+    deepWindow = assignWindow("deep")
+    ichiWindow = assignWindow("ichi")
+    readerWindow = assignWindow("reader")
+    dictionaryWindow = assignWindow("dictionary")
+    translationWindow = assignWindow("translation")
+    settingsWindow = assignWindow("settings")
 
     visibleWindows = [
-        dictionaryWindow,
-        readerWindow,
-        translationWindow,
-        settingsWindow
-    ];
-
-    allWindows = [
-        ...visibleWindows,
-        clipboardWindow,
-        deepWindow,
-        ichiWindow
-    ];
+        readerWindow, dictionaryWindow, translationWindow, settingsWindow
+    ]
 });
 
 test.afterAll(async () => {

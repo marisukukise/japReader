@@ -5,3 +5,9 @@ interface WindowInfo {
     name: string;
     page: Page;
 }
+
+interface StartAppResponse {
+    windows: WindowInfo[],
+    app: ElectronApplication,
+    appInfo: ElectronAppInfo,
+}
