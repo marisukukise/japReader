@@ -58,10 +58,7 @@ jobs:
 
       - name: Tree list the runner
         if: always()
-        run: |
-          tree . -I 'node_modules|src|images'
-          ls -la
-          ls -la .cache
+        run: tree . -I 'node_modules|src|images'
 
       - name: Read test log file
         if: always()
