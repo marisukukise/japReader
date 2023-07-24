@@ -3,6 +3,15 @@ name: Test UI
 on:
   workflow_dispatch:
 
+env:
+  JAPREADER_ENV: playwright
+  NODE_ENV: development
+  CLEAR_TOKENS: true
+  JAPREADER_LOGS: silly
+  PLAYWRIGHT: true
+  DEBUG: pw:browser*,pw:api
+  DEBUG_FILE: playwright.log
+
 jobs:
  test-ubuntu:
     name: Build the repository on Ubuntu
@@ -35,16 +44,6 @@ jobs:
         run: |
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux
 
-      - name: Set envionment variables
-        run: |
-          export JAPREADER_ENV=playwright
-          export NODE_ENV=development
-          export CLEAR_TOKENS=true
-          export JAPREADER_LOGS=silly
-          export PLAYWRIGHT=true
-          export DEBUG=pw:browser*,pw:api
-          export DEBUG_FILE=playwright.log
-
       - name: Package
         run: yarn package
       
@@ -61,6 +60,7 @@ jobs:
       - name: Copy test artifacts into the common folder
         if: always()
         run: | 
+          ls
           [ -f playwright.log ] && mv playwright.log test-results/
           [ -d webm ] && mv webm/ test-results/
 
