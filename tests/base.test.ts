@@ -54,7 +54,11 @@ test.beforeAll(async () => {
     )
 
     if (nonDevToolPages.length !== 7) {
-        throw new Error(`Electron should have spawned 7 windows, but spawned ${nonDevToolPages.length} windows instead`);
+        throw new Error(
+            `Electron should have spawned 7 non-devtools windows,\
+            but spawned ${nonDevToolPages.length} non-devtools windows instead.\
+            There were ${allPages.length} windows spawned in total.`
+        );
     }
 
     allPages.forEach((page: Page) => {
