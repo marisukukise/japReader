@@ -48,18 +48,21 @@ jobs:
       - name: Package
         run: yarn package
       
-      - run: tree .
-      
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
         with:
           options: -screen 0 1280x960x24
           run: yarn test:ui
 
-      - run: tree .
+      - name: Tree list the runner
+        if: always()
+        run: tree . -I 'node_modules|src|images|'
 
-      - run: mv playwright.log test-results/
-      - run: mv webm/ test-results/
+      - name: Copy test artifacts into the common folder
+        if: always()
+        run: | 
+          mv playwright.log test-results/
+          mv webm/ test-results/
 
       - name: Upload a Test Artifact
         if: always()
