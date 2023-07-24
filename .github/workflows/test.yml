@@ -29,7 +29,21 @@ jobs:
       - name: Install dpkg, fakeroot and rpm
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y dpkg fakeroot rpm
+          sudo apt-get install -y dpkg fakeroot rpm\
+          libnss3\
+          libnspr4\
+          libatk1.0-0\
+          libatk-bridge2.0-0\
+          libcups2\
+          libdrm2\
+          libxkbcommon0\
+          libgtk-3-0\
+          libpango-1.0-0\
+          libcairo2\
+          libgdk-pixbuf2.0-0\
+          libgbm1\
+          libasound2\
+          libatspi2.0-0
 
       - name: Provide 777 execution rights to clipboard handler script
         run: |
@@ -40,13 +54,26 @@ jobs:
       - name: Set NODE_ENV to 'production'
         run: export NODE_ENV=production
 
+      - name: Set envionment variables
+        run: |
+          export CLEAR_TOKENS=true
+          export JAPREADER_LOGS=silly
+          export PLAYWRIGHT=true
+          export DEBUG=pw:browser*,pw:api
+          export DEBUG_FILE=playwright.log
+
       - name: Package
         run: yarn package
+      
+      - run: tree out/
       
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
         with:
+          options: -screen 0 1280x960x24
           run: yarn test:ui
+
+      - run: tree out/
 
       - name: Upload a Test Artifact
         if: always()
