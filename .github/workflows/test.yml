@@ -56,13 +56,13 @@ jobs:
 
       - name: Tree list the runner
         if: always()
-        run: tree . -I 'node_modules|src|images|'
+        run: tree . -I 'node_modules|src|images'
 
       - name: Copy test artifacts into the common folder
         if: always()
         run: | 
-          mv playwright.log test-results/
-          mv webm/ test-results/
+          [ -f playwright.log ] && mv playwright.log test-results/
+          [ -d webm ] && mv webm/ test-results/
 
       - name: Upload a Test Artifact
         if: always()
