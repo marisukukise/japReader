@@ -60,9 +60,8 @@ jobs:
       - name: Copy test artifacts into the common folder
         if: always()
         run: | 
-          ls
-          [ -f playwright.log ] && mv playwright.log test-results/
-          [ -d webm ] && mv webm/ test-results/
+          [ -f playwright.log ] && mv playwright.log test-results/ || true
+          [ -d webm ] && mv webm/ test-results/ || true
 
       - name: Upload a Test Artifact
         if: always()
