@@ -14,7 +14,7 @@ env:
 
 jobs:
  test-ubuntu:
-    name: Checkout the repository
+    name: Run Playwright e2e tests on ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       # Make sure build is clean and no files from a previous run are re-used.
