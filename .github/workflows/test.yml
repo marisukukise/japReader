@@ -14,7 +14,7 @@ env:
 
 jobs:
  test-ubuntu:
-    name: Build the repository on Ubuntu
+    name: Checkout the repository
     runs-on: ubuntu-latest
     steps:
       # Make sure build is clean and no files from a previous run are re-used.
@@ -35,10 +35,10 @@ jobs:
       - name: Install node packages
         run: yarn install
 
-      - name: Install dpkg, fakeroot and rpm
+      - name: Install Test dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y dpkg fakeroot rpm libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libgtk-3-0 libpango-1.0-0 libcairo2 libgdk-pixbuf2.0-0 libgbm1 libasound2 libatspi2.0-0
+          sudo apt-get install -y dpkg fakeroot rpm libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libgtk-3-0 libpango-1.0-0 libcairo2 libgdk-pixbuf2.0-0 libgbm1 libasound2 libatspi2.0-0 ffmpeg
 
       - name: Provide 777 execution rights to clipboard handler script
         run: |
@@ -50,12 +50,16 @@ jobs:
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
         with:
-          options: -screen 0 1280x960x24
+          options: -screen 0 800x600x24
           run: yarn test:ui
 
       - name: Tree list the runner
         if: always()
         run: tree . -I 'node_modules|src|images'
+
+      - name: Read test log file
+        run: |
+          [ -f playwright.log ] && cat playwright.log || true
 
       - name: Copy test artifacts into the common folder
         if: always()
@@ -67,6 +71,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: playwright-output
+          name: japReader-test-ui_${{ github.ref_name }}@${{ github.sha }}
           path: test-results
           retention-days: 28
