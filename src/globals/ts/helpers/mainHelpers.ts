@@ -6,8 +6,6 @@ import { JAPREADER_ENV } from '@globals/ts/other/objects';
 const windowStore = getWindowStore();
 
 export const setDefaultVisibleWindowSettings = (window: BrowserWindow, windowName: string, ipcBase: any): void => {
-    if (JAPREADER_ENV === 'dev') window.webContents.openDevTools();
-
     passMessageToRenderer(window, ipcBase.SET.TOGGLE_UI);
     passMessageToRenderer(window, ipcBase.SET.SHOW_UI);
 
@@ -94,6 +92,10 @@ export const showWindowWhenReady = (window: BrowserWindow, windowName: string, _
         window.webContents.setZoomFactor(1);
         window.webContents.setZoomLevel(0);
         window.webContents.setVisualZoomLevelLimits(1, 1);
+
+        if (JAPREADER_ENV === 'dev') {
+            window.webContents.openDevTools();
+        }
     });
 
     // Set the environment variable JAPREADER_ENV to "dev" to show all windows
@@ -105,13 +107,12 @@ export const showWindowWhenReady = (window: BrowserWindow, windowName: string, _
             if (windowStore.get(`${windowName}.alwaysOnTop`)) {
                 window.setAlwaysOnTop(true, 'pop-up-menu');
             }
-
         });
         return;
     }
 
     // Added for debugging convenience
-    if (JAPREADER_ENV === 'dev') {
+    if (JAPREADER_ENV === 'dev' || JAPREADER_ENV === 'playwright') {
         window.once('ready-to-show', () => {
             log.info(`⌛ Showing ${window.getTitle()}`);
             window.show();

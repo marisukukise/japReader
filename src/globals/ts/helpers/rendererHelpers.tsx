@@ -42,9 +42,9 @@ const getFuriganaObject = (w: string, r: string): japReader.FuriganaObject[] => 
         }
     } catch (err) {
         log.error(err);
-        log.error(`Unable to parse ${w} (${r}) into a FuriganaObject`)
+        log.error(`Unable to parse ${w} (${r}) into a FuriganaObject`);
         // Return an empty object instead of throwing an error to not halt the program unnecessarily
-        return [{w: "", r: ""}] 
+        return [{w: '', r: ''}]; 
     }
 };
 
@@ -339,17 +339,17 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-            case KEYBOARD_KEYS.PLUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_ADD:
-                changeFontSizeDOM(windowName, true);
-                break;
-            case KEYBOARD_KEYS.MINUS_KEY:
-            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-                changeFontSizeDOM(windowName, false);
-                break;
-            case KEYBOARD_KEYS.KEY_H:
-                ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
-                break;
+        case KEYBOARD_KEYS.PLUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_ADD:
+            changeFontSizeDOM(windowName, true);
+            break;
+        case KEYBOARD_KEYS.MINUS_KEY:
+        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+            changeFontSizeDOM(windowName, false);
+            break;
+        case KEYBOARD_KEYS.KEY_H:
+            ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
+            break;
         }
     }, true);
 };

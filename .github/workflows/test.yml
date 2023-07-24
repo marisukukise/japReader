@@ -34,14 +34,11 @@ jobs:
       - name: Provide 777 execution rights to clipboard handler script
         run: |
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux
-      - name: Set JAPREADER_ENV to 'production'
-        run: export JAPREADER_ENV=production
-        
-      - name: Set NODE_ENV to 'production'
-        run: export NODE_ENV=production
 
       - name: Set envionment variables
         run: |
+          export JAPREADER_ENV=playwright
+          export NODE_ENV=development
           export CLEAR_TOKENS=true
           export JAPREADER_LOGS=silly
           export PLAYWRIGHT=true
@@ -51,7 +48,7 @@ jobs:
       - name: Package
         run: yarn package
       
-      - run: tree out/
+      - run: tree .
       
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
@@ -59,7 +56,10 @@ jobs:
           options: -screen 0 1280x960x24
           run: yarn test:ui
 
-      - run: tree out/
+      - run: tree .
+
+      - run: mv playwright.log test-results/
+      - run: mv webm/ test-results/
 
       - name: Upload a Test Artifact
         if: always()
