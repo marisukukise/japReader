@@ -47,6 +47,13 @@ test.beforeAll(async () => {
     ]);
 
 
+    console.log(process.env['JAPREADER_ENV'])
+    console.log(process.env['NODE_ENV'])
+    console.log(process.env['CLEAR_TOKENS'])
+    console.log(process.env['JAPREADER_LOGS'])
+    console.log(process.env['PLAYWRIGHT'])
+    console.log(process.env['DEBUG'])
+    console.log(process.env['DEBUG_FILE'])
 
     const allPages = electronApp.windows();
     const nonDevToolPages = allPages.filter(e =>
