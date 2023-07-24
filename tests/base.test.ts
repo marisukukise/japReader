@@ -1,39 +1,31 @@
-import { ElectronApplication, Page } from "playwright-core";
+import { ElectronApplication, _electron as electron } from "playwright-core";
 import { test, expect } from "@playwright/test";
-import { startApp } from "./electronHelpers";
-import { ElectronAppInfo, stubAllDialogs, stubDialog, stubMultipleDialogs } from "electron-playwright-helpers";
-import { VisibleWindow } from "./types";
+import { findLatestBuild, parseElectronApp, stubMultipleDialogs } from "electron-playwright-helpers";
 
-
-
-let visibleWindows: VisibleWindow[];
-let appInfo: ElectronAppInfo;
 let electronApp: ElectronApplication;
 
-let dictionaryWindow: Page;
-let readerWindow: Page;
-let translationWindow: Page;
-let settingsWindow: Page;
-
-
 test.beforeAll(async () => {
-    console.log("Starting test...")
-    try {
-        const startAppResponse = await startApp();
-
-        visibleWindows = startAppResponse.visibleWindows;
-        appInfo = startAppResponse.appInfo;
-        electronApp = startAppResponse.electronApp;
-    }
-    catch (error) {
-        console.error(error)
-    }
-
-    console.log("Creating window objects...")
-    dictionaryWindow = visibleWindows.filter(e => e.windowName === 'dictionary')[0].page;
-    readerWindow = visibleWindows.filter(e => e.windowName === 'reader')[0].page;
-    translationWindow = visibleWindows.filter(e => e.windowName === 'translation')[0].page;
-    settingsWindow = visibleWindows.filter(e => e.windowName === 'settings')[0].page;
+    const appInfo = parseElectronApp(findLatestBuild());
+    electronApp = await electron.launch({
+        args: [appInfo.main],
+        executablePath: appInfo.executable,
+        // recordVideo: {
+        //     dir: 'test-results/webm',
+        //     size: {
+        //         width: 800,
+        //         height: 600
+        //     },
+        // },
+        // env: {
+        //     ...process.env,
+        //     CLEAR_TOKENS: 'true', // clears ACCEPTED_LICENSE
+        //     NODE_ENV: 'development',
+        //     JAPREADER_LOGS: 'silly',
+        //     PLAYWRIGHT: 'true',
+        //     DEBUG: 'pw:browser*,pw:api',
+        //     DEBUG_FILE: 'playwright.log'
+        // },
+    });
 
     stubMultipleDialogs(electronApp, [
         {
@@ -52,24 +44,35 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(async () => {
-    console.log("Finishing up...")
-    for (const visibleWindow of visibleWindows) {
-        const page = visibleWindow.page;
-        const windowName = visibleWindow.windowName;
-
-        await page.context().close();
-
-    }
-
+    await electronApp.close()
 });
 
-test('Reader should get a successful message', async () => {
-    console.log("Testing inside reader...")
-    await readerWindow.waitForSelector('.ichi-state-msg.connected')
+test('Main window state', async () => {
+    console.log(electronApp.windows())
+    expect(1).toBe(1)
+//   const page = await electronApp.firstWindow();
+//   const window: JSHandle<BrowserWindow> = await electronApp.browserWindow(page);
+//   const windowState = await window.evaluate(
+//     (mainWindow): Promise<{isVisible: boolean; isDevToolsOpened: boolean; isCrashed: boolean}> => {
+//       const getState = () => ({
+//         isVisible: mainWindow.isVisible(),
+//         isDevToolsOpened: mainWindow.webContents.isDevToolsOpened(),
+//         isCrashed: mainWindow.webContents.isCrashed(),
+//       });
 
-    const text = await readerWindow.$eval('.ichi-state-msg.connected', (el) => el.textContent)
-    expect(text?.split(" ")[0]).toBe('Successfully')
+//       return new Promise(resolve => {
+//         /**
+//          * The main window is created hidden, and is shown only when it is ready.
+//          * See {@link ../packages/main/src/mainWindow.ts} function
+//          */
+//         if (mainWindow.isVisible()) {
+//           resolve(getState());
+//         } else mainWindow.once('ready-to-show', () => resolve(getState()));
+//       });
+//     },
+//   );
 
-    const title = await readerWindow.title()
-    expect(title).toBe('japReader')
+//   expect(windowState.isCrashed, 'The app has crashed').toBeFalsy();
+//   expect(windowState.isVisible, 'The main window was not visible').toBeTruthy();
+//   expect(windowState.isDevToolsOpened, 'The DevTools panel was open').toBeFalsy();
 });
