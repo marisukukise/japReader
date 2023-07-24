@@ -15,6 +15,10 @@ on:
         description: Is this a pre-release?
         required: true
 
+env:
+  JAPREADER_ENV: production
+  NODE_ENV: production
+
 jobs:
 
   build-macos:
@@ -36,12 +40,6 @@ jobs:
       - name: Provide 777 execution rights to clipboard handler script
         run: |
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac
-
-      - name: Set JAPREADER_ENV to 'production'
-        run: export JAPREADER_ENV=production
-        
-      - name: Set NODE_ENV to 'production'
-        run: export NODE_ENV=production
 
       - name: Make
         run: yarn make
@@ -82,11 +80,6 @@ jobs:
       - name: Provide 777 execution rights to clipboard handler script
         run: |
           sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux
-      - name: Set JAPREADER_ENV to 'production'
-        run: export JAPREADER_ENV=production
-        
-      - name: Set NODE_ENV to 'production'
-        run: export NODE_ENV=production
         
       - name: Make
         run: yarn make
@@ -115,12 +108,6 @@ jobs:
           
       - name: Install node packages
         run: yarn install
-        
-      - name: Set JAPREADER_ENV to 'production'
-        run: SET JAPREADER_ENV=production
-        
-      - name: Set NODE_ENV to 'production'
-        run: SET NODE_ENV=production
         
       - name: Make
         run: yarn make
