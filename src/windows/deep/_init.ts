@@ -1,10 +1,10 @@
 import { BrowserWindow, ipcMain } from 'electron';
 
-import { showWindowWhenReady, createWindowAndStorePositionData } from '@globals/ts/main/helpers';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { showWindowWhenReady, createWindowAndStorePositionData } from '@root/src/globals/ts/helpers/mainHelpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
 const settingsStore = getSettingsStore();
 const { useDeepLApi } = settingsStore.get('global_settings');
 
@@ -23,7 +23,6 @@ export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: s
     });
 
     deepWindow.loadURL(useDeepLApi ? webpack_entry : 'https://www.deepl.com/translator#ja/en/');
-    if (process.env.JAPREADER_ENV === 'dev') deepWindow.webContents.openDevTools();
 
     showWindowWhenReady(deepWindow, 'deep', IPC_CHANNELS.DEEP, false);
 
@@ -32,7 +31,7 @@ export const createDeepWindow = (preload_webpack_entry: string, webpack_entry: s
         deepWindow.hide();
     });
 
-    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
+    ipcMain.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (_event, text) => {
         deepWindow.webContents.send(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, text);
     });
 

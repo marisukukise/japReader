@@ -1,19 +1,20 @@
 import { Select } from '@geist-ui/core';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 import { ipcRenderer } from 'electron';
 import { useEffect, useState } from 'react';
 
 
 
 export const FontFamilySelector = () => {
-    const handler = (filename: string) => {
+    const [fontList, setFontList] = useState<japReader.FontInfo[]>([]);
+    const [disabled, setDisabled] = useState(false);
+
+    const handler = (filename: string | string[]) => {
+        if (Array.isArray(filename)) return;
         if (filename === 'default') return;
 
         // TODO: Load a custom font somehow
     };
-
-    const [fontList, setFontList] = useState<japReader.FontInfo[]>([]);
-    const [disabled, setDisabled] = useState(false);
 
     const defaultFont = 'NotoSansJP';
 

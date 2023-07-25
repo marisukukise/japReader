@@ -1,12 +1,12 @@
 
 import { Button } from '@geist-ui/core';
-import { getSettingsStore } from '@globals/ts/main/initializeStore';
-import { FuriganaJSX } from '@globals/ts/renderer/helpers';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
+import { FuriganaJSX } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { useEffect, useRef, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import log_renderer from 'electron-log/renderer';
 import { ipcRenderer } from 'electron';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 import { useAtomValue } from 'jotai';
 import { definitionsAtom, translatedSentenceAtom, infinitiveAtom, infinitiveKanaAtom, japaneseSentenceAtom, wordAtom, wordKanaAtom } from './Dictionary';
 const log = log_renderer.scope('dictionary/AnkiButton');
@@ -70,19 +70,19 @@ const _anki_AddNote = async (
     });
 };
 
-const _anki_FindNotes = async (query: string) => {
+const _anki_FindNotes = async (query: string): Promise<any> => {
     return ipcRenderer.invoke(IPC_CHANNELS.ANKI_CONNECT.INVOKE, 'findNotes', {
         query: query
     });
 };
 
-const _anki_GetNoteIdFromInfinitive = async (infinitive: string) => {
+const _anki_GetNoteIdFromInfinitive = async (infinitive: string): Promise<number> => {
     return _anki_FindNotes(`deck:${ankiDeckName} ${ankiInfinitive}:${infinitive}`)
         .then((result: number[]) => {
             if (result.length == 0) return 0;
             if (result.length > 1)
                 throw `There should only be 1 word ${infinitive} in ${ankiDeckName} but detected ${result.length}.`;
-            return result[0];
+            return result[0]!;
         });
 };
 
@@ -125,7 +125,7 @@ export const AnkiButton = () => {
         error_Callback(error);
     };
 
-    const success_PreviewedNoteGUICallback = (result: any) => {
+    const success_PreviewedNoteGUICallback = (_result: any) => {
         setLoading(false, BUTTON_MESSAGES.PREVIEW);
     };
 

@@ -1,10 +1,7 @@
 import { BrowserWindow } from 'electron';
 
-import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings } from '@globals/ts/main/helpers';
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
-
-import { getWindowStore } from '@globals/ts/main/initializeStore';
-const windowStore = getWindowStore();
+import { showWindowWhenReady, createWindowAndStorePositionData, setDefaultVisibleWindowSettings } from '@root/src/globals/ts/helpers/mainHelpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
 export const createSettingsWindow = (webpack_entry: string): BrowserWindow => {
     const settingsWindow = createWindowAndStorePositionData('settings', {

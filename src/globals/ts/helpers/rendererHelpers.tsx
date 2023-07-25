@@ -1,13 +1,13 @@
 import { ipcRenderer } from 'electron';
 import React, { ReactNode, useEffect } from 'react';
 import log from 'electron-log/renderer';
-import { getSettingsStore, getStatusDataStore, getWindowStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getStatusDataStore, getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 const statusDataStore = getStatusDataStore();
 const windowStore = getWindowStore();
 const settingsStore = getSettingsStore();
 
 const { fit } = require('furigana');
-import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@root/src/globals/ts/other/objects';
 import { ToastLayout } from '@geist-ui/core';
 import Logger from 'electron-log';
 
@@ -27,20 +27,30 @@ const DIGIT_MAP = [
 ];
 
 const getFuriganaObject = (w: string, r: string): japReader.FuriganaObject[] => {
+    log.debug(`orig: ${w} (${r})`)
     try {
-        if (/[０-９]/.test(w)) {
-            const original_w = w;
-            DIGIT_MAP.forEach((digit_entry: string[]) => {
-                w = w.replace(digit_entry[0], digit_entry[1]);
-            });
-            const furigana = fit(w, r, { type: 'object' });
-            furigana.w = original_w;
-            return furigana;
-        } else {
-            return fit(w, r, { type: 'object' });
-        }
+        return fit(w, r, { type: 'object' });
     } catch (err) {
-        log.error(err);
+        let original_w = w
+        if (/[０-９]/.test(w)) {
+            DIGIT_MAP.forEach((pair: string[]) => {
+                w.replace(pair[0]!, pair[1]!)
+            })
+
+            let furiganaList = []
+
+            try { furiganaList = fit(w, r, { type: 'object' }); }
+            catch (err) { furiganaList = [{ w: w, r: r }]; }
+
+            furiganaList.forEach((unit: japReader.FuriganaObject) => {
+                unit.w = original_w.slice(0, unit.w.length)
+                original_w = original_w.slice(unit.w.length)
+            })
+
+            return furiganaList
+        }
+
+        return [{ w: w, r: r }];
     }
 };
 
@@ -182,7 +192,7 @@ export const listenForAnotherWindowIsReady = (
     setReady: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
     // Case #1: Target window loaded before Awaited window
-    ipcRenderer.on(ipcBase.ANNOUNCE.IS_READY, (event: any) => {
+    ipcRenderer.on(ipcBase.ANNOUNCE.IS_READY, (_event: any) => {
         setReady(true);
     });
 
@@ -291,7 +301,7 @@ export const changeFontGlowStrengthDOM = (windowName: string, conditionForIncrem
     const body = document.querySelector('body') as HTMLElement;
     const currentClasses = [...body.classList].filter(e => e.startsWith('font-glow-strength-'));
     const currentClass = currentClasses.length > 0 ?
-        currentClasses[0] : 'font-glow-strength-0';
+        currentClasses[0]! : 'font-glow-strength-0';
 
     const currentStrength = parseInt(currentClass.slice(currentClass.lastIndexOf('-') + 1));
     const newStrength = currentStrength + (conditionForIncrement ? 1 : -1);
@@ -335,17 +345,17 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-        case KEYBOARD_KEYS.PLUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_ADD:
-            changeFontSizeDOM(windowName, true);
-            break;
-        case KEYBOARD_KEYS.MINUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-            changeFontSizeDOM(windowName, false);
-            break;
-        case KEYBOARD_KEYS.KEY_H:
-            ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
-            break;
+            case KEYBOARD_KEYS.PLUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_ADD:
+                changeFontSizeDOM(windowName, true);
+                break;
+            case KEYBOARD_KEYS.MINUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+                changeFontSizeDOM(windowName, false);
+                break;
+            case KEYBOARD_KEYS.KEY_H:
+                ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
+                break;
         }
     }, true);
 };
@@ -372,7 +382,7 @@ const numberRegexTest = (unit: string) => {
     return new RegExp('^\\d+\\.\\d{2}' + unit + '$');
 };
 
-export const initializeWindowSettingsFromStore = (windowName: string, ipcBase: any) => {
+export const initializeWindowSettingsFromStore = (windowName: string, _ipcBase: any) => {
 
     // Body classes, for things like pre-generated SCSS classes
     const body = document.querySelector('body') as HTMLElement;

@@ -2,9 +2,7 @@ import { Button } from '@geist-ui/core';
 import { useAtomValue } from 'jotai';
 import { infinitiveAtom, infinitiveKanaAtom } from './Dictionary';
 import { useEffect, useRef, useState } from 'react';
-import log_renderer from 'electron-log/renderer';
-import { getWindowStore } from '@globals/ts/main/initializeStore';
-const log = log_renderer.scope('dictionary/AudioButton');
+import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 
 const windowStore = getWindowStore();
 
@@ -24,7 +22,7 @@ export const AudioButton = () => {
     const infinitiveKana = useAtomValue(infinitiveKanaAtom);
     const canPlayAudio = useRef(false);
     const [source, setSource] = useState(getURL(infinitive, infinitiveKana));
-    const audioRef = useRef<HTMLAudioElement>();
+    const audioRef = useRef<HTMLAudioElement | null>(null);
     const [disabled, setDisabled] = useState(false);
     const [buttonText, setButtonText] = useState(BUTTON_MESSAGES.LOADING);
     const [volume, setVolume] = useState(windowStore.get('dictionary.additional.audioVolume', 15));
@@ -38,26 +36,30 @@ export const AudioButton = () => {
         canPlayAudio.current = false;
         setLoading(true);
         setSource(getURL(infinitive, infinitiveKana));
-        if (audioRef.current) {
+        if (audioRef.current !== null) {
             audioRef.current.load();
         }
     }, [infinitive, source]);
 
     useEffect(() => {
-        if (audioRef.current) {
+        if (audioRef.current !== null) {
             audioRef.current.volume = volume / 20;
         }
     }, [volume]);
 
     const playSnippet = () => {
-        if (audioRef.current) {
+        if (audioRef.current !== null) {
             audioRef.current.pause();
             audioRef.current.play();
         }
     };
 
     const onLoadedMetadata = () => {
-        if (audioRef.current && !isNaN(audioRef.current.duration) && audioRef.current.duration !== 5.694694) {
+        if (
+            audioRef.current !== null &&
+            !isNaN(audioRef.current.duration) &&
+            audioRef.current.duration !== 5.694694
+        ) {
             setLoading(false, BUTTON_MESSAGES.PLAY);
         } else {
             setButtonText(BUTTON_MESSAGES.NOT_AVAILABLE);
@@ -72,7 +74,7 @@ export const AudioButton = () => {
     return <>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <input type="range" min={0} max={20} value={volume} onChange={onVolumeChange} />
-            <Button 
+            <Button
                 disabled={disabled}
                 loading={buttonText == BUTTON_MESSAGES.LOADING}
                 onClick={playSnippet}>

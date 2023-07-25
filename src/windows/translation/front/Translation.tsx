@@ -4,9 +4,9 @@ import { ReactNode, useEffect, useState } from 'react';
 
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('translation');
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
 
-import { setupEffect, toastLayout } from '@globals/ts/renderer/helpers';
+import { setupEffect, toastLayout } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { TranslatedSentence } from './TranslatedSentence';
 import Loader from '@globals/components/Loader/Loader';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
@@ -16,18 +16,18 @@ import { ConfigurationDrawerCommonSettings } from '@globals/components/Configura
 import { Text, useToasts } from '@geist-ui/core';
 import ToggleStateSwitch from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/ToggleStateSwitch';
 import { OpenSettingsButton } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerComponents/OpenSettingsButton';
-import { getSettingsStore } from '@root/src/globals/ts/main/initializeStore';
+import { getSettingsStore } from '@root/src/globals/ts/initializers/initializeStore';
 
 
 const settingsStore = getSettingsStore();
 
-const { useDeepLApi } = settingsStore.get('global_settings')
+const { useDeepLApi } = settingsStore.get('global_settings');
 
 const connectionTarget = <>{
     useDeepLApi ?
         <>DeepL API</> :
         <span className="url">https://deepl.com/</span>
-}</>
+}</>;
 
 const DeepFailedMessage = () => {
     return (<Text p className='deep-state-msg failed'>
@@ -140,7 +140,7 @@ export const Translation = () => {
     }, [japaneseSentence]);
 
     useEffect(() => {
-        ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (event, translatedSentence: string, japaneseSentence: string) => {
+        ipcRenderer.on(IPC_CHANNELS.DEEP.ANNOUNCE.TRANSLATED_TEXT, (_event, translatedSentence: string, japaneseSentence: string) => {
             setTranslatedSentence(translatedSentence);
             setJapaneseSentence(japaneseSentence);
         });

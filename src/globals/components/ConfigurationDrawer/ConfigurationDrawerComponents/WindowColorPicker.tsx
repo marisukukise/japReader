@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChromePicker, ColorResult, RGBColor } from 'react-color';
 
-import { getWindowStore } from '@globals/ts/main/initializeStore';
+import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 const windowStore = getWindowStore();
 
 

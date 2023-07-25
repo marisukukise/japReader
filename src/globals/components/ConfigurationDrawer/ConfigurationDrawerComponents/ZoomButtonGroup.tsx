@@ -1,5 +1,5 @@
 import { Button, ButtonGroup } from '@geist-ui/core';
-import { getWindowStore } from '@globals/ts/main/initializeStore';
+import { getWindowStore } from '@root/src/globals/ts/initializers/initializeStore';
 import { useState } from 'react';
 const windowStore = getWindowStore();
 

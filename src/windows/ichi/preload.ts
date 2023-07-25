@@ -4,8 +4,8 @@
 import { ipcRenderer } from 'electron';
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('ichi');
-import { IPC_CHANNELS } from '@globals/ts/main/objects';
-import { getWordStatusData, mountLog } from '@globals/ts/renderer/helpers';
+import { IPC_CHANNELS } from '@root/src/globals/ts/other/objects';
+import { getWordStatusData, mountLog } from '@root/src/globals/ts/helpers/rendererHelpers';
 
 
 const WORDS: japReader.IchiParsedWordData[] = [];
@@ -52,6 +52,7 @@ const addMissingCharacters = (wordData: japReader.IchiParsedWordData, index: any
 
 
 const getInfinitive = (text: string): string => {
+    if (!text) return text;
     return text
         .replace(/ 【.+/g, '')
         .replace(/[0-9]+\. /g, '')
@@ -59,6 +60,7 @@ const getInfinitive = (text: string): string => {
 };
 
 const getReading = (text: string): string => {
+    if (!text) return text;
     let readingText = text
         .replace(/.+【/g, '')
         .replace(/】/g, '')
@@ -71,6 +73,7 @@ const getReading = (text: string): string => {
 };
 
 const getWord = (text: string): string => {
+    if (!text) return text;
     return text
         .replace(/ 【.+/, '')
         .replace(/[0-9]+\. /, '');
@@ -81,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line global-require
     const $ = require('jquery');
 
-    ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (event, text) => {
+    ipcRenderer.on(IPC_CHANNELS.CLIPBOARD.ANNOUNCE.CHANGE_DETECTED, (_event, text) => {
         document.location.href = `https://ichi.moe/cl/qr/?q=${text}&r=kana`;
     });
 
@@ -110,14 +113,14 @@ window.addEventListener('DOMContentLoaded', () => {
         jsp_pane.classList.add('current-word');
 
         const first_child_dt = document.querySelector('.current-word dt:first-child');
-        wordData.word = getWord(first_child_dt.textContent);
+        wordData.word = getWord(first_child_dt?.textContent ?? '');
 
         const dt = document.querySelector('.current-word dt');
         const compounds = document.querySelector('.current-word .compounds');
         const conj_gloss_dt = document.querySelector('.current-word .conj-gloss dl dt');
         const conjugations_dt = $('.current-word .compounds dd:first .conjugations dl dt');
         const first_dt = $('.current-word .compounds dt:first');
-        const current_word = document.querySelector('.current-word');
+        const current_word = document.querySelector('.current-word')!;
 
         if (compounds) {
             if (conjugations_dt.length > 0) {
@@ -129,22 +132,22 @@ window.addEventListener('DOMContentLoaded', () => {
                 wordData.infinitiveKana = getReading(first_dt[0].textContent);
             }
 
-            wordData.wordKana = getReading(dt.textContent);
+            wordData.wordKana = getReading(dt?.textContent ?? '');
         }
         else if (conj_gloss_dt) {
-            wordData.infinitive = getInfinitive(conj_gloss_dt.textContent);
-            wordData.infinitiveKana = getReading(conj_gloss_dt.textContent);
-            wordData.wordKana = getReading(dt.textContent);
+            wordData.infinitive = getInfinitive(conj_gloss_dt.textContent ?? '');
+            wordData.infinitiveKana = getReading(conj_gloss_dt.textContent ?? '');
+            wordData.wordKana = getReading(dt?.textContent ?? '');
         }
         else {
-            wordData.infinitive = getInfinitive(dt.textContent);
-            wordData.infinitiveKana = getReading(dt.textContent);
-            wordData.wordKana = getReading(dt.textContent);
+            wordData.infinitive = getInfinitive(dt?.textContent ?? '');
+            wordData.infinitiveKana = getReading(dt?.textContent ?? '');
+            wordData.wordKana = getReading(dt?.textContent ?? '');
         }
 
         const alternatives = document.querySelector('.current-word dl.alternatives');
         if (current_word.innerHTML.includes('[')) {
-            wordData.definitions = alternatives.innerHTML;
+            wordData.definitions = alternatives?.innerHTML ?? '';
         }
 
         WORDS.push(wordData);

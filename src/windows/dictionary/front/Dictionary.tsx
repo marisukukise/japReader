@@ -14,13 +14,13 @@ import WiktionaryJPIcon from '@img/favicons/wiktionary-jp.ico';
 
 import log_renderer from 'electron-log/renderer';
 const log = log_renderer.scope('dictionary');
-import { IPC_CHANNELS, STATUS } from '@globals/ts/main/objects';
+import { IPC_CHANNELS, STATUS } from '@root/src/globals/ts/other/objects';
 
-import { getSettingsStore, getStatusDataStore } from '@globals/ts/main/initializeStore';
+import { getSettingsStore, getStatusDataStore } from '@root/src/globals/ts/initializers/initializeStore';
 const statusDataStore = getStatusDataStore();
 const settingsStore = getSettingsStore();
 
-import { FuriganaJSX, setIgnoreMouseEvents, setupEffect, toastLayout, updateWordStatusStore } from '@globals/ts/renderer/helpers';
+import { FuriganaJSX, setIgnoreMouseEvents, setupEffect, toastLayout, updateWordStatusStore } from '@root/src/globals/ts/helpers/rendererHelpers';
 import { DraggableBar } from '@globals/components/DraggableBar/DraggableBar';
 import ConfigurationDrawer from '@globals/components/ConfigurationDrawer/ConfigurationDrawer';
 import { ConfigurationDrawerCommonSettings } from '@globals/components/ConfigurationDrawer/ConfigurationDrawerCommonSettings';
@@ -107,7 +107,7 @@ export const Dictionary = () => {
 
     useEffect(() => {
         ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.PARSED_WORDS_DATA, (
-            event,
+            _event,
             SelectedWord: japReader.IchiParsedWordData & { japaneseSentence: string, translatedSentence: string }
         ) => {
             console.log(SelectedWord.translatedSentence, SelectedWord.japaneseSentence);
@@ -121,7 +121,7 @@ export const Dictionary = () => {
             setTranslatedSentence(SelectedWord.translatedSentence);
         });
 
-        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (event, dictionaryForm, newStatus, prevStatus) => {
+        ipcRenderer.on(IPC_CHANNELS.READER.ANNOUNCE.WORD_STATUS_CHANGE_DETECTED, (_event, _dictionaryForm: string, newStatus: string, prevStatus: string) => {
             setStatus(newStatus);
             if (newStatus == STATUS.SEEN)
                 setSeenCount((seen: number) => seen + 1);
