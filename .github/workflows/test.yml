@@ -78,6 +78,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: japReader-test-ui_${{ github.ref_name }}@${{ github.sha }}
+          name: japReader-test-ui@${{ github.sha }}
           path: test-results
           retention-days: 28
