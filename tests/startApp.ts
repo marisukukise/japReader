@@ -3,7 +3,7 @@ import { findLatestBuild, parseElectronApp, stubMultipleDialogs } from "electron
 import { StartAppResponse, WindowInfo } from './types';
 
 let electronApp: ElectronApplication;
-let allWindows: WindowInfo[] = [];
+let allWindows: WindowInfo[];
 
 
 export const startApp = async (): Promise<StartAppResponse> => {
@@ -12,7 +12,7 @@ export const startApp = async (): Promise<StartAppResponse> => {
         args: [appInfo.main],
         executablePath: appInfo.executable,
         recordVideo: {
-            dir: 'webm',
+            dir: 'test-results/webm',
             size: {
                 width: 800,
                 height: 600
@@ -37,6 +37,7 @@ export const startApp = async (): Promise<StartAppResponse> => {
 
 
     const allPages = electronApp.windows();
+    allWindows = []
     const nonDevToolPages = allPages.filter(e =>
         !e.mainFrame().url().startsWith("devtools://")
     )
@@ -62,8 +63,12 @@ There were ${allPages.length} windows spawned in total.`
         if (url.startsWith('https://')) {
             if (url.includes('ichi.moe'))
                 windowName = 'ichi';
-            if (url.includes('deepl.com'))
+            if (url.includes('deepl.com')) {
                 windowName = 'deep';
+                page.on('popup', () => {
+                    page.getByText('No, thanks').click()
+                })
+            }
         }
 
         allWindows.push({

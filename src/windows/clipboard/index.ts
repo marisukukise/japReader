@@ -10,14 +10,11 @@ let clipboardText = '';
 
 /**
  * Replaces half-width digits with full-width digits.
- * Removes symbols like hearts, starts, etc.
  * @param text Unformatted text
  * @returns Formatted text
  */
 const formatText = (text: string): string => {
     text = text.trim()
-        // remove symbols (heart, star, etc.)
-        .replace(/[\u22c0-\u266b]/g, '')
         // turn half-width digits into full-width
         .replace(
             /[0-9]/g,

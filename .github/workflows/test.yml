@@ -2,6 +2,10 @@ name: Test UI
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - 'develop'
+      - 'main'
 
 env:
   JAPREADER_ENV: playwright
@@ -38,7 +42,7 @@ jobs:
       - name: Install Test dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y dpkg fakeroot rpm libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libgtk-3-0 libpango-1.0-0 libcairo2 libgdk-pixbuf2.0-0 libgbm1 libasound2 libatspi2.0-0 ffmpeg
+          sudo apt-get install -y dpkg fakeroot rpm libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libgtk-3-0 libpango-1.0-0 libcairo2 libgdk-pixbuf2.0-0 libgbm1 libasound2 libatspi2.0-0 fonts-takao-mincho
 
       - name: Install playwright
         run: npx playwright install
@@ -65,11 +69,10 @@ jobs:
         run: |
           [ -f playwright.log ] && cat playwright.log || true
 
-      - name: Copy test artifacts into the common folder
+      - name: Copy the log file into the artifact folder
         if: always()
         run: | 
           [ -f playwright.log ] && mv playwright.log test-results/ || true
-          [ -d webm ] && mv webm/ test-results/ || true
 
       - name: Upload a Test Artifact
         if: always()

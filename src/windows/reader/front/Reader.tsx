@@ -164,7 +164,7 @@ export const Reader = () => {
             // TODO: Somehow add memoization to Japanese sentences, so that common ones don't have to wait for ichi
             setCurrentWords(words);
             setJapaneseSentence(japaneseSentence);
-            if (!useDeepL) ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, japaneseSentence, null);
+            if (!useDeepL) ipcRenderer.send(IPC_CHANNELS.STORES.HISTORY.APPEND, null, japaneseSentence);
         });
 
         ipcRenderer.on(IPC_CHANNELS.ICHI.ANNOUNCE.CONNECTION_ERROR, () => {

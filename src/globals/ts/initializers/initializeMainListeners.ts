@@ -46,7 +46,7 @@ export function initializeMainListeners() {
         app.exit();
     });
 
-    ipcMain.on(IPC_CHANNELS.STORES.HISTORY.APPEND, (_event, originalText, translation) => {
+    ipcMain.on(IPC_CHANNELS.STORES.HISTORY.APPEND, (_event, translation, originalText) => {
         if (typeof translation !== 'string' || translation == '') translation = null;
 
         const entry = {
@@ -114,7 +114,7 @@ export function initializeMainListeners() {
     });
 
 
-    ipcMain.handle(IPC_CHANNELS.ANKI_CONNECT.INVOKE, async (_event, action: any, params: any = {}) => {
+    ipcMain.handle(IPC_CHANNELS.ANKI_CONNECT.INVOKE, async (_event, action: string, params: any = {}) => {
         return axios.post(
             'http://127.0.0.1:8765',
             JSON.stringify({ action, version: 6, params })
