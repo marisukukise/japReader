@@ -6,12 +6,13 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
+    "start:dev": "cross-env JAPREADER_ENV=dev NODE_ENV=development JAPREADER_LOGS=debug electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",
-    "test:ui": "JAPREADER_ENV=playwright xvfb-maybe npx playwright test --workers=1"
+    "test:ui": "cross-env JAPREADER_ENV=playwright DEBUG=pw:browser*,pw:api DEBUG_FILE=playwright.log xvfb-maybe npx playwright test --workers=1"
   },
   "keywords": [],
   "author": "marisukukise",
@@ -33,6 +34,7 @@
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "asar": "^3.2.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.0.0",
     "electron": "25.2.0",
     "electron-playwright-helpers": "^1.6.0",

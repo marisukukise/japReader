@@ -27,24 +27,30 @@ const DIGIT_MAP = [
 ];
 
 const getFuriganaObject = (w: string, r: string): japReader.FuriganaObject[] => {
+    log.debug(`orig: ${w} (${r})`)
     try {
-        if (/[０-９]/.test(w)) {
-            // TODO: Replace the digit to kanji, and then afterwards back to the digit
-            const original_w = w;
-            DIGIT_MAP.forEach((digit_entry: string[]) => {
-                w = w.replace(digit_entry[0]!, digit_entry[1]!);
-            });
-            const furigana = fit(w, r, { type: 'object' });
-            furigana.w = original_w;
-            return furigana;
-        } else {
-            return fit(w, r, { type: 'object' });
-        }
+        return fit(w, r, { type: 'object' });
     } catch (err) {
-        log.error(err);
-        log.error(`Unable to parse ${w} (${r}) into a FuriganaObject`);
-        // Return an empty object instead of throwing an error to not halt the program unnecessarily
-        return [{w: '', r: ''}]; 
+        let original_w = w
+        if (/[０-９]/.test(w)) {
+            DIGIT_MAP.forEach((pair: string[]) => {
+                w.replace(pair[0]!, pair[1]!)
+            })
+
+            let furiganaList = []
+
+            try { furiganaList = fit(w, r, { type: 'object' }); }
+            catch (err) { furiganaList = [{ w: w, r: r }]; }
+
+            furiganaList.forEach((unit: japReader.FuriganaObject) => {
+                unit.w = original_w.slice(0, unit.w.length)
+                original_w = original_w.slice(unit.w.length)
+            })
+
+            return furiganaList
+        }
+
+        return [{ w: w, r: r }];
     }
 };
 
@@ -339,17 +345,17 @@ export const initializeWindowListeners = (windowName: string, ipcBase: any) => {
 
     window.addEventListener('keydown', (event) => {
         switch (event.code) {
-        case KEYBOARD_KEYS.PLUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_ADD:
-            changeFontSizeDOM(windowName, true);
-            break;
-        case KEYBOARD_KEYS.MINUS_KEY:
-        case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
-            changeFontSizeDOM(windowName, false);
-            break;
-        case KEYBOARD_KEYS.KEY_H:
-            ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
-            break;
+            case KEYBOARD_KEYS.PLUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_ADD:
+                changeFontSizeDOM(windowName, true);
+                break;
+            case KEYBOARD_KEYS.MINUS_KEY:
+            case KEYBOARD_KEYS.NUMPAD_SUBTRACT:
+                changeFontSizeDOM(windowName, false);
+                break;
+            case KEYBOARD_KEYS.KEY_H:
+                ipcRenderer.send(ipcBase.SET.TOGGLE_UI);
+                break;
         }
     }, true);
 };
