@@ -1,3 +1,6 @@
+# 1.9.2
+- Fixed deepl.com broken DOM parsing
+
 # 1.9.1
 - Made clipboard reading more robust (clipboard reads rarely randomly return corrupt strings, which resulted in lost copy operations) by making 3 reads at a time instead comparing results instead of just 1 read.
 - Improved support for digits, which sometimes bugged out before.
