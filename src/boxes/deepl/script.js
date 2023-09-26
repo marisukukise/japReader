@@ -84,7 +84,7 @@ document.onreadystatechange = function () {
       }, 8000);
     } else {
       const connectionCheck = setTimeout(() => {
-        if (document.querySelector('section[aria-labelledby="text-translator-section-heading"]')) {
+        if (document.querySelector('div#panelTranslateText')) {
           ipcRenderer.send("deepLConnected");
           clearInterval(connectionCheck);
         }
@@ -98,13 +98,11 @@ document.onreadystatechange = function () {
 
       try {
         const targetNode = document.body.querySelector(
-          'div[aria-labelledby="translation-target-heading"]'
+          'div[aria-labelledby="translation-results-heading"]'
         );
         const sourceNode = document.body.querySelector(
           'div[aria-labelledby="translation-source-heading"]'
         );
-        console.log("e");
-        console.log(targetNode, sourceNode)
 
         const config = { childList: true };
         const callback = () => {
