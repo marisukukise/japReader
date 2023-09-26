@@ -1,3 +1,6 @@
+# 1.9.3
+- Fixed deepl.com broken DOM parsing
+
 # 1.9.2
 - Fixed deepl.com broken DOM parsing
 
