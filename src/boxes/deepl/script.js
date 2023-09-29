@@ -32,97 +32,101 @@ const appendToHistory = (originalText, translation) => {
   else HISTORY.set("history", [entry]);
 };
 
-document.onreadystatechange = function () {
-  if (document.readyState === "complete") {
-    ipcRenderer.on("translateWithDeepL", (event, text) => {
-      ipcRenderer.send("translateNotification");
-      const currentText = text.replace(/…+/, "…").replace(/・+/g, "…");
-      if (useDeepLApi) {
-        const translator = new deepl.Translator(deepLApiKey);
-        translator
-          .translateText(currentText, "ja", "en-US")
-          .then(
-            (result) => {
-              ipcRenderer.send("showTranslation", result.text, currentText);
-              return result.text;
-            },
-            (error) => {
-              ipcRenderer.send("deepLConnectionError");
-              console.error(error);
-            }
-          )
-          .then(
-            (result) =>
-              ipcRenderer.send("appendToHistory", currentText, result),
-            (error) => console.error(error)
-          );
-      } else {
-        document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
-      }
-    });
-
+window.addEventListener('DOMContentLoaded', () => {
+  ipcRenderer.on("translateWithDeepL", (event, text) => {
+    ipcRenderer.send("translateNotification");
+    const currentText = text.replace(/…+/, "…").replace(/・+/g, "…");
     if (useDeepLApi) {
-      const translator = new deepl.Translator(deepLApiKey, {
-        maxRetries: 1,
-        minTimeout: 2000,
-      });
-      const connectionCheck = setTimeout(() => {
-        translator.getUsage().then((e) => {
-          ipcRenderer.send("deepLConnected");
-          clearInterval(connectionCheck);
-        });
-      }, 500);
-
-      setTimeout(() => {
-        if (deepLApiKey == "") {
-          ipcRenderer.send("deepLConnectionError");
-        } else {
-          translator.getUsage().catch((err) => {
+      const translator = new deepl.Translator(deepLApiKey);
+      translator
+        .translateText(currentText, "ja", "en-US")
+        .then(
+          (result) => {
+            ipcRenderer.send("showTranslation", result.text, currentText);
+            return result.text;
+          },
+          (error) => {
             ipcRenderer.send("deepLConnectionError");
-          });
-        }
-      }, 8000);
-    } else {
-      const connectionCheck = setTimeout(() => {
-        if (document.querySelector('div#panelTranslateText')) {
-          ipcRenderer.send("deepLConnected");
-          clearInterval(connectionCheck);
-        }
-      }, 500);
-
-      setTimeout(() => {
-        if (document.body.children.length === 0) {
-          ipcRenderer.send("deepLConnectionError");
-        }
-      }, 8000);
-
-      try {
-        const targetNode = document.body.querySelector(
-          'div[aria-labelledby="translation-results-heading"]'
-        );
-        const sourceNode = document.body.querySelector(
-          'div[aria-labelledby="translation-source-heading"]'
-        );
-
-        const config = { childList: true };
-        const callback = () => {
-          if (targetNode.textContent) {
-            const deeplText = [...targetNode.children]
-              .map((x) => x.textContent)
-              .join(" ");
-            const japaneseText = [...sourceNode.children]
-              .map((x) => x.textContent)
-              .join(" ");
-            ipcRenderer.send("showTranslation", deeplText, japaneseText);
-            ipcRenderer.send("appendToHistory", japaneseText, deeplText);
+            console.error(error);
           }
-        };
+        )
+        .then(
+          (result) =>
+            ipcRenderer.send("appendToHistory", currentText, result),
+          (error) => console.error(error)
+        );
+    } else {
+      document.location.href = `https://www.deepl.com/translator#ja/en/${currentText}`;
+    }
+  });
 
-        const observer = new MutationObserver(callback);
-        observer.observe(targetNode, config);
-      } catch (error) {
+  if (useDeepLApi) {
+    const translator = new deepl.Translator(deepLApiKey, {
+      maxRetries: 1,
+      minTimeout: 2000,
+    });
+    const connectionCheck = setTimeout(() => {
+      translator.getUsage().then((e) => {
+        ipcRenderer.send("deepLConnected");
+        clearInterval(connectionCheck);
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      if (deepLApiKey == "") {
+        ipcRenderer.send("deepLConnectionError");
+      } else {
+        translator.getUsage().catch((err) => {
+          ipcRenderer.send("deepLConnectionError");
+        });
+      }
+    }, 8000);
+  } else {
+    const connectionCheck = setTimeout(() => {
+      const dl_body = document.querySelector('.dl_body');
+      if (dl_body === null) {
+        ipcRenderer.send("deepLConnectionError");
+        throw new Error('DeepL body element was not found.')
+      }
+      if (dl_body.children.length !== 0) {
+        ipcRenderer.send("deepLConnected");
+        clearInterval(connectionCheck);
+      }
+    }, 1000);
+
+    setTimeout(() => {
+      if (document.body.children.length === 0) {
         ipcRenderer.send("deepLConnectionError");
       }
+    }, 8000);
+
+    try {
+      const targetNode = document.body.querySelector(
+        'div[aria-labelledby="translation-results-heading"]'
+      );
+      const sourceNode = document.body.querySelector(
+        'div[aria-labelledby="translation-source-heading"]'
+      );
+
+      const config = { childList: true };
+      const callback = () => {
+        if (targetNode.textContent) {
+          const deeplText = [...targetNode.children]
+            .map((x) => x.textContent)
+            .join(" ");
+          const japaneseText = [...sourceNode.children]
+            .map((x) => x.textContent)
+            .join(" ");
+          ipcRenderer.send("showTranslation", deeplText, japaneseText);
+          ipcRenderer.send("appendToHistory", japaneseText, deeplText);
+        }
+      };
+
+      const observer = new MutationObserver(callback);
+      observer.observe(targetNode, config);
+    } catch (error) {
+      ipcRenderer.send("deepLConnectionError");
     }
   }
-};
+}
+);

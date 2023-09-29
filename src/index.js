@@ -332,6 +332,8 @@ const createBoxes = () => {
       deepLBox.loadFile(tools.dirname_path('./boxes/deepl/index.html'));
     }
 
+    deepLBox.webContents.openDevTools({ mode: 'detach', activate: true });
+
     deepLBox.on('close', (e) => {
       e.preventDefault();
       deepLBox.hide();
