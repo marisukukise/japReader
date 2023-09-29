@@ -10,6 +10,10 @@ on:
         type: string
         description: Release tag
         required: true
+      prerelease:
+        type: boolean
+        desccription: Pre-release?
+        required: true
 
 jobs:
   build-ubuntu:
@@ -108,3 +112,4 @@ jobs:
             make/squirrel.windows/x64/*.exe
             Anki_japReader.apkg
           tag_name: ${{ inputs.tag }}
+          prerelease: ${{ inputs.prerelease }}
