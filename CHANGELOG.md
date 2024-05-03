@@ -1,3 +1,7 @@
+# 1.9.5
+- Fixed deepl.com broken DOM parsing (there is now a querySelector input in options, so every user can change the string that is used to search for input and output text boxes on deepl.com, so it could be edited by users if it ever changes in the future)
+- Added a new japanesepod101 source to CSP
+
 # 1.9.3
 - Fixed deepl.com broken DOM parsing
 
