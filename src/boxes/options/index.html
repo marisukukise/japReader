@@ -66,6 +66,25 @@
               <label for="useDeepL">Use DeepL translation</label>
             </section>
 
+            <div>
+              <div id="deepLQueryStringsNote">Only change the queryStrings below if you can't connect to DeepL translation</div>
+              <section id="deepLTargetNode-selection" class="option" title="querySelector string for English input textbox (DOM element) on DeepL website. 
+If you don't know what querySelector is, then google it or check this repo's github issues. 
+Maybe someone already found and posted the string that will work for you there.">
+                <input type="text" spellcheck="false" id="deepLTargetNode" name="deepLTargetNode" minlength="1"
+                  placeholder='[name="target"] [role="textbox"]'>
+                <label for="deepLTargetNode">EN querySelector</label>
+              </section>
+
+              <section id="deepLSourceNode-selection" class="option" title="querySelector string for Japanese input textbox (DOM element) on DeepL website. 
+If you don't know what querySelector is, then google it or check this repo's github issues. 
+Maybe someone already found and posted the string that will work for you there.">
+                <input type="text" spellcheck="false" id="deepLSourceNode" name="deepLSourceNode" minlength="1"
+                  placeholder='[name="source"] [role="textbox"]'>
+                <label for="deepLSourceNode">JP querySelector</label>
+              </section>
+            </div>
+
             <section id="useDeepLApi-selection" class="option"
               title="Selecting this will use DeepL API instead of parsing it through the HTML window. This option is faster and more robust, (and more customizable) 
 however it can only translate 500 000 words per month. It's recommended to keep this off, and have this one as a backup plan just in case, but you're free to use it if you want.">

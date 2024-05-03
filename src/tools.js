@@ -7,6 +7,8 @@ const schemaOptions = {
             fontFamily: { default: "NotoSansJP", type: "string" },
             darkMode: { default: false, type: "boolean" },
             useDeepL: { default: true, type: "boolean" },
+            deepLTargetNode: { default: '[name="target"] [role="textbox"]', type: "string" },
+            deepLSourceNode: { default: '[name="source"] [role="textbox"]', type: "string" },
             useDeepLApi: { default: false, type: "boolean" },
             deepLApiKey: { default: "", type: "string" },
             deepLDual: { default: false, type: "boolean" },

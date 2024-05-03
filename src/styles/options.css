@@ -35,6 +35,10 @@ input[type="checkbox"]:checked + label, input[type="number"] + label, input[type
   font-weight: bold;
 }
 
+#deepLQueryStringsNote {
+  padding-bottom: 0.1em;
+}
+
 #all-options {
   display: flex;
   justify-content: center;
@@ -75,6 +79,10 @@ input[type="number"] {
 
 input#deepLApiKey {
   width: 22em;
+}
+
+input#deepLTargetNode, input#deepLSourceNode {
+  width: 15em;
 }
 
 .alert {
@@ -195,6 +203,10 @@ label {
 section#apply {
   margin: 0;
 }
+
+/* section#deepLTargetNode-selection, section#deepLSourceNode-selection {
+  flex-direction: row;
+} */
 
 .apply.btn {
   margin: 0 auto;

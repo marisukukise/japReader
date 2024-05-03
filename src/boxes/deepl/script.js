@@ -6,7 +6,7 @@ const Store = require("electron-store");
 
 const deepl = require("deepl-node");
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
-const { useDeepLApi, deepLApiKey } = OPTIONS.get("options");
+const { useDeepLApi, deepLApiKey, deepLSourceNode, deepLTargetNode } = OPTIONS.get("options");
 
 document.onreadystatechange = function () {
   if (document.readyState === "complete") {
@@ -56,19 +56,19 @@ document.onreadystatechange = function () {
 
       try {
         const targetNode = document.body.querySelector(
-          '[name="target"] [role="textbox"]'
+          deepLTargetNode
         );
 
         if (targetNode === null) {
-          throw new Error("English text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options or open an issue on github page.");
+          throw new Error("English text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.");
         }
 
         const sourceNode = document.body.querySelector(
-          '[name="source"] [role="textbox"]'
+          deepLSourceNode
         );
 
         if (sourceNode === null) {
-          throw new Error("Japanese text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options or open an issue on github page.");
+          throw new Error("Japanese text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.");
         }
 
         const config = { childList: true };
