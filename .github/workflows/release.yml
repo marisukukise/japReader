@@ -1,15 +1,10 @@
 name: Release
 
+# This will trigger the action on each push to the `release` branch.
 on:
-  #push:
-  #  tags:
-  #    - "v*.*.*"
-  workflow_dispatch:
-    inputs:
-      tag:
-        type: string
-        description: Release tag
-        required: true
+    push:
+        branches:
+            - release
 
 jobs:
   build-ubuntu:
@@ -75,7 +70,7 @@ jobs:
           path: out/make/
           retention-days: 1
   release:
-    name: Create a new github release ${{ inputs.tag }}
+    name: Create a new github release
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -93,13 +88,16 @@ jobs:
         with:
           name: japReader-artifacts windows-latest
           path: make/
+      - name: Get current package version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
       - name: Get Release body from CHANGELOG.md
-        run: sed -e '/^$/,$d' CHANGELOG.md > CHANGELOG-${{ inputs.tag }}.md
+        run: sed -e '/^$/,$d' CHANGELOG.md > CHANGELOG-${{ steps.package-version.outputs.current-version }}.md
       - run: tree .
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: CHANGELOG-${{ inputs.tag }}.md
+          draft: true
+          body_path: CHANGELOG-${{ steps.package-version.outputs.current-version }}.md
           files: |
             make/deb/x64/*.deb
             make/rpm/x64/*.rpm
@@ -107,4 +105,4 @@ jobs:
             make/zip/win32/x64/*.zip
             make/squirrel.windows/x64/*.exe
             Anki_japReader.apkg
-          tag_name: ${{ inputs.tag }}
+          tag_name: ${{ steps.package-version.outputs.current-version }}
