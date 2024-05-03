@@ -86,16 +86,10 @@ window.addEventListener("DOMContentLoaded", () => {
       );
       $("#app").append("<br>");
       $("#app").append("Copy Japanese text to get DeepL translations.");
-      if (useDeepLApi) {
-        $("#app").append("<br><br>");
-        $("#app").append(
-          "You're using DeepL API which has a monthly limit of 500,000 characters. <br> To have unlimited translation consider disabling DeepL API in the options menu."
-        );
-      }
     }
   });
 
-  ipcRenderer.on("deepLConnectionError", () => {
+  ipcRenderer.on("deepLConnectionError", (event, message) => {
     $("#app").html(
       `Unable to connect to ${
         useDeepLApi
@@ -105,21 +99,7 @@ window.addEventListener("DOMContentLoaded", () => {
     );
     $("#app").append("<br>");
     $("#app").append(
-      `Check your internet connection, and make sure ${
-        useDeepLApi ? "your API key is correct" : "the site is up"
-      }.`
-    );
-    $("#app").append("<br><br>");
-    $("#app").append(
-      `Once you ${
-        useDeepLApi ? "confirm your API key" : "are able to connect to the site"
-      }, restart this program.`
-    );
-    $("#app").append("<br>");
-    $("#app").append("All of your progress will be saved.");
-    $("#app").append("<br>");
-    $("#app").append(
-      "(It is also possible that deepl.com has changed something on its website and it broke japReader, in which case you can open an issue on github or temporarily enable a DeepL API Key in options)"
+      message
     );
   });
 

@@ -6,31 +6,7 @@ const Store = require("electron-store");
 
 const deepl = require("deepl-node");
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
-const HISTORY = new Store(tools.getHistoryLogsOptions());
 const { useDeepLApi, deepLApiKey } = OPTIONS.get("options");
-
-if (useDeepLApi) {
-  try {
-    const translator = new deepl.Translator(deepLApiKey);
-  } catch (error) {
-    ipcRenderer.send("deepLConnectionError");
-    console.error(error);
-  }
-}
-
-const appendToHistory = (originalText, translation) => {
-  if (typeof translation !== "string") result = null;
-  const entry = {
-    timestamp: Date.now(),
-    japanese: originalText,
-    translation: translation,
-  };
-
-  const list = HISTORY.get("history");
-
-  if (list) HISTORY.set("history", list.concat(entry));
-  else HISTORY.set("history", [entry]);
-};
 
 document.onreadystatechange = function () {
   if (document.readyState === "complete") {
@@ -47,8 +23,7 @@ document.onreadystatechange = function () {
               return result.text;
             },
             (error) => {
-              ipcRenderer.send("deepLConnectionError");
-              console.error(error);
+              ipcRenderer.send("deepLConnectionError", error.message);
             }
           )
           .then(
@@ -64,49 +39,41 @@ document.onreadystatechange = function () {
     if (useDeepLApi) {
       const translator = new deepl.Translator(deepLApiKey, {
         maxRetries: 1,
-        minTimeout: 2000,
+        minTimeout: 3000,
       });
-      const connectionCheck = setTimeout(() => {
-        translator.getUsage().then((e) => {
+        translator.getUsage().then(() => {
           ipcRenderer.send("deepLConnected");
-          clearInterval(connectionCheck);
-        });
-      }, 500);
-
-      setTimeout(() => {
-        if (deepLApiKey == "") {
-          ipcRenderer.send("deepLConnectionError");
-        } else {
-          translator.getUsage().catch((err) => {
-            ipcRenderer.send("deepLConnectionError");
-          });
-        }
-      }, 8000);
+        }).catch((error) => {
+          ipcRenderer.send("deepLConnectionError", error.message);
+        })
     } else {
-      const connectionCheck = setTimeout(() => {
-        if (document.querySelector('div#panelTranslateText')) {
-          ipcRenderer.send("deepLConnected");
-          clearInterval(connectionCheck);
-        }
-      }, 500);
-
-      setTimeout(() => {
         if (document.body.children.length === 0) {
-          ipcRenderer.send("deepLConnectionError");
-        }
-      }, 8000);
+          ipcRenderer.send("deepLConnectionError", "DeepL page was loaded as empty page");
+          return;
+        } 
+
+        ipcRenderer.send("deepLConnected");
 
       try {
         const targetNode = document.body.querySelector(
-          'div[aria-labelledby="translation-results-heading"]'
+          '[name="target"] [role="textbox"]'
         );
+
+        if (targetNode === null) {
+          throw new Error("English text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options or open an issue on github page.");
+        }
+
         const sourceNode = document.body.querySelector(
-          'div[aria-labelledby="translation-source-heading"]'
+          '[name="source"] [role="textbox"]'
         );
+
+        if (sourceNode === null) {
+          throw new Error("Japanese text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options or open an issue on github page.");
+        }
 
         const config = { childList: true };
         const callback = () => {
-          if (targetNode.textContent) {
+          if (targetNode.textContent || sourceNode.textContent) {
             const deeplText = [...targetNode.children]
               .map((x) => x.textContent)
               .join(" ");
@@ -120,8 +87,8 @@ document.onreadystatechange = function () {
 
         const observer = new MutationObserver(callback);
         observer.observe(targetNode, config);
-      } catch (error) {
-        ipcRenderer.send("deepLConnectionError");
+      } catch(error) {
+        ipcRenderer.send("deepLConnectionError", error.message);
       }
     }
   }

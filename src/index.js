@@ -313,7 +313,7 @@ const createBoxes = () => {
   if (useDeepL) {
     const deepLBox = new BrowserWindow({
       icon: 'images/logo/icon.png',
-      show: false,
+      show: true,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
@@ -399,8 +399,8 @@ const createBoxes = () => {
       translationBox.webContents.send('deepLConnected');
     });
 
-    ipcMain.on('deepLConnectionError', () => {
-      translationBox.webContents.send('deepLConnectionError');
+    ipcMain.on('deepLConnectionError', (event, message) => {
+      translationBox.webContents.send('deepLConnectionError', message);
     });
 
     if (!useReader) {
