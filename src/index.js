@@ -307,12 +307,10 @@ const createBoxes = () => {
   if (useDeepL) {
     const deepLBox = new BrowserWindow({
       icon: "images/logo/icon.png",
-      show: true,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
       webPreferences: {
-        devTools: true,
         contextIsolation: true,
         enableRemoteModule: false,
         preload: tools.dirname_path("./boxes/deepl/script.js"),
