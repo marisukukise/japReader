@@ -1,28 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; media-src 'self' https://assets.languagepod101.com/dictionary/japanese/audiomp3.php https://cdn.innovativelanguage.com/japanesepod101/learningcenter/audio/*; connect-src 'self' http://localhost:8765 https://jisho.org/api/v1/search/words; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <link rel="stylesheet" href="../../styles/all.css" />
+    <link rel="stylesheet" href="../../styles/variables.css" />
+    <link rel="stylesheet" href="../../styles/dict.css" />
+    <title>japReader - Dictionary</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; media-src 'self' https://assets.languagepod101.com/dictionary/japanese/audiomp3.php https://cdn.innovativelanguage.com/japanesepod101/learningcenter/audio/*; connect-src 'self' http://localhost:8765 https://jisho.org/api/v1/search/words; script-src 'self'" />
-  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-  <link rel="stylesheet" href="../../styles/all.css" />
-  <link rel="stylesheet" href="../../styles/variables.css" />
-  <link rel="stylesheet" href="../../styles/dict.css" />
-  <title>japReader - Dictionary</title>
-</head>
-
-
-<body>
-  <main id="app">
-    <section id="info" class="box">Progress information goes here...</section>
-    <section id="controls" class="box">
-      Status controller goes here...
-    </section>
-    <section id="dict" class="box">
-      Dictionary information goes here...
-    </section>
-  </main>
-</body>
-
+  <body>
+    <main id="app">
+      <section id="info" class="box">Progress information goes here...</section>
+      <section id="controls" class="box">
+        Status controller goes here...
+      </section>
+      <section id="dict" class="box">
+        Dictionary information goes here...
+      </section>
+    </main>
+  </body>
 </html>

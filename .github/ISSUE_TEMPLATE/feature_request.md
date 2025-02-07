@@ -4,7 +4,6 @@ about: Suggest a feature for japReader
 title: "[FEATURE REQUEST]"
 labels: enhancement
 assignees: marisukukise
-
 ---
 
 **Is your feature request related to a problem? Please describe.**

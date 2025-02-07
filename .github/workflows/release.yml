@@ -2,9 +2,9 @@ name: Release
 
 # This will trigger the action on each push to the `release` branch.
 on:
-    push:
-        branches:
-            - release
+  push:
+    branches:
+      - release
 
 jobs:
   build-ubuntu:
@@ -16,7 +16,7 @@ jobs:
       - name: Use Node.js 18
         uses: actions/setup-node@v3.5.1
         with:
-          cache: 'npm'
+          cache: "npm"
           node-version: 18
       - name: Update npm
         run: sudo npm install -g npm
@@ -52,7 +52,7 @@ jobs:
       - name: Use Node.js 18
         uses: actions/setup-node@v3.5.1
         with:
-          cache: 'npm'
+          cache: "npm"
           node-version: 18
       - name: Update npm
         run: npm install -g npm

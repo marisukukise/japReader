@@ -27,7 +27,8 @@
   flex-direction: row;
 }
 
-#audio::before, #anki::before{
+#audio::before,
+#anki::before {
   font-size: 0.75em;
   height: 100%;
   margin-right: 0.5ex;
@@ -35,17 +36,18 @@
   background-color: var(--mainFont);
 }
 
-#audio:hover::before, #anki:hover::before{
+#audio:hover::before,
+#anki:hover::before {
   color: var(--mainFont);
   background-color: var(--mainBackground);
 }
 
-#audio::before{
+#audio::before {
   content: "A";
   padding: 0 0.5ex;
 }
 
-#anki::before{
+#anki::before {
   content: "Q";
   padding: 0 0.5ex;
 }
@@ -143,30 +145,29 @@
   padding: 0.2em 0;
 }
 
-#dict ol li:nth-child(6n+1) {
+#dict ol li:nth-child(6n + 1) {
   background-color: var(--dictListColor4);
 }
 
-#dict ol li:nth-child(6n+2) {
+#dict ol li:nth-child(6n + 2) {
   background-color: var(--dictListColor3);
 }
 
-#dict ol li:nth-child(6n+3) {
+#dict ol li:nth-child(6n + 3) {
   background-color: var(--dictListColor2);
 }
 
-#dict ol li:nth-child(6n+4) {
+#dict ol li:nth-child(6n + 4) {
   background-color: var(--dictListColor1);
 }
 
-#dict ol li:nth-child(6n+5) {
+#dict ol li:nth-child(6n + 5) {
   background-color: var(--dictListColor2);
 }
 
-#dict ol li:nth-child(6n+6) {
+#dict ol li:nth-child(6n + 6) {
   background-color: var(--dictListColor3);
 }
-
 
 .sense-info-note,
 .note-skipped {
@@ -178,24 +179,26 @@
   flex-direction: row;
 }
 
-#audio::before, #anki::before{
+#audio::before,
+#anki::before {
   font-size: 0.75em;
   margin-right: 0.5ex;
   color: var(--mainBackground);
   background-color: var(--mainFont);
 }
 
-#audio:hover::before, #anki:hover::before{
+#audio:hover::before,
+#anki:hover::before {
   color: var(--mainFont);
   background-color: var(--mainBackground);
 }
 
-#audio::before{
+#audio::before {
   content: "A";
   font-family: monospace, monospace;
 }
 
-#anki::before{
+#anki::before {
   content: "Q";
   font-family: monospace, monospace;
 }
@@ -290,30 +293,29 @@
   padding-inline-start: 1em;
 }
 
-#dict ol li:nth-child(6n+1) {
+#dict ol li:nth-child(6n + 1) {
   background-color: var(--dictListColor4);
 }
 
-#dict ol li:nth-child(6n+2) {
+#dict ol li:nth-child(6n + 2) {
   background-color: var(--dictListColor3);
 }
 
-#dict ol li:nth-child(6n+3) {
+#dict ol li:nth-child(6n + 3) {
   background-color: var(--dictListColor2);
 }
 
-#dict ol li:nth-child(6n+4) {
+#dict ol li:nth-child(6n + 4) {
   background-color: var(--dictListColor1);
 }
 
-#dict ol li:nth-child(6n+5) {
+#dict ol li:nth-child(6n + 5) {
   background-color: var(--dictListColor2);
 }
 
-#dict ol li:nth-child(6n+6) {
+#dict ol li:nth-child(6n + 6) {
   background-color: var(--dictListColor3);
 }
-
 
 .sense-info-note,
 .note-skipped {
@@ -339,7 +341,7 @@ fieldset img.symbol {
   cursor: pointer;
 }
 
-.search:hover{
+.search:hover {
   filter: saturate(1);
 }
 
@@ -391,14 +393,17 @@ fieldset img.symbol {
   filter: invert(0.2) blur(0px);
 }
 
-#seen.disabled, #seen:not(.disabled):hover {
+#seen.disabled,
+#seen:not(.disabled):hover {
   background-color: var(--statusSeen);
 }
 
-#known.disabled, #known:not(.disabled):hover {
+#known.disabled,
+#known:not(.disabled):hover {
   background-color: var(--statusKnown);
 }
 
-#ignored.disabled, #ignored:not(.disabled):hover {
+#ignored.disabled,
+#ignored:not(.disabled):hover {
   background-color: var(--statusIgnored);
 }
