@@ -307,6 +307,7 @@ const createBoxes = () => {
   if (useDeepL) {
     const deepLBox = new BrowserWindow({
       icon: "images/logo/icon.png",
+      show: false,
       width: 800,
       height: 600,
       autoHideMenuBar: true,
