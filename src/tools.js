@@ -1,5 +1,4 @@
 const path = require("path");
-const moment = require("moment");
 const schemaOptions = {
   options: {
     type: "object",

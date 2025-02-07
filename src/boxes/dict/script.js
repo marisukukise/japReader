@@ -1,7 +1,6 @@
 require("module-alias/register");
 
 const { ipcRenderer } = require("electron");
-const date = require("date-and-time");
 const tools = require("@tools");
 const Store = require("electron-store");
 
