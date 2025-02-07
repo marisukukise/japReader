@@ -28,8 +28,6 @@ const schemaOptions = {
       addFuriganaKnown: { default: false, type: "boolean" },
       addFuriganaIgnored: { default: false, type: "boolean" },
       tvMode: { default: false, type: "boolean" },
-      showGoal: { default: false, type: "boolean" },
-      dailyGoal: { default: 30, type: "number", minimum: 1 },
       readerFontSize: { default: 18, type: "number", minimum: 1 },
       dictFontSize: { default: 12, type: "number", minimum: 1 },
       optionsFontSize: { default: 12, type: "number", minimum: 1 },
@@ -45,18 +43,6 @@ const schemaOptions = {
       ankiDefinitions: { default: "Definitions", type: "string" },
       ankiJapanese: { default: "Japanese", type: "string" },
       ankiEnglish: { default: "English", type: "string" },
-    },
-    default: {},
-  },
-};
-
-const schemaGoalData = {
-  goal_data: {
-    type: "object",
-    properties: {
-      date: { default: moment().format("YYYY-MM-DD"), type: "string" },
-      streakCount: { default: 0, type: "number" },
-      goalCount: { default: 0, type: "number" },
     },
     default: {},
   },
@@ -127,13 +113,6 @@ const optionsStoreOptions = {
   cwd: "config",
 };
 
-const goalDataStoreOptions = {
-  schema: schemaGoalData,
-  name: "goal_data",
-  clearInvalidConfig: true,
-  cwd: "config",
-};
-
 const statusDataStoreOptions = {
   schema: schemaStatusData,
   name: "status_data",
@@ -180,9 +159,6 @@ module.exports = {
   },
   getOptionsStoreOptions: function () {
     return optionsStoreOptions;
-  },
-  getGoalDataStoreOptions: function () {
-    return goalDataStoreOptions;
   },
   getStatusDataStoreOptions: function () {
     return statusDataStoreOptions;

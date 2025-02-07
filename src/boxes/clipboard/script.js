@@ -1,7 +1,5 @@
 const { ipcRenderer, clipboard } = require("electron");
-const { setIntervalAsync } = require("set-interval-async/dynamic");
 const clipboardListener = require("clipboard-event");
-const os = require("os");
 
 const charLimit = 90;
 let clipboardText = "";

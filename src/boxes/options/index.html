@@ -309,21 +309,6 @@ The behavior is a bit 'smarter' if you leave this off."
 
         <fieldset id="dictionary">
           <legend>Dictionary window</legend>
-          <section
-            id="showGoal-selection"
-            class="option"
-            title="Selecting this will show daily goal 
-(this option currently doesn't work, the progress will not update)."
-          >
-            <input type="checkbox" id="showGoal" name="showGoal" />
-            <label for="showGoal">Show daily goal</label>
-          </section>
-
-          <section id="dailyGoal-selection" class="option">
-            <input type="number" id="dailyGoal" name="dailyGoal" min="1" />
-            <label for="dailyGoal">Daily goal</label>
-          </section>
-
           <section id="dictFontSize-selection" class="option">
             <input
               type="number"
@@ -500,12 +485,6 @@ The field can also be empty in which case it won't be inserted."
               title="Reset the remembered state of windows to default settings."
             >
               Reset window settings
-            </div>
-            <div
-              class="reset-goal-data btn"
-              title="Reset the daily goal progress."
-            >
-              Reset goal data
             </div>
             <div
               class="reset-status-data btn"

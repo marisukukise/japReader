@@ -3,10 +3,8 @@ const { ipcRenderer } = require("electron");
 const tools = require("@tools");
 const Store = require("electron-store");
 const deepl = require("deepl-node");
-const fs = require("fs");
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const WINDOW_SETTINGS = new Store(tools.getWindowStoreOptions());
-const GOAL_DATA = new Store(tools.getGoalDataStoreOptions());
 const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
 const HISTORY = new Store(tools.getHistoryLogsOptions());
 
@@ -46,11 +44,6 @@ const handleOptionConflicts = () => {
   setOnReadyAndOnClickListener(
     document.querySelector("#useReader"),
     "#reader input:not(#useReader), #translation input#useDeepL, #dictionary input",
-    null,
-  );
-  setOnReadyAndOnClickListener(
-    document.querySelector("#showGoal"),
-    "#dictionary #dailyGoal",
     null,
   );
 };
@@ -191,22 +184,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
   document
-    .querySelector(".reset-goal-data.btn")
-    .addEventListener("click", () => {
-      ipcRenderer
-        .invoke(
-          "showDialog",
-          "Are you sure you want to reset goal data (this will clear every day progress tracking)?",
-        )
-        .then((result) => {
-          if (result.response === 0) {
-            GOAL_DATA.clear();
-            ipcRenderer.send("restartProgram");
-          }
-        });
-    });
-
-  document
     .querySelector(".reset-status-data.btn")
     .addEventListener("click", () => {
       ipcRenderer
@@ -263,7 +240,6 @@ window.addEventListener("DOMContentLoaded", () => {
             WINDOW_SETTINGS.clear();
             OPTIONS.clear();
             STATUS_DATA.clear();
-            GOAL_DATA.clear();
             HISTORY.clear();
             ipcRenderer.send("restartProgram");
           }

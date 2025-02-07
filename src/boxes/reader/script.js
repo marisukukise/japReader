@@ -1,9 +1,7 @@
 require("module-alias/register");
 
 const { ipcRenderer } = require("electron");
-const fs = require("fs");
 const { fit } = require("furigana");
-const date = require("date-and-time");
 
 const tools = require("@tools");
 const Store = require("electron-store");

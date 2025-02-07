@@ -1,13 +1,11 @@
 require("module-alias/register");
 
 const { ipcRenderer } = require("electron");
-const fs = require("fs");
 const date = require("date-and-time");
 const tools = require("@tools");
 const Store = require("electron-store");
 
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
-const GOAL_DATA = new Store(tools.getGoalDataStoreOptions());
 const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
 
 let currentWordData = {};
@@ -24,7 +22,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const {
     dictFontSize,
     fontFamily,
-    showGoal,
     darkMode,
     ankiIntegration,
     ankiDeckName,
@@ -401,48 +398,9 @@ window.addEventListener("DOMContentLoaded", () => {
       });
   };
 
-  const setUpStreak = () => {
-    const goalData = GOAL_DATA.get("goal_data");
-
-    const { dailyGoal } = OPTIONS.get("options");
-
-    const now = new Date();
-    const dateToday = date.format(now, "YYYY-MM-DD");
-    const dateYesterday = date.format(date.addDays(now, -1), "YYYY-MM-DD");
-
-    if (goalData.date !== dateToday) {
-      if (goalData.date !== dateYesterday) {
-        goalData.streakCount = 0;
-      } else if (goalData.date === dateYesterday) {
-        if (goalData.goalCount < dailyGoal) goalData.streakCount = 0;
-      }
-      goalData.date = dateToday;
-      goalData.goalCount = 0;
-    }
-
-    GOAL_DATA.set("goal_data", goalData);
-  };
-
   const changeStatus = (wordData, newStatus) => {
     dictForm = wordData.dictForm;
     prevStatus = wordData.status;
-    if (prevStatus === "new" && newStatus === "seen") {
-      setUpStreak();
-
-      const goalData = GOAL_DATA.get("goal_data");
-
-      const { dailyGoal } = OPTIONS.get("options");
-
-      goalData.goalCount += 1;
-
-      if (goalData.goalCount === dailyGoal) {
-        goalData.streakCount += 1;
-      }
-
-      document.querySelector("#goal-count").textContent = goalData.goalCount;
-
-      GOAL_DATA.set("goal_data", goalData);
-    }
 
     const statusData = STATUS_DATA.get("status_data");
 
@@ -470,25 +428,6 @@ window.addEventListener("DOMContentLoaded", () => {
     ipcRenderer.send("refreshReader");
   };
 
-  const displayGoalData = () => {
-    const { goalCount, streakCount } = GOAL_DATA.get("goal_data");
-
-    const { dailyGoal } = OPTIONS.get("options");
-
-    $("#info").append(
-      `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`,
-    );
-
-    $("#info").append(
-      `<div id="streak-area">Streak days (doesn't work for now): <span id='streak-count'>${streakCount}</span></div>`,
-    );
-
-    if (!showGoal) {
-      document.querySelector("#goal-area").style.display = "none";
-      document.querySelector("#streak-area").style.display = "none";
-    }
-  };
-
   const handleWordData = (wordData) => {
     currentWordData = wordData;
 
@@ -497,9 +436,6 @@ window.addEventListener("DOMContentLoaded", () => {
     $("#info").html(``);
     $("#info").append(`<div id="known-area">Known: ${known.length}</div>`);
     $("#info").append(`<div id="seen-area">Seen: ${seen.length}</div>`);
-
-    setUpStreak();
-    displayGoalData();
 
     $("#controls").html(``);
     $("#controls").append(`
