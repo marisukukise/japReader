@@ -1,65 +1,75 @@
-require('module-alias/register')
+require("module-alias/register");
 
-const { ipcRenderer } = require('electron');
-const fs = require('fs');
-const date = require('date-and-time');
-const tools = require('@tools');
-const Store = require('electron-store')
+const { ipcRenderer } = require("electron");
+const fs = require("fs");
+const date = require("date-and-time");
+const tools = require("@tools");
+const Store = require("electron-store");
 
 const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const GOAL_DATA = new Store(tools.getGoalDataStoreOptions());
 const STATUS_DATA = new Store(tools.getStatusDataStoreOptions());
 
 let currentWordData = {};
-let currentEnglishText = '';
+let currentEnglishText = "";
 
-
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
   // eslint-disable-next-line global-require
-  const $ = require('jquery');
+  const $ = require("jquery");
 
   var onTop = false;
 
-  ipcRenderer.send('readyDict');
+  ipcRenderer.send("readyDict");
 
   const {
-    dictFontSize, fontFamily, showGoal, darkMode,
-    ankiIntegration, ankiDeckName, ankiModelName,
-    ankiDictForm, ankiDictFormReading, ankiDictFormFurigana,
-    ankiWord, ankiWordReading, ankiWordFurigana,
-    ankiDefinitions, ankiJapanese, ankiEnglish
-  } = OPTIONS.get('options')
+    dictFontSize,
+    fontFamily,
+    showGoal,
+    darkMode,
+    ankiIntegration,
+    ankiDeckName,
+    ankiModelName,
+    ankiDictForm,
+    ankiDictFormReading,
+    ankiDictFormFurigana,
+    ankiWord,
+    ankiWordReading,
+    ankiWordFurigana,
+    ankiDefinitions,
+    ankiJapanese,
+    ankiEnglish,
+  } = OPTIONS.get("options");
   if (darkMode) {
-    document.documentElement.classList.add('dark-mode');
+    document.documentElement.classList.add("dark-mode");
   }
-  document.querySelector('#app').style.fontSize = `${dictFontSize}pt`;
-  document.querySelector('#app').style.fontFamily = `${fontFamily}`;
+  document.querySelector("#app").style.fontSize = `${dictFontSize}pt`;
+  document.querySelector("#app").style.fontFamily = `${fontFamily}`;
 
-  $(window).on('keydown', (e) => {
+  $(window).on("keydown", (e) => {
     switch (e.key) {
-      case 'o':
-        ipcRenderer.send('openOptions');
+      case "o":
+        ipcRenderer.send("openOptions");
         break;
-      case 's':
-        onTop = tools.toggle_onTop(onTop, $('body'));
-        ipcRenderer.send('dictOnTop');
+      case "s":
+        onTop = tools.toggle_onTop(onTop, $("body"));
+        ipcRenderer.send("dictOnTop");
         break;
-      case 'a':
-        var btn = document.querySelector('#audio.btn');
+      case "a":
+        var btn = document.querySelector("#audio.btn");
         playAudio(currentWordData, btn);
         break;
-      case 'q':
+      case "q":
         if (ankiIntegration) {
-          var btn = document.querySelector('#anki.btn');
-          if (btn.classList.contains('preview')) {
-            previewNote(currentWordData, btn)
+          var btn = document.querySelector("#anki.btn");
+          if (btn.classList.contains("preview")) {
+            previewNote(currentWordData, btn);
           } else {
             addNote(currentWordData, btn);
           }
         }
         break;
-      case 'Escape':
-        ipcRenderer.send('hideDict');
+      case "Escape":
+        ipcRenderer.send("hideDict");
         break;
     }
     return true;
@@ -67,51 +77,55 @@ window.addEventListener('DOMContentLoaded', () => {
 
   handleGoogle = (query) => {
     openUrl(`https://www.google.co.jp/search?q=${query}&tbm=isch`);
-  }
+  };
 
   handleDuckduckgo = (query) => {
-    openUrl(`https://duckduckgo.com/?q=${query}&kp=-1&kl=jp-jp&iax=images&ia=images`);
-  }
+    openUrl(
+      `https://duckduckgo.com/?q=${query}&kp=-1&kl=jp-jp&iax=images&ia=images`,
+    );
+  };
 
   handleJisho = (query) => {
     openUrl(`https://jisho.org/search/${query}`);
-  }
+  };
 
   handleWeblioEn = (query) => {
     openUrl(`https://ejje.weblio.jp/english-thesaurus/content/${query}`);
-  }
+  };
 
   handleWeblioJp = (query) => {
     openUrl(`https://www.weblio.jp/content/${query}`);
-  }
+  };
 
   handleWiktionaryEn = (query) => {
     openUrl(`https://en.wiktionary.org/wiki/${query}#Japanese`);
-  }
+  };
 
   handleWiktionaryJp = (query) => {
     openUrl(`https://ja.wiktionary.org/wiki/${query}#日本語`);
-  }
+  };
 
   handleWikipedia = (query) => {
     openUrl(`https://ja.wikipedia.org/wiki/${query}`);
-  }
+  };
 
   function invoke(action, version, params = {}) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.addEventListener('error', () => reject('AnkiConnect: Failed to issue request'));
-      xhr.addEventListener('load', () => {
+      xhr.addEventListener("error", () =>
+        reject("AnkiConnect: Failed to issue request"),
+      );
+      xhr.addEventListener("load", () => {
         try {
           const response = JSON.parse(xhr.responseText);
           if (Object.getOwnPropertyNames(response).length != 2) {
-            throw 'AnkiConnect: Response has an unexpected number of fields';
+            throw "AnkiConnect: Response has an unexpected number of fields";
           }
-          if (!response.hasOwnProperty('error')) {
-            throw 'AnkiConnect: Response is missing required error field';
+          if (!response.hasOwnProperty("error")) {
+            throw "AnkiConnect: Response is missing required error field";
           }
-          if (!response.hasOwnProperty('result')) {
-            throw 'AnkiConnect: Response is missing required result field';
+          if (!response.hasOwnProperty("result")) {
+            throw "AnkiConnect: Response is missing required result field";
           }
           if (response.error) {
             throw response.error;
@@ -122,7 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      xhr.open('POST', 'http://localhost:8765');
+      xhr.open("POST", "http://localhost:8765");
       xhr.send(JSON.stringify({ action, version, params }));
     });
   }
@@ -131,20 +145,52 @@ window.addEventListener('DOMContentLoaded', () => {
     if (key) {
       fieldsObj[key] = value;
     }
-  }
+  };
 
   async function __anki__addNote(wordData) {
     const fields = {};
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiDictForm}`, wordData.dictForm);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiDictFormReading}`, wordData.dictFormReading);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiDictFormFurigana}`, wordData.dictFuriganaHTML);
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiDictForm}`,
+      wordData.dictForm,
+    );
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiDictFormReading}`,
+      wordData.dictFormReading,
+    );
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiDictFormFurigana}`,
+      wordData.dictFuriganaHTML,
+    );
     __anki__populateFieldsIfNonEmpty(fields, `${ankiWord}`, wordData.word);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiWordReading}`, wordData.rubyReading);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiWordFurigana}`, wordData.wordFuriganaHTML);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiDefinitions}`, wordData.definitions);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiJapanese}`, wordData.fullText);
-    __anki__populateFieldsIfNonEmpty(fields, `${ankiEnglish}`, wordData.english);
-    const res = await invoke('addNote', 6, {
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiWordReading}`,
+      wordData.rubyReading,
+    );
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiWordFurigana}`,
+      wordData.wordFuriganaHTML,
+    );
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiDefinitions}`,
+      wordData.definitions,
+    );
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiJapanese}`,
+      wordData.fullText,
+    );
+    __anki__populateFieldsIfNonEmpty(
+      fields,
+      `${ankiEnglish}`,
+      wordData.english,
+    );
+    const res = await invoke("addNote", 6, {
       note: {
         deckName: `${ankiDeckName}`,
         modelName: `${ankiModelName}`,
@@ -155,97 +201,99 @@ window.addEventListener('DOMContentLoaded', () => {
           duplicateScopeOptions: {
             deckName: `${ankiDeckName}`,
             checkChildren: false,
-            checkAllModels: false
-          }
+            checkAllModels: false,
+          },
         },
         tags: ["japReader"],
-      }
+      },
     });
     return res;
   }
 
   async function __anki__findNotes(query) {
-    const res = await invoke('findNotes', 6, {
-      query: query
-    })
+    const res = await invoke("findNotes", 6, {
+      query: query,
+    });
     return res;
   }
 
   async function __anki__guiEditNote(id) {
-    invoke('guiEditNote', 6, {
-      note: id
-    })
+    invoke("guiEditNote", 6, {
+      note: id,
+    });
   }
 
   async function __anki__canAddNotes(wordData) {
     const fields = {};
     fields[`${ankiDictForm}`] = wordData.dictForm;
-    const res = await invoke('canAddNotes', 6, {
-      notes: [{
-        deckName: `${ankiDeckName}`,
-        modelName: `${ankiModelName}`,
-        fields: fields
-      }]
+    const res = await invoke("canAddNotes", 6, {
+      notes: [
+        {
+          deckName: `${ankiDeckName}`,
+          modelName: `${ankiModelName}`,
+          fields: fields,
+        },
+      ],
     });
     return res;
   }
 
   const previewNote = (wordData, btn) => {
-    if (!btn.classList.contains('disabled')) {
+    if (!btn.classList.contains("disabled")) {
       let query = `deck:${ankiDeckName} ${ankiDictForm}:${wordData.dictForm}`;
-      btn.classList.add('disabled');
+      btn.classList.add("disabled");
       __anki__findNotes(query)
-        .then(res => {
-          btn.classList.remove('disabled');
+        .then((res) => {
+          btn.classList.remove("disabled");
           if (res.length == 1) {
-            __anki__guiEditNote(res[0])
+            __anki__guiEditNote(res[0]);
           } else {
-            btn.classList.add('disabled');
+            btn.classList.add("disabled");
             btn.textContent = "Could not preview the card";
-            btn.classList.remove('preview');
+            btn.classList.remove("preview");
           }
         })
-        .catch(err => {
+        .catch((err) => {
           btn.textContent = "Could not preview the card";
-          btn.classList.remove('preview');
+          btn.classList.remove("preview");
           console.error(err);
-        })
+        });
     }
-  }
+  };
 
   const openUrl = (url) => {
     ipcRenderer.send("openExternal", url);
-  }
+  };
 
   const addNote = (wordData, btn) => {
-    if (!btn.classList.contains('disabled')) {
-      if (!wordData.wordFuriganaHTML)
-        wordData.wordFuriganaHTML = wordData.word;
+    if (!btn.classList.contains("disabled")) {
+      if (!wordData.wordFuriganaHTML) wordData.wordFuriganaHTML = wordData.word;
       if (!wordData.dictFuriganaHTML)
         wordData.dictFuriganaHTML = wordData.dictForm;
 
       wordData.english = currentEnglishText;
-      btn.classList.add('disabled');
+      btn.classList.add("disabled");
       __anki__addNote(wordData)
         .then(() => {
-          btn.classList.remove('disabled');
+          btn.classList.remove("disabled");
           btn.textContent = "Preview the card";
-          btn.classList.add('preview');
+          btn.classList.add("preview");
         })
         .catch((err) => {
           btn.textContent = "Could not add the card";
           console.error(err);
-          btn.title = "Check if: (1) the Anki fields are set correctly in the options menu; (2) AnkiConnect is running;"
-          btn.classList.add('disabled');
+          btn.title =
+            "Check if: (1) the Anki fields are set correctly in the options menu; (2) AnkiConnect is running;";
+          btn.classList.add("disabled");
         });
     }
-  }
+  };
 
   const playAudio = (wordData, btn) => {
-    if (!btn.classList.contains('disabled')) {
+    if (!btn.classList.contains("disabled")) {
       __playAudio(wordData);
     }
-  }
+  };
 
   async function __getDuration(url) {
     return new Promise((resolve) => {
@@ -256,7 +304,7 @@ window.addEventListener('DOMContentLoaded', () => {
       audio.preload = "metadata";
       audio.appendChild(source);
       audio.onloadedmetadata = function () {
-        resolve(audio.duration)
+        resolve(audio.duration);
       };
     });
   }
@@ -270,7 +318,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const duration = await __getDuration(url);
     if (duration === 5.694694) return false;
     else return true;
-  }
+  };
 
   const __playAudio = (wordData) => {
     let url = `https://assets.languagepod101.com`;
@@ -283,72 +331,84 @@ window.addEventListener('DOMContentLoaded', () => {
     audio.onloadedmetadata = () => {
       if (audio.duration !== 5.694694) audio.play();
       else {
-        document.querySelector('#audio.btn').textContent =
-          'No audio available';
-        document.querySelector('#audio.btn').classList.add('disabled');
+        document.querySelector("#audio.btn").textContent = "No audio available";
+        document.querySelector("#audio.btn").classList.add("disabled");
       }
     };
-  }
+  };
 
-  const checkIfDisableButton = (button_query, condition, success_message, fail_message) => {
+  const checkIfDisableButton = (
+    button_query,
+    condition,
+    success_message,
+    fail_message,
+  ) => {
     if (condition) {
-      button_query.classList.remove('disabled');
+      button_query.classList.remove("disabled");
       button_query.innerHTML = success_message;
-    }
-    else {
+    } else {
       button_query.innerHTML = fail_message;
     }
-  }
+  };
 
   const disableButtons = (wordData) => {
-    var status_selector = '#' + wordData.status;
+    var status_selector = "#" + wordData.status;
     var qry_status = document.querySelector(status_selector);
-    qry_status.classList.add('disabled');
-
+    qry_status.classList.add("disabled");
 
     if (ankiIntegration) {
-      var qry_anki = document.querySelector('#anki.btn');
+      var qry_anki = document.querySelector("#anki.btn");
       var anki_innerhtml = qry_anki.innerHTML;
       qry_anki.innerHTML = "Linking AnkiConnect...";
-      qry_anki.classList.add('disabled');
+      qry_anki.classList.add("disabled");
       __anki__canAddNotes(wordData)
-        .then(res => {
+        .then((res) => {
           var canClick = res[0];
-          checkIfDisableButton(qry_anki, canClick, anki_innerhtml, "Preview the card");
+          checkIfDisableButton(
+            qry_anki,
+            canClick,
+            anki_innerhtml,
+            "Preview the card",
+          );
           if (!canClick) {
-            qry_anki.classList.remove('disabled');
-            qry_anki.classList.add('preview');
+            qry_anki.classList.remove("disabled");
+            qry_anki.classList.add("preview");
           }
         })
-        .catch(err => {
+        .catch((err) => {
           qry_anki.innerHTML = "AnkiConnect not found";
           console.error(err);
         });
     }
 
-    var qry_audio = document.querySelector('#audio.btn');
+    var qry_audio = document.querySelector("#audio.btn");
     var audio_innerhtml = qry_audio.innerHTML;
     qry_audio.innerHTML = "Searching audio...";
-    qry_audio.classList.add('disabled');
+    qry_audio.classList.add("disabled");
     __canPlayAudio(wordData)
-      .then(res => {
+      .then((res) => {
         var canClick = res;
-        checkIfDisableButton(qry_audio, canClick, audio_innerhtml, "Audio not available");
+        checkIfDisableButton(
+          qry_audio,
+          canClick,
+          audio_innerhtml,
+          "Audio not available",
+        );
       })
-      .catch(err => {
+      .catch((err) => {
         qry_audio.innerHTML = "Audio not found";
         console.error(err);
       });
   };
 
   const setUpStreak = () => {
-    const goalData = GOAL_DATA.get('goal_data')
+    const goalData = GOAL_DATA.get("goal_data");
 
-    const { dailyGoal } = OPTIONS.get('options')
+    const { dailyGoal } = OPTIONS.get("options");
 
     const now = new Date();
-    const dateToday = date.format(now, 'YYYY-MM-DD');
-    const dateYesterday = date.format(date.addDays(now, -1), 'YYYY-MM-DD');
+    const dateToday = date.format(now, "YYYY-MM-DD");
+    const dateYesterday = date.format(date.addDays(now, -1), "YYYY-MM-DD");
 
     if (goalData.date !== dateToday) {
       if (goalData.date !== dateYesterday) {
@@ -360,18 +420,18 @@ window.addEventListener('DOMContentLoaded', () => {
       goalData.goalCount = 0;
     }
 
-    GOAL_DATA.set('goal_data', goalData);
+    GOAL_DATA.set("goal_data", goalData);
   };
 
   const changeStatus = (wordData, newStatus) => {
-    dictForm = wordData.dictForm
-    prevStatus = wordData.status
-    if (prevStatus === 'new' && newStatus === 'seen') {
+    dictForm = wordData.dictForm;
+    prevStatus = wordData.status;
+    if (prevStatus === "new" && newStatus === "seen") {
       setUpStreak();
 
-      const goalData = GOAL_DATA.get('goal_data')
+      const goalData = GOAL_DATA.get("goal_data");
 
-      const { dailyGoal } = OPTIONS.get('options')
+      const { dailyGoal } = OPTIONS.get("options");
 
       goalData.goalCount += 1;
 
@@ -379,70 +439,70 @@ window.addEventListener('DOMContentLoaded', () => {
         goalData.streakCount += 1;
       }
 
-      document.querySelector('#goal-count').textContent = goalData.goalCount;
+      document.querySelector("#goal-count").textContent = goalData.goalCount;
 
-      GOAL_DATA.set('goal_data', goalData);
+      GOAL_DATA.set("goal_data", goalData);
     }
 
-    const statusData = STATUS_DATA.get('status_data')
+    const statusData = STATUS_DATA.get("status_data");
 
-    if (prevStatus === 'known') {
+    if (prevStatus === "known") {
       statusData.known = statusData.known.filter((elem) => elem !== dictForm);
-    } else if (prevStatus === 'seen') {
+    } else if (prevStatus === "seen") {
       statusData.seen = statusData.seen.filter((elem) => elem !== dictForm);
-    } else if (prevStatus === 'ignored') {
+    } else if (prevStatus === "ignored") {
       statusData.ignored = statusData.ignored.filter(
-        (elem) => elem !== dictForm
+        (elem) => elem !== dictForm,
       );
     }
 
-    if (newStatus === 'known') {
+    if (newStatus === "known") {
       statusData.known.push(dictForm);
-    } else if (newStatus === 'seen') {
+    } else if (newStatus === "seen") {
       statusData.seen.push(dictForm);
-    } else if (newStatus === 'ignored') {
+    } else if (newStatus === "ignored") {
       statusData.ignored.push(dictForm);
     }
 
     wordData.status = newStatus;
-    STATUS_DATA.set('status_data', statusData);
+    STATUS_DATA.set("status_data", statusData);
     handleWordData(wordData);
-    ipcRenderer.send('refreshReader');
+    ipcRenderer.send("refreshReader");
   };
 
   const displayGoalData = () => {
-    const { goalCount, streakCount } = GOAL_DATA.get('goal_data')
+    const { goalCount, streakCount } = GOAL_DATA.get("goal_data");
 
-    const { dailyGoal } = OPTIONS.get('options')
+    const { dailyGoal } = OPTIONS.get("options");
 
-    $('#info').append(
-      `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`
+    $("#info").append(
+      `<div id="goal-area">Goal (doesn't work for now): <span id='goal-count'>${goalCount}</span>/${dailyGoal}</div>`,
     );
 
-    $('#info').append(
-      `<div id="streak-area">Streak days (doesn't work for now): <span id='streak-count'>${streakCount}</span></div>`
+    $("#info").append(
+      `<div id="streak-area">Streak days (doesn't work for now): <span id='streak-count'>${streakCount}</span></div>`,
     );
 
     if (!showGoal) {
-      document.querySelector('#goal-area').style.display = 'none';
-      document.querySelector('#streak-area').style.display = 'none';
+      document.querySelector("#goal-area").style.display = "none";
+      document.querySelector("#streak-area").style.display = "none";
     }
   };
 
   const handleWordData = (wordData) => {
     currentWordData = wordData;
 
-    const { known, seen } = STATUS_DATA.get('status_data')
+    const { known, seen } = STATUS_DATA.get("status_data");
 
-    $('#info').html(``)
-    $('#info').append(`<div id="known-area">Known: ${known.length}</div>`);
-    $('#info').append(`<div id="seen-area">Seen: ${seen.length}</div>`);
+    $("#info").html(``);
+    $("#info").append(`<div id="known-area">Known: ${known.length}</div>`);
+    $("#info").append(`<div id="seen-area">Seen: ${seen.length}</div>`);
 
     setUpStreak();
     displayGoalData();
 
-    $('#controls').html(``);
-    $('#controls').append(`
+    $("#controls").html(``);
+    $("#controls").append(`
       <div id='other-buttons'>
         <div id='search-engines'>
           <fieldset>
@@ -486,7 +546,7 @@ window.addEventListener('DOMContentLoaded', () => {
           </fieldset>
         </div>
         <span id="audio" class="btn">Play Audio</span>
-        ${ankiIntegration ? '<span id="anki" class="btn">Add to Anki</span>' : ''}
+        ${ankiIntegration ? '<span id="anki" class="btn">Add to Anki</span>' : ""}
       </div>
       <div id='status-buttons'>
         <span id="seen" class="btn">Seen</span>
@@ -503,78 +563,87 @@ window.addEventListener('DOMContentLoaded', () => {
 
     disableButtons(currentWordData);
 
-    status_buttons = document.querySelectorAll('#status-buttons .btn');
+    status_buttons = document.querySelectorAll("#status-buttons .btn");
 
-    status_buttons.forEach(element => {
+    status_buttons.forEach((element) => {
       let status = element.id;
-      element.addEventListener('click', (e) => {
+      element.addEventListener("click", (e) => {
         var btn = e.target;
-        if (!btn.classList.contains('disabled')) {
+        if (!btn.classList.contains("disabled")) {
           changeStatus(currentWordData, status);
         }
-      })
+      });
     });
 
-    document.querySelector('#google.search').addEventListener('click', (e) => {
+    document.querySelector("#google.search").addEventListener("click", (e) => {
       handleGoogle(currentWordData.dictForm);
     });
 
-    document.querySelector('#duckduckgo.search').addEventListener('click', (e) => {
-      handleDuckduckgo(currentWordData.dictForm)
-    });
+    document
+      .querySelector("#duckduckgo.search")
+      .addEventListener("click", (e) => {
+        handleDuckduckgo(currentWordData.dictForm);
+      });
 
-    document.querySelector('#jisho.search').addEventListener('click', (e) => {
+    document.querySelector("#jisho.search").addEventListener("click", (e) => {
       handleJisho(currentWordData.dictForm);
     });
 
-    document.querySelector('#weblio-en.search').addEventListener('click', (e) => {
-      handleWeblioEn(currentWordData.dictForm);
-    });
+    document
+      .querySelector("#weblio-en.search")
+      .addEventListener("click", (e) => {
+        handleWeblioEn(currentWordData.dictForm);
+      });
 
-    document.querySelector('#weblio-jp.search').addEventListener('click', (e) => {
-      handleWeblioJp(currentWordData.dictForm);
-    });
+    document
+      .querySelector("#weblio-jp.search")
+      .addEventListener("click", (e) => {
+        handleWeblioJp(currentWordData.dictForm);
+      });
 
-    document.querySelector('#wiktionary-en.search').addEventListener('click', (e) => {
-      handleWiktionaryEn(currentWordData.dictForm);
-    });
+    document
+      .querySelector("#wiktionary-en.search")
+      .addEventListener("click", (e) => {
+        handleWiktionaryEn(currentWordData.dictForm);
+      });
 
-    document.querySelector('#wiktionary-jp.search').addEventListener('click', (e) => {
-      handleWiktionaryJp(currentWordData.dictForm);
-    });
+    document
+      .querySelector("#wiktionary-jp.search")
+      .addEventListener("click", (e) => {
+        handleWiktionaryJp(currentWordData.dictForm);
+      });
 
-    document.querySelector('#wikipedia.search').addEventListener('click', (e) => {
-      handleWikipedia(currentWordData.dictForm);
-    });
+    document
+      .querySelector("#wikipedia.search")
+      .addEventListener("click", (e) => {
+        handleWikipedia(currentWordData.dictForm);
+      });
 
-
-
-
-    document.querySelector('#audio.btn').addEventListener('click', (e) => {
-      var btn = document.querySelector('#audio.btn');
+    document.querySelector("#audio.btn").addEventListener("click", (e) => {
+      var btn = document.querySelector("#audio.btn");
       playAudio(currentWordData, btn);
     });
 
     if (ankiIntegration) {
-      document.querySelector('#anki.btn').addEventListener('click', (e) => {
-        var btn = document.querySelector('#anki.btn');
-        if (btn.classList.contains('preview')) {
-          previewNote(currentWordData, btn)
+      document.querySelector("#anki.btn").addEventListener("click", (e) => {
+        var btn = document.querySelector("#anki.btn");
+        if (btn.classList.contains("preview")) {
+          previewNote(currentWordData, btn);
         } else {
           addNote(currentWordData, btn);
         }
       });
     }
 
-    $('#dict').html(currentWordData.definitions);
+    $("#dict").html(currentWordData.definitions);
   };
 
-  ipcRenderer.on('receiveWordData', (event, wordData) => {
+  ipcRenderer.on("receiveWordData", (event, wordData) => {
     handleWordData(wordData);
-    ipcRenderer.send('requestTranslation');
+    ipcRenderer.send("requestTranslation");
   });
 
-  ipcRenderer.on('receiveTranslation', (event, englishText) => {
+  ipcRenderer.on("receiveTranslation", (event, englishText) => {
     currentEnglishText = englishText;
   });
 });

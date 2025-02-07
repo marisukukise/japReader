@@ -1,20 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://*.deepl.com; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <link rel="stylesheet" href="../../styles/all.css" />
+    <link rel="stylesheet" href="../../styles/variables.css" />
+    <link rel="stylesheet" href="../../styles/reader.css" />
+    <title>japReader</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; connect-src 'self' https://*.deepl.com; script-src 'self'" />
-  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-  <link rel="stylesheet" href="../../styles/all.css" />
-  <link rel="stylesheet" href="../../styles/variables.css" />
-  <link rel="stylesheet" href="../../styles/reader.css" />
-  <title>japReader</title>
-</head>
-
-
-<body>
-  <main id="app"></main>
-</body>
-
+  <body>
+    <main id="app"></main>
+  </body>
 </html>

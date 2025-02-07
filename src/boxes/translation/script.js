@@ -69,7 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
       useDeepLApi
         ? "DeepL API"
         : '<span class="url">https://www.deepl.com/</span>'
-    }.`
+    }.`,
   );
   $("#app").append("<br>");
   $("#app").append("Please wait patiently...");
@@ -82,7 +82,7 @@ window.addEventListener("DOMContentLoaded", () => {
           useDeepLApi
             ? "DeepL API"
             : '<span class="url">https://www.deepl.com/</span>'
-        }.`
+        }.`,
       );
       $("#app").append("<br>");
       $("#app").append("Copy Japanese text to get DeepL translations.");
@@ -95,12 +95,10 @@ window.addEventListener("DOMContentLoaded", () => {
         useDeepLApi
           ? "DeepL API"
           : '<span class="url">https://www.deepl.com/</span>'
-      }.`
+      }.`,
     );
     $("#app").append("<br>");
-    $("#app").append(
-      message
-    );
+    $("#app").append(message);
   });
 
   ipcRenderer.on("translateNotification", () => {
@@ -120,11 +118,11 @@ window.addEventListener("DOMContentLoaded", () => {
         useDeepLApi
           ? "DeepL API"
           : '<span class="url">https://www.deepl.com/</span>'
-      }.`
+      }.`,
     );
     $("#app").append("<br>");
     $("#app").append(
-      "This has been implemented to prevent you from being banned."
+      "This has been implemented to prevent you from being banned.",
     );
   });
 

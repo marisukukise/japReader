@@ -8,25 +8,23 @@
   z-index: 1;
 }
 
-
 .word:hover {
   cursor: pointer;
 }
 
 .word:after {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
   left: 0em;
   right: 0em;
   bottom: 0;
-  transition: top 200ms cubic-bezier(.18, 1, 0, 1);
+  transition: top 200ms cubic-bezier(0.18, 1, 0, 1);
 }
 
 .word:hover:after {
   top: -0.2ex;
 }
-
 
 .new:after {
   top: calc(100% - 0.33ex);
@@ -73,7 +71,13 @@
   color: var(--plusOneColor);
   background-color: var(--mainBackground);
   background-size: 10px 10px;
-  background-image: repeating-linear-gradient(45deg, var(--plusOneBackground) 0, var(--plusOneBackground) 1px, var(--mainBackground) 0, var(--mainBackground) 50%);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--plusOneBackground) 0,
+    var(--plusOneBackground) 1px,
+    var(--mainBackground) 0,
+    var(--mainBackground) 50%
+  );
 }
 
 .plusOne .new {
