@@ -60,44 +60,61 @@ document.onreadystatechange = function () {
         return;
       }
 
-      ipcRenderer.send("deepLConnected");
       try {
-        const targetNode = document.body.querySelector(deepLTargetNode);
+        const getTargetNode = () => {
+          const targetNode = document.body.querySelector(deepLTargetNode);
 
-        if (targetNode === null) {
-          throw new Error(
-            "English text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
-          );
-        }
-
-        const sourceNode = document.body.querySelector(deepLSourceNode);
-
-        if (sourceNode === null) {
-          throw new Error(
-            "Japanese text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
-          );
-        }
-
-        const config = { childList: true };
-        const callback = (items, observer) => {
-          console.log("change", { items, observer });
-          if (targetNode.textContent || sourceNode.textContent) {
-            const deeplText = [...targetNode.children]
-              .map((x) => x.textContent)
-              .join(" ");
-            const japaneseText = [...sourceNode.children]
-              .map((x) => x.textContent)
-              .join(" ");
-            ipcRenderer.send("showTranslation", deeplText, japaneseText);
-            ipcRenderer.send("appendToHistory", japaneseText, deeplText);
+          if (targetNode === null) {
+            throw new Error(
+              "English text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
+            );
           }
+
+          return targetNode;
         };
 
-        const observer = new MutationObserver(callback);
-        setInterval(() => {
-          console.debug(targetNode.innerHTML);
+        const getSourceNode = () => {
+          const sourceNode = document.body.querySelector(deepLSourceNode);
+
+          if (sourceNode === null) {
+            throw new Error(
+              "Japanese text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
+            );
+          }
+          return sourceNode;
+        };
+
+        const getTextContent = (node) => node.textContent.trim();
+
+        const getOnelineNodeText = (node) =>
+          [...node.children].map(({ textContent }) => textContent).join(" ");
+
+        getTargetNode();
+        getSourceNode();
+
+        let targetNode, sourceNode;
+
+        setTimeout(() => {
+          const observer = new MutationObserver(() => {
+            if (!getTextContent(targetNode) && !getTextContent(sourceNode)) {
+              return;
+            }
+
+            const deeplText = getOnelineNodeText(targetNode);
+            const japaneseText = getOnelineNodeText(sourceNode);
+
+            ipcRenderer.send("showTranslation", deeplText, japaneseText);
+            ipcRenderer.send("appendToHistory", japaneseText, deeplText);
+          });
+
+          targetNode = getTargetNode();
+          sourceNode = getSourceNode();
+
+          if (targetNode && sourceNode) {
+            observer.observe(targetNode, { childList: true });
+            ipcRenderer.send("deepLConnected");
+          }
         }, 1000);
-        observer.observe(targetNode, config);
       } catch (error) {
         ipcRenderer.send("deepLConnectionError", error.message);
       }
