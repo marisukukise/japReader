@@ -30,7 +30,7 @@
     "@electron-forge/maker-rpm": "7.6.1",
     "@electron-forge/maker-squirrel": "7.6.1",
     "@electron-forge/maker-zip": "7.6.1",
-    "electron": "34.1.1",
+    "electron": "35.7.5",
     "prettier": "3.4.2"
   },
   "repository": {
