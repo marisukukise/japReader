@@ -1,3 +1,8 @@
+# 1.11.0
+- Fixed [BUG] Stuck in "Translating..." (#74)
+- Update Node version to 22
+- Updated some npm packages
+
 # 1.10.0
 - Fixed another deepl.com broken DOM parsing (#65)
 - Removed unused npm packages
