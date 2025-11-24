@@ -13,17 +13,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
-      - name: Use Node.js 18
+      - name: Use Node.js 22
         uses: actions/setup-node@v3.5.1
         with:
           cache: "npm"
-          node-version: 18
-      - name: Update npm
-        run: sudo npm install -g npm
-      - name: Install electron
-        run: sudo npm install -g electron --unsafe-perm=true --allow-root
+          node-version: 22
       - name: Install npm packages
-        run: sudo npm ci
+        run: npm ci
       - name: Install dpkg, fakeroot and rpm
         run: |
           sudo apt-get update -y
@@ -49,13 +45,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
-      - name: Use Node.js 18
+      - name: Use Node.js 22
         uses: actions/setup-node@v3.5.1
         with:
           cache: "npm"
-          node-version: 18
-      - name: Update npm
-        run: npm install -g npm
+          node-version: 22
       - name: Install npm packages
         run: npm ci
       - name: Set NODE_ENV to 'production'
