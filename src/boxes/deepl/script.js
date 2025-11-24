@@ -9,6 +9,34 @@ const OPTIONS = new Store(tools.getOptionsStoreOptions());
 const { useDeepLApi, deepLApiKey, deepLSourceNode, deepLTargetNode } =
   OPTIONS.get("options");
 
+const getTargetNode = () => {
+  const targetNode = document.body.querySelector(deepLTargetNode);
+
+  if (targetNode === null) {
+    throw new Error(
+      "English text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
+    );
+  }
+
+  return targetNode;
+};
+
+const getSourceNode = () => {
+  const sourceNode = document.body.querySelector(deepLSourceNode);
+
+  if (sourceNode === null) {
+    throw new Error(
+      "Japanese text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
+    );
+  }
+  return sourceNode;
+};
+
+const getTextContent = (node) => node.textContent.trim();
+
+const getOnelineNodeText = (node) =>
+  [...node.children].map(({ textContent }) => textContent).join(" ");
+
 document.onreadystatechange = function () {
   if (document.readyState === "complete") {
     ipcRenderer.on("translateWithDeepL", (_event, text) => {
@@ -34,7 +62,9 @@ document.onreadystatechange = function () {
             (error) => console.error(error),
           );
       } else {
-        window.location.href = `https://www.deepl.com/en/translator#ja/en-us/${currentText}`;
+        const sourceNode = getSourceNode();
+        sourceNode.textContent = currentText;
+        sourceNode.dispatchEvent(new Event("input", { bubbles: true }));
       }
     });
 
@@ -61,34 +91,6 @@ document.onreadystatechange = function () {
       }
 
       try {
-        const getTargetNode = () => {
-          const targetNode = document.body.querySelector(deepLTargetNode);
-
-          if (targetNode === null) {
-            throw new Error(
-              "English text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
-            );
-          }
-
-          return targetNode;
-        };
-
-        const getSourceNode = () => {
-          const sourceNode = document.body.querySelector(deepLSourceNode);
-
-          if (sourceNode === null) {
-            throw new Error(
-              "Japanese text box could not be found on DeepL page<br>Element query selector is probably wrong or DeepL page has changed its structure.<br>Correct the query selector in options (by using inspect element on deepl.com/translator page) or open an issue on github page.",
-            );
-          }
-          return sourceNode;
-        };
-
-        const getTextContent = (node) => node.textContent.trim();
-
-        const getOnelineNodeText = (node) =>
-          [...node.children].map(({ textContent }) => textContent).join(" ");
-
         getTargetNode();
         getSourceNode();
 
