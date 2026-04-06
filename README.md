@@ -16,7 +16,8 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 - [Features](#-features)
 - [Installation](#-installation)
     - [Windows](#windows)
-    - [Linux/MacOS](#linuxmacos)
+    - [Linux](#linux)
+    - [macOS](#macos)
 - [Build](#-build)
 - [Technical information](#-technical-information)
     - [Configuration files](#configuration-files)
@@ -61,10 +62,15 @@ Alternatively, if you don't want to install, you can download the .zip package:
 3. Extract it and run with `japreader.exe`
 
 
-### <ins>Linux/MacOS</ins>
+### <ins>Linux</ins>
 1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
-2. Download a file matching your distribution
-3. Install the file using your package manager and sudo version
+2. Download a file matching your distribution (`.deb`, `.rpm`, or `.zip`)
+3. Install the file using your package manager
+
+### <ins>macOS</ins>
+1. Go to [latest release](https://github.com/marisukukise/japReader/releases/latest)
+2. Download the `.dmg` or `.zip` file
+3. Open the `.dmg` and drag the app to Applications, or extract the `.zip` and run the app
 
 
 
@@ -86,7 +92,7 @@ Alternatively, if you don't want to install, you can download the .zip package:
     Add execution permissions to the file reading the clipboard: <br>
     <i>For Windows</i>: Ignore this point, it already has permissions <br>
     <i>For Linux</i>: <code>sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux</code><br>
-    <i>For MacOS</i>: (I don't know the command) Grant necessary permissions to the file <code>node_modules/clipboard-event/platform/clipboard-event-handler-mac</code></li>
+    <i>For MacOS</i>: <code>chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac</code></li>
   <li> Build files <code>npm run make</code></li>
   <li> The built files will be output in <code>out/make/&lt;your_platform&gt;/x64</code> folder</li>
 </ol>
