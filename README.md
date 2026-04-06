@@ -1,5 +1,7 @@
 # [![](images/logo/logo_32.png)](#-japreader) japReader
-This is a continuation of japReader originally developed by [seth-js](https://github.com/seth-js)
+japReader is an app for breaking down Japanese sentences and tracking vocabulary progress. Built with simplicity in mind.
+
+Originally developed by [seth-js](https://github.com/seth-js).
 
 
 # [![](images/logo/logo_32.png)](#-preview) Preview
@@ -21,7 +23,7 @@ This is a continuation of japReader originally developed by [seth-js](https://gi
 - [Build](#-build)
 - [Technical information](#-technical-information)
     - [Configuration files](#configuration-files)
-    - [How to migrate data from old japReader](#how-to-migrate-data-from-old-japreader)
+
 - [Controls](#-controls)
     - [Keybindings](#keybindings)
     - [Mouse buttons](#mouse-buttons)
@@ -94,7 +96,7 @@ Alternatively, if you don't want to install, you can download the .zip package:
     <i>For Linux</i>: <code>sudo chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-linux</code><br>
     <i>For MacOS</i>: <code>chmod 777 node_modules/clipboard-event/platform/clipboard-event-handler-mac</code></li>
   <li> Build files <code>npm run make</code></li>
-  <li> The built files will be output in <code>out/make/&lt;your_platform&gt;/x64</code> folder</li>
+  <li> The built files will be output in <code>out/make/</code> folder</li>
 </ol>
 
 If you want to run this without installing, in point 6. of [Build](#Build) you can instead run the program using `npm start`
@@ -106,19 +108,15 @@ If you want to run this without installing, in point 6. of [Build](#Build) you c
 
 Configuration files are stored in:
 
-| OS      	| Configuration files path                                            	|
-|---------	|---------------------------------------------------------------------	|
-| Windows 	| `%APPDATA%/japreader/config`                                        	|
-|   Linux 	| `$XDG_CONFIG_HOME/japreader/config` or `~/.config/japreader/config` 	|
+| OS      | Configuration files path                                            |
+|---------|---------------------------------------------------------------------|
+| Windows | `%APPDATA%/japreader/config`                                        |
+| Linux   | `$XDG_CONFIG_HOME/japreader/config` or `~/.config/japreader/config` |
+| macOS   | `~/Library/Application Support/japreader/config`                    |
 
 Although it's not recommended to change anything there, 
 you can do everything that was intended through GUI in the options menu
 
-### <ins>How to migrate data from old japReader</ins>
-
-1. Backup your old data in case something goes wrong
-2. Open side by side: the [configuration files](#configuration-files) folder and the old configuration folder `data` in pre-1.5 japReader in the install location.
-3. Open the corresponding files one by one (e.g. `status_data.json`) and paste the data to fit the new template
 
 # [![](images/logo/logo_32.png)](#-controls) Controls
 ### <ins>Keybindings</ins>
@@ -149,18 +147,11 @@ Use [Textractor](https://github.com/Artikash/Textractor) with "Copy to Clipboard
 Just copy some Japanese text from your book.
 
 ### <ins>How do I read manga with this?</ins>
-__Option 1:__
+Use an OCR tool that copies detected text to your clipboard, which japReader will pick up automatically.
 
-Use [mangareader](https://wonderwize.github.io/mangareader/) - browser-side manga reader, no need to download anything,
-just select one of the bubbles and it will copy it to clipboard and get picked up by japReader
+__Windows:__ [Cloe](https://github.com/blueaxis/Cloe) - a simple and minimalistic screen OCR tool.
 
-__Option 2:__
-
-Use [mokuro](https://github.com/kha-white/mokuro) - manga text generator, it scans the entire manga volume
-and outputs a .html file with selectable text for all text that the OCR detected. This program probably has better OCR, but I may be wrong.
-
-(Optional) after you've generated your manga with mokuro, you can use [Mokuro2Pdf](https://github.com/Kartoffel0/Mokuro2Pdf) 
-to get a pdf file with manga with copyable text (it may be more convenient than the .html file that mokuro generates)
+__Linux/macOS:__ You can try [mokuro](https://github.com/kha-white/mokuro) or other OCR tools that copy text to clipboard.
 
 ### <ins>How do I watch Drama/Movies/Anime with this?</ins>
 For video media, there are probably better ways to get a Japanese dictionary
