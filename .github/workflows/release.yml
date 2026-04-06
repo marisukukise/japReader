@@ -127,9 +127,8 @@ jobs:
             make/rpm/x64/*.rpm
             make/zip/linux/x64/*.zip
             make/zip/win32/x64/*.zip
-            make/zip/darwin/x64/*.zip
             make/zip/darwin/arm64/*.zip
-            make/dmg/arm64/*.dmg
+            make/*.dmg
             make/squirrel.windows/x64/*.exe
             Anki_japReader.apkg
           tag_name: ${{ steps.package-version.outputs.current-version }}
