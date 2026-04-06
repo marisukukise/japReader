@@ -1,6 +1,6 @@
 # 1.12.0
 - Added macOS release (DMG and zip)
-- Bumped Electron from 39.8.5 to 41.1.1
+- Bumped Electron from 34.5.8 to 41.1.1
 - Updated npm packages (deepl-node 1.25.0, module-alias 2.3.4, electron-forge 7.11.1, prettier 3.8.1)
 
 # 1.11.0
