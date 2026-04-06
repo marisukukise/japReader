@@ -24,6 +24,12 @@ module.exports = {
       },
     },
     {
+      name: "@electron-forge/maker-dmg",
+      config: {
+        icon: "./images/logo/icon.icns",
+      },
+    },
+    {
       name: "@electron-forge/maker-deb",
       config: {
         options: {
