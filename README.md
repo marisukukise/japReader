@@ -136,6 +136,7 @@ In the Reader window you can quickly change the status of a word with mouse butt
 # [![](images/logo/logo_32.png)](#-faq) FAQ
 ### <ins>How does this work?</ins>
 * It watches your clipboard for Japanese text. Once Japanese text is detected, it gets parsing and dictionary data from [ichi.moe](https://ichi.moe/cl/qr/?q=&r=kana).
+* **Note:** Clipboard watching on Linux currently only works on X11, not Wayland.
 * The word status tracking is done by checking each parsed dictionary form of a word against a small collection of word databases that accumulate as you use the program.
 * The Anki feature uses the [AnkiConnect](https://github.com/FooSoft/anki-connect) API to send over the necessary card data.
 
